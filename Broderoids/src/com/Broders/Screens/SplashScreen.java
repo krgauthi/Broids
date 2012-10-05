@@ -30,11 +30,10 @@ public class SplashScreen implements Screen{
 	@Override
 	public void render(float delta) {
 		
-		
-		//handle this in run loop after this
+	
 		
 		HandleInput();
-		
+
 		GL10 g1 = Gdx.graphics.getGL10();
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);

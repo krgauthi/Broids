@@ -3,6 +3,7 @@ package com.Broders.mygdxgame;
 import com.Broders.Screens.*;
 import com.badlogic.gdx.Game;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 
@@ -16,20 +17,16 @@ public class BaseGame extends Game {
 	
 	OrthographicCamera Cam;
 	
-	public BaseGame(){
-	
-	
-	}
 
 	
 	@Override
 	public void create() {	
 		
 		Cam = new OrthographicCamera();
-		Cam.setToOrtho(false, 1024, 576);
+		Cam.setToOrtho(false, 1280, 720);
 		this.setScreen(new SplashScreen(this));
 		super.render();
-		
+	
 	}
 
 	

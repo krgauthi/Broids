@@ -19,6 +19,7 @@ public class BaseGame extends Game {
 
 	//Declare Constants here
 	public int TailLength = 5;
+	//public int ShipSize = 32; never called but cool to implement
 	
 	
 	@Override

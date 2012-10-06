@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Shape.Type;
+import com.badlogic.gdx.utils.ObjectMap.Entry;
 import com.badlogic.gdx.utils.OrderedMap;
 
 
@@ -31,6 +32,7 @@ public class GameScreen implements Screen{
 	private boolean Multiplayer;
 	
 	private EntityType type;
+	private Ship PlayerShip;
 	
 
 	private SpriteBatch spriteBatch;
@@ -57,9 +59,8 @@ public class GameScreen implements Screen{
 
 		tail = new LinkedList<Pos>();
 		EntityMap = new OrderedMap<String, Entities>();
-		//type = SHIP;
-		//Ship PlayerShip = new Ship("player",new EntityType(0));
-		//EntityMap.put("player", PlayerShip);
+		PlayerShip = new Ship("player",type.SHIP);
+		EntityMap.put("player", PlayerShip);
 		count = 0;
 
 	}
@@ -99,6 +100,11 @@ public class GameScreen implements Screen{
 			Tailsprite.draw(spriteBatch);
 			
 		}
+		
+		for(Entry<String, Entities> E :EntityMap.entries()){
+			E.value.Draw(spriteBatch);
+		}
+		
 		
 		spriteBatch.end();
 		

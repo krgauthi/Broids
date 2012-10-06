@@ -1,6 +1,7 @@
 package com.Broders.Entities;
 
 import com.Broders.Logic.Pos;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
@@ -13,8 +14,10 @@ public abstract class Entities {
 	
 	public Entities(String id, EntityType type) {
 		identity = id;
-		Pos xy = new Pos(.5f,.5f);
-		body.getPosition().set(xy.Getx(),xy.Gety());
+		this.type = type;
+		Pos xy = new Pos(.5f,.5f); //default center of screen
+	 
+		
 	}
 
 	public Body getBody() {
@@ -33,6 +36,9 @@ public abstract class Entities {
 		return this.type;
 	}
 	
+	public void Draw(SpriteBatch sb){
+		
+	}
 	
 	public double getAngle(){
 		return this.body.getAngle()*(180.00/Math.PI);

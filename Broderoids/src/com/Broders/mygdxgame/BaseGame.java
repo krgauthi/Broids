@@ -1,5 +1,6 @@
 package com.Broders.mygdxgame;
 
+import com.Broders.Entities.Ship;
 import com.Broders.Screens.*;
 import com.badlogic.gdx.Game;
 

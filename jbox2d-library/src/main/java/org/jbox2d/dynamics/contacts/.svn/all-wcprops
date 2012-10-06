@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/!svn/ver/582/tags/jbox2d-2.1.2.2/jbox2d-library/src/main/java/org/jbox2d/dynamics/contacts
+END
+ContactConstraint.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/!svn/ver/582/tags/jbox2d-2.1.2.2/jbox2d-library/src/main/java/org/jbox2d/dynamics/contacts/ContactConstraint.java
+END
+ContactEdge.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/!svn/ver/582/tags/jbox2d-2.1.2.2/jbox2d-library/src/main/java/org/jbox2d/dynamics/contacts/ContactEdge.java
+END
+ContactRegister.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/!svn/ver/582/tags/jbox2d-2.1.2.2/jbox2d-library/src/main/java/org/jbox2d/dynamics/contacts/ContactRegister.java
+END
+TOIConstraint.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/!svn/ver/582/tags/jbox2d-2.1.2.2/jbox2d-library/src/main/java/org/jbox2d/dynamics/contacts/TOIConstraint.java
+END
+PolygonContact.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/!svn/ver/582/tags/jbox2d-2.1.2.2/jbox2d-library/src/main/java/org/jbox2d/dynamics/contacts/PolygonContact.java
+END
+TOISolver.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/!svn/ver/582/tags/jbox2d-2.1.2.2/jbox2d-library/src/main/java/org/jbox2d/dynamics/contacts/TOISolver.java
+END
+ContactSolver.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/!svn/ver/582/tags/jbox2d-2.1.2.2/jbox2d-library/src/main/java/org/jbox2d/dynamics/contacts/ContactSolver.java
+END
+PolygonAndCircleContact.java
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/!svn/ver/582/tags/jbox2d-2.1.2.2/jbox2d-library/src/main/java/org/jbox2d/dynamics/contacts/PolygonAndCircleContact.java
+END
+ContactConstraintPoint.java
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/!svn/ver/582/tags/jbox2d-2.1.2.2/jbox2d-library/src/main/java/org/jbox2d/dynamics/contacts/ContactConstraintPoint.java
+END
+Contact.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/!svn/ver/582/tags/jbox2d-2.1.2.2/jbox2d-library/src/main/java/org/jbox2d/dynamics/contacts/Contact.java
+END
+ContactCreator.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/!svn/ver/582/tags/jbox2d-2.1.2.2/jbox2d-library/src/main/java/org/jbox2d/dynamics/contacts/ContactCreator.java
+END
+CircleContact.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/!svn/ver/582/tags/jbox2d-2.1.2.2/jbox2d-library/src/main/java/org/jbox2d/dynamics/contacts/CircleContact.java
+END

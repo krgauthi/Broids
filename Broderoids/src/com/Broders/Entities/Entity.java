@@ -3,14 +3,14 @@ package com.Broders.Entities;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
-public abstract class Entities {
+public abstract class Entity {
 	
 	private String identity;
 	private EntityType type;
 	private Body body;
 	private Boolean thrust;
 	
-	public Entities(String id, EntityType type) {
+	public Entity(String id, EntityType type) {
 		identity = id;
 	}
 

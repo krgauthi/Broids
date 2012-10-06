@@ -38,7 +38,7 @@ public class SplashScreen implements Screen{
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		myGame.getCam().update();
+		//myGame.getCam().update();
 		
         spriteBatch.begin();
         spriteBatch.draw(splsh, 0, -175);

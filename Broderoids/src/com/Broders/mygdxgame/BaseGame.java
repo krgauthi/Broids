@@ -15,15 +15,15 @@ public class BaseGame extends Game {
 	
 	MainMenu main;
 	
-	OrthographicCamera Cam;
+	//OrthographicCamera Cam;
 	
 
 	
 	@Override
 	public void create() {	
 		
-		Cam = new OrthographicCamera();
-		Cam.setToOrtho(false, 1280, 720);
+		//Cam = new OrthographicCamera();
+		//Cam.setToOrtho(false, 1024, 576);
 		this.setScreen(new SplashScreen(this));
 		super.render();
 	
@@ -38,9 +38,9 @@ public class BaseGame extends Game {
 	}
 	
 	
-	public OrthographicCamera getCam(){
-		return Cam;
-	}
+	//public OrthographicCamera getCam(){
+		//return Cam;
+	//}
 	
 	@Override
 	public void dispose() {

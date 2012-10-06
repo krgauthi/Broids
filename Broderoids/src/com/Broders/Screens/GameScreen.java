@@ -2,7 +2,7 @@ package com.Broders.Screens;
 
 import java.util.LinkedList;
 
-import com.Broders.Screens.GameScreen.Pos;
+import com.Broders.Logic.Pos;
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -20,24 +20,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class GameScreen implements Screen{
 
 
-	public class Pos{
-		float x;
-		float y;
-		
-		public Pos(float xx, float yy){
-			x = xx;
-			y = yy;
-		}
-		
-		public float Getx(){
-			return x;
-		}
-		
-		public float Gety(){
-			return y;
-		}
-		
-	}
+	
 	
 	private int count;
 	

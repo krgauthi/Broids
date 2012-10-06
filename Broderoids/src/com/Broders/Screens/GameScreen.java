@@ -2,6 +2,7 @@ package com.Broders.Screens;
 
 import java.util.LinkedList;
 
+import com.Broders.Entities.*;
 import com.Broders.Logic.Pos;
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.Game;
@@ -13,6 +14,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.Shape.Type;
+import com.badlogic.gdx.utils.ObjectMap.Entry;
+import com.badlogic.gdx.utils.OrderedMap;
 
 
 
@@ -27,6 +31,8 @@ public class GameScreen implements Screen{
 	private BaseGame myGame;
 	private boolean Multiplayer;
 	
+	private EntityType type;
+	private Ship PlayerShip;
 	
 
 	private SpriteBatch spriteBatch;
@@ -37,6 +43,8 @@ public class GameScreen implements Screen{
 	private Sprite Tailsprite;
 
 	private LinkedList<Pos> tail;
+	private OrderedMap<String,Entities> EntityMap;
+	
 
 
 	public GameScreen(BaseGame game, boolean m){
@@ -50,6 +58,9 @@ public class GameScreen implements Screen{
 		}
 
 		tail = new LinkedList<Pos>();
+		EntityMap = new OrderedMap<String, Entities>();
+		PlayerShip = new Ship("player",type.SHIP);
+		EntityMap.put("player", PlayerShip);
 		count = 0;
 
 	}
@@ -82,33 +93,37 @@ public class GameScreen implements Screen{
 		spriteBatch.begin();
 		
 		
-		/*
+		
 		for(Pos xy : tail){
 			//Tailsprite.setPosition(xy.Getx(),yy-xy.Gety());
 			Tailsprite.setPosition((xx*(xy.Getx()-.01f)), yy-(yy*(xy.Gety()+.05f)));
 			Tailsprite.draw(spriteBatch);
 			
 		}
-		*/
+		
+		for(Entry<String, Entities> E :EntityMap.entries()){
+			E.value.Draw(spriteBatch);
+		}
+		
+		
 		spriteBatch.end();
 		
 		
 		
-		//myGame.getCam().update();
 
 	}
 
 	private void Update() {
 
-		/*
-		if(count >= 1){
+		
+		if(count > 0 ||tail.size() > myGame.TailLength){
 			count = 0;
 			if(!tail.isEmpty())
 			tail.removeFirst();
 		}else{
 			count++;
 		}
-		*/
+		
 		
 
 	}
@@ -134,9 +149,7 @@ public class GameScreen implements Screen{
 
 		//touch tail
 		if(Gdx.input.isTouched()){
-			float x = ((float)Gdx.input.getX()/(float)Gdx.graphics.getWidth());
-			float y = ((float)Gdx.input.getY()/(float)Gdx.graphics.getHeight());
-				//tail.add(new Pos(x,y));
+				tail.add(new Pos(Gdx.input.getX(),Gdx.input.getY()));
 		}
 
 

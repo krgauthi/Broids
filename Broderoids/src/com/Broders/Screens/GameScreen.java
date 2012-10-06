@@ -14,10 +14,18 @@ import com.badlogic.gdx.graphics.GL20;
 public class GameScreen implements Screen{
 
 	private BaseGame myGame;
+	private boolean Multiplayer;
 	
 	
-	public GameScreen(BaseGame game){
+	public GameScreen(BaseGame game, boolean m){
 		this.myGame = game;
+		this.Multiplayer = m;
+		
+		if(m){
+			System.out.println("Multi");
+		}else{
+			System.out.println("Single");
+		}
 	}
 	
 	@Override

@@ -5,7 +5,7 @@ public enum EntityType {
 	BULLET (1),
 	ASTEROID (2);
 	
-	private final int type;
+	private int type;
 	
 	EntityType(int type){
 		this.type = type;

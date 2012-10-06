@@ -121,8 +121,6 @@ public class MainMenu implements Screen{
 				}else if(y >= .56 && y <= .66){
 					System.out.println("Settings");
 				}
-				
-				
 			}
 			
 			

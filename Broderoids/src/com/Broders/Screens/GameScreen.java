@@ -11,6 +11,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
@@ -20,25 +21,25 @@ public class GameScreen implements Screen{
 
 
 	public class Pos{
-		int x;
-		int y;
+		float x;
+		float y;
 		
-		public Pos(int xx, int yy){
+		public Pos(float xx, float yy){
 			x = xx;
 			y = yy;
 		}
 		
-		public int Getx(){
+		public float Getx(){
 			return x;
 		}
 		
-		public int Gety(){
+		public float Gety(){
 			return y;
 		}
 		
 	}
 	
-	
+	private int count;
 	
 	private BaseGame myGame;
 	private boolean Multiplayer;
@@ -46,6 +47,8 @@ public class GameScreen implements Screen{
 	private SpriteBatch spriteBatch;
 	
 	private Texture btail;
+	
+	private Sprite Tailsprite;
 
 	private LinkedList<Pos> tail;
 
@@ -61,6 +64,7 @@ public class GameScreen implements Screen{
 		}
 
 		tail = new LinkedList<Pos>();
+		count = 0;
 
 	}
 
@@ -85,11 +89,21 @@ public class GameScreen implements Screen{
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1); //its blue so you know you changed screens
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		float xx = Gdx.graphics.getWidth();
+		float yy = Gdx.graphics.getHeight();
+		
+		
 		spriteBatch.begin();
+		
+		
+		/*
 		for(Pos xy : tail){
-			spriteBatch.draw(btail, xy.Getx(), xy.Gety());
+			//Tailsprite.setPosition(xy.Getx(),yy-xy.Gety());
+			Tailsprite.setPosition((xx*(xy.Getx()-.01f)), yy-(yy*(xy.Gety()+.05f)));
+			Tailsprite.draw(spriteBatch);
 			
 		}
+		*/
 		spriteBatch.end();
 		
 		
@@ -100,6 +114,16 @@ public class GameScreen implements Screen{
 
 	private void Update() {
 
+		/*
+		if(count >= 1){
+			count = 0;
+			if(!tail.isEmpty())
+			tail.removeFirst();
+		}else{
+			count++;
+		}
+		*/
+		
 
 	}
 
@@ -111,11 +135,22 @@ public class GameScreen implements Screen{
 			double y = ((float)Gdx.input.getY()/(float)Gdx.graphics.getHeight());
 			System.out.println("Mouse Pos: "+x+" "+y);
 		}
+		
+		if(Gdx.input.isKeyPressed(Keys.F2)){
+			
+			System.out.println("Mouse Pos: "+Gdx.input.getX()+" "+Gdx.input.getY());
+		}
+		
+		if(Gdx.input.isKeyPressed(Keys.F3)){
+			System.out.println("Resize: "+Gdx.graphics.getWidth()+" "+Gdx.graphics.getHeight());
+		}
 
 
 		//touch tail
 		if(Gdx.input.isTouched()){
-				tail.add(new Pos(Gdx.input.getX(),Gdx.input.getY()));
+			float x = ((float)Gdx.input.getX()/(float)Gdx.graphics.getWidth());
+			float y = ((float)Gdx.input.getY()/(float)Gdx.graphics.getHeight());
+				//tail.add(new Pos(x,y));
 		}
 
 
@@ -127,13 +162,15 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void show() {
 		btail = new Texture(Gdx.files.internal("data/bullet.png"));
+		Tailsprite = new Sprite(btail);
+		
 		spriteBatch = new SpriteBatch();
 
 	}

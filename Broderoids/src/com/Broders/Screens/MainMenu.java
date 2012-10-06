@@ -29,7 +29,7 @@ public class MainMenu implements Screen{
 	public MainMenu(BaseGame g){
 
 		this.myGame = g;
-		
+		myGame.setMain(this);
 		
 	
 

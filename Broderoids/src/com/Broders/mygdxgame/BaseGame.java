@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 public class BaseGame extends Game {
 	
 	
-	
+	MainMenu main;
 	
 	OrthographicCamera Cam;
 	
@@ -29,6 +29,14 @@ public class BaseGame extends Game {
 	
 	}
 
+	public void setMain(MainMenu m){
+		main = m;
+	}
+	
+	public MainMenu GetMain(){
+		return main;
+	}
+	
 	
 	public OrthographicCamera getCam(){
 		return Cam;

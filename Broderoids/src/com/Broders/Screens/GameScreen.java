@@ -43,10 +43,13 @@ public class GameScreen implements Screen{
 	
 	private BaseGame myGame;
 	private boolean Multiplayer;
+	
+	
 
 	private SpriteBatch spriteBatch;
 	
 	private Texture btail;
+	private Texture Ship;
 	
 	private Sprite Tailsprite;
 
@@ -170,6 +173,8 @@ public class GameScreen implements Screen{
 	public void show() {
 		btail = new Texture(Gdx.files.internal("data/bullet.png"));
 		Tailsprite = new Sprite(btail);
+		
+		Ship = new Texture(Gdx.files.internal("data/bullet.png"));
 		
 		spriteBatch = new SpriteBatch();
 

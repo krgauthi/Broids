@@ -60,7 +60,7 @@ public class GameScreen implements Screen{
 		
 		//Backout to main menu
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE)){
-			
+			myGame.setScreen(myGame.GetMain());
 		}
 	}
 
@@ -96,7 +96,8 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
+		
+        
 		
 	}
 

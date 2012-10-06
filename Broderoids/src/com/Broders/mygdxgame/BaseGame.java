@@ -16,19 +16,16 @@ public class BaseGame extends Game {
 	
 	
 	MainMenu main;
-	
-	private static final int VIRTUAL_WIDTH = 480;
-    private static final int VIRTUAL_HEIGHT = 320;
-    private static final float ASPECT_RATIO = (float)VIRTUAL_WIDTH/(float)VIRTUAL_HEIGHT;
-	
-	private Camera Cam;
-	
 
+	//Declare Constants here
+	public int TailLength = 5;
+	//public int ShipSize = 32; never called but cool to implement
+	
 	
 	@Override
 	public void create() {	
 		
-		Cam = new OrthographicCamera(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
+	
 		
 		this.setScreen(new SplashScreen(this));
 		super.render();
@@ -44,9 +41,7 @@ public class BaseGame extends Game {
 	}
 	
 	
-	public Camera getCam(){
-		return Cam;
-	}
+
 	
 	@Override
 	public void dispose() {

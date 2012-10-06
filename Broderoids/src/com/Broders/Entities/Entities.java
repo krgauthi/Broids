@@ -8,7 +8,7 @@ public abstract class Entities {
 	private String identity;
 	private EntityType type;
 	private Body body;
-	private Boolean thrust;
+	
 	
 	public Entities(String id, EntityType type) {
 		identity = id;
@@ -26,9 +26,6 @@ public abstract class Entities {
 		return this.type;
 	}
 	
-	public Boolean getThrust(){
-		return this.thrust;
-	}
 	
 	public double getAngle(){
 		return this.body.getAngle()*(180.00/Math.PI);

@@ -21,7 +21,7 @@ public abstract class Entities {
 		identity = id;
 		this.type = type;
 		Pos xy = new Pos(.5f,.5f); //default center of screen
-		this.SetPos(xy);
+		//this.SetPos(xy);
 	}
 
 	public Body getBody() {
@@ -29,7 +29,7 @@ public abstract class Entities {
 	}
 	
 	public void SetPos(Pos xy){
-		body.getPosition().set(xy.Getx(),xy.Gety());
+		//body.getPosition().set(xy.Getx(),xy.Gety());
 		sprite.setPosition(xy.Getx(), xy.Gety());
 	}
 	
@@ -52,6 +52,11 @@ public abstract class Entities {
 	
 	public Sprite getSprite(){
 		return this.sprite;
+	}
+	
+	// possibly only for testing...
+	public void setBody(Body bod){
+		this.body = bod;
 	}
 	
 	public abstract void Draw(SpriteBatch sb);

@@ -3,6 +3,7 @@ package com.Broders.Screens;
 import java.util.LinkedList;
 
 import com.Broders.Entities.*;
+import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Pos;
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.Game;
@@ -59,7 +60,9 @@ public class GameScreen implements Screen{
 
 		tail = new LinkedList<Pos>();
 		EntityMap = new OrderedMap<String, Entities>();
-		PlayerShip = new Ship("player",type.SHIP);
+		CoreLogic core = new CoreLogic();
+		core.initCore();
+		PlayerShip = core.getShip();
 		EntityMap.put("player", PlayerShip);
 		count = 0;
 

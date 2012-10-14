@@ -15,4 +15,12 @@ public enum InputDir {
 	public String toString(){
 		return this.dir;
 	}
+	
+	public boolean equals(String dir){
+		return this.toString().equals(dir) ? true : false;
+	}
+	
+	public boolean equals(InputDir dir){
+		return this.toString().equals(dir.toString()) ? true : false;
+	}
 }

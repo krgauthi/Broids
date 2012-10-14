@@ -112,7 +112,9 @@ public class CoreLogic {
 	}
 	
 	public void execute(double delta, InputDir in){
-		
+		if(in.equals("forward")){
+			testShip.getBody().applyForce(new Vector2(10, 10), new Vector2(testShip.getBody().getPosition()));
+		}
 	}
 	
 	//this method is for testing purposes only

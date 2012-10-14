@@ -118,7 +118,7 @@ public class CoreLogic {
 	}
 	
 	public void execute(float delta, InputDir in){
-		world.step(delta, 0, 0);
+		
 		
 		if(in.equals("forward")){
 			Vector2 f = testShip.getBody().getWorldVector(new Vector2(0.0f, -30.0f));
@@ -129,10 +129,12 @@ public class CoreLogic {
 			Vector2 p = testShip.getBody().getWorldCenter();
 			testShip.getBody().applyForce(f, p);
 		}else if(in.equals("left")){
-			testShip.getBody().applyTorque(20.0f);
+			testShip.getBody().applyTorque(10.0f);
 		}else if(in.equals("right")){
-			testShip.getBody().applyTorque(-20.0f);
+			testShip.getBody().applyTorque(-10.0f);
 		}
+		
+		world.step(delta, 3, 8);
 	}
 	
 	//this method is for testing purposes only

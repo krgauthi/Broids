@@ -93,7 +93,7 @@ public class GameScreen implements Screen{
 		//handle Input and update Backend
 		//it is up to the backend team to decide if they want to handle input seperatly or not
 		HandleInput(delta);
-		Update();
+		Update(delta);
 
 		//server interactions here?
 
@@ -143,9 +143,10 @@ public class GameScreen implements Screen{
 
 	}
 
-	private void Update() {
+	private void Update(float delta) {
 
 		//EntityMap.get("player").SetPos(new Pos(.45f, .25f));
+		core.execute(delta, InputDir.NULL);
 		Tail.Update();
 
 	}
@@ -178,9 +179,9 @@ public class GameScreen implements Screen{
 		//arrow keys
 		if(Gdx.input.isKeyPressed(Keys.UP)){
 			core.execute(delta, InputDir.FORWARD);
-			THRUSTER = true;
+			PlayerShip.setThrust(true);
 		}else{
-			THRUSTER = false;
+			PlayerShip.setThrust(false);
 		}
 		
 		if(Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT)){

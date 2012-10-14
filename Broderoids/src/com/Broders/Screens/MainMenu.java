@@ -53,7 +53,7 @@ public class MainMenu implements Screen{
 	public void render(float delta) {
 
 		//handle Input and update Backend
-		//it is up to the backend team to decide if they want to handle input seperatly or not
+		//it is up to the backend team to decide if they want to handle input separately or not
 		HandleInput();
 		Update();
 

@@ -45,7 +45,7 @@ public class Pos{
 	}
 	
 	/*
-	 * Give the touch input int and it automaticly makes the Virtual pos
+	 * Give the touch input int and it automatically makes the Virtual pos
 	 */
 	public void Setx(int xx){
 		x = ((float)xx/(float)Gdx.graphics.getWidth());

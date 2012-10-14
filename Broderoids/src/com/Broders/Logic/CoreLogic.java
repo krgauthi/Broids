@@ -35,6 +35,8 @@ public class CoreLogic {
 		testShip = new Ship("player", EntityType.SHIP, world);
 		
 
+		
+		
 		//example code pasted below for testing:
 		
 		// this block creates the 'ground'

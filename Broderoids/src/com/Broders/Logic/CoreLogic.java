@@ -115,6 +115,14 @@ public class CoreLogic {
 			Vector2 f = testShip.getBody().getWorldVector(new Vector2(0.0f, -30.0f));
 			Vector2 p = testShip.getBody().getWorldPoint(testShip.getBody().getLocalCenter().add(new Vector2(0f,2f)));
 			testShip.getBody().applyForce(f, p);
+		}else if(in.equals("backward")){
+			Vector2 f = testShip.getBody().getWorldVector(new Vector2(0.0f, 30.0f));
+			Vector2 p = testShip.getBody().getWorldCenter();
+			testShip.getBody().applyForce(f, p);
+		}else if(in.equals("left")){
+			testShip.getBody().applyTorque(20.0f);
+		}else if(in.equals("right")){
+			testShip.getBody().applyTorque(-20.0f);
 		}
 	}
 	

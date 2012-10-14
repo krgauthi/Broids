@@ -114,10 +114,9 @@ public class GameScreen implements Screen{
 
 	private void Update() {
 
-		
+		EntityMap.get("player").SetPos(new Pos(.45f, .25f));
 		Tail.Update();
 		
-
 	}
 
 	private void HandleInput() {

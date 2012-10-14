@@ -3,3 +3,8 @@
 # Package Files #
 *.war
 *.ear
+
+# Ignore bin directories #
+Broderoids/bin/
+Broderoids-android/bin/
+Broderoids-desktop/bin/

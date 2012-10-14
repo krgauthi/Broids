@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import com.Broders.Entities.*;
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Pos;
+import com.Broders.Logic.tail;
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -43,7 +44,7 @@ public class GameScreen implements Screen{
 	
 	private Sprite Tailsprite;
 
-	private LinkedList<Pos> tail;
+	private tail Tail;
 	private OrderedMap<String,Entities> EntityMap;
 	
 
@@ -58,7 +59,9 @@ public class GameScreen implements Screen{
 			System.out.println("Single");
 		}
 
-		tail = new LinkedList<Pos>();
+		
+		Tail = new tail(5);
+		
 		EntityMap = new OrderedMap<String, Entities>();
 		CoreLogic core = new CoreLogic();
 		core.initCore();
@@ -89,20 +92,13 @@ public class GameScreen implements Screen{
 		Gdx.gl.glClearColor(0, 0, 0.2f, 1); //its blue so you know you changed screens
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		float xx = Gdx.graphics.getWidth();
-		float yy = Gdx.graphics.getHeight();
 		
 		
 		spriteBatch.begin();
 		
 		
+		Tail.draw(spriteBatch);
 		
-		for(Pos xy : tail){
-			//Tailsprite.setPosition(xy.Getx(),yy-xy.Gety());
-			Tailsprite.setPosition((xx*(xy.Getx()-.01f)), yy-(yy*(xy.Gety()+.05f)));
-			Tailsprite.draw(spriteBatch);
-			
-		}
 		
 		for(Entry<String, Entities> E :EntityMap.entries()){
 			E.value.Draw(spriteBatch);
@@ -118,19 +114,9 @@ public class GameScreen implements Screen{
 
 	private void Update() {
 
-		
 		EntityMap.get("player").SetPos(new Pos(.45f, .25f));
+		Tail.Update();
 		
-		if(count > 0 ||tail.size() > myGame.TailLength){
-			count = 0;
-			if(!tail.isEmpty())
-			tail.removeFirst();
-		}else{
-			count++;
-		}
-		
-		
-
 	}
 
 	private void HandleInput() {
@@ -154,7 +140,7 @@ public class GameScreen implements Screen{
 
 		//touch tail
 		if(Gdx.input.isTouched()){
-				tail.add(new Pos(Gdx.input.getX(),Gdx.input.getY()));
+				Tail.add(new Pos(Gdx.input.getX(),Gdx.input.getY()));
 		}
 
 
@@ -172,8 +158,7 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void show() {
-		btail = new Texture(Gdx.files.internal("data/bullet.png"));
-		Tailsprite = new Sprite(btail);
+		
 		
 		Ship = new Texture(Gdx.files.internal("data/bullet.png"));
 		

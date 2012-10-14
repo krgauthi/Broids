@@ -4,8 +4,8 @@ public enum InputDir {
 	FORWARD ("forward"),
 	BACKWARD ("backward"),
 	LEFT ("left"),
-	RIGHT ("right");
-	
+	RIGHT ("right"),
+	NULL ("");
 	private String dir;
 	
 	private InputDir(String dir){

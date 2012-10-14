@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import com.Broders.Entities.*;
 import com.Broders.Logic.CoreLogic;
+import com.Broders.Logic.InputDir;
 import com.Broders.Logic.Pos;
 import com.Broders.Logic.tail;
 import com.Broders.mygdxgame.BaseGame;
@@ -34,6 +35,7 @@ public class GameScreen implements Screen{
 	private BaseGame myGame;
 	private boolean Multiplayer;
 	private boolean DEBUG;
+	private boolean THRUSTER;
 
 	private EntityType type;
 	private Ship PlayerShip;
@@ -50,6 +52,8 @@ public class GameScreen implements Screen{
 	private OrderedMap<String,Entities> EntityMap;
 
 	private BitmapFont font;
+	
+	private CoreLogic core;
 	
 	float xx;
 	float yy;
@@ -70,9 +74,10 @@ public class GameScreen implements Screen{
 		Tail = new tail(5);
 		font = new BitmapFont();
 		DEBUG = true;
+		THRUSTER = false;
 
 		EntityMap = new OrderedMap<String, Entities>();
-		CoreLogic core = new CoreLogic();
+		core = new CoreLogic();
 		core.initCore();
 		PlayerShip = core.getShip();
 		EntityMap.put("player", PlayerShip);
@@ -87,8 +92,8 @@ public class GameScreen implements Screen{
 
 		//handle Input and update Backend
 		//it is up to the backend team to decide if they want to handle input seperatly or not
-		HandleInput();
-		Update();
+		HandleInput(delta);
+		Update(delta);
 
 		//server interactions here?
 
@@ -112,7 +117,7 @@ public class GameScreen implements Screen{
 
 
 		for(Entry<String, Entities> E :EntityMap.entries()){
-			E.value.Draw(spriteBatch);
+			E.value.Draw(spriteBatch, core);
 		}
 
 
@@ -123,6 +128,11 @@ public class GameScreen implements Screen{
 
 			out = String.format("Ship Pos in Meters: (%f,%f) ", PlayerShip.getBody().getPosition().x,PlayerShip.getBody().getPosition().y);
 			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .01f));
+			
+			out = String.format("Ship angle in Radians: %f",PlayerShip.getBody().getAngle());
+			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .05f));
+			if(THRUSTER)
+				font.draw(spriteBatch, "Thruster", xx * .01f, yy-(yy * .1f));
 
 		}
 
@@ -133,14 +143,15 @@ public class GameScreen implements Screen{
 
 	}
 
-	private void Update() {
+	private void Update(float delta) {
 
-		EntityMap.get("player").SetPos(new Pos(.45f, .25f));
+		//EntityMap.get("player").SetPos(new Pos(.45f, .25f));
+		core.execute(delta, InputDir.NULL);
 		Tail.Update();
 
 	}
 
-	private void HandleInput() {
+	private void HandleInput(float delta) {
 
 		//Special Debug keys
 		if(Gdx.input.isKeyPressed(Keys.F1)){
@@ -164,6 +175,23 @@ public class GameScreen implements Screen{
 			Tail.add(new Pos(Gdx.input.getX(),Gdx.input.getY()));
 		}
 
+		
+		//arrow keys
+		if(Gdx.input.isKeyPressed(Keys.UP)){
+			core.execute(delta, InputDir.FORWARD);
+			PlayerShip.setThrust(true);
+		}else{
+			PlayerShip.setThrust(false);
+		}
+		
+		if(Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT)){
+			core.execute(delta, InputDir.LEFT);
+		}
+		
+		if(Gdx.input.isKeyPressed(Keys.RIGHT) && !Gdx.input.isKeyPressed(Keys.LEFT)){
+			core.execute(delta, InputDir.RIGHT);
+		}
+		
 
 		//Backout to main menu
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE)){

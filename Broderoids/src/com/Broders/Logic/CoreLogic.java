@@ -121,7 +121,9 @@ public class CoreLogic {
 		world.step(delta, 3, 8);
 		
 		if(in.equals("forward")){
-			testShip.getBody().applyForce(new Vector2(10, 10), new Vector2(testShip.getBody().getPosition()));
+			Vector2 f = testShip.getBody().getWorldVector(new Vector2(0.0f, -30.0f));
+			Vector2 p = testShip.getBody().getWorldPoint(testShip.getBody().getLocalCenter().add(new Vector2(0f,2f)));
+			testShip.getBody().applyForce(f, p);
 		}
 	}
 	

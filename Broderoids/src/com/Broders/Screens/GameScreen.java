@@ -119,6 +119,8 @@ public class GameScreen implements Screen{
 	private void Update() {
 
 		
+		EntityMap.get("player").SetPos(new Pos(.45f, .25f));
+		
 		if(count > 0 ||tail.size() > myGame.TailLength){
 			count = 0;
 			if(!tail.isEmpty())

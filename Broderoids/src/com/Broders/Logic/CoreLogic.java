@@ -53,7 +53,7 @@ public class CoreLogic {
 			sd.restitution = k_restitution;
 			
 			// sets up size of 'ground' ?
-			shape.setAsBox(20.0f, 20.0f);
+			shape.setAsBox(160.0f, 90.0f);
 			ground.createFixture(sd);
 			
 		}

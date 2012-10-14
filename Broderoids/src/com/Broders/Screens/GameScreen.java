@@ -51,6 +51,8 @@ public class GameScreen implements Screen{
 
 	private BitmapFont font;
 	
+	private CoreLogic core;
+	
 	float xx;
 	float yy;
 
@@ -72,7 +74,7 @@ public class GameScreen implements Screen{
 		DEBUG = true;
 
 		EntityMap = new OrderedMap<String, Entities>();
-		CoreLogic core = new CoreLogic();
+		core = new CoreLogic();
 		core.initCore();
 		PlayerShip = core.getShip();
 		EntityMap.put("player", PlayerShip);
@@ -112,7 +114,7 @@ public class GameScreen implements Screen{
 
 
 		for(Entry<String, Entities> E :EntityMap.entries()){
-			E.value.Draw(spriteBatch);
+			E.value.Draw(spriteBatch, core);
 		}
 
 

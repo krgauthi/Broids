@@ -73,5 +73,5 @@ public abstract class Entities {
 		this.body = bod;
 	}
 	
-	public abstract void Draw(SpriteBatch sb);
+	public abstract void Draw(SpriteBatch sb, CoreLogic cl);
 }

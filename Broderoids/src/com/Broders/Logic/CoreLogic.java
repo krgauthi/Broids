@@ -22,6 +22,11 @@ public class CoreLogic {
 	//This is for testing purposes only
 	private Ship testShip;
 	
+	Body ground;
+	
+	float width;
+	float height;
+	
 	public CoreLogic(){
 		
 	}
@@ -41,25 +46,26 @@ public class CoreLogic {
 		
 		// this block creates the 'ground'
 		final float k_restitution = 0.4f;
-		/*Body ground; //TODO Remove this whole block?
+		 //TODO Remove this whole block?
 		{
 			BodyDef bd = new BodyDef();
 			bd.position.set(0.0f, 20.0f);
 			ground = world.createBody(bd);
 			
 			PolygonShape shape = new PolygonShape();
+			// sets up size of 'ground' ?
+			shape.setAsBox(160.0f, 90.0f);
 			
 			FixtureDef sd = new FixtureDef();
 			sd.shape = shape;
 			sd.density = 0.0f;
 			sd.restitution = k_restitution;
 			
-			// sets up size of 'ground' ?
-			shape.setAsBox(160.0f, 90.0f);
+			
 			ground.createFixture(sd);
 			
 		}
-		*/
+		
 		
 		//this block should set up the ship
 		{
@@ -122,5 +128,17 @@ public class CoreLogic {
 	
 	public World getWorld(){
 		return this.world;
+	}
+	
+	public Body getGround(){
+		return ground;
+	}
+	
+	public float getWidth(){
+		return width;
+	}
+	
+	public float getHeight(){
+		return height;
 	}
 }

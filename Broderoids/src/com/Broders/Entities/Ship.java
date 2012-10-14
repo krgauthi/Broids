@@ -1,5 +1,6 @@
 package com.Broders.Entities;
 
+import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Pos;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -31,7 +32,24 @@ public class Ship extends Entities{
 	}
 
 	@Override
-	public void Draw(SpriteBatch sb) {
+	public void Draw(SpriteBatch sb, CoreLogic cl) {
+		
+		float screenWidth =  Gdx.graphics.getWidth();
+		float screenHeight =  Gdx.graphics.getHeight();
+		
+		float x = super.getBody().getPosition().x;
+		float y = super.getBody().getPosition().y;
+		
+		cl.getWidth();
+		
+		float posX;
+		float posY;
+		
+		posX = screenWidth*(x/cl.getWidth());
+		posY =  screenHeight*(y/cl.getHeight());
+		
+		super.getSprite().setPosition(posX, screenHeight - posY);
+		
 		super.getSprite().draw(sb);
 	}
 	

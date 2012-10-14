@@ -39,9 +39,6 @@ public class CoreLogic {
 		//groundBody = world.createBody(bodyDef);
 		testShip = new Ship("player", EntityType.SHIP, world);
 		
-
-		
-		
 		//example code pasted below for testing:
 		
 		// this block creates the 'ground'
@@ -117,8 +114,12 @@ public class CoreLogic {
 		//end example code
 	}
 	
-	public void execute(double delta, InputDir in){
+	public void execute(float delta, InputDir in){
+		world.step(delta, 3, 8);
 		
+		if(in.equals("forward")){
+			testShip.getBody().applyForce(new Vector2(10, 10), new Vector2(testShip.getBody().getPosition()));
+		}
 	}
 	
 	//this method is for testing purposes only

@@ -118,7 +118,7 @@ public class CoreLogic {
 	}
 	
 	public void execute(float delta, InputDir in){
-		world.step(delta, 3, 8);
+		world.step(delta, 0, 0);
 		
 		if(in.equals("forward")){
 			Vector2 f = testShip.getBody().getWorldVector(new Vector2(0.0f, -30.0f));

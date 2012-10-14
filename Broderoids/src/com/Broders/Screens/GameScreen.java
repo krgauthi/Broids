@@ -129,8 +129,10 @@ public class GameScreen implements Screen{
 			out = String.format("Ship Pos in Meters: (%f,%f) ", PlayerShip.getBody().getPosition().x,PlayerShip.getBody().getPosition().y);
 			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .01f));
 			
+			out = String.format("Ship angle in Radians: %f",PlayerShip.getBody().getAngle());
+			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .05f));
 			if(THRUSTER)
-				font.draw(spriteBatch, "Thruster", xx * .01f, yy-(yy * .05f));
+				font.draw(spriteBatch, "Thruster", xx * .01f, yy-(yy * .1f));
 
 		}
 
@@ -172,11 +174,21 @@ public class GameScreen implements Screen{
 			Tail.add(new Pos(Gdx.input.getX(),Gdx.input.getY()));
 		}
 
+		
+		//arrow keys
 		if(Gdx.input.isKeyPressed(Keys.UP)){
 			core.execute(delta, InputDir.FORWARD);
 			THRUSTER = true;
 		}else{
 			THRUSTER = false;
+		}
+		
+		if(Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT)){
+			core.execute(delta, InputDir.LEFT);
+		}
+		
+		if(Gdx.input.isKeyPressed(Keys.RIGHT) && !Gdx.input.isKeyPressed(Keys.LEFT)){
+			core.execute(delta, InputDir.RIGHT);
 		}
 		
 

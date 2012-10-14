@@ -50,6 +50,8 @@ public class Ship extends Entities{
 		
 		super.getSprite().setPosition(posX, posY);
 		
+		super.getSprite().setRotation((float)super.getAngle());
+		
 		super.getSprite().draw(sb);
 	}
 	

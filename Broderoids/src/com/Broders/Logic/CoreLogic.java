@@ -27,13 +27,14 @@ public class CoreLogic {
 	}
 	
 	public void initCore(){
-		testShip = new Ship("player", EntityType.SHIP);
 		
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, true);
 		BodyDef bodyDef = new BodyDef();
 		groundBody = world.createBody(bodyDef);
+		testShip = new Ship("player", EntityType.SHIP, world);
 		
+
 		//example code pasted below for testing:
 		
 		// this block creates the 'ground'
@@ -114,5 +115,9 @@ public class CoreLogic {
 	//this method is for testing purposes only
 	public Ship getShip(){
 		return this.testShip;
+	}
+	
+	public World getWorld(){
+		return this.world;
 	}
 }

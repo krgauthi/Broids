@@ -43,7 +43,7 @@ public class CoreLogic {
 		
 		// this block creates the 'ground'
 		final float k_restitution = 0.4f;
-		 //TODO Remove this whole block?
+		/* //TODO Remove this whole block?
 		{
 			BodyDef bd = new BodyDef();
 			bd.position.set(0.0f, 20.0f);
@@ -62,7 +62,10 @@ public class CoreLogic {
 			ground.createFixture(sd);
 			
 		}
-		
+		*/
+		//make these scale to the aspect ratio
+		width = 160f;
+		height = 90f;
 		
 		//this block should set up the ship
 		{

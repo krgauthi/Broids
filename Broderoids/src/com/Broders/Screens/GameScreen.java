@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import com.Broders.Entities.*;
 import com.Broders.Logic.CoreLogic;
+import com.Broders.Logic.InputDir;
 import com.Broders.Logic.Pos;
 import com.Broders.Logic.tail;
 import com.Broders.mygdxgame.BaseGame;
@@ -34,6 +35,7 @@ public class GameScreen implements Screen{
 	private BaseGame myGame;
 	private boolean Multiplayer;
 	private boolean DEBUG;
+	private boolean THRUSTER;
 
 	private EntityType type;
 	private Ship PlayerShip;
@@ -72,6 +74,7 @@ public class GameScreen implements Screen{
 		Tail = new tail(5);
 		font = new BitmapFont();
 		DEBUG = true;
+		THRUSTER = false;
 
 		EntityMap = new OrderedMap<String, Entities>();
 		core = new CoreLogic();
@@ -89,7 +92,7 @@ public class GameScreen implements Screen{
 
 		//handle Input and update Backend
 		//it is up to the backend team to decide if they want to handle input seperatly or not
-		HandleInput();
+		HandleInput(delta);
 		Update();
 
 		//server interactions here?
@@ -125,6 +128,9 @@ public class GameScreen implements Screen{
 
 			out = String.format("Ship Pos in Meters: (%f,%f) ", PlayerShip.getBody().getPosition().x,PlayerShip.getBody().getPosition().y);
 			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .01f));
+			
+			if(THRUSTER)
+				font.draw(spriteBatch, "Thruster", xx * .01f, yy-(yy * .05f));
 
 		}
 
@@ -137,12 +143,12 @@ public class GameScreen implements Screen{
 
 	private void Update() {
 
-		EntityMap.get("player").SetPos(new Pos(.45f, .25f));
+		//EntityMap.get("player").SetPos(new Pos(.45f, .25f));
 		Tail.Update();
 
 	}
 
-	private void HandleInput() {
+	private void HandleInput(float delta) {
 
 		//Special Debug keys
 		if(Gdx.input.isKeyPressed(Keys.F1)){
@@ -166,6 +172,13 @@ public class GameScreen implements Screen{
 			Tail.add(new Pos(Gdx.input.getX(),Gdx.input.getY()));
 		}
 
+		if(Gdx.input.isKeyPressed(Keys.UP)){
+			core.execute(delta, InputDir.FORWARD);
+			THRUSTER = true;
+		}else{
+			THRUSTER = false;
+		}
+		
 
 		//Backout to main menu
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE)){

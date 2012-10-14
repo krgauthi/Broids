@@ -48,7 +48,7 @@ public class Ship extends Entities{
 		posX = screenWidth*(x/cl.getWidth());
 		posY =  screenHeight*(y/cl.getHeight());
 		
-		super.getSprite().setPosition(posX, screenHeight - posY);
+		super.getSprite().setPosition(posX, posY);
 		
 		super.getSprite().draw(sb);
 	}

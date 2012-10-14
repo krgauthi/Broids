@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.Json.Serializer;
 
 public class CoreLogic {
 	private World world;
-	private Body groundBody;
+	//private Body groundBody;
 	
 	//This is for testing purposes only
 	private Ship testShip;
@@ -30,8 +30,8 @@ public class CoreLogic {
 		
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, true);
-		BodyDef bodyDef = new BodyDef();
-		groundBody = world.createBody(bodyDef);
+		//BodyDef bodyDef = new BodyDef();
+		//groundBody = world.createBody(bodyDef);
 		testShip = new Ship("player", EntityType.SHIP, world);
 		
 
@@ -39,7 +39,7 @@ public class CoreLogic {
 		
 		// this block creates the 'ground'
 		final float k_restitution = 0.4f;
-		Body ground;
+		/*Body ground; //TODO Remove this whole block?
 		{
 			BodyDef bd = new BodyDef();
 			bd.position.set(0.0f, 20.0f);
@@ -57,6 +57,7 @@ public class CoreLogic {
 			ground.createFixture(sd);
 			
 		}
+		*/
 		
 		//this block should set up the ship
 		{

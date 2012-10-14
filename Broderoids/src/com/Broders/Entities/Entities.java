@@ -24,18 +24,16 @@ public abstract class Entities {
 		identity = id;
 		this.type = type;	
 
-		//CoreLogic core = new CoreLogic();
-		//core.initCore();
+
 		BodyDef bd = new BodyDef();
 		body = world.createBody(bd);
-		//core.getWorld().createBody(bd);
 		texture = new Texture(Gdx.files.internal("data/ship1.png"));
 		
 		//float x = ((float)Gdx.graphics.getWidth());
 		//float y = ((float)Gdx.graphics.getHeight());
 		sprite = new Sprite(texture,512,200);
 		Pos xy = new Pos(.5f,.5f); //default center of screen
-		//sprite.setPosition(0, (float) (y*.1));
+
 		this.SetPos(xy);
 	}
 
@@ -44,7 +42,7 @@ public abstract class Entities {
 	}
 	
 	public void SetPos(Pos xy){
-		//body.getPosition().set(xy.Getx(),xy.Gety());
+		body.setTransform(xy.Getx(), xy.Gety(), body.getAngle());
 		sprite.setPosition(xy.Getx(), xy.Gety());
 		
 	}

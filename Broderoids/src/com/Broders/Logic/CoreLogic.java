@@ -21,6 +21,11 @@ public class CoreLogic {
 	//This is for testing purposes only
 	private Ship testShip;
 	
+	Body ground;
+	
+	float width;
+	float height;
+	
 	public CoreLogic(){
 		
 	}
@@ -30,8 +35,11 @@ public class CoreLogic {
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, true);
 		testShip = new Ship("player", EntityType.SHIP, world);
-
-		//example code pasted below for testing:		
+	
+		//make these scale to the aspect ratio
+		width = 160f;
+		height = 90f;
+		
 		//this block should set up the ship
 		{
 			Transform xf1 = new Transform();
@@ -82,8 +90,24 @@ public class CoreLogic {
 		//end example code
 	}
 	
-	public void execute(double delta, InputDir in){
+	public void execute(float delta, InputDir in){
 		
+		
+		if(in.equals("forward")){
+			Vector2 f = testShip.getBody().getWorldVector(new Vector2(0.0f, -30.0f));
+			Vector2 p = testShip.getBody().getWorldPoint(testShip.getBody().getLocalCenter().add(new Vector2(0f,2f)));
+			testShip.getBody().applyForce(f, p);
+		}else if(in.equals("backward")){
+			Vector2 f = testShip.getBody().getWorldVector(new Vector2(0.0f, 30.0f));
+			Vector2 p = testShip.getBody().getWorldCenter();
+			testShip.getBody().applyForce(f, p);
+		}else if(in.equals("left")){
+			testShip.getBody().applyTorque(10.0f);
+		}else if(in.equals("right")){
+			testShip.getBody().applyTorque(-10.0f);
+		}
+		
+		world.step(delta, 3, 8);
 	}
 	
 	//this method is for testing purposes only
@@ -93,5 +117,17 @@ public class CoreLogic {
 	
 	public World getWorld(){
 		return this.world;
+	}
+	
+	public Body getGround(){
+		return ground;
+	}
+	
+	public float getWidth(){
+		return width;
+	}
+	
+	public float getHeight(){
+		return height;
 	}
 }

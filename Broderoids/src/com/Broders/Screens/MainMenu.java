@@ -1,6 +1,8 @@
 package com.Broders.Screens;
 
 
+import com.Broders.Logic.Pos;
+import com.Broders.Logic.tail;
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -30,7 +32,7 @@ public class MainMenu implements Screen{
 	private Sprite Multib;
 	private Sprite Settingsb;
 	
-	
+	private tail Tail;
 
 
 	private BaseGame myGame;
@@ -41,6 +43,7 @@ public class MainMenu implements Screen{
 		myGame.setMain(this);
 
 
+		Tail = new tail(5);
 
 	}
 
@@ -50,7 +53,7 @@ public class MainMenu implements Screen{
 	public void render(float delta) {
 
 		//handle Input and update Backend
-		//it is up to the backend team to decide if they want to handle input seperatly or not
+		//it is up to the backend team to decide if they want to handle input separately or not
 		HandleInput();
 		Update();
 
@@ -84,6 +87,7 @@ public class MainMenu implements Screen{
 		Singleb.draw(spriteBatch);
 		Multib.draw(spriteBatch);
 		Settingsb.draw(spriteBatch);
+		Tail.draw(spriteBatch);
 		spriteBatch.end();
 
 		
@@ -100,6 +104,7 @@ public class MainMenu implements Screen{
 	 */
 	private void Update() {
 
+		Tail.Update();
 
 	}
 
@@ -107,9 +112,17 @@ public class MainMenu implements Screen{
 
 	public void HandleInput(){
 
+		if(Gdx.input.isTouched()){
+			Tail.add(new Pos(Gdx.input.getX(),Gdx.input.getY()));
+		}
+		
 		if(Gdx.input.justTouched()){
 			double x = ((float)Gdx.input.getX()/(float)Gdx.graphics.getWidth());
 			double y = ((float)Gdx.input.getY()/(float)Gdx.graphics.getHeight());
+			
+			
+			
+			
 			//make hit boxes
 			if(x >= .57 && x <= .81){
 				

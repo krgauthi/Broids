@@ -57,8 +57,8 @@ public abstract class Entities {
 		return this.type;
 	}
 	
-	public double getAngle(){
-		return this.body.getAngle()*(180.00/Math.PI);
+	public float getAngle(){
+		return (float) (this.body.getAngle()*(180.00f/Math.PI));
 	}
 	
 	protected void setSprite(String sp){
@@ -76,5 +76,5 @@ public abstract class Entities {
 		this.body = body;
 	}
 	
-	public abstract void Draw(SpriteBatch sb);
+	public abstract void Draw(SpriteBatch sb, CoreLogic cl);
 }

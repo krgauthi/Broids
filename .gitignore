@@ -8,3 +8,9 @@
 Broderoids/bin/
 Broderoids-android/bin/
 Broderoids-desktop/bin/
+
+# Ignore log files
+Broderoids-desktop/*.log
+
+# Eclipse overhead
+.metadata/

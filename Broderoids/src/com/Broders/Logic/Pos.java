@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 
 
 /*
- * The Pos object stores our Virtual Positions
+ * The Pos object converts meters to percentages that can be used to get pixels
  * 
  * the virtual Position it the percentage of x and y
  * 

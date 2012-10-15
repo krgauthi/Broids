@@ -17,7 +17,6 @@ import com.badlogic.gdx.utils.Json.Serializer;
 
 public class CoreLogic {
 	private World world;
-	//private Body groundBody;
 	
 	//This is for testing purposes only
 	private Ship testShip;
@@ -35,34 +34,8 @@ public class CoreLogic {
 		
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, true);
-		//BodyDef bodyDef = new BodyDef();
-		//groundBody = world.createBody(bodyDef);
 		testShip = new Ship("player", EntityType.SHIP, world);
-		
-		//example code pasted below for testing:
-		
-		// this block creates the 'ground'
-		final float k_restitution = 0.4f;
-		/* //TODO Remove this whole block?
-		{
-			BodyDef bd = new BodyDef();
-			bd.position.set(0.0f, 20.0f);
-			ground = world.createBody(bd);
-			
-			PolygonShape shape = new PolygonShape();
-			// sets up size of 'ground' ?
-			shape.setAsBox(160.0f, 90.0f);
-			
-			FixtureDef sd = new FixtureDef();
-			sd.shape = shape;
-			sd.density = 0.0f;
-			sd.restitution = k_restitution;
-			
-			
-			ground.createFixture(sd);
-			
-		}
-		*/
+	
 		//make these scale to the aspect ratio
 		width = 160f;
 		height = 90f;

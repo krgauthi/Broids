@@ -2,7 +2,7 @@ package com.Broders.Screens;
 
 
 import com.Broders.Logic.Pos;
-import com.Broders.Logic.tail;
+import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -22,17 +22,19 @@ public class MainMenu implements Screen{
 
 	private SpriteBatch spriteBatch;
 
-	private Texture Title;
-	private Texture Single;
-	private Texture Multiplayer;
-	private Texture Settings;
+	private Texture titleTex;
+	private Texture singleTex;
+	private Texture multiTex;
+	private Texture settingsTex;
 	
-	private Sprite Titleb;
-	private Sprite Singleb;
-	private Sprite Multib;
-	private Sprite Settingsb;
+	private Sprite titleSprite;
+	private Sprite singleSprite;
+	private Sprite multiSprite;
+	private Sprite settingsSprite;
 	
-	private tail Tail;
+	private Tail tail;
+	
+	private float buff;
 
 
 	private BaseGame myGame;
@@ -40,10 +42,8 @@ public class MainMenu implements Screen{
 	public MainMenu(BaseGame g){
 
 		this.myGame = g;
-		myGame.setMain(this);
-
-
-		Tail = new tail(5);
+		myGame.setMain(this); //now all screens can reference back to this main menu
+		tail = new Tail(myGame.tailLength);
 
 	}
 
@@ -54,84 +54,69 @@ public class MainMenu implements Screen{
 
 		//handle Input and update Backend
 		//it is up to the backend team to decide if they want to handle input separately or not
-		HandleInput();
-		Update();
+		handleInput(delta);
+		update(delta);
 
 		//server interactions here?
 
 		//update the models on the screen
-		Paint();
+		paint(delta);
 
 
 
 	}
 
 
-	private void Paint() {
-		
-		float x = ((float)Gdx.graphics.getWidth());
-		float y = ((float)Gdx.graphics.getHeight());
-		
+	private void paint(float delta) {
+
 		//Make a black background
 		GL10 g1 = Gdx.graphics.getGL10();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		
-		
-		//myGame.getCam().update();
-
 		//add buttons and logo to this layer
 		spriteBatch.begin();
-		Titleb.draw(spriteBatch);
-		Singleb.draw(spriteBatch);
-		Multib.draw(spriteBatch);
-		Settingsb.draw(spriteBatch);
-		Tail.draw(spriteBatch);
+		titleSprite.draw(spriteBatch);
+		singleSprite.draw(spriteBatch);
+		multiSprite.draw(spriteBatch);
+		settingsSprite.draw(spriteBatch);
+		tail.draw(spriteBatch);
 		spriteBatch.end();
 
-		
-		
-
-		
-
 	}
-
-
 
 	/*
 	 * This method is where all of the backend will be calculated
 	 */
-	private void Update() {
+	private void update(float delta) {
 
-		Tail.Update();
+		tail.Update();
 
 	}
 
 
 
-	public void HandleInput(){
+	public void handleInput(float delta){
 
+		
+		
 		if(Gdx.input.isTouched()){
-			Tail.add(new Pos(Gdx.input.getX(),Gdx.input.getY()));
+			tail.add(new Pos(Gdx.input.getX(),Gdx.input.getY()));
 		}
 		
 		if(Gdx.input.justTouched()){
-			double x = ((float)Gdx.input.getX()/(float)Gdx.graphics.getWidth());
-			double y = ((float)Gdx.input.getY()/(float)Gdx.graphics.getHeight());
-			
-			
-			
+			double x = ((float)Gdx.input.getX()/(float)myGame.screenWidth);
+			double y = ((float)Gdx.input.getY()/(float)myGame.screenHeight);
 			
 			//make hit boxes
-			if(x >= .57 && x <= .81){
+			if(x >= .55 && x <= .82){
 				
 				//single player game X 650-850 Y 180 - 230
-				if(y >= .16 && y <= .26){
+				if(y >= .20 && y <= .28){
 					myGame.setScreen(new GameScreen(this.myGame,false));
-				}else if(y >= .36 && y <= .46){
+				}else if(y >= .32 && y <= .43){
 					myGame.setScreen(new GameScreen(this.myGame,true));
-				}else if(y >= .56 && y <= .66){
+				}else if(y >= .48 && y <= .60){
 					System.out.println("Settings");
 				}
 			}
@@ -150,9 +135,14 @@ public class MainMenu implements Screen{
 
 		
 		
+		
 		//backout Fix the quick exit from gamescreen
-		if(Gdx.input.isKeyPressed(Keys.ESCAPE)){
+		if(Gdx.input.isKeyPressed(Keys.ESCAPE) && buff > myGame.exitBuffer){
 			Gdx.app.exit();
+		}else{
+			if(buff < myGame.exitBuffer){
+				buff = buff + delta;
+			}
 		}
 
 	}
@@ -171,28 +161,27 @@ public class MainMenu implements Screen{
 	 */
 	@Override
 	public void show() {
-		float x = ((float)Gdx.graphics.getWidth());
-		float y = ((float)Gdx.graphics.getHeight());
+		buff = 0;
 		
-		Title = new Texture(Gdx.files.internal("data/Broderoids.png"));
-		Titleb = new Sprite(Title,512,200);
-		Titleb.setPosition(0, (float) (y*.1));
-		//Titleb.setScale(.5f, .5f);
+		titleTex = new Texture(Gdx.files.internal("data/Broderoids.png"));
+		titleSprite = new Sprite(titleTex,512,512);
+		titleSprite.setPosition(0,myGame.screenHeight*(-.5f));
+		titleSprite.setSize(myGame.screenHeight, myGame.screenHeight);
 		
-		Single = new Texture(Gdx.files.internal("data/SinglePlayer.png"));
-		Singleb = new Sprite(Single,512,200);
-		Singleb.setPosition((float)(x*.45),(float) (y*.6));
-		Singleb.setScale(.5f,.5f);
+		singleTex = new Texture(Gdx.files.internal("data/SinglePlayer.png"));
+		singleSprite = new Sprite(singleTex,512,512);
+		singleSprite.setPosition(myGame.screenWidth*.55f,myGame.screenHeight*.35f);
+		singleSprite.setSize(myGame.screenHeight*.5f,myGame.screenHeight*.5f);
 		
-		Multiplayer = new Texture(Gdx.files.internal("data/Multiplayer.png"));
-		Multib = new Sprite(Multiplayer,512,200);
-		Multib.setPosition((float)(x*.45), (float)(y*.4));
-		Multib.setScale(.5f,.5f);
+		multiTex = new Texture(Gdx.files.internal("data/Multiplayer.png"));
+		multiSprite = new Sprite(multiTex,512,512);
+		multiSprite.setPosition(myGame.screenWidth*.55f,myGame.screenHeight*.2f);
+		multiSprite.setSize(myGame.screenHeight*.5f,myGame.screenHeight*.5f);
 		
-		Settings = new Texture(Gdx.files.internal("data/Settings.png"));
-		Settingsb = new Sprite(Settings,512,200);
-		Settingsb.setPosition((float)(x*.45),(float)(y*.2));
-		Settingsb.setScale(.5f,.5f);
+		settingsTex = new Texture(Gdx.files.internal("data/Settings.png"));
+		settingsSprite = new Sprite(settingsTex,512,512);
+		settingsSprite.setPosition(myGame.screenWidth*.55f,myGame.screenHeight*.05f);
+		settingsSprite.setSize(myGame.screenHeight*.5f,myGame.screenHeight*.5f);
 		
 		spriteBatch = new SpriteBatch();
 

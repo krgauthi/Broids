@@ -3,6 +3,7 @@ package com.Broders.mygdxgame;
 import com.Broders.Entities.Ship;
 import com.Broders.Screens.*;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
@@ -17,18 +18,26 @@ public class BaseGame extends Game {
 	
 	MainMenu main;
 
-	//Declare Constants here
-	public int TailLength = 5;
-	//public int ShipSize = 32; never called but cool to implement
 	
+	public int screenHeight;
+	public int screenWidth;
+	public int tailLength;
+	public double exitBuffer;
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.badlogic.gdx.ApplicationListener#create()
+	 */
 	@Override
 	public void create() {	
-		
+	screenHeight = Gdx.graphics.getHeight();
+	screenWidth =  Gdx.graphics.getWidth();
+	tailLength = 5;
+	exitBuffer = 1;
 	
 		
-		this.setScreen(new SplashScreen(this));
-		super.render();
+	this.setScreen(new SplashScreen(this));
+	super.render();
 	
 	}
 

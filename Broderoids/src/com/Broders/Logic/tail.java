@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class tail extends LinkedList<Pos>{
+public class Tail extends LinkedList<Pos>{
 
 	private int length;
 	private boolean flag = true;
@@ -15,7 +15,7 @@ public class tail extends LinkedList<Pos>{
 	private Sprite Tailsprite;
 	
 	
-	public tail(int l){
+	public Tail(int l){
 		length = l;	
 		
 		btail = new Texture(Gdx.files.internal("data/bullet.png"));

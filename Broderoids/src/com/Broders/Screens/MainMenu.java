@@ -109,14 +109,14 @@ public class MainMenu implements Screen{
 			double y = ((float)Gdx.input.getY()/(float)myGame.screenHeight);
 			
 			//make hit boxes
-			if(x >= .57 && x <= .81){
+			if(x >= .55 && x <= .82){
 				
 				//single player game X 650-850 Y 180 - 230
-				if(y >= .16 && y <= .26){
+				if(y >= .20 && y <= .28){
 					myGame.setScreen(new GameScreen(this.myGame,false));
-				}else if(y >= .36 && y <= .46){
+				}else if(y >= .32 && y <= .43){
 					myGame.setScreen(new GameScreen(this.myGame,true));
-				}else if(y >= .56 && y <= .66){
+				}else if(y >= .48 && y <= .60){
 					System.out.println("Settings");
 				}
 			}
@@ -162,28 +162,26 @@ public class MainMenu implements Screen{
 	@Override
 	public void show() {
 		buff = 0;
-		float x = ((float)Gdx.graphics.getWidth());
-		float y = ((float)Gdx.graphics.getHeight());
 		
 		titleTex = new Texture(Gdx.files.internal("data/Broderoids.png"));
-		titleSprite = new Sprite(titleTex,512,200);
-		titleSprite.setPosition(0, (float) (y*.1));
-		//Titleb.setScale(.5f, .5f);
+		titleSprite = new Sprite(titleTex,512,512);
+		titleSprite.setPosition(0,myGame.screenHeight*(-.5f));
+		titleSprite.setSize(myGame.screenHeight, myGame.screenHeight);
 		
 		singleTex = new Texture(Gdx.files.internal("data/SinglePlayer.png"));
-		singleSprite = new Sprite(singleTex,512,200);
-		singleSprite.setPosition((float)(x*.45),(float) (y*.6));
-		singleSprite.setScale(.5f,.5f);
+		singleSprite = new Sprite(singleTex,512,512);
+		singleSprite.setPosition(myGame.screenWidth*.55f,myGame.screenHeight*.35f);
+		singleSprite.setSize(myGame.screenHeight*.5f,myGame.screenHeight*.5f);
 		
 		multiTex = new Texture(Gdx.files.internal("data/Multiplayer.png"));
-		multiSprite = new Sprite(multiTex,512,200);
-		multiSprite.setPosition((float)(x*.45), (float)(y*.4));
-		multiSprite.setScale(.5f,.5f);
+		multiSprite = new Sprite(multiTex,512,512);
+		multiSprite.setPosition(myGame.screenWidth*.55f,myGame.screenHeight*.2f);
+		multiSprite.setSize(myGame.screenHeight*.5f,myGame.screenHeight*.5f);
 		
 		settingsTex = new Texture(Gdx.files.internal("data/Settings.png"));
-		settingsSprite = new Sprite(settingsTex,512,200);
-		settingsSprite.setPosition((float)(x*.45),(float)(y*.2));
-		settingsSprite.setScale(.5f,.5f);
+		settingsSprite = new Sprite(settingsTex,512,512);
+		settingsSprite.setPosition(myGame.screenWidth*.55f,myGame.screenHeight*.05f);
+		settingsSprite.setSize(myGame.screenHeight*.5f,myGame.screenHeight*.5f);
 		
 		spriteBatch = new SpriteBatch();
 

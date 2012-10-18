@@ -17,6 +17,7 @@ public class BaseGame extends Game {
 	
 	
 	MainMenu main;
+	SettingsScreen settings;
 
 	
 	public int screenHeight;
@@ -69,5 +70,9 @@ public class BaseGame extends Game {
 
 	@Override
 	public void resume() {
+	}
+
+	public void setSettings(SettingsScreen s) {
+		settings = s;		
 	}
 }

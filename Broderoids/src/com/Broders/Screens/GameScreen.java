@@ -18,7 +18,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape.Type;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ObjectMap.Entry;
 import com.badlogic.gdx.utils.OrderedMap;
 
@@ -27,9 +29,17 @@ import com.badlogic.gdx.utils.OrderedMap;
 
 public class GameScreen implements Screen{
 
-
-
-
+	/*
+	 * I pushed up a lot of stuff from CoreLogic to here, mostly the
+	 * ship and world stuff.  Seemed like their could be redundancies,
+	 * but as far as I can tell the changes didn't affect anything.  Code
+	 * looks cleaner though.  Now CoreLogic receives the World object from
+	 * here, and only deals with the BODY of the ship, which is passed up
+	 * to the Ship Entity here.  Check out CoreLogic for some other
+	 * changes I made.
+	 * 
+	 * -Rinkus
+	 */
 
 
 	private BaseGame myGame;
@@ -55,6 +65,8 @@ public class GameScreen implements Screen{
 	
 	private CoreLogic core;
 	
+	private World world;
+	
 	float xx;
 	float yy;
 
@@ -75,11 +87,13 @@ public class GameScreen implements Screen{
 		font = new BitmapFont();
 		DEBUG = true;
 		THRUSTER = false;
-
+		
+		world = new World(new Vector2(0.0f, 0.0f), true);
 		EntityMap = new OrderedMap<String, Entities>();
-		core = new CoreLogic();
+		core = new CoreLogic(world);
 		core.initCore();
-		PlayerShip = core.getShip();
+		PlayerShip = new Ship("player", EntityType.SHIP, world);
+		PlayerShip.setBody(core.getShip());
 		EntityMap.put("player", PlayerShip);
 		
 		xx = Gdx.graphics.getWidth();

@@ -19,73 +19,84 @@ public class CoreLogic {
 	private World world;
 	
 	//This is for testing purposes only
-	private Ship testShip;
+	private Body testShip;
 	
-	Body ground;
+	private Body ground;
 	
-	float width;
-	float height;
+	private float width;
+	private float height;
 	
-	public CoreLogic(){
-		
+	public CoreLogic(World w){
+		world = w;
 	}
 	
 	public void initCore(){
-		
-		Vector2 gravity = new Vector2(0.0f, 0.0f);
-		world = new World(gravity, true);
-		testShip = new Ship("player", EntityType.SHIP, world);
 	
 		//make these scale to the aspect ratio
 		width = 160f;
 		height = 90f;
 		
 		//this block should set up the ship
+		/*
+		 * You will notice I commented out a bunch below.  We shouldn't
+		 * need two transforms/fixtures for the ship.  If you look at the
+		 * example, their ship is built from two triangles, with two different
+		 * densities.  I believe the only reason behind the two triangles was
+		 * to show off having 2 sides with different densities.  As a result,
+		 * our ship only needs to be one fixture, in the shape of a triangle
+		 * that I defined below.  Info on code that I shuffled around is in
+		 * a comment block in GameScreen, check that out too.
+		 * 
+		 * -Rinkus
+		 */
 		{
-			Transform xf1 = new Transform();
-			xf1.setRotation(0.3524f * MathUtils.PI);
+//			Transform xf1 = new Transform();
+//			xf1.setRotation(0.3524f * MathUtils.PI);
 			//need to figure out an alternative way to do the following:
 			//Mat22.mulToOut(xf1.getRotation(), new Vector2(1.0f, 0.0f), xf1.getPosition());
 			
+//			vertices[0] = xf1.mul(new Vector2(-1.0f, 0.0f));
+//			vertices[1] = xf1.mul(new Vector2(1.0f, 0.0f));
+//			vertices[2] = xf1.mul(new Vector2(0.0f, 0.5f));			
 			Vector2 vertices[] = new Vector2[3];
-			vertices[0] = xf1.mul(new Vector2(-1.0f, 0.0f));
-			vertices[1] = xf1.mul(new Vector2(1.0f, 0.0f));
-			vertices[2] = xf1.mul(new Vector2(0.0f, 0.5f));
+			vertices[0] = new Vector2(0.0f, 1.0f);
+			vertices[1] = new Vector2(0.0f, -1.0f);
+			vertices[2] = new Vector2(0.44f, 0.0f);
 			
 			PolygonShape poly1 = new PolygonShape();
 			poly1.set(vertices);
 			
 			FixtureDef sd1 = new FixtureDef();
 			sd1.shape = poly1;
-			sd1.density = 4.0f;
+			sd1.density = 6.0f;
 			
-			Transform xf2 = new Transform();
-			xf2.setRotation(-0.3524f * MathUtils.PI);
-			// same here:
-			//Mat22.mulToOut(xf2.getRotation(), new Vector2(-1.0f, 0.0f), xf2.getPosition());
-			
-			vertices[0] = xf2.mul(new Vector2(-1.0f, 0.0f));
-			vertices[1] = xf2.mul(new Vector2(1.0f, 0.0f));
-			vertices[2] = xf2.mul(new Vector2(0.0f, 0.5f));
-			
-			PolygonShape poly2 = new PolygonShape();
-			poly2.set(vertices);
-			
-			FixtureDef sd2 = new FixtureDef();
-			sd2.shape = poly2;
-			sd2.density = 2.0f;
+//			Transform xf2 = new Transform();
+//			xf2.setRotation(-0.3524f * MathUtils.PI);
+//			// same here:
+//			//Mat22.mulToOut(xf2.getRotation(), new Vector2(-1.0f, 0.0f), xf2.getPosition());
+//			
+//			vertices[0] = xf2.mul(new Vector2(-1.0f, 0.0f));
+//			vertices[1] = xf2.mul(new Vector2(1.0f, 0.0f));
+//			vertices[2] = xf2.mul(new Vector2(0.0f, 0.5f));
+//			
+//			PolygonShape poly2 = new PolygonShape();
+//			poly2.set(vertices);
+//			
+//			FixtureDef sd2 = new FixtureDef();
+//			sd2.shape = poly2;
+//			sd2.density = 2.0f;
 			
 			BodyDef bd = new BodyDef();
 			bd.type = BodyType.DynamicBody;
 			bd.angularDamping = 5.0f;
 			bd.linearDamping = 0.1f;
 			
-			bd.position.set(0.0f, 2.0f);
+			bd.position.set(0.0f, 0.0f);
 			bd.angle = MathUtils.PI;
 			bd.allowSleep = false;
-			testShip.setBody(world.createBody(bd));
-			testShip.getBody().createFixture(sd1);
-			testShip.getBody().createFixture(sd2);
+			testShip = world.createBody(bd);
+			testShip.createFixture(sd1);
+//			testShip.getBody().createFixture(sd2);
 		}
 		//end example code
 	}
@@ -94,24 +105,24 @@ public class CoreLogic {
 		
 		
 		if(in.equals("forward")){
-			Vector2 f = testShip.getBody().getWorldVector(new Vector2(0.0f, -30.0f));
-			Vector2 p = testShip.getBody().getWorldPoint(testShip.getBody().getLocalCenter().add(new Vector2(0f,2f)));
-			testShip.getBody().applyForce(f, p);
+			Vector2 f = testShip.getWorldVector(new Vector2(0.0f, -30.0f));
+			Vector2 p = testShip.getWorldPoint(testShip.getLocalCenter().add(new Vector2(0f,2f)));
+			testShip.applyForce(f, p);
 		}else if(in.equals("backward")){
-			Vector2 f = testShip.getBody().getWorldVector(new Vector2(0.0f, 30.0f));
-			Vector2 p = testShip.getBody().getWorldCenter();
-			testShip.getBody().applyForce(f, p);
+			Vector2 f = testShip.getWorldVector(new Vector2(0.0f, 30.0f));
+			Vector2 p = testShip.getWorldCenter();
+			testShip.applyForce(f, p);
 		}else if(in.equals("left")){
-			testShip.getBody().applyTorque(10.0f);
+			testShip.applyTorque(10.0f);
 		}else if(in.equals("right")){
-			testShip.getBody().applyTorque(-10.0f);
+			testShip.applyTorque(-10.0f);
 		}
 		
 		world.step(delta, 3, 8);
 	}
 	
 	//this method is for testing purposes only
-	public Ship getShip(){
+	public Body getShip(){
 		return this.testShip;
 	}
 	

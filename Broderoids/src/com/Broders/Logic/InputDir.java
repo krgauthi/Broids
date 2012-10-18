@@ -16,11 +16,12 @@ public enum InputDir {
 		return this.dir;
 	}
 	
+	//Eliminated "?" operator for below methods (? true:false is redundant)
 	public boolean equals(String dir){
-		return this.toString().equals(dir) ? true : false;
+		return this.toString().equals(dir);
 	}
 	
 	public boolean equals(InputDir dir){
-		return this.toString().equals(dir.toString()) ? true : false;
+		return this.toString().equals(dir.toString());
 	}
 }

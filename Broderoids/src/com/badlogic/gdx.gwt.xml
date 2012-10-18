@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to="com.badlogic.gdx">
+	<inherits name="com.esotericsoftware.tablelayout"/>
+	<source path="gdx">
+		<include name="src/com/Broders/mygdxgame/BaseGame.java"/>
+		<include name="src/com/Broders/Logic/CoreLogic.java"/>
+		<include name="src/com/Broders/Entities/Entities.java"/>
+		<include name="src/com/Broders/Entities/EntityType.java"/>
+		<include name="src/com/Broders/Screens/GameScreen.java"/>
+		<include name="src/com/Broders/Logic/InputDir.java"/>
+		<include name="src/com/Broders/Screens/MainMenu.java"/>
+		<include name="src/com/Broders/Logic/Pos.java"/>
+		<include name="src/com/Broders/Entities/Ship.java"/>
+		<include name="src/com/Broders/Screens/SplashScreen.java"/>
+		<include name="src/com/Broders/Logic/tail.java"/>
+		<include name="graphics/g2d/Animation.java"/>
+		<include name="graphics/g3d/Animation.java"/>
+	</source>
+</module>

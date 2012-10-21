@@ -4,6 +4,7 @@ import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,6 +14,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SettingsScreen implements Screen {
 
+	
+	// Array of basic settings, implemented to draw on even intervals
+	private static final String[] settings = {"Music", "Sounds", "Background",
+		"Screen Resolution", "Single Player Difficulty"};
+	
 	private MainMenu main;
 	private BaseGame game;
 	private Tail tail;
@@ -64,7 +70,41 @@ public class SettingsScreen implements Screen {
 		GL10 gl = Gdx.graphics.getGL10();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		spriteBatch.begin();
 		
+		// Title
+		font.setScale(3);
+		font.draw(spriteBatch, "Settings", (float) (game.screenWidth * .4), (float) (game.screenHeight * .95));
+		font.setScale(1);
+		
+		// Music
+		font.draw(spriteBatch, "Music", (float) (game.screenWidth * .15), (float) (game.screenHeight * .2));
+		
+		// Sounds
+		font.draw(spriteBatch, "Sounds", (float) (game.screenWidth * .15), (float) (game.screenHeight * .4));
+
+		// Volume
+		font.draw(spriteBatch, "Volume", (float) (game.screenWidth * .15), (float) (game.screenHeight * .6));
+		
+		// Background Image
+		font.draw(spriteBatch, "Background", (float) (game.screenWidth * .15), (float) (game.screenHeight * .8));
+		
+		// Screen Resolution
+		font.draw(spriteBatch, "Screen Resolution", (float) (game.screenWidth * .68), (float) (game.screenHeight * .8));
+		
+		// Debug Text
+		font.draw(spriteBatch, "Music", (float) (game.screenWidth * .68), (float) (game.screenHeight * .6));
+		
+		// Single Player Difficulty
+		font.draw(spriteBatch, "Single Player Difficulty", (float) (game.screenWidth * .68), (float) (game.screenHeight * .4));
+
+		// User Name
+		
+		
+		// ShipColor
+		
+		
+		spriteBatch.end();		
 	}
 	
 	private void update(float delta) {
@@ -74,8 +114,9 @@ public class SettingsScreen implements Screen {
 	}
 
 	private void handleInput(float delta) {
-		// TODO Auto-generated method stub
-		
+		if(Gdx.input.isKeyPressed(Keys.ESCAPE)){
+			game.setScreen(game.GetMain());
+		}
 	}
 
 	@Override
@@ -89,10 +130,8 @@ public class SettingsScreen implements Screen {
 		buff = 0;
 		
 		spriteBatch = new SpriteBatch();
-//		 font = new BitmapFont(Gdx.files.internal("data/nameOfFont.fnt"),
-//		         Gdx.files.internal("data/nameOfFont.png"), false);
-		 
-		 
+		font = new BitmapFont();
+
 	}
 
 	@Override

@@ -117,7 +117,7 @@ public class MainMenu implements Screen{
 				}else if(y >= .32 && y <= .43){
 					myGame.setScreen(new GameScreen(this.myGame,true));
 				}else if(y >= .48 && y <= .60){
-					System.out.println("Settings");
+					myGame.setScreen(new SettingsScreen(this.myGame, this));
 				}
 			}
 			

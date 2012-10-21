@@ -1,10 +1,12 @@
 package com.Broders.Screens;
 
+import com.Broders.Entities.Ship;
+import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -73,33 +75,34 @@ public class SettingsScreen implements Screen {
 		spriteBatch.begin();
 		
 		// Title
-		font.setScale(3);
+		font.setScale(4);
 		font.draw(spriteBatch, "Settings", (float) (game.screenWidth * .4), (float) (game.screenHeight * .95));
-		font.setScale(1);
+		font.setScale(2);
 		
 		// Music
-		font.draw(spriteBatch, "Music", (float) (game.screenWidth * .15), (float) (game.screenHeight * .2));
+		font.draw(spriteBatch, "Music: songTitle", (float) (game.screenWidth * .08), (float) (game.screenHeight * .2));
 		
 		// Sounds
-		font.draw(spriteBatch, "Sounds", (float) (game.screenWidth * .15), (float) (game.screenHeight * .4));
+		font.draw(spriteBatch, "Sounds: soundPack", (float) (game.screenWidth * .08), (float) (game.screenHeight * .4));
 
 		// Volume
-		font.draw(spriteBatch, "Volume", (float) (game.screenWidth * .15), (float) (game.screenHeight * .6));
+		font.draw(spriteBatch, "Volume: volLevel", (float) (game.screenWidth * .08), (float) (game.screenHeight * .6));
 		
 		// Background Image
-		font.draw(spriteBatch, "Background", (float) (game.screenWidth * .15), (float) (game.screenHeight * .8));
+		font.draw(spriteBatch, "Background: backgroundTitle", (float) (game.screenWidth * .08), (float) (game.screenHeight * .8));
 		
 		// Screen Resolution
-		font.draw(spriteBatch, "Screen Resolution", (float) (game.screenWidth * .68), (float) (game.screenHeight * .8));
+		font.draw(spriteBatch, "Screen Resolution: screenRes", (float) (game.screenWidth * .50), (float) (game.screenHeight * .8));
 		
 		// Debug Text
-		font.draw(spriteBatch, "Music", (float) (game.screenWidth * .68), (float) (game.screenHeight * .6));
+		font.draw(spriteBatch, "Music: musicTitle", (float) (game.screenWidth * .50), (float) (game.screenHeight * .6));
 		
 		// Single Player Difficulty
-		font.draw(spriteBatch, "Single Player Difficulty", (float) (game.screenWidth * .68), (float) (game.screenHeight * .4));
+		font.draw(spriteBatch, "Single Player Difficulty: spDiff", (float) (game.screenWidth * .50), (float) (game.screenHeight * .4));
 
 		// User Name
-		
+		font.setScale((float) 1.2);
+		font.draw(spriteBatch, "Ship Color", (float) (game.screenWidth * .70), (float) (game.screenHeight * .94));
 		
 		// ShipColor
 		

@@ -34,7 +34,7 @@ public class CoreLogic {
 	public void initCore(){
 		
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
-		world = new World(gravity, true);
+		world = new World(gravity, false);
 		//BodyDef bodyDef = new BodyDef();
 		//groundBody = world.createBody(bodyDef);
 		testShip = new Ship("player", EntityType.SHIP, world);
@@ -122,19 +122,21 @@ public class CoreLogic {
 		
 		if(in.equals("forward")){
 			Vector2 f = testShip.getBody().getWorldVector(new Vector2(0.0f, -30.0f));
-			Vector2 p = testShip.getBody().getWorldPoint(testShip.getBody().getLocalCenter().add(new Vector2(0f,2f)));
+			Vector2 p = testShip.getBody().getWorldPoint(testShip.getBody().getLocalCenter().add(new Vector2(0.0f,0.0f)));
 			testShip.getBody().applyForce(f, p);
 		}else if(in.equals("backward")){
 			Vector2 f = testShip.getBody().getWorldVector(new Vector2(0.0f, 30.0f));
 			Vector2 p = testShip.getBody().getWorldCenter();
 			testShip.getBody().applyForce(f, p);
-		}else if(in.equals("left")){
-			testShip.getBody().applyTorque(10.0f);
-		}else if(in.equals("right")){
-			testShip.getBody().applyTorque(-10.0f);
+		}
+		if(in.equals("left")){
+			testShip.getBody().applyTorque(20.0f);
+		}
+		if(in.equals("right")){
+			testShip.getBody().applyTorque(-20.0f);
 		}
 		
-		world.step(delta, 3, 8);
+		world.step(delta, 0, 0);
 	}
 	
 	//this method is for testing purposes only

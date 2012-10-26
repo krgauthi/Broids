@@ -90,6 +90,7 @@ public class GameScreen implements Screen{
 		//it is up to the backend team to decide if they want to handle input seperatly or not
 		handleInput(delta);
 		update(delta);
+		core.world.step(delta, 3, 8);
 
 		//server interactions here?
 

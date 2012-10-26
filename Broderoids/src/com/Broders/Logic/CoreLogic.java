@@ -16,7 +16,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Json.Serializer;
 
 public class CoreLogic {
-	private World world;
+	public World world;
 	//private Body groundBody;
 	
 	//This is for testing purposes only
@@ -136,7 +136,9 @@ public class CoreLogic {
 			testShip.getBody().applyTorque(-20.0f);
 		}
 		
-		world.step(delta, 0, 0);
+
+		//world.step(delta, 3, 8);
+
 	}
 	
 	//this method is for testing purposes only

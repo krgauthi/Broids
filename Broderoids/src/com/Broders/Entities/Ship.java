@@ -27,7 +27,7 @@ public class Ship extends Entities{
 		
 		this.sprite = new Sprite(this.texture);
 		this.sprite.flip(false, true);
-		this.sprite.setScale(.05f,.05f);
+		this.sprite.setScale(.05f, .05f);
 		this.sprite.setColor(Color.MAGENTA);
 		
 

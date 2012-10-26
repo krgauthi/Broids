@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 
 
@@ -19,6 +20,7 @@ public class BaseGame extends Game {
 	MainMenu main;
 	SettingsScreen settings;
 
+	public BitmapFont font;
 	
 	public int screenHeight;
 	public int screenWidth;
@@ -35,6 +37,8 @@ public class BaseGame extends Game {
 	screenWidth =  Gdx.graphics.getWidth();
 	tailLength = 5;
 	exitBuffer = 1;
+	font = new BitmapFont(Gdx.files.internal("data/smallfonts.fnt"),
+			 Gdx.files.internal("data/smallfonts_0.png"), false);
 	
 		
 	this.setScreen(new SplashScreen(this));

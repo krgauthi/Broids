@@ -68,7 +68,8 @@ public class GameScreen implements Screen{
 
 
 		Tail = new Tail(5);
-		font = new BitmapFont();
+		font = this.myGame.font;
+		font.setScale(.25f);
 		DEBUG = true;
 
 

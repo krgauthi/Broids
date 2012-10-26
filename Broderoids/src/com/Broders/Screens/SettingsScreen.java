@@ -136,8 +136,7 @@ public class SettingsScreen implements Screen {
 		spriteBatch = new SpriteBatch();
 		
 		
-		font = new BitmapFont(Gdx.files.internal("data/smallfonts.fnt"),
-				 Gdx.files.internal("data/smallfonts_0.png"), false);
+		font = game.font;
 		
 		
 

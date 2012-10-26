@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class SettingsScreen implements Screen {
 
@@ -75,9 +76,9 @@ public class SettingsScreen implements Screen {
 		spriteBatch.begin();
 		
 		// Title
-		font.setScale(4);
+		font.setScale(.5f);
 		font.draw(spriteBatch, "Settings", (float) (game.screenWidth * .4), (float) (game.screenHeight * .95));
-		font.setScale(2);
+		font.setScale(.25f);
 		
 		// Music
 		font.draw(spriteBatch, "Music: songTitle", (float) (game.screenWidth * .08), (float) (game.screenHeight * .2));
@@ -101,7 +102,7 @@ public class SettingsScreen implements Screen {
 		font.draw(spriteBatch, "Single Player Difficulty: spDiff", (float) (game.screenWidth * .50), (float) (game.screenHeight * .4));
 
 		// User Name
-		font.setScale((float) 1.2);
+		font.setScale(.25f);
 		font.draw(spriteBatch, "Ship Color", (float) (game.screenWidth * .70), (float) (game.screenHeight * .94));
 		
 		// ShipColor
@@ -133,7 +134,11 @@ public class SettingsScreen implements Screen {
 		buff = 0;
 		
 		spriteBatch = new SpriteBatch();
-		font = new BitmapFont();
+		
+		
+		font = game.font;
+		
+		
 
 	}
 

@@ -138,7 +138,7 @@ public class GameScreen implements Screen{
 			fireButton.draw(spriteBatch);
 			thrusterButton.draw(spriteBatch);
 		}
-		
+
 
 		spriteBatch.end();
 
@@ -196,8 +196,8 @@ public class GameScreen implements Screen{
 
 
 		//Backout to main menu
-		if(Gdx.input.isKeyPressed(Keys.ESCAPE)){				
-			myGame.setScreen(myGame.GetMain());
+		if(Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACK)){				
+			myGame.setScreen(myGame.getMain());
 		}
 
 		//if Android
@@ -215,7 +215,7 @@ public class GameScreen implements Screen{
 				if((.06 < x1 && x1 < .3
 						|| .06 < x2 && x2 < .3
 						|| .06 < x3 && x3 < .3) &&
-						(.67 < y1 && y1 < .9
+							(.67 < y1 && y1 < .9
 								|| .67 < y2 && y2 < .9
 								|| .67 < y3 && y3 < .9)){
 					//hitbox for left dpad overall
@@ -237,7 +237,7 @@ public class GameScreen implements Screen{
 				if((.7 < x1 && x1 < .85
 						|| .7 < x2 && x2 < .85
 						|| .7 < x3 && x3 < .85) &&
-						(.72 < y1 && y1 < .98
+							(.72 < y1 && y1 < .98
 								|| .72 < y2 && y2 < .98
 								|| .72 < y3 && y3 < .98)){
 
@@ -257,14 +257,13 @@ public class GameScreen implements Screen{
 
 				}
 
-
 			}
 
 		}
 
 
 
-	
+
 	}
 
 	@Override
@@ -276,21 +275,25 @@ public class GameScreen implements Screen{
 	@Override
 	public void show() {
 
-		dPadTexture = new Texture(Gdx.files.internal("data/leftrightpad.png"));
-		dPad = new Sprite(dPadTexture,512,512);
-		dPad.setPosition(myGame.screenWidth*(0),myGame.screenHeight*(-.1f));
-		dPad.setSize(myGame.screenHeight*.6f, myGame.screenHeight*.6f);
+		
 
-		fireButtonTexture = new Texture(Gdx.files.internal("data/fireButton.png"));
-		fireButton = new Sprite(fireButtonTexture,512,512);
-		fireButton.setPosition(myGame.screenWidth*(.82f),myGame.screenHeight*(.25f));
-		fireButton.setSize(myGame.screenHeight*.32f, myGame.screenHeight*.32f);
+		if(Gdx.app.getVersion() > 0){
+			dPadTexture = new Texture(Gdx.files.internal("data/leftrightpad.png"));
+			dPad = new Sprite(dPadTexture,512,512);
+			dPad.setPosition(myGame.screenWidth*(0),myGame.screenHeight*(-.1f));
+			dPad.setSize(myGame.screenHeight*.6f, myGame.screenHeight*.6f);
 
-		thrusterButtonTexture = new Texture(Gdx.files.internal("data/thrustButton.png"));
-		thrusterButton = new Sprite(thrusterButtonTexture,512,512);
-		thrusterButton.setPosition(myGame.screenWidth*(.69f),myGame.screenHeight*0);
-		thrusterButton.setSize(myGame.screenHeight*.32f, myGame.screenHeight*.32f);
+			fireButtonTexture = new Texture(Gdx.files.internal("data/fireButton.png"));
+			fireButton = new Sprite(fireButtonTexture,512,512);
+			fireButton.setPosition(myGame.screenWidth*(.82f),myGame.screenHeight*(.25f));
+			fireButton.setSize(myGame.screenHeight*.32f, myGame.screenHeight*.32f);
 
+			thrusterButtonTexture = new Texture(Gdx.files.internal("data/thrustButton.png"));
+			thrusterButton = new Sprite(thrusterButtonTexture,512,512);
+			thrusterButton.setPosition(myGame.screenWidth*(.69f),myGame.screenHeight*0);
+			thrusterButton.setSize(myGame.screenHeight*.32f, myGame.screenHeight*.32f);
+
+		}
 		spriteBatch = new SpriteBatch();
 
 	}

@@ -118,8 +118,8 @@ public class SettingsScreen implements Screen {
 	}
 
 	private void handleInput(float delta) {
-		if(Gdx.input.isKeyPressed(Keys.ESCAPE)){
-			game.setScreen(game.GetMain());
+		if(Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACK)){
+			game.setScreen(game.getMain());
 		}
 	}
 

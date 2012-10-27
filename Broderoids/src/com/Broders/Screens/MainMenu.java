@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.GdxBuild;
 
 
 
@@ -137,7 +138,7 @@ public class MainMenu implements Screen{
 		
 		
 		//backout Fix the quick exit from gamescreen
-		if(Gdx.input.isKeyPressed(Keys.ESCAPE) && buff > myGame.exitBuffer){
+		if((Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACK)) && buff > myGame.exitBuffer){
 			Gdx.app.exit();
 		}else{
 			if(buff < myGame.exitBuffer){
@@ -163,7 +164,8 @@ public class MainMenu implements Screen{
 	public void show() {
 		buff = 0;
 		
-		Gdx.input.setCatchBackKey(true);
+	
+		
 		
 		titleTex = new Texture(Gdx.files.internal("data/Broderoids.png"));
 		titleSprite = new Sprite(titleTex,512,512);
@@ -197,7 +199,6 @@ public class MainMenu implements Screen{
 
 	@Override
 	public void pause() {
-
 
 	}
 

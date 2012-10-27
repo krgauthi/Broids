@@ -52,7 +52,7 @@ public class BaseGame extends Game {
 		main = m;
 	}
 	
-	public MainMenu GetMain(){
+	public MainMenu getMain(){
 		return main;
 	}
 	

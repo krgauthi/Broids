@@ -22,6 +22,8 @@ public class Ship extends Entities{
 
 		float xx = Gdx.graphics.getWidth();
 		float yy = Gdx.graphics.getHeight();
+		
+		float meter = Gdx.graphics.getHeight()/90;			//TODO ref from core
 
 		this.texture = new Texture(Gdx.files.internal("data/ship2.png"));
 		
@@ -34,8 +36,10 @@ public class Ship extends Entities{
 		this.thrust = false;
 		super.setSprite("data/ship1.png");
 		super.getSprite().flip(false, true);
-		super.getSprite().setScale(.05f, .05f);
-		super.SetPos(new Pos(xx*.5f, yy*.5f));
+		super.getSprite().setScale(.05f, .05f);		
+		super.getSprite().setSize(meter*5, meter*5);
+		//super.SetPos(new Pos(xx*.5f, yy*.5f));				//NO
+	
 		super.getSprite().setColor(Color.MAGENTA);
 		//super.getBody().getPosition().set(0, 0);
 		//super.getBody().setTransform(0, 0, 0);
@@ -59,11 +63,12 @@ public class Ship extends Entities{
 		float x = super.getBody().getPosition().x;
 		float y = super.getBody().getPosition().y;
 
-		cl.getWidth();
+		
 
 		float posX;
 		float posY;
 
+		//this will only work for single player
 		posX = screenWidth*(x/cl.getWidth());
 		posY =  screenHeight*(y/cl.getHeight());
 

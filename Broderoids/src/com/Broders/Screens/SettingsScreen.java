@@ -7,6 +7,7 @@ import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -59,7 +60,7 @@ public class SettingsScreen implements Screen {
 		this.main = m;
 		this.game = g;
 		game.setSettings(this);
-		tail = new Tail(game.tailLength);
+		tail = new Tail(game.tailLength,Color.WHITE);
 	}
 	
 	@Override
@@ -113,13 +114,13 @@ public class SettingsScreen implements Screen {
 	
 	private void update(float delta) {
 		
-		tail.Update();		
+		tail.update();		
 	
 	}
 
 	private void handleInput(float delta) {
-		if(Gdx.input.isKeyPressed(Keys.ESCAPE)){
-			game.setScreen(game.GetMain());
+		if(Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACK)){
+			game.setScreen(game.getMain());
 		}
 	}
 

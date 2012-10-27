@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
-public abstract class Entities {
+public abstract class Entity {
 	
 	private String identity;
 	private EntityType type;
@@ -23,8 +23,8 @@ public abstract class Entities {
 	private BodyDef bodDef;
 	private FixtureDef fixDef;
 	
-	public Entities(String id, EntityType type) {
-		this.identity = type.toString() + type.getSubType().toString() + id;
+	public Entity(String id, EntityType type) {
+		this.identity = type.toString() + id;
 		this.type = type;
 	}
 
@@ -34,6 +34,7 @@ public abstract class Entities {
 	
 	protected void createBody(BodyDef bodDef, FixtureDef fixDef){
 		this.bodDef = bodDef;
+		this.fixDef = fixDef;
 		this.body = CoreLogic.getWorld().createBody(bodDef);
 		this.body.createFixture(fixDef);
 	}
@@ -59,20 +60,28 @@ public abstract class Entities {
 		this.sprite = new Sprite(texture);
 	}
 
-	public abstract void Draw(SpriteBatch sb, CoreLogic cl);
+	public abstract void Draw(SpriteBatch sb);
 	
 	public String toString(){
 		return this.identity;
 	}
 	
-	public boolean equals(Entities entity){
+	public boolean equals(Entity entity){
 		return entity.toString().equals(this.identity);
 	}
 	
 	public void teleport(float x, float y){
+		Vector2 linV = this.body.getLinearVelocity();
+		float angV = this.body.getAngularVelocity();
+		float angle = this.body.getAngle();
+		
 		CoreLogic.getWorld().destroyBody(this.body);
+		
 		this.bodDef.position.set(x, y);
+		this.bodDef.angle = angle;
 		this.body = CoreLogic.getWorld().createBody(bodDef);
-		this.body.createFixture(fixDef);
+		this.body.createFixture(this.fixDef);
+		this.body.setAngularVelocity(angV);
+		this.body.setLinearVelocity(linV);
 	}
 }

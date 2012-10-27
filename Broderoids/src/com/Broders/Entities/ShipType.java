@@ -24,6 +24,7 @@ public enum ShipType implements Type{
 	
 	/**
 	 * Do not use.  Ship has two sprites, which must be returned separately.
+	 * Possibly change 'getSpritePath' method to return String[] array instead?
 	 */
 	@Deprecated
 	public String getSpritePath() {

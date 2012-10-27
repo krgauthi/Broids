@@ -20,6 +20,7 @@ public class BaseGame extends Game {
 	
 	MainMenu main;
 	SettingsScreen settings;
+	
 
 	public BitmapFont font;
 	
@@ -40,6 +41,7 @@ public class BaseGame extends Game {
 	exitBuffer = 1;
 	font = new BitmapFont(Gdx.files.internal(Settings.data_path + "smallfonts.fnt"), Gdx.files.internal(Settings.data_path + "smallfonts_0.png"), false);
 	
+	Gdx.input.setCatchBackKey(true);
 		
 	this.setScreen(new SplashScreen(this));
 	super.render();
@@ -50,7 +52,7 @@ public class BaseGame extends Game {
 		main = m;
 	}
 	
-	public MainMenu GetMain(){
+	public MainMenu getMain(){
 		return main;
 	}
 	

@@ -15,52 +15,59 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public class Ship extends Entities{	
+public class Ship extends Entity{	
 
 	private Boolean thrust;
-
-	private Texture texture;
 	private Sprite sprite;
 
 	public Ship(String id, EntityType type) {
 		super(id, type);		
 
-		{			
-			Vector2 vertices[] = new Vector2[3];
-			vertices[0] = new Vector2(0.0f, 1.0f);
-			vertices[1] = new Vector2(0.0f, -1.0f);
-			vertices[2] = new Vector2(0.44f, 0.0f);
+		Vector2 vertices[] = new Vector2[3];
+		vertices[0] = new Vector2(0.0f, 1.0f);
+		vertices[1] = new Vector2(0.0f, -1.0f);
+		vertices[2] = new Vector2(0.44f, 0.0f);
 
-			PolygonShape shape = new PolygonShape();
-			shape.set(vertices);
+		PolygonShape shape = new PolygonShape();
+		shape.set(vertices);
 
-			FixtureDef fixDef = new FixtureDef();
-			fixDef.shape = shape;
-			fixDef.density = 6.0f;
+		FixtureDef fixDef = new FixtureDef();
+		fixDef.shape = shape;
+		fixDef.density = 6.0f;
 
-			BodyDef bodDef = new BodyDef();
-			bodDef.type = BodyType.DynamicBody;
-			bodDef.angularDamping = 5.0f;
-			bodDef.linearDamping = 0.1f;
+		BodyDef bodDef = new BodyDef();
+		bodDef.type = BodyType.DynamicBody;
+		bodDef.angularDamping = 5.0f;
+		bodDef.linearDamping = 0.1f;
 
-			bodDef.position.set(0.0f, 0.0f);
-			bodDef.angle = MathUtils.PI;
-			bodDef.allowSleep = false;
-			super.createBody(bodDef, fixDef);
-		}
+		bodDef.position.set(0.0f, 0.0f);
+		bodDef.angle = MathUtils.PI;
+		bodDef.allowSleep = false;
+		super.createBody(bodDef, fixDef);
+		
+		float meter = Gdx.graphics.getHeight()/90;			//TODO ref from core
 
 		super.setSprite(((ShipType)type.getSubType()).getSprite1Path());
 		super.getSprite().flip(false, true);
-		super.getSprite().setScale(.05f, .05f);
+		super.getSprite().setOrigin((meter*6)/2, (meter*6)/2);
+		super.getSprite().setSize(meter*6, meter*6);
 		super.getSprite().setColor(Color.MAGENTA);
-		super.getBody().getAngle();
 
 		this.thrust = false;
-		this.setSprite(((ShipType)type.getSubType()).getSprite1Path());
-		this.getSprite().flip(false, true);
-		this.getSprite().setScale(.05f, .05f);
-		this.getSprite().setColor(Color.MAGENTA);
-		this.getBody().getAngle();
+		Texture tempTexture = new Texture(Gdx.files.internal(((ShipType)type.getSubType()).getSprite2Path()));
+		this.sprite = new Sprite(tempTexture);
+		this.sprite.flip(false, true);
+		this.sprite.setOrigin((meter*6)/2, (meter*6)/2);
+		this.sprite.setSize(meter*6, meter*6);
+		this.sprite.setColor(Color.MAGENTA);
+	}
+
+	public float getX(){
+		return this.getBody().getPosition().x;
+	}
+
+	public float getY(){
+		return this.getBody().getPosition().y;
 	}
 
 	public Boolean getThrust(){
@@ -72,7 +79,7 @@ public class Ship extends Entities{
 	}
 
 	@Override
-	public void Draw(SpriteBatch sb, CoreLogic cl) {
+	public void Draw(SpriteBatch sb) {
 
 		float screenWidth =  Gdx.graphics.getWidth();
 		float screenHeight =  Gdx.graphics.getHeight();
@@ -80,14 +87,12 @@ public class Ship extends Entities{
 		float x = super.getBody().getPosition().x;
 		float y = super.getBody().getPosition().y;
 
-
-
 		float posX;
 		float posY;
 
 		//this will only work for single player
-		posX = screenWidth*(x/cl.getWidth());
-		posY =  screenHeight*(y/cl.getHeight());
+		posX = screenWidth*(x/CoreLogic.getWidth());
+		posY =  screenHeight*(y/CoreLogic.getHeight());
 
 
 		if(this.getThrust()){

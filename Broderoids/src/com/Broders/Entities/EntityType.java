@@ -18,7 +18,7 @@ public enum EntityType {
 	}
 	
 	public String toString(){
-		return this.id + type.toString();
+		return this.id + type.getTypeValue();
 	}
 	
 	public boolean equals(EntityType type){

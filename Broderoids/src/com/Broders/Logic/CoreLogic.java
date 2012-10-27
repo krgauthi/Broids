@@ -173,10 +173,11 @@ public class CoreLogic {
 		bd.position.set(x, y);
 		bd.angle = body.getAngle();
 		bd.allowSleep = body.isSleepingAllowed();
+		world.destroyBody(entity.getBody());
 		entity.setBody(world.createBody(bd));
 		entity.getBody().setLinearVelocity(body.getLinearVelocity());
 		entity.getBody().setAngularVelocity(body.getAngularVelocity());
-	
+
 		//need to add the fixture... that should fix the no turning
 
 

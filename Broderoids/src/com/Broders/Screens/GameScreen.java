@@ -41,7 +41,7 @@ public class GameScreen implements Screen{
 	private Sprite fireButton;
 	private Sprite thrusterButton;
 
-	private Ship PlayerShip;
+	//private Ship PlayerShip;
 
 	private SpriteBatch spriteBatch;
 
@@ -50,7 +50,7 @@ public class GameScreen implements Screen{
 	private Tail debug1;
 	private Tail debug2;
 
-	private OrderedMap<String,Entities> EntityMap;
+	
 
 	private BitmapFont font;
 
@@ -83,11 +83,9 @@ public class GameScreen implements Screen{
 		}
 
 
-		EntityMap = new OrderedMap<String, Entities>();
+		
 		core = new CoreLogic();
 		core.initCore();
-		PlayerShip = core.getShip();
-		EntityMap.put("player", PlayerShip);
 
 		xx = Gdx.graphics.getWidth();
 		yy = Gdx.graphics.getHeight();
@@ -123,7 +121,7 @@ public class GameScreen implements Screen{
 		Tail.draw(spriteBatch);
 
 		//loop through all Entities
-		for(Entry<String, Entities> E :EntityMap.entries()){
+		for(Entry<String, Entities> E :core.getEntitiyMap().entries()){
 			E.value.Draw(spriteBatch, core);
 		}
 
@@ -131,12 +129,12 @@ public class GameScreen implements Screen{
 		if(DEBUG){
 			String out;
 
-			out = String.format("Ship Pos in Meters: (%f,%f) ", PlayerShip.getBody().getPosition().x,PlayerShip.getBody().getPosition().y);
+			out = String.format("Ship Pos in Meters: (%f,%f) ", core.getShip().getBody().getPosition().x,core.getShip().getBody().getPosition().y);
 			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .01f));
 
-			out = String.format("Ship angle in Radians: %f",PlayerShip.getBody().getAngle());
+			out = String.format("Ship angle in Radians: %f",core.getShip().getBody().getAngle());
 			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .05f));
-			if(PlayerShip.getThrust())
+			if(core.getShip().getThrust())
 				font.draw(spriteBatch, "Thruster", xx * .01f, yy-(yy * .09f));
 			debug1.draw(spriteBatch);
 			debug2.draw(spriteBatch);
@@ -209,9 +207,9 @@ public class GameScreen implements Screen{
 		//arrow keys
 		if(Gdx.input.isKeyPressed(Keys.UP)){
 			core.execute(delta, InputDir.FORWARD);
-			PlayerShip.setThrust(true);
+			core.getShip().setThrust(true);
 		}else{
-			PlayerShip.setThrust(false);
+			core.getShip().setThrust(false);
 		}
 
 		if(Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT)){
@@ -286,9 +284,9 @@ public class GameScreen implements Screen{
 								|| .72 < y3 && y3 < .98)){
 
 					core.execute(delta, InputDir.FORWARD);	
-					PlayerShip.setThrust(true);
+					core.getShip().setThrust(true);
 				}else{
-					PlayerShip.setThrust(false);
+					core.getShip().setThrust(false);
 
 				}
 				if((.83 < x1 && x1 < .98

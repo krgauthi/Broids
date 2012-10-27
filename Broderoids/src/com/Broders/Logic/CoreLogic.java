@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.Transform;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.Broders.Entities.Entities;
 import com.Broders.Entities.EntityType;
 import com.Broders.Entities.Ship;
 import com.badlogic.gdx.math.Polygon;
@@ -13,14 +14,15 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.OrderedMap;
 import com.badlogic.gdx.utils.Json.Serializer;
 
 public class CoreLogic {
 	public World world;
-	//private Body groundBody;
 	
-	//This is for testing purposes only
-	private Ship testShip;
+	private Ship playerShip;
+	
+	private OrderedMap<String,Entities> EntityMap;
 	
 	Body ground;
 	
@@ -35,34 +37,15 @@ public class CoreLogic {
 		
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, true);
-		//BodyDef bodyDef = new BodyDef();
-		//groundBody = world.createBody(bodyDef);
-		testShip = new Ship("player", EntityType.SHIP, world);
 		
-		//example code pasted below for testing:
+		EntityMap = new OrderedMap<String, Entities>();
+		playerShip = new Ship("player", EntityType.SHIP, world);
 		
-		// this block creates the 'ground'
+		EntityMap.put("player", playerShip);
+		
+		
 		final float k_restitution = 0.4f;
-		/* //TODO Remove this whole block?
-		{
-			BodyDef bd = new BodyDef();
-			bd.position.set(0.0f, 20.0f);
-			ground = world.createBody(bd);
-			
-			PolygonShape shape = new PolygonShape();
-			// sets up size of 'ground' ?
-			shape.setAsBox(160.0f, 90.0f);
-			
-			FixtureDef sd = new FixtureDef();
-			sd.shape = shape;
-			sd.density = 0.0f;
-			sd.restitution = k_restitution;
-			
-			
-			ground.createFixture(sd);
-			
-		}
-		*/
+		
 		//make these scale to the aspect ratio
 		width = 160f;
 		height = 90f;
@@ -110,9 +93,9 @@ public class CoreLogic {
 			bd.position.set(0.0f, 2.0f);
 			bd.angle = MathUtils.PI;
 			bd.allowSleep = false;
-			testShip.setBody(world.createBody(bd));
-			testShip.getBody().createFixture(sd1);
-			testShip.getBody().createFixture(sd2);
+			playerShip.setBody(world.createBody(bd));
+			playerShip.getBody().createFixture(sd1);
+			playerShip.getBody().createFixture(sd2);
 		}
 		//end example code
 	}
@@ -121,17 +104,17 @@ public class CoreLogic {
 		
 		
 		if(in.equals("forward")){
-			Vector2 f = testShip.getBody().getWorldVector(new Vector2(0.0f, -30.0f));
-			Vector2 p = testShip.getBody().getWorldPoint(testShip.getBody().getLocalCenter().add(new Vector2(0f,2f)));
-			testShip.getBody().applyForce(f, p);
+			Vector2 f = playerShip.getBody().getWorldVector(new Vector2(0.0f, -30.0f));
+			Vector2 p = playerShip.getBody().getWorldPoint(playerShip.getBody().getLocalCenter().add(new Vector2(0f,2f)));
+			playerShip.getBody().applyForce(f, p);
 		}else if(in.equals("backward")){
-			Vector2 f = testShip.getBody().getWorldVector(new Vector2(0.0f, 30.0f));
-			Vector2 p = testShip.getBody().getWorldCenter();
-			testShip.getBody().applyForce(f, p);
+			Vector2 f = playerShip.getBody().getWorldVector(new Vector2(0.0f, 30.0f));
+			Vector2 p = playerShip.getBody().getWorldCenter();
+			playerShip.getBody().applyForce(f, p);
 		}else if(in.equals("left")){
-			testShip.getBody().applyTorque(10.0f);
+			playerShip.getBody().applyTorque(10.0f);
 		}else if(in.equals("right")){
-			testShip.getBody().applyTorque(-10.0f);
+			playerShip.getBody().applyTorque(-10.0f);
 		}
 		
 		//world.step(delta, 3, 8);
@@ -139,7 +122,7 @@ public class CoreLogic {
 	
 	//this method is for testing purposes only
 	public Ship getShip(){
-		return this.testShip;
+		return this.playerShip;
 	}
 	
 	public World getWorld(){
@@ -148,6 +131,10 @@ public class CoreLogic {
 	
 	public Body getGround(){
 		return ground;
+	}
+	
+	public OrderedMap<String, Entities> getEntitiyMap(){
+		return EntityMap;
 	}
 	
 	public float getWidth(){

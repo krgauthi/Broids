@@ -49,6 +49,14 @@ public class Ship extends Entities{
 		super.getBody().getAngle();
 	}
 
+	public float getX(){
+		return this.getBody().getPosition().x;
+	}
+	
+	public float getY(){
+		return this.getBody().getPosition().y;
+	}
+	
 	public Boolean getThrust(){
 		return this.thrust;
 	}

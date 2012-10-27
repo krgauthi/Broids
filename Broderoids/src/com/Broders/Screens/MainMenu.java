@@ -8,6 +8,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -44,7 +45,7 @@ public class MainMenu implements Screen{
 
 		this.myGame = g;
 		myGame.setMain(this); //now all screens can reference back to this main menu
-		tail = new Tail(myGame.tailLength);
+		tail = new Tail(myGame.tailLength,Color.WHITE);
 
 	}
 
@@ -91,7 +92,7 @@ public class MainMenu implements Screen{
 	 */
 	private void update(float delta) {
 
-		tail.Update();
+		tail.update();
 
 	}
 

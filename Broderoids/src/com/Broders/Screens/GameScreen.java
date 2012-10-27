@@ -12,6 +12,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -45,6 +46,10 @@ public class GameScreen implements Screen{
 	private SpriteBatch spriteBatch;
 
 	private Tail Tail;
+
+	private Tail debug1;
+	private Tail debug2;
+
 	private OrderedMap<String,Entities> EntityMap;
 
 	private BitmapFont font;
@@ -67,10 +72,15 @@ public class GameScreen implements Screen{
 		}
 
 
-		Tail = new Tail(5);
+		Tail = new Tail(5,Color.WHITE);
 		font = this.myGame.font;
 		font.setScale(.25f);
-		DEBUG = true;
+		DEBUG = m;				//multiplayer will be debug until settings is finished
+
+		if(DEBUG){
+			debug1 = new Tail(50,Color.MAGENTA);
+			debug2 = new Tail(50,Color.CYAN);
+		}
 
 
 		EntityMap = new OrderedMap<String, Entities>();
@@ -128,6 +138,9 @@ public class GameScreen implements Screen{
 			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .05f));
 			if(PlayerShip.getThrust())
 				font.draw(spriteBatch, "Thruster", xx * .01f, yy-(yy * .09f));
+			debug1.draw(spriteBatch);
+			debug2.draw(spriteBatch);
+
 
 		}
 
@@ -151,29 +164,44 @@ public class GameScreen implements Screen{
 
 		//EntityMap.get("player").SetPos(new Pos(.45f, .25f));
 		core.execute(delta, InputDir.NULL);
-		Tail.Update();
+		Tail.update();
+		
+		if(DEBUG){
+			debug1.update();
+			debug2.update();
+		}
 
 	}
 
 	private void handleInput(float delta) {
 
-		//Special Debug keys
-		if(Gdx.input.isKeyPressed(Keys.F1)){
-			double x = ((float)Gdx.input.getX()/(float)Gdx.graphics.getWidth());
-			double y = ((float)Gdx.input.getY()/(float)Gdx.graphics.getHeight());
-			System.out.println("Mouse Pos: "+x+" "+y);
+
+		if(DEBUG){
+			//Special Debug keys
+			if(Gdx.input.isKeyPressed(Keys.F1)){
+				double x = ((float)Gdx.input.getX()/(float)Gdx.graphics.getWidth());
+				double y = ((float)Gdx.input.getY()/(float)Gdx.graphics.getHeight());
+				System.out.println("Mouse Pos: "+x+" "+y);
+			}
+
+			if(Gdx.input.isKeyPressed(Keys.F2)){
+
+				System.out.println("Mouse Pos: "+Gdx.input.getX()+" "+Gdx.input.getY());
+			}
+
+			if(Gdx.input.isKeyPressed(Keys.F3)){
+				System.out.println("Resize: "+Gdx.graphics.getWidth()+" "+Gdx.graphics.getHeight());
+			}
+
+			if(Gdx.input.isTouched(0)){
+				debug1.add(new Pos(Gdx.input.getX(0),Gdx.input.getY(0)));
+			}
+
+			if(Gdx.input.isTouched(1)){
+				debug2.add(new Pos(Gdx.input.getX(1),Gdx.input.getY(1)));
+			}
+
 		}
-
-		if(Gdx.input.isKeyPressed(Keys.F2)){
-
-			System.out.println("Mouse Pos: "+Gdx.input.getX()+" "+Gdx.input.getY());
-		}
-
-		if(Gdx.input.isKeyPressed(Keys.F3)){
-			System.out.println("Resize: "+Gdx.graphics.getWidth()+" "+Gdx.graphics.getHeight());
-		}
-
-
 
 
 
@@ -204,18 +232,34 @@ public class GameScreen implements Screen{
 		if(Gdx.app.getVersion() > 0){
 			if(Gdx.input.isTouched(0) || Gdx.input.isTouched(1) || Gdx.input.isTouched(2)){
 
-				float x1 = ((float)Gdx.input.getX(0)/(float)myGame.screenWidth);
-				float y1 = ((float)Gdx.input.getY(0)/(float)myGame.screenHeight);
-				float x2 = ((float)Gdx.input.getX(1)/(float)myGame.screenWidth);
-				float y2 = ((float)Gdx.input.getY(1)/(float)myGame.screenHeight);
-				float x3 = ((float)Gdx.input.getX(2)/(float)myGame.screenWidth);
-				float y3 = ((float)Gdx.input.getY(2)/(float)myGame.screenHeight);
+				float x1,x2,x3,y1,y2,y3;
+				if(Gdx.input.isTouched(0)){
+					x1 = ((float)Gdx.input.getX(0)/(float)myGame.screenWidth);
+					y1 = ((float)Gdx.input.getY(0)/(float)myGame.screenHeight);
+				}else{
+					x1 = -1;
+					y1 = -1;
+				}
+				if(Gdx.input.isTouched(1)){
+					x2 = ((float)Gdx.input.getX(1)/(float)myGame.screenWidth);
+					y2 = ((float)Gdx.input.getY(1)/(float)myGame.screenHeight);
+				}else{
+					x2 = -1;
+					y2 = -1;
+				}
+				if(Gdx.input.isTouched(2)){
+					x3 = ((float)Gdx.input.getX(2)/(float)myGame.screenWidth);
+					y3 = ((float)Gdx.input.getY(2)/(float)myGame.screenHeight);
+				}else{
+					x3 = -1;
+					y3 = -1;
+				}
 
 
 				if((.06 < x1 && x1 < .3
 						|| .06 < x2 && x2 < .3
 						|| .06 < x3 && x3 < .3) &&
-							(.67 < y1 && y1 < .9
+						(.67 < y1 && y1 < .9
 								|| .67 < y2 && y2 < .9
 								|| .67 < y3 && y3 < .9)){
 					//hitbox for left dpad overall
@@ -237,7 +281,7 @@ public class GameScreen implements Screen{
 				if((.7 < x1 && x1 < .85
 						|| .7 < x2 && x2 < .85
 						|| .7 < x3 && x3 < .85) &&
-							(.72 < y1 && y1 < .98
+						(.72 < y1 && y1 < .98
 								|| .72 < y2 && y2 < .98
 								|| .72 < y3 && y3 < .98)){
 
@@ -253,7 +297,7 @@ public class GameScreen implements Screen{
 						(.47 < y1 && y1 < .73
 								|| .47 < y2 && y2 < .73
 								|| .47 < y3 && y3 < .73)){
-
+									//pew pew
 
 				}
 
@@ -275,7 +319,7 @@ public class GameScreen implements Screen{
 	@Override
 	public void show() {
 
-		
+
 
 		if(Gdx.app.getVersion() > 0){
 			dPadTexture = new Texture(Gdx.files.internal("data/leftrightpad.png"));

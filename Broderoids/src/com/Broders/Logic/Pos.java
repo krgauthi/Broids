@@ -28,30 +28,30 @@ public class Pos{
 	}
 	
 	
-	public float Getx(){
+	public float getX(){
 		return x;
 	}
 	
-	public float Gety(){
+	public float getY(){
 		return y;
 	}
 	
-	public void Setx(float xx){
+	public void setX(float xx){
 		x = xx;
 	}
 	
-	public void Sety(float yy){
+	public void setY(float yy){
 		y = yy;
 	}
 	
 	/*
 	 * Give the touch input int and it automatically makes the Virtual pos
 	 */
-	public void Setx(int xx){
+	public void setX(int xx){
 		x = ((float)xx/(float)Gdx.graphics.getWidth());
 	}
 	
-	public void Sety(int yy){
+	public void setY(int yy){
 		y = ((float)yy/(float)Gdx.graphics.getHeight());
 	}
 	

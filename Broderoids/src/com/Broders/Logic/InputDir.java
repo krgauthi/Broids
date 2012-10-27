@@ -1,11 +1,13 @@
 package com.Broders.Logic;
 
 public enum InputDir {
+	
 	FORWARD ("forward"),
 	BACKWARD ("backward"),
 	LEFT ("left"),
 	RIGHT ("right"),
 	NULL ("");
+	
 	private String dir;
 	
 	private InputDir(String dir){
@@ -17,10 +19,10 @@ public enum InputDir {
 	}
 	
 	public boolean equals(String dir){
-		return this.toString().equals(dir) ? true : false;
+		return this.toString().equals(dir);
 	}
 	
 	public boolean equals(InputDir dir){
-		return this.toString().equals(dir.toString()) ? true : false;
+		return this.toString().equals(dir.toString());
 	}
 }

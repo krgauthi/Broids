@@ -16,28 +16,24 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Json.Serializer;
 
 public class CoreLogic {
-	public World world;
-	//private Body groundBody;
-	
+	private static World world;
+
 	//This is for testing purposes only
-	private Ship testShip;
+	private static Ship testShip;
 	
 	Body ground;
 	
-	float width;
-	float height;
+	private static float width;
+	private static float height;
 	
-	public CoreLogic(){
-		
-	}
+	private CoreLogic(){};
 	
-	public void initCore(){
+	public static void initCore(){
 		
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, false);
 		//BodyDef bodyDef = new BodyDef();
 		//groundBody = world.createBody(bodyDef);
-		testShip = new Ship("player", EntityType.SHIP, world);
 		
 		//example code pasted below for testing:
 		
@@ -110,14 +106,13 @@ public class CoreLogic {
 			bd.position.set(0.0f, 2.0f);
 			bd.angle = MathUtils.PI;
 			bd.allowSleep = false;
-			testShip.setBody(world.createBody(bd));
 			testShip.getBody().createFixture(sd1);
 			testShip.getBody().createFixture(sd2);
 		}
 		//end example code
 	}
 	
-	public void execute(float delta, InputDir in){
+	public static void execute(float delta, InputDir in){
 		
 		
 		if(in.equals("forward")){
@@ -142,23 +137,19 @@ public class CoreLogic {
 	}
 	
 	//this method is for testing purposes only
-	public Ship getShip(){
-		return this.testShip;
+	public static Ship getShip(){
+		return testShip;
 	}
 	
-	public World getWorld(){
-		return this.world;
+	public static World getWorld(){
+		return world;
 	}
 	
-	public Body getGround(){
-		return ground;
-	}
-	
-	public float getWidth(){
+	public static float getWidth(){
 		return width;
 	}
 	
-	public float getHeight(){
+	public static float getHeight(){
 		return height;
 	}
 }

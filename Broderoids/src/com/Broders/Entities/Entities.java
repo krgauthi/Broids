@@ -19,32 +19,17 @@ public abstract class Entities {
 	private Texture texture;
 	private Sprite sprite;
 	
-	
-	public Entities(String id, EntityType type, World world) {
+	public Entities(String id, EntityType type) {
 		identity = id;
-		this.type = type;	
-
-
-		BodyDef bd = new BodyDef();
-		body = world.createBody(bd);
-		texture = new Texture(Gdx.files.internal("data/ship1.png"));
-		
-		//float x = ((float)Gdx.graphics.getWidth());
-		//float y = ((float)Gdx.graphics.getHeight());
-		sprite = new Sprite(texture,512,200);
-		Pos xy = new Pos(.5f,.5f); //default center of screen
-
-		this.SetPos(xy);
+		this.type = type;
 	}
 
 	public Body getBody() {
 		return this.body;
 	}
 	
-	public void SetPos(Pos xy){
-		body.setTransform(xy.Getx(), xy.Gety(), body.getAngle());
-		sprite.setPosition(xy.Getx(), xy.Gety());
-		
+	protected void setBody(Body body){
+		this.body = body;
 	}
 	
 	public String getIdentity() {
@@ -59,19 +44,14 @@ public abstract class Entities {
 		return (float) (this.body.getAngle()*(180.00f/Math.PI));
 	}
 	
-	protected void setSprite(String sp){
-		this.texture = new Texture(Gdx.files.internal(sp));
-		this.sprite = new Sprite(this.texture);
-	}
-	
 	public Sprite getSprite(){
 		return this.sprite;
 	}
 	
-	// possibly only for testing...
-	public void setBody(Body bod){
-		this.body = bod;
+	protected void setSprite(String sp){
+		this.texture = new Texture(Gdx.files.internal(sp));
+		this.sprite = new Sprite(this.texture);
 	}
-	
+
 	public abstract void Draw(SpriteBatch sb, CoreLogic cl);
 }

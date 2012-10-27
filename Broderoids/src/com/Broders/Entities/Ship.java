@@ -17,8 +17,9 @@ public class Ship extends Entities{
 	private Sprite sprite;
 
 
-	public Ship(String id, EntityType type, World world) {		
-		super(id, type, world);
+	public Ship(String id, EntityType type) {	
+		super(id, type);
+		
 
 		float xx = Gdx.graphics.getWidth();
 		float yy = Gdx.graphics.getHeight();
@@ -35,7 +36,6 @@ public class Ship extends Entities{
 		super.setSprite("data/ship1.png");
 		super.getSprite().flip(false, true);
 		super.getSprite().setScale(.05f, .05f);
-		super.SetPos(new Pos(xx*.5f, yy*.5f));
 		super.getSprite().setColor(Color.MAGENTA);
 		//super.getBody().getPosition().set(0, 0);
 		//super.getBody().setTransform(0, 0, 0);

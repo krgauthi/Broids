@@ -29,20 +29,23 @@ public class Ship extends Entities{
 		
 		this.sprite = new Sprite(this.texture);
 		this.sprite.flip(false, true);
-		this.sprite.setScale(.05f, .05f);
+		this.sprite.setOrigin((meter*6)/2, (meter*6)/2);
+		this.sprite.setSize(meter*6, meter*6);
+		
 		this.sprite.setColor(Color.MAGENTA);
 		
 
 		this.thrust = false;
 		super.setSprite("data/ship1.png");
 		super.getSprite().flip(false, true);
-		super.getSprite().setScale(.05f, .05f);		
-		super.getSprite().setSize(meter*5, meter*5);
-		//super.SetPos(new Pos(xx*.5f, yy*.5f));				//NO
+		//super.getSprite().setScale((meter*5)/yy);	
+		super.getSprite().setOrigin((meter*6)/2, (meter*6)/2);
+		super.getSprite().setSize(meter*6, meter*6);
+
+		
+		
 	
 		super.getSprite().setColor(Color.MAGENTA);
-		//super.getBody().getPosition().set(0, 0);
-		//super.getBody().setTransform(0, 0, 0);
 		super.getBody().getAngle();
 	}
 

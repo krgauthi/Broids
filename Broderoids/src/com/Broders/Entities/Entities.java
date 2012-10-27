@@ -27,24 +27,12 @@ public abstract class Entities {
 
 		BodyDef bd = new BodyDef();
 		body = world.createBody(bd);
-		texture = new Texture(Gdx.files.internal("data/ship1.png"));
-		
-		//float x = ((float)Gdx.graphics.getWidth());
-		//float y = ((float)Gdx.graphics.getHeight());
-		sprite = new Sprite(texture,512,200);
-		Pos xy = new Pos(.5f,.5f); //default center of screen
 
-		this.SetPos(xy);
+		
 	}
 
 	public Body getBody() {
 		return this.body;
-	}
-	
-	public void SetPos(Pos xy){
-		body.setTransform(xy.getX(), xy.getY(), body.getAngle());
-		sprite.setPosition(xy.getX(), xy.getY());
-		
 	}
 	
 	public String getIdentity() {

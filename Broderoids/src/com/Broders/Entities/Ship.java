@@ -22,23 +22,30 @@ public class Ship extends Entities{
 
 		float xx = Gdx.graphics.getWidth();
 		float yy = Gdx.graphics.getHeight();
+		
+		float meter = Gdx.graphics.getHeight()/90;			//TODO ref from core
 
 		this.texture = new Texture(Gdx.files.internal("data/ship2.png"));
 		
 		this.sprite = new Sprite(this.texture);
 		this.sprite.flip(false, true);
-		this.sprite.setScale(.05f, .05f);
+		this.sprite.setOrigin((meter*6)/2, (meter*6)/2);
+		this.sprite.setSize(meter*6, meter*6);
+		
 		this.sprite.setColor(Color.MAGENTA);
 		
 
 		this.thrust = false;
 		super.setSprite("data/ship1.png");
 		super.getSprite().flip(false, true);
-		super.getSprite().setScale(.05f, .05f);
-		super.SetPos(new Pos(xx*.5f, yy*.5f));
+		//super.getSprite().setScale((meter*5)/yy);	
+		super.getSprite().setOrigin((meter*6)/2, (meter*6)/2);
+		super.getSprite().setSize(meter*6, meter*6);
+
+		
+		
+	
 		super.getSprite().setColor(Color.MAGENTA);
-		//super.getBody().getPosition().set(0, 0);
-		//super.getBody().setTransform(0, 0, 0);
 		super.getBody().getAngle();
 	}
 
@@ -59,11 +66,12 @@ public class Ship extends Entities{
 		float x = super.getBody().getPosition().x;
 		float y = super.getBody().getPosition().y;
 
-		cl.getWidth();
+		
 
 		float posX;
 		float posY;
 
+		//this will only work for single player
 		posX = screenWidth*(x/cl.getWidth());
 		posY =  screenHeight*(y/cl.getHeight());
 

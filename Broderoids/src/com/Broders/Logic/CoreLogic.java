@@ -90,7 +90,7 @@ public class CoreLogic {
 			bd.angularDamping = 5.0f;
 			bd.linearDamping = 0.1f;
 			
-			bd.position.set(0.0f, 2.0f);
+			bd.position.set(width/2, height/2);   //center player ship
 			bd.angle = MathUtils.PI;
 			bd.allowSleep = false;
 			playerShip.setBody(world.createBody(bd));
@@ -117,6 +117,8 @@ public class CoreLogic {
 			playerShip.getBody().applyTorque(-10.0f);
 		}
 		
+		
+	
 		//world.step(delta, 3, 8);
 	}
 	

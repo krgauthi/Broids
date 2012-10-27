@@ -119,7 +119,7 @@ public class CoreLogic {
 		
 		
 	
-		//world.step(delta, 3, 8);
+		
 	}
 	
 	//this method is for testing purposes only
@@ -146,4 +146,25 @@ public class CoreLogic {
 	public float getHeight(){
 		return height;
 	}
+	
+	public void teleport(Entities entity,float x,float y){
+		
+		Body body = entity.getBody();
+		
+		BodyDef bd = new BodyDef();
+		bd.type = body.getType();
+		bd.angularDamping = body.getAngularDamping();
+		bd.linearDamping = body.getLinearDamping();
+		
+		bd.position.set(x, y);
+		bd.angle = body.getAngle();
+		bd.allowSleep = body.isSleepingAllowed();
+		entity.setBody(world.createBody(bd));
+		
+		//need to add the fixture...
+		
+		
+		
+	}
+	
 }

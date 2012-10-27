@@ -28,14 +28,14 @@ import com.badlogic.gdx.utils.OrderedMap;
 public class GameScreen implements Screen{
 
 	private BaseGame myGame;
-	
+
 	private boolean Multiplayer;
 	private boolean DEBUG;
-	
+
 	private Texture dPadTexture;
 	private Texture fireButtonTexture;
 	private Texture thrusterButtonTexture;
-	
+
 	private Sprite dPad;
 	private Sprite fireButton;
 	private Sprite thrusterButton;
@@ -130,10 +130,14 @@ public class GameScreen implements Screen{
 				font.draw(spriteBatch, "Thruster", xx * .01f, yy-(yy * .09f));
 
 		}
-		
-		dPad.draw(spriteBatch);
-		fireButton.draw(spriteBatch);
-		thrusterButton.draw(spriteBatch);
+
+
+		//If Android
+		if(Gdx.app.getVersion() > 0){
+			dPad.draw(spriteBatch);
+			fireButton.draw(spriteBatch);
+			thrusterButton.draw(spriteBatch);
+		}
 		
 
 		spriteBatch.end();
@@ -170,10 +174,8 @@ public class GameScreen implements Screen{
 		}
 
 
-		//touch tail
-		if(Gdx.input.isTouched()){
-			Tail.add(new Pos(Gdx.input.getX(),Gdx.input.getY()));
-		}
+
+
 
 
 		//arrow keys
@@ -194,9 +196,75 @@ public class GameScreen implements Screen{
 
 
 		//Backout to main menu
-		if(Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACK)){
+		if(Gdx.input.isKeyPressed(Keys.ESCAPE)){				
 			myGame.setScreen(myGame.GetMain());
 		}
+
+		//if Android
+		if(Gdx.app.getVersion() > 0){
+			if(Gdx.input.isTouched(0) || Gdx.input.isTouched(1) || Gdx.input.isTouched(2)){
+
+				float x1 = ((float)Gdx.input.getX(0)/(float)myGame.screenWidth);
+				float y1 = ((float)Gdx.input.getY(0)/(float)myGame.screenHeight);
+				float x2 = ((float)Gdx.input.getX(1)/(float)myGame.screenWidth);
+				float y2 = ((float)Gdx.input.getY(1)/(float)myGame.screenHeight);
+				float x3 = ((float)Gdx.input.getX(2)/(float)myGame.screenWidth);
+				float y3 = ((float)Gdx.input.getY(2)/(float)myGame.screenHeight);
+
+
+				if((.06 < x1 && x1 < .3
+						|| .06 < x2 && x2 < .3
+						|| .06 < x3 && x3 < .3) &&
+						(.67 < y1 && y1 < .9
+								|| .67 < y2 && y2 < .9
+								|| .67 < y3 && y3 < .9)){
+					//hitbox for left dpad overall
+					if(.06 < x1 && x1 < .166
+							|| .06 < x2 && x2 < .166
+							|| .06 < x3 && x3 < .166){
+
+						core.execute(delta, InputDir.LEFT);
+
+					}else{
+						core.execute(delta, InputDir.RIGHT);
+					}
+				}else{
+					//touch tail
+					Tail.add(new Pos(Gdx.input.getX(),Gdx.input.getY()));
+				}
+
+				//check for button touch
+				if((.7 < x1 && x1 < .85
+						|| .7 < x2 && x2 < .85
+						|| .7 < x3 && x3 < .85) &&
+						(.72 < y1 && y1 < .98
+								|| .72 < y2 && y2 < .98
+								|| .72 < y3 && y3 < .98)){
+
+					core.execute(delta, InputDir.FORWARD);	
+					PlayerShip.setThrust(true);
+				}else{
+					PlayerShip.setThrust(false);
+
+				}
+				if((.83 < x1 && x1 < .98
+						|| .83 < x2 && x2 < .98
+						|| .83 < x3 && x3 < .98) &&
+						(.47 < y1 && y1 < .73
+								|| .47 < y2 && y2 < .73
+								|| .47 < y3 && y3 < .73)){
+
+
+				}
+
+
+			}
+
+		}
+
+
+
+	
 	}
 
 	@Override
@@ -212,12 +280,12 @@ public class GameScreen implements Screen{
 		dPad = new Sprite(dPadTexture,512,512);
 		dPad.setPosition(myGame.screenWidth*(0),myGame.screenHeight*(-.1f));
 		dPad.setSize(myGame.screenHeight*.6f, myGame.screenHeight*.6f);
-		
+
 		fireButtonTexture = new Texture(Gdx.files.internal("data/fireButton.png"));
 		fireButton = new Sprite(fireButtonTexture,512,512);
 		fireButton.setPosition(myGame.screenWidth*(.82f),myGame.screenHeight*(.25f));
 		fireButton.setSize(myGame.screenHeight*.32f, myGame.screenHeight*.32f);
-		
+
 		thrusterButtonTexture = new Texture(Gdx.files.internal("data/thrustButton.png"));
 		thrusterButton = new Sprite(thrusterButtonTexture,512,512);
 		thrusterButton.setPosition(myGame.screenWidth*(.69f),myGame.screenHeight*0);

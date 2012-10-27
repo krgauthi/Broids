@@ -163,6 +163,8 @@ public class MainMenu implements Screen{
 	public void show() {
 		buff = 0;
 		
+		Gdx.input.setCatchBackKey(true);
+		
 		titleTex = new Texture(Gdx.files.internal("data/Broderoids.png"));
 		titleSprite = new Sprite(titleTex,512,512);
 		titleSprite.setPosition(0,myGame.screenHeight*(-.5f));

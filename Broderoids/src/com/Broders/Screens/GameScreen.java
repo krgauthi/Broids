@@ -45,7 +45,6 @@ public class GameScreen implements Screen{
 	private SpriteBatch spriteBatch;
 
 	private Tail Tail;
-	private OrderedMap<String,Entities> EntityMap;
 
 	private BitmapFont font;
 
@@ -71,13 +70,8 @@ public class GameScreen implements Screen{
 		font = this.myGame.font;
 		font.setScale(.25f);
 		DEBUG = true;
-
-
-		EntityMap = new OrderedMap<String, Entities>();
-		core = new CoreLogic();
-		core.initCore();
-		PlayerShip = core.getShip();
-		EntityMap.put("player", PlayerShip);
+		
+		CoreLogic.initCore();
 
 		xx = Gdx.graphics.getWidth();
 		yy = Gdx.graphics.getHeight();
@@ -91,7 +85,9 @@ public class GameScreen implements Screen{
 		//it is up to the backend team to decide if they want to handle input seperatly or not
 		handleInput(delta);
 		update(delta);
-		core.world.step(delta, 3, 8);
+		
+		//this really should be put back in CoreLogic if possible
+		CoreLogic.getWorld().step(delta, 3, 8);
 
 		//server interactions here?
 
@@ -113,7 +109,7 @@ public class GameScreen implements Screen{
 		Tail.draw(spriteBatch);
 
 		//loop through all Entities
-		for(Entry<String, Entities> E :EntityMap.entries()){
+		for(Entry<String, Entities> E : CoreLogic.getEntityMap().entries()){
 			E.value.Draw(spriteBatch, core);
 		}
 
@@ -121,12 +117,12 @@ public class GameScreen implements Screen{
 		if(DEBUG){
 			String out;
 
-			out = String.format("Ship Pos in Meters: (%f,%f) ", PlayerShip.getBody().getPosition().x,PlayerShip.getBody().getPosition().y);
+			out = String.format("Ship Pos in Meters: (%f,%f) ", CoreLogic.getEntityMap().get("player").getBody().getPosition().x, CoreLogic.getEntityMap().get("player").getBody().getPosition().y);
 			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .01f));
 
-			out = String.format("Ship angle in Radians: %f",PlayerShip.getBody().getAngle());
+			out = String.format("Ship angle in Radians: %f", CoreLogic.getEntityMap().get("player").getBody().getAngle());
 			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .05f));
-			if(PlayerShip.getThrust())
+			if(((Ship)CoreLogic.getEntityMap().get("player")).getThrust())
 				font.draw(spriteBatch, "Thruster", xx * .01f, yy-(yy * .09f));
 
 		}
@@ -146,7 +142,7 @@ public class GameScreen implements Screen{
 	private void update(float delta) {
 
 		//EntityMap.get("player").SetPos(new Pos(.45f, .25f));
-		core.execute(delta, InputDir.NULL);
+		CoreLogic.execute(delta, InputDir.NULL);
 		Tail.Update();
 
 	}
@@ -178,18 +174,15 @@ public class GameScreen implements Screen{
 
 		//arrow keys
 		if(Gdx.input.isKeyPressed(Keys.UP)){
-			core.execute(delta, InputDir.FORWARD);
-			PlayerShip.setThrust(true);
-		}else{
-			PlayerShip.setThrust(false);
+			CoreLogic.execute(delta, InputDir.FORWARD);
 		}
 
 		if(Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT)){
-			core.execute(delta, InputDir.LEFT);
+			CoreLogic.execute(delta, InputDir.LEFT);
 		}
 
 		if(Gdx.input.isKeyPressed(Keys.RIGHT) && !Gdx.input.isKeyPressed(Keys.LEFT)){
-			core.execute(delta, InputDir.RIGHT);
+			CoreLogic.execute(delta, InputDir.RIGHT);
 		}
 
 

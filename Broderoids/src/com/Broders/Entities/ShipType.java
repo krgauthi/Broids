@@ -4,7 +4,7 @@ import com.Broders.Logic.Settings;
 
 public enum ShipType implements Type{
 
-	CLASSIC ("00", "classic", Settings.img_path + "ship1.png", Settings.img_path + "ship2.png");
+	CLASSIC ("00", "classic", Settings.data_path + "ship1.png", Settings.data_path + "ship2.png");
 	
 	private String type;
 	private String str;

@@ -4,9 +4,9 @@ import com.Broders.Logic.Settings;
 
 public enum AsteroidType implements Type{
 
-	SMALL ("00", "small", Settings.img_path + "broid.png"),
-	MEDIUM ("01", "medium", Settings.img_path + "broid2.png"),
-	LARGE ("02", "large", Settings.img_path + "broid3.png");
+	SMALL ("00", "small", Settings.data_path + "broid.png"),
+	MEDIUM ("01", "medium", Settings.data_path + "broid2.png"),
+	LARGE ("02", "large", Settings.data_path + "broid3.png");
 	
 	private String type;
 	private String str;

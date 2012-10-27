@@ -4,7 +4,7 @@ import com.Broders.Logic.Settings;
 
 public enum BulletType implements Type{
 
-	BASIC ("00", "basic", Settings.img_path + "bullet.png");
+	BASIC ("00", "basic", Settings.data_path + "bullet.png");
 	
 	private String type;
 	private String str;

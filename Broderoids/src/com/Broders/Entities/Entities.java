@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 public abstract class Entities {
@@ -16,11 +17,14 @@ public abstract class Entities {
 	private String identity;
 	private EntityType type;
 	private Body body;
-	private Texture texture;
 	private Sprite sprite;
 	
+	//save these for teleportation
+	private BodyDef bodDef;
+	private FixtureDef fixDef;
+	
 	public Entities(String id, EntityType type) {
-		identity = id;
+		this.identity = type.toString() + type.getSubType().toString() + id;
 		this.type = type;
 	}
 
@@ -28,8 +32,10 @@ public abstract class Entities {
 		return this.body;
 	}
 	
-	protected void setBody(Body body){
-		this.body = body;
+	protected void createBody(BodyDef bodDef, FixtureDef fixDef){
+		this.bodDef = bodDef;
+		this.body = CoreLogic.getWorld().createBody(bodDef);
+		this.body.createFixture(fixDef);
 	}
 	
 	public String getIdentity() {
@@ -49,9 +55,24 @@ public abstract class Entities {
 	}
 	
 	protected void setSprite(String sp){
-		this.texture = new Texture(Gdx.files.internal(sp));
-		this.sprite = new Sprite(this.texture);
+		Texture texture = new Texture(Gdx.files.internal(sp));
+		this.sprite = new Sprite(texture);
 	}
 
 	public abstract void Draw(SpriteBatch sb, CoreLogic cl);
+	
+	public String toString(){
+		return this.identity;
+	}
+	
+	public boolean equals(Entities entity){
+		return entity.toString().equals(this.identity);
+	}
+	
+	public void teleport(float x, float y){
+		CoreLogic.getWorld().destroyBody(this.body);
+		this.bodDef.position.set(x, y);
+		this.body = CoreLogic.getWorld().createBody(bodDef);
+		this.body.createFixture(fixDef);
+	}
 }

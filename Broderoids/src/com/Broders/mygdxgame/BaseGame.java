@@ -1,6 +1,7 @@
 package com.Broders.mygdxgame;
 
 import com.Broders.Entities.Ship;
+import com.Broders.Logic.Settings;
 import com.Broders.Screens.*;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -37,8 +38,7 @@ public class BaseGame extends Game {
 	screenWidth =  Gdx.graphics.getWidth();
 	tailLength = 5;
 	exitBuffer = 1;
-	font = new BitmapFont(Gdx.files.internal("data/smallfonts.fnt"),
-			 Gdx.files.internal("data/smallfonts_0.png"), false);
+	font = new BitmapFont(Gdx.files.internal(Settings.data_path + "smallfonts.fnt"), Gdx.files.internal(Settings.data_path + "smallfonts_0.png"), false);
 	
 		
 	this.setScreen(new SplashScreen(this));

@@ -13,6 +13,10 @@ public enum EntityType {
 		this.type = type;
 	}
 	
+	public Type getSubType(){
+		return type;
+	}
+	
 	public String toString(){
 		return this.id + type.toString();
 	}

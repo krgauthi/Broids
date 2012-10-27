@@ -8,11 +8,13 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.GdxBuild;
 
 
 
@@ -43,7 +45,7 @@ public class MainMenu implements Screen{
 
 		this.myGame = g;
 		myGame.setMain(this); //now all screens can reference back to this main menu
-		tail = new Tail(myGame.tailLength);
+		tail = new Tail(myGame.tailLength,Color.WHITE);
 
 	}
 
@@ -90,7 +92,7 @@ public class MainMenu implements Screen{
 	 */
 	private void update(float delta) {
 
-		tail.Update();
+		tail.update();
 
 	}
 
@@ -137,7 +139,7 @@ public class MainMenu implements Screen{
 		
 		
 		//backout Fix the quick exit from gamescreen
-		if(Gdx.input.isKeyPressed(Keys.ESCAPE) && buff > myGame.exitBuffer){
+		if((Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACK)) && buff > myGame.exitBuffer){
 			Gdx.app.exit();
 		}else{
 			if(buff < myGame.exitBuffer){
@@ -162,6 +164,9 @@ public class MainMenu implements Screen{
 	@Override
 	public void show() {
 		buff = 0;
+		
+	
+		
 		
 		titleTex = new Texture(Gdx.files.internal("data/Broderoids.png"));
 		titleSprite = new Sprite(titleTex,512,512);
@@ -195,7 +200,6 @@ public class MainMenu implements Screen{
 
 	@Override
 	public void pause() {
-
 
 	}
 

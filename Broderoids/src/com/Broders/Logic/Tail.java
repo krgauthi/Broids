@@ -3,6 +3,7 @@ package com.Broders.Logic;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,15 +16,16 @@ public class Tail extends LinkedList<Pos>{
 	private Sprite Tailsprite;
 	
 	
-	public Tail(int l){
+	public Tail(int l, Color c){
 		length = l;	
 		
 		btail = new Texture(Gdx.files.internal("data/bullet.png"));
 		Tailsprite = new Sprite(btail);
+		Tailsprite.setColor(c);
 	}
 	
 	
-	public void Update(){
+	public void update(){
 		
 		if(flag || this.size() > length){
 			flag = false;
@@ -42,7 +44,7 @@ public class Tail extends LinkedList<Pos>{
 		
 		for(Pos xy : this){
 			//Tailsprite.setPosition(xy.Getx(),yy-xy.Gety());
-			Tailsprite.setPosition((xx*(xy.Getx()-.01f)), yy-(yy*(xy.Gety()+.05f)));
+			Tailsprite.setPosition((xx*(xy.getX()-.01f)), yy-(yy*(xy.getY()+.05f)));
 			Tailsprite.draw(spriteBatch);
 			
 		}

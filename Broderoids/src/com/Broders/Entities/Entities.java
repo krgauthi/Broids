@@ -42,8 +42,8 @@ public abstract class Entities {
 	}
 	
 	public void SetPos(Pos xy){
-		body.setTransform(xy.Getx(), xy.Gety(), body.getAngle());
-		sprite.setPosition(xy.Getx(), xy.Gety());
+		body.setTransform(xy.getX(), xy.getY(), body.getAngle());
+		sprite.setPosition(xy.getX(), xy.getY());
 		
 	}
 	

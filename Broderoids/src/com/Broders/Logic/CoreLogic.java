@@ -7,6 +7,8 @@ import com.badlogic.gdx.physics.box2d.Transform;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.Broders.Entities.Asteroid;
+import com.Broders.Entities.Bullet;
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.EntityType;
 import com.Broders.Entities.Ship;
@@ -132,6 +134,40 @@ public class CoreLogic {
 		}
 		
 		return ships;
+	}
+	
+	/**
+	 * Returns a map of all Asteroids
+	 * 
+	 * @return Map of Asteroids
+	 */
+	public static OrderedMap<String, Asteroid> getAsteroids(){
+		OrderedMap<String, Asteroid> asteroids = new OrderedMap<String, Asteroid>();
+		
+		for(Entity entity : entities.values()){
+			if(entity.getType().equals(EntityType.ASTEROID)){
+				asteroids.put(entity.toString(), (Asteroid) entity);
+			}
+		}
+		
+		return asteroids;
+	}
+	
+	/**
+	 * Returns a map of all Bullets
+	 * 
+	 * @return Map of Bullets
+	 */
+	public static OrderedMap<String, Bullet> getBullets(){
+		OrderedMap<String, Bullet> bullets = new OrderedMap<String, Bullet>();
+		
+		for(Entity entity : entities.values()){
+			if(entity.getType().equals(EntityType.BULLET)){
+				bullets.put(entity.toString(), (Bullet) entity);
+			}
+		}
+		
+		return bullets;
 	}
 
 	/**

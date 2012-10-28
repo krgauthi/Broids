@@ -1,7 +1,6 @@
 package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
-import com.Broders.Logic.Pos;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,14 +11,27 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
+/**
+ * Creates a Ship Entity.
+ * 
+ * @author ntpeters
+ * @author krgauthi
+ * @author ejrinkus
+ *
+ */
 public class Ship extends Entity{	
 
 	private Boolean thrust;
 	private Sprite sprite;
 
+	/**
+	 * Initializes a Ship by creating the appropriate physical body and sprite set.
+	 * 
+	 * @param	id		Used to uniquely identify this entity
+	 * @param	type	The type of this entity
+	 */
 	public Ship(String id, EntityType type) {
 		super(id, type);		
 
@@ -62,22 +74,27 @@ public class Ship extends Entity{
 		this.sprite.setColor(Color.MAGENTA);
 	}
 
-	public float getX(){
-		return this.getBody().getPosition().x;
-	}
-
-	public float getY(){
-		return this.getBody().getPosition().y;
-	}
-
+	/**
+	 * Checks if the thrust is engaged/disengaged
+	 * 
+	 * @return	True if thrusting, false if not
+	 */
 	public Boolean getThrust(){
 		return this.thrust;
 	}
 
+	/**
+	 * Sets whether the thrust is engaged or disengaged
+	 * 
+	 * @param bool	True to enable, false to disable
+	 */
 	public void setThrust(boolean bool){
 		this.thrust = bool;
 	}
 
+	/**
+	 * @see Entity#Draw(SpriteBatch)
+	 */
 	@Override
 	public void Draw(SpriteBatch sb) {
 

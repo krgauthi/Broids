@@ -19,5 +19,7 @@ public class Settings {
 	
 //	public static Image background;
 	
+	public static String data_path = "data/";
+	
 	
 }

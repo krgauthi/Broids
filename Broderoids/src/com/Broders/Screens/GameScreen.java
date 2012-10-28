@@ -50,11 +50,7 @@ public class GameScreen implements Screen{
 	private Tail debug1;
 	private Tail debug2;
 
-	
-
 	private BitmapFont font;
-
-	private CoreLogic core;
 
 	float xx;
 	float yy;
@@ -75,17 +71,15 @@ public class GameScreen implements Screen{
 		Tail = new Tail(5,Color.WHITE);
 		font = this.myGame.font;
 		font.setScale(.25f);
+		
+		CoreLogic.initCore();
+		
 		DEBUG = m;				//multiplayer will be debug until settings is finished
 
 		if(DEBUG){
 			debug1 = new Tail(50,Color.MAGENTA);
 			debug2 = new Tail(50,Color.CYAN);
 		}
-
-
-		
-		core = new CoreLogic();
-		core.initCore();
 
 		xx = Gdx.graphics.getWidth();
 		yy = Gdx.graphics.getHeight();
@@ -99,7 +93,9 @@ public class GameScreen implements Screen{
 		//it is up to the backend team to decide if they want to handle input seperatly or not
 		handleInput(delta);
 		update(delta);
-		core.world.step(delta, 3, 8);
+		
+		//this really should be put back in CoreLogic if possible
+		CoreLogic.getWorld().step(delta, 3, 8);
 
 		//server interactions here?
 
@@ -121,20 +117,19 @@ public class GameScreen implements Screen{
 		Tail.draw(spriteBatch);
 
 		//loop through all Entities
-		for(Entry<String, Entities> E :core.getEntitiyMap().entries()){
-			E.value.Draw(spriteBatch, core);
+		for(Entry<String, Entity> E : CoreLogic.getEntities().entries()){
+			E.value.Draw(spriteBatch);
 		}
 
 
 		if(DEBUG){
 			String out;
-
-			out = String.format("Ship Pos in Meters: (%f,%f) ", core.getShip().getBody().getPosition().x,core.getShip().getBody().getPosition().y);
+			out = String.format("Ship Pos in Meters: (%f,%f) ", CoreLogic.getLocalShip().getBody().getPosition().x, CoreLogic.getLocalShip().getBody().getPosition().y);
 			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .01f));
 
-			out = String.format("Ship angle in Radians: %f",core.getShip().getBody().getAngle());
+			out = String.format("Ship angle in Radians: %f", CoreLogic.getLocalShip().getBody().getAngle());
 			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .05f));
-			if(core.getShip().getThrust())
+			if(CoreLogic.getLocalShip().getThrust())
 				font.draw(spriteBatch, "Thruster", xx * .01f, yy-(yy * .09f));
 			debug1.draw(spriteBatch);
 			debug2.draw(spriteBatch);
@@ -161,7 +156,7 @@ public class GameScreen implements Screen{
 	private void update(float delta) {
 
 		//EntityMap.get("player").SetPos(new Pos(.45f, .25f));
-		core.execute(delta, InputDir.NULL);
+		CoreLogic.execute(delta, InputDir.NULL);
 		Tail.update();
 		
 		if(DEBUG){
@@ -206,18 +201,18 @@ public class GameScreen implements Screen{
 
 		//arrow keys
 		if(Gdx.input.isKeyPressed(Keys.UP)){
-			core.execute(delta, InputDir.FORWARD);
-			core.getShip().setThrust(true);
+			CoreLogic.execute(delta, InputDir.FORWARD);
+			CoreLogic.getLocalShip().setThrust(true);
 		}else{
-			core.getShip().setThrust(false);
+			CoreLogic.getLocalShip().setThrust(false);
 		}
 
 		if(Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT)){
-			core.execute(delta, InputDir.LEFT);
+			CoreLogic.execute(delta, InputDir.LEFT);
 		}
 
 		if(Gdx.input.isKeyPressed(Keys.RIGHT) && !Gdx.input.isKeyPressed(Keys.LEFT)){
-			core.execute(delta, InputDir.RIGHT);
+			CoreLogic.execute(delta, InputDir.RIGHT);
 		}
 
 
@@ -265,10 +260,10 @@ public class GameScreen implements Screen{
 							|| .06 < x2 && x2 < .166
 							|| .06 < x3 && x3 < .166){
 
-						core.execute(delta, InputDir.LEFT);
+						CoreLogic.execute(delta, InputDir.LEFT);
 
 					}else{
-						core.execute(delta, InputDir.RIGHT);
+						CoreLogic.execute(delta, InputDir.RIGHT);
 					}
 				}else{
 					//touch tail
@@ -283,11 +278,7 @@ public class GameScreen implements Screen{
 								|| .72 < y2 && y2 < .98
 								|| .72 < y3 && y3 < .98)){
 
-					core.execute(delta, InputDir.FORWARD);	
-					core.getShip().setThrust(true);
-				}else{
-					core.getShip().setThrust(false);
-
+					CoreLogic.execute(delta, InputDir.FORWARD);	
 				}
 				if((.83 < x1 && x1 < .98
 						|| .83 < x2 && x2 < .98

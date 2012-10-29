@@ -1,12 +1,15 @@
 package com.Broders.mygdxgame;
 
 import com.Broders.Entities.Ship;
+import com.Broders.Logic.Settings;
 import com.Broders.Screens.*;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 
 
@@ -16,19 +19,32 @@ public class BaseGame extends Game {
 	
 	
 	MainMenu main;
+	SettingsScreen settings;
+	
 
-	//Declare Constants here
-	public int TailLength = 5;
-	//public int ShipSize = 32; never called but cool to implement
+	public BitmapFont font;
 	
+	public int screenHeight;
+	public int screenWidth;
+	public int tailLength;
+	public double exitBuffer;
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.badlogic.gdx.ApplicationListener#create()
+	 */
 	@Override
 	public void create() {	
-		
+	screenHeight = Gdx.graphics.getHeight();
+	screenWidth =  Gdx.graphics.getWidth();
+	tailLength = 5;
+	exitBuffer = 1;
+	font = new BitmapFont(Gdx.files.internal(Settings.data_path + "smallfonts.fnt"), Gdx.files.internal(Settings.data_path + "smallfonts_0.png"), false);
 	
+	Gdx.input.setCatchBackKey(true);
 		
-		this.setScreen(new SplashScreen(this));
-		super.render();
+	this.setScreen(new SplashScreen(this));
+	super.render();
 	
 	}
 
@@ -36,7 +52,7 @@ public class BaseGame extends Game {
 		main = m;
 	}
 	
-	public MainMenu GetMain(){
+	public MainMenu getMain(){
 		return main;
 	}
 	
@@ -60,5 +76,9 @@ public class BaseGame extends Game {
 
 	@Override
 	public void resume() {
+	}
+
+	public void setSettings(SettingsScreen s) {
+		settings = s;		
 	}
 }

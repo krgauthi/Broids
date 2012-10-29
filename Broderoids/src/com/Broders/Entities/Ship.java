@@ -57,7 +57,7 @@ public class Ship extends Entity{
 		bodDef.allowSleep = false;
 		super.createBody(bodDef, fixDef);
 		
-		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeight();			//TODO ref from core
+		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeight();			
 
 		super.setSprite(((ShipType)type.getSubType()).getSprite1Path());
 		super.getSprite().flip(false, true);
@@ -70,7 +70,7 @@ public class Ship extends Entity{
 		this.sprite = new Sprite(tempTexture);
 		this.sprite.flip(false, true);
 		this.sprite.setOrigin((meter*6)/2, (meter*6)/2);
-		this.sprite.setSize(meter*6, meter*6);
+		this.sprite.setSize(meter*6, meter*6);							//size needs to come from the type
 		this.sprite.setColor(Color.MAGENTA);
 	}
 

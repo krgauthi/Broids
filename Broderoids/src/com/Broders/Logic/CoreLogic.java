@@ -81,9 +81,9 @@ public class CoreLogic {
 		}
 
 		if(in.equals("left")){
-			localPlayer.getBody().applyTorque(20.0f);
+			localPlayer.getBody().applyTorque(10.0f);				//20 was obnoxious on android device make this adjustable in settings?
 		}else if(in.equals("right")){
-			localPlayer.getBody().applyTorque(-20.0f);
+			localPlayer.getBody().applyTorque(-10.0f);
 		}else{
 
 		}

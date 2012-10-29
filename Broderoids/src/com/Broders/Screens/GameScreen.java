@@ -107,7 +107,7 @@ public class GameScreen implements Screen{
 
 	private void paint(float delta) {
 		GL10 g1 = Gdx.graphics.getGL10();
-		Gdx.gl.glClearColor(0, 0, 0, 1); //its blue so you know you changed screens
+		Gdx.gl.glClearColor(0, 0, 0, 1); 
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		//Start Drawing
@@ -279,6 +279,9 @@ public class GameScreen implements Screen{
 								|| .72 < y3 && y3 < .98)){
 
 					CoreLogic.execute(delta, InputDir.FORWARD);	
+					CoreLogic.getLocalShip().setThrust(true);
+				}else{
+					CoreLogic.getLocalShip().setThrust(false);
 				}
 				if((.83 < x1 && x1 < .98
 						|| .83 < x2 && x2 < .98

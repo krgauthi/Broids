@@ -14,6 +14,7 @@ public enum InputDir {
 	BACKWARD ("backward"),
 	LEFT ("left"),
 	RIGHT ("right"),
+	SHOOT ("shoot"),
 	NULL ("");
 	
 	private String dir;

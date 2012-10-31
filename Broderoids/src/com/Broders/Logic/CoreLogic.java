@@ -89,20 +89,20 @@ public class CoreLogic {
 		}
 		
 		//Screen wrapping
-		if(localPlayer.getX() < -6){			//make it the size of the ship
-			localPlayer.teleport(width+5, localPlayer.getY());
+		if(localPlayer.getX() < -4){			//make it the size of the ship
+			localPlayer.teleport(width+3, localPlayer.getY());
 		}
 		
-		if(localPlayer.getX() > width+6){
-			localPlayer.teleport(-5f, localPlayer.getY());
+		if(localPlayer.getX() > width+4){
+			localPlayer.teleport(-3f, localPlayer.getY());
 		}
 		
-		if(localPlayer.getY() < -6){
-			localPlayer.teleport(localPlayer.getX(), height+5);
+		if(localPlayer.getY() < -4){
+			localPlayer.teleport(localPlayer.getX(), height+3);
 		}
 		
-		if(localPlayer.getY() > height+6){
-			localPlayer.teleport(localPlayer.getX(), -5f);
+		if(localPlayer.getY() > height+4){
+			localPlayer.teleport(localPlayer.getX(), -3f);
 		}
 		
 		// find a way to get the world.step call back into core logic in a way that it won't recreate the velocity bug

@@ -33,6 +33,8 @@ public class GameScreen implements Screen{
 	private boolean Multiplayer;
 	private boolean DEBUG;
 
+	boolean SHOOT;
+	
 	private Texture dPadTexture;
 	private Texture fireButtonTexture;
 	private Texture thrusterButtonTexture;
@@ -71,9 +73,9 @@ public class GameScreen implements Screen{
 		Tail = new Tail(5,Color.WHITE);
 		font = this.myGame.font;
 		font.setScale(.25f);
-		
+
 		CoreLogic.initCore();
-		
+
 		DEBUG = m;				//multiplayer will be debug until settings is finished
 
 		if(DEBUG){
@@ -93,7 +95,7 @@ public class GameScreen implements Screen{
 		//it is up to the backend team to decide if they want to handle input seperatly or not
 		handleInput(delta);
 		update(delta);
-		
+
 		//this really should be put back in CoreLogic if possible
 		CoreLogic.getWorld().step(delta, 3, 8);
 
@@ -133,6 +135,8 @@ public class GameScreen implements Screen{
 				font.draw(spriteBatch, "Thruster", xx * .01f, yy-(yy * .09f));
 			debug1.draw(spriteBatch);
 			debug2.draw(spriteBatch);
+			if(SHOOT)
+			font.draw(spriteBatch, "Pew Pew", xx * .01f, yy-(yy * .13f));
 
 
 		}
@@ -158,7 +162,7 @@ public class GameScreen implements Screen{
 		//EntityMap.get("player").SetPos(new Pos(.45f, .25f));
 		CoreLogic.execute(delta, InputDir.NULL);
 		Tail.update();
-		
+
 		if(DEBUG){
 			debug1.update();
 			debug2.update();
@@ -213,6 +217,13 @@ public class GameScreen implements Screen{
 
 		if(Gdx.input.isKeyPressed(Keys.RIGHT) && !Gdx.input.isKeyPressed(Keys.LEFT)){
 			CoreLogic.execute(delta, InputDir.RIGHT);
+		}
+
+		if(Gdx.input.isKeyPressed(Keys.SPACE)){
+			CoreLogic.execute(delta, InputDir.SHOOT);
+			SHOOT = true;
+		}else{
+			SHOOT = false;
 		}
 
 
@@ -289,8 +300,11 @@ public class GameScreen implements Screen{
 						(.47 < y1 && y1 < .73
 								|| .47 < y2 && y2 < .73
 								|| .47 < y3 && y3 < .73)){
-									//pew pew
-
+					//pew pew
+					CoreLogic.execute(delta, InputDir.SHOOT);
+					SHOOT = true;
+				}else{
+					SHOOT = false;
 				}
 
 			}

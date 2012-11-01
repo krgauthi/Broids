@@ -117,7 +117,7 @@ public class MainMenu implements Screen{
 				if(y >= .20 && y <= .28){
 					myGame.setScreen(new GameScreen(this.myGame,false));
 				}else if(y >= .32 && y <= .43){
-					myGame.setScreen(new GameScreen(this.myGame,true));
+					myGame.setScreen(new MultiLobby(this.myGame));
 				}else if(y >= .48 && y <= .60){
 					myGame.setScreen(new SettingsScreen(this.myGame, this));
 				}

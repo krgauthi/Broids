@@ -1,5 +1,7 @@
 package com.Broders.Screens;
 
+import java.util.Random;
+
 import com.Broders.Logic.Pos;
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
@@ -22,6 +24,8 @@ public class MultiLobby implements Screen{
 
 	private BaseGame myGame;
 	private BitmapFont font;
+	
+
 
 	private Texture white;
 
@@ -42,6 +46,8 @@ public class MultiLobby implements Screen{
 
 		xx = Gdx.graphics.getWidth();
 		yy = Gdx.graphics.getHeight();
+		
+
 
 	}
 

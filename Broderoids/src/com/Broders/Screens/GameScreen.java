@@ -1,6 +1,7 @@
 package com.Broders.Screens;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 import com.Broders.Entities.*;
 import com.Broders.Logic.CoreLogic;
@@ -32,6 +33,9 @@ public class GameScreen implements Screen{
 
 	private boolean Multiplayer;
 	private boolean DEBUG;
+	private boolean epileptic;
+	
+	private Random rand;
 
 	boolean SHOOT;		//for debuging
 
@@ -96,6 +100,9 @@ public class GameScreen implements Screen{
 
 		xx = Gdx.graphics.getWidth();
 		yy = Gdx.graphics.getHeight();
+		
+		epileptic = false;
+		rand = new Random();
 
 	}
 
@@ -120,7 +127,11 @@ public class GameScreen implements Screen{
 
 	private void paint(float delta) {
 		GL10 g1 = Gdx.graphics.getGL10();
-		Gdx.gl.glClearColor(0, 0, 0, 1); 
+		if(epileptic){
+			Gdx.gl.glClearColor((rand.nextInt()%200), rand.nextInt()%200, rand.nextInt()%200, 1);
+		}else{
+			Gdx.gl.glClearColor(0, 0, 0, 1); 
+		}
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		//Start Drawing
@@ -140,18 +151,18 @@ public class GameScreen implements Screen{
 			font.setScale(.25f);
 			String out;
 			out = String.format("Ship Pos in Meters: (%f,%f) ", CoreLogic.getLocalShip().getBody().getPosition().x, CoreLogic.getLocalShip().getBody().getPosition().y);
-			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .01f));
+			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .21f));
 
 			out = String.format("Ship angle in Radians: %f", CoreLogic.getLocalShip().getBody().getAngle());
-			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .05f));
+			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .25f));
 			out = String.format("FPS: %d", Gdx.graphics.getFramesPerSecond());
-			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .09f));
+			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .29f));
 			if(CoreLogic.getLocalShip().getThrust())
-				font.draw(spriteBatch, "Thruster", xx * .01f, yy-(yy * .13f));
+				font.draw(spriteBatch, "Thruster", xx * .01f, yy-(yy * .33f));
 			debug1.draw(spriteBatch);
 			debug2.draw(spriteBatch);
 			if(SHOOT)
-				font.draw(spriteBatch, "Pew Pew", xx * .01f, yy-(yy * .17f));
+				font.draw(spriteBatch, "Pew Pew", xx * .01f, yy-(yy * .37f));
 
 
 		}
@@ -166,9 +177,14 @@ public class GameScreen implements Screen{
 
 		//Draw HUD
 		healthBar.draw(spriteBatch);
-		healthBlock.draw(spriteBatch);
+		//healthBlock.draw(spriteBatch);
 		shieldBar.draw(spriteBatch);
-		shieldBlock.draw(spriteBatch);
+		//shieldBlock.draw(spriteBatch);
+		
+		float health = 1f;
+
+		spriteBatch.draw(healthBlockTexture, myGame.screenWidth*.01f,myGame.screenHeight*.5f, ((myGame.screenHeight*.5f)*.88f)*health, myGame.screenHeight*.5f, 0, 0, (int)((512f*.88f)*health), 512, false, false);
+		spriteBatch.draw(shieldBlockTexture, myGame.screenWidth*.01f,myGame.screenHeight*.5f, (myGame.screenHeight*.5f)*health, myGame.screenHeight*.5f, 0, 0, (int)(512f*health), 512, false, false);
 		
 
 		font.draw(spriteBatch, "HEALTH", xx*.05f, yy*.92f);
@@ -356,21 +372,23 @@ public class GameScreen implements Screen{
 		shieldBarTexture = new Texture(Gdx.files.internal("data/shieldbracket.png"));
 		shieldBlockTexture = new Texture(Gdx.files.internal("data/shieldbar.png"));
 
+
 		healthBar = new Sprite(healthBarTexture,512,512);
 		healthBlock = new Sprite(healthBlockTexture,512,512);
 		shieldBar = new Sprite(shieldBarTexture,512,512);
 		shieldBlock = new Sprite(shieldBlockTexture,512,512);
+
 
 		healthBar.setPosition(myGame.screenWidth*.01f,myGame.screenHeight*.5f);
 		healthBlock.setPosition(myGame.screenWidth*.01f,myGame.screenHeight*.5f);
 		shieldBar.setPosition(myGame.screenWidth*.01f,myGame.screenHeight*.5f);
 		shieldBlock.setPosition(myGame.screenWidth*.01f,myGame.screenHeight*.5f);
 
-		
 		healthBar.setSize(myGame.screenHeight*.5f, myGame.screenHeight*.5f);
 		healthBlock.setSize(myGame.screenHeight*.5f, myGame.screenHeight*.5f);
 		shieldBar.setSize(myGame.screenHeight*.5f, myGame.screenHeight*.5f);
 		shieldBlock.setSize(myGame.screenHeight*.5f, myGame.screenHeight*.5f);
+
 
 
 

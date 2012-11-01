@@ -33,7 +33,7 @@ public class GameScreen implements Screen{
 	private boolean Multiplayer;
 	private boolean DEBUG;
 
-	boolean SHOOT;
+	boolean SHOOT;		//for debuging
 	
 	private Texture dPadTexture;
 	private Texture fireButtonTexture;
@@ -43,7 +43,6 @@ public class GameScreen implements Screen{
 	private Sprite fireButton;
 	private Sprite thrusterButton;
 
-	//private Ship PlayerShip;
 
 	private SpriteBatch spriteBatch;
 
@@ -131,12 +130,14 @@ public class GameScreen implements Screen{
 
 			out = String.format("Ship angle in Radians: %f", CoreLogic.getLocalShip().getBody().getAngle());
 			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .05f));
+			out = String.format("FPS: %d", Gdx.graphics.getFramesPerSecond());
+			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .09f));
 			if(CoreLogic.getLocalShip().getThrust())
-				font.draw(spriteBatch, "Thruster", xx * .01f, yy-(yy * .09f));
+				font.draw(spriteBatch, "Thruster", xx * .01f, yy-(yy * .13f));
 			debug1.draw(spriteBatch);
 			debug2.draw(spriteBatch);
 			if(SHOOT)
-			font.draw(spriteBatch, "Pew Pew", xx * .01f, yy-(yy * .13f));
+			font.draw(spriteBatch, "Pew Pew", xx * .01f, yy-(yy * .17f));
 
 
 		}
@@ -344,6 +345,7 @@ public class GameScreen implements Screen{
 			thrusterButton.setSize(myGame.screenHeight*.32f, myGame.screenHeight*.32f);
 
 		}
+		font.setScale(.25f);
 		spriteBatch = new SpriteBatch();
 
 	}

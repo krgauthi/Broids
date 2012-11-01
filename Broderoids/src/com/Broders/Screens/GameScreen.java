@@ -34,14 +34,26 @@ public class GameScreen implements Screen{
 	private boolean DEBUG;
 
 	boolean SHOOT;		//for debuging
-	
+
 	private Texture dPadTexture;
 	private Texture fireButtonTexture;
 	private Texture thrusterButtonTexture;
 
+	private Texture healthBarTexture;
+	private Texture healthBlockTexture;
+	private Texture shieldBarTexture;
+	private Texture shieldBlockTexture;
+
 	private Sprite dPad;
 	private Sprite fireButton;
 	private Sprite thrusterButton;
+
+	private Sprite healthBar; 
+	private Sprite healthBlock; 
+	private Sprite shieldBar;
+	private Sprite shieldBlock;
+
+
 
 
 	private SpriteBatch spriteBatch;
@@ -75,7 +87,7 @@ public class GameScreen implements Screen{
 
 		CoreLogic.initCore();
 
-		DEBUG = m;				//multiplayer will be debug until settings is finished
+		DEBUG = m;				//TODO add Debug Setting @mike
 
 		if(DEBUG){
 			debug1 = new Tail(50,Color.MAGENTA);
@@ -115,6 +127,7 @@ public class GameScreen implements Screen{
 		spriteBatch.begin();
 
 
+
 		Tail.draw(spriteBatch);
 
 		//loop through all Entities
@@ -124,6 +137,7 @@ public class GameScreen implements Screen{
 
 
 		if(DEBUG){
+			font.setScale(.25f);
 			String out;
 			out = String.format("Ship Pos in Meters: (%f,%f) ", CoreLogic.getLocalShip().getBody().getPosition().x, CoreLogic.getLocalShip().getBody().getPosition().y);
 			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .01f));
@@ -137,7 +151,7 @@ public class GameScreen implements Screen{
 			debug1.draw(spriteBatch);
 			debug2.draw(spriteBatch);
 			if(SHOOT)
-			font.draw(spriteBatch, "Pew Pew", xx * .01f, yy-(yy * .17f));
+				font.draw(spriteBatch, "Pew Pew", xx * .01f, yy-(yy * .17f));
 
 
 		}
@@ -145,10 +159,21 @@ public class GameScreen implements Screen{
 
 		//If Android
 		if(Gdx.app.getVersion() > 0){
-			dPad.draw(spriteBatch);
-			fireButton.draw(spriteBatch);
-			thrusterButton.draw(spriteBatch);
+			dPad.draw(spriteBatch,.45f);					//TODO @mike .45f make this a setting for how transparent to have android controls
+			fireButton.draw(spriteBatch,.45f);
+			thrusterButton.draw(spriteBatch,.45f);
 		}
+
+		//Draw HUD
+		healthBar.draw(spriteBatch);
+		healthBlock.draw(spriteBatch);
+		shieldBar.draw(spriteBatch);
+		shieldBlock.draw(spriteBatch);
+		
+
+		font.draw(spriteBatch, "HEALTH", xx*.05f, yy*.92f);
+		font.draw(spriteBatch, "SHIELD", xx*.08f, yy*.975f);
+
 
 
 		spriteBatch.end();
@@ -326,6 +351,27 @@ public class GameScreen implements Screen{
 	@Override
 	public void show() {
 
+		healthBarTexture = new Texture(Gdx.files.internal("data/healthbracket.png"));
+		healthBlockTexture = new Texture(Gdx.files.internal("data/healthbar.png"));
+		shieldBarTexture = new Texture(Gdx.files.internal("data/shieldbracket.png"));
+		shieldBlockTexture = new Texture(Gdx.files.internal("data/shieldbar.png"));
+
+		healthBar = new Sprite(healthBarTexture,512,512);
+		healthBlock = new Sprite(healthBlockTexture,512,512);
+		shieldBar = new Sprite(shieldBarTexture,512,512);
+		shieldBlock = new Sprite(shieldBlockTexture,512,512);
+
+		healthBar.setPosition(myGame.screenWidth*.01f,myGame.screenHeight*.5f);
+		healthBlock.setPosition(myGame.screenWidth*.01f,myGame.screenHeight*.5f);
+		shieldBar.setPosition(myGame.screenWidth*.01f,myGame.screenHeight*.5f);
+		shieldBlock.setPosition(myGame.screenWidth*.01f,myGame.screenHeight*.5f);
+
+		
+		healthBar.setSize(myGame.screenHeight*.5f, myGame.screenHeight*.5f);
+		healthBlock.setSize(myGame.screenHeight*.5f, myGame.screenHeight*.5f);
+		shieldBar.setSize(myGame.screenHeight*.5f, myGame.screenHeight*.5f);
+		shieldBlock.setSize(myGame.screenHeight*.5f, myGame.screenHeight*.5f);
+
 
 
 		if(Gdx.app.getVersion() > 0){
@@ -352,25 +398,25 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
+		// TODO @Kris Look to see if there is a way to wipe this object from memory when you leave the game
 
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
+
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
+
 
 	}
 
 	@Override
 	public void dispose() {
-
+		//TODO @kris look at hide()
 
 
 	}

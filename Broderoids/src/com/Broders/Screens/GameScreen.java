@@ -111,11 +111,11 @@ public class GameScreen implements Screen{
 
 		//handle Input and update Backend
 		//it is up to the backend team to decide if they want to handle input seperatly or not
-		handleInput(delta);
+		
 		update(delta);
-
+		handleInput(delta);
 		//this really should be put back in CoreLogic if possible
-		CoreLogic.getWorld().step(delta, 3, 8);
+		//CoreLogic.getWorld().step(delta, 3, 8);
 
 		//server interactions here?
 
@@ -201,8 +201,8 @@ public class GameScreen implements Screen{
 
 	private void update(float delta) {
 
-		//EntityMap.get("player").SetPos(new Pos(.45f, .25f));
-		CoreLogic.execute(delta, InputDir.NULL);
+		
+		CoreLogic.update(delta);
 		Tail.update();
 
 		if(DEBUG){
@@ -246,13 +246,6 @@ public class GameScreen implements Screen{
 
 
 		//arrow keys
-		if(Gdx.input.isKeyPressed(Keys.UP)){
-			CoreLogic.execute(delta, InputDir.FORWARD);
-			CoreLogic.getLocalShip().setThrust(true);
-		}else{
-			CoreLogic.getLocalShip().setThrust(false);
-		}
-
 		if(Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT)){
 			CoreLogic.execute(delta, InputDir.LEFT);
 		}
@@ -266,6 +259,10 @@ public class GameScreen implements Screen{
 			SHOOT = true;
 		}else{
 			SHOOT = false;
+		}
+		
+		if(Gdx.input.isKeyPressed(Keys.UP)){
+			CoreLogic.execute(delta, InputDir.FORWARD);
 		}
 
 

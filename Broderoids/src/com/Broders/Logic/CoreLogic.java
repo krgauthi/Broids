@@ -60,6 +60,32 @@ public class CoreLogic {
 		entities.put(localPlayer.toString(), localPlayer);
 	}
 
+	public static void update(float delta){
+		//Screen wrapping
+		if(localPlayer.getX() < -4){			//make it the size of the ship
+			localPlayer.teleport(width+3, localPlayer.getY());
+		}
+
+		if(localPlayer.getX() > width+4){
+			localPlayer.teleport(-3f, localPlayer.getY());
+		}
+
+		if(localPlayer.getY() < -4){
+			localPlayer.teleport(localPlayer.getX(), height+3);
+		}
+
+		if(localPlayer.getY() > height+4){
+			localPlayer.teleport(localPlayer.getX(), -3f);
+		}
+
+		localPlayer.setThrust(false);
+		
+		// find a way to get the world.step call back into core logic in a way that it won't recreate the velocity bug
+		world.step(delta, 3, 8);
+
+	}
+
+
 	/**
 	 * Executes the game logic.
 	 * 
@@ -67,46 +93,29 @@ public class CoreLogic {
 	 * @param	in		The input direction
 	 */
 	public static void execute(float delta, InputDir in){
+
 		
-		if(in.equals("forward")){
-			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, -30.0f));
-			Vector2 p = localPlayer.getBody().getWorldPoint(localPlayer.getBody().getLocalCenter().add(new Vector2(0.0f,0.0f)));
-			localPlayer.getBody().applyForce(f, p);
+		if(in.equals("left")){
+			localPlayer.getBody().applyTorque(10.0f);				//20 was obnoxious on android device make this adjustable in settings?
+		}else if(in.equals("right")){
+			localPlayer.getBody().applyTorque(-10.0f);
 		}
-		
+
 		if(in.equals("backward")){
 			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, 30.0f));
 			Vector2 p = localPlayer.getBody().getWorldCenter();
 			localPlayer.getBody().applyForce(f, p);
 		}
 
-		if(in.equals("left")){
-			localPlayer.getBody().applyTorque(10.0f);				//20 was obnoxious on android device make this adjustable in settings?
-		}else if(in.equals("right")){
-			localPlayer.getBody().applyTorque(-10.0f);
+		if(in.equals("forward")){
+			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, -30.0f));
+			Vector2 p = localPlayer.getBody().getWorldPoint(localPlayer.getBody().getLocalCenter().add(new Vector2(0.0f,0.0f)));
+			localPlayer.getBody().applyForce(f, p);
+			localPlayer.setThrust(true);
 		}else{
+			localPlayer.setThrust(false);
+		}
 
-		}
-		
-		//Screen wrapping
-		if(localPlayer.getX() < -4){			//make it the size of the ship
-			localPlayer.teleport(width+3, localPlayer.getY());
-		}
-		
-		if(localPlayer.getX() > width+4){
-			localPlayer.teleport(-3f, localPlayer.getY());
-		}
-		
-		if(localPlayer.getY() < -4){
-			localPlayer.teleport(localPlayer.getX(), height+3);
-		}
-		
-		if(localPlayer.getY() > height+4){
-			localPlayer.teleport(localPlayer.getX(), -3f);
-		}
-		
-		// find a way to get the world.step call back into core logic in a way that it won't recreate the velocity bug
-		//world.step(delta, 3, 8);
 
 	}
 
@@ -118,7 +127,7 @@ public class CoreLogic {
 	public static OrderedMap<String, Entity> getEntities(){
 		return entities;
 	}
-	
+
 	/**
 	 * Returns a map of all Ships
 	 * 
@@ -126,16 +135,16 @@ public class CoreLogic {
 	 */
 	public static OrderedMap<String, Ship> getShips(){
 		OrderedMap<String, Ship> ships = new OrderedMap<String, Ship>();
-		
+
 		for(Entity entity : entities.values()){
 			if(entity.getType().equals(EntityType.SHIP)){
 				ships.put(entity.toString(), (Ship) entity);
 			}
 		}
-		
+
 		return ships;
 	}
-	
+
 	/**
 	 * Returns a map of all Asteroids
 	 * 
@@ -143,16 +152,16 @@ public class CoreLogic {
 	 */
 	public static OrderedMap<String, Asteroid> getAsteroids(){
 		OrderedMap<String, Asteroid> asteroids = new OrderedMap<String, Asteroid>();
-		
+
 		for(Entity entity : entities.values()){
 			if(entity.getType().equals(EntityType.ASTEROID)){
 				asteroids.put(entity.toString(), (Asteroid) entity);
 			}
 		}
-		
+
 		return asteroids;
 	}
-	
+
 	/**
 	 * Returns a map of all Bullets
 	 * 
@@ -160,13 +169,13 @@ public class CoreLogic {
 	 */
 	public static OrderedMap<String, Bullet> getBullets(){
 		OrderedMap<String, Bullet> bullets = new OrderedMap<String, Bullet>();
-		
+
 		for(Entity entity : entities.values()){
 			if(entity.getType().equals(EntityType.BULLET)){
 				bullets.put(entity.toString(), (Bullet) entity);
 			}
 		}
-		
+
 		return bullets;
 	}
 
@@ -178,7 +187,7 @@ public class CoreLogic {
 	public static Ship getLocalShip(){
 		return localPlayer;
 	}
-	
+
 	/**
 	 * Returns the world.
 	 * 

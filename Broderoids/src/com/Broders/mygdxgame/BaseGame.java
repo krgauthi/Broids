@@ -28,6 +28,8 @@ public class BaseGame extends Game {
 	public int screenWidth;
 	public int tailLength;
 	public double exitBuffer;
+	public boolean epileptic;
+	public boolean debugMode;
 	
 	/*
 	 * (non-Javadoc)
@@ -39,6 +41,8 @@ public class BaseGame extends Game {
 	screenWidth =  Gdx.graphics.getWidth();
 	tailLength = 5;
 	exitBuffer = 1;
+	epileptic = false;
+	debugMode = false;
 	font = new BitmapFont(Gdx.files.internal(Settings.data_path + "smallfonts.fnt"), Gdx.files.internal(Settings.data_path + "smallfonts_0.png"), false);
 	
 	Gdx.input.setCatchBackKey(true);

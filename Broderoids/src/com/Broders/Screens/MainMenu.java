@@ -38,6 +38,8 @@ public class MainMenu implements Screen{
 	
 	private float buff;
 
+	private float xx;
+	private float yy;
 
 	private BaseGame myGame;
 
@@ -46,6 +48,9 @@ public class MainMenu implements Screen{
 		this.myGame = g;
 		myGame.setMain(this); //now all screens can reference back to this main menu
 		tail = new Tail(myGame.tailLength,Color.WHITE);
+		
+		xx = myGame.screenWidth;
+		yy = myGame.screenHeight;
 
 	}
 
@@ -107,8 +112,8 @@ public class MainMenu implements Screen{
 		}
 		
 		if(Gdx.input.justTouched()){
-			double x = ((float)Gdx.input.getX()/(float)myGame.screenWidth);
-			double y = ((float)Gdx.input.getY()/(float)myGame.screenHeight);
+			double x = ((float)Gdx.input.getX()/xx);
+			double y = ((float)Gdx.input.getY()/yy);
 			
 			//make hit boxes
 			if(x >= .55 && x <= .82){
@@ -170,23 +175,23 @@ public class MainMenu implements Screen{
 		
 		titleTex = new Texture(Gdx.files.internal("data/Broderoids.png"));
 		titleSprite = new Sprite(titleTex,512,512);
-		titleSprite.setPosition(0,myGame.screenHeight*(-.5f));
-		titleSprite.setSize(myGame.screenHeight, myGame.screenHeight);
+		titleSprite.setPosition(0,yy*(-.5f));
+		titleSprite.setSize(yy, yy);
 		
 		singleTex = new Texture(Gdx.files.internal("data/SinglePlayer.png"));
 		singleSprite = new Sprite(singleTex,512,512);
-		singleSprite.setPosition(myGame.screenWidth*.55f,myGame.screenHeight*.35f);
-		singleSprite.setSize(myGame.screenHeight*.5f,myGame.screenHeight*.5f);
+		singleSprite.setPosition(xx*.55f,yy*.35f);
+		singleSprite.setSize(yy*.5f,yy*.5f);
 		
 		multiTex = new Texture(Gdx.files.internal("data/Multiplayer.png"));
 		multiSprite = new Sprite(multiTex,512,512);
-		multiSprite.setPosition(myGame.screenWidth*.55f,myGame.screenHeight*.2f);
-		multiSprite.setSize(myGame.screenHeight*.5f,myGame.screenHeight*.5f);
+		multiSprite.setPosition(xx*.55f,yy*.2f);
+		multiSprite.setSize(yy*.5f,yy*.5f);
 		
 		settingsTex = new Texture(Gdx.files.internal("data/Settings.png"));
 		settingsSprite = new Sprite(settingsTex,512,512);
-		settingsSprite.setPosition(myGame.screenWidth*.55f,myGame.screenHeight*.05f);
-		settingsSprite.setSize(myGame.screenHeight*.5f,myGame.screenHeight*.5f);
+		settingsSprite.setPosition(xx*.55f,yy*.05f);
+		settingsSprite.setSize(yy*.5f,yy*.5f);
 		
 		spriteBatch = new SpriteBatch();
 

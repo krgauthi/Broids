@@ -80,7 +80,7 @@ public class CoreLogic {
 
 		localPlayer.setThrust(false);
 		
-		// find a way to get the world.step call back into core logic in a way that it won't recreate the velocity bug
+		
 		world.step(delta, 3, 8);
 
 	}
@@ -105,6 +105,10 @@ public class CoreLogic {
 			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, 30.0f));
 			Vector2 p = localPlayer.getBody().getWorldCenter();
 			localPlayer.getBody().applyForce(f, p);
+		}
+		
+		if(in.equals("shoot")){
+			//TODO have the localplayer shoot a bullet
 		}
 
 		if(in.equals("forward")){

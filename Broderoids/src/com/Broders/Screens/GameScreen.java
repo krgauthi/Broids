@@ -32,12 +32,8 @@ public class GameScreen implements Screen{
 	private BaseGame myGame;
 
 	private boolean Multiplayer;
-	private boolean DEBUG;
-	private boolean epileptic;
-	
-	private Random rand;
 
-	boolean SHOOT;		//for debuging
+	private Random rand;
 
 	private Texture dPadTexture;
 	private Texture fireButtonTexture;
@@ -48,6 +44,8 @@ public class GameScreen implements Screen{
 	private Texture shieldBarTexture;
 	private Texture shieldBlockTexture;
 
+	private Texture livesTexture;
+
 	private Sprite dPad;
 	private Sprite fireButton;
 	private Sprite thrusterButton;
@@ -57,8 +55,7 @@ public class GameScreen implements Screen{
 	private Sprite shieldBar;
 	private Sprite shieldBlock;
 
-
-
+	private Sprite lives;				//TODO reference in player/ship
 
 	private SpriteBatch spriteBatch;
 
@@ -69,8 +66,8 @@ public class GameScreen implements Screen{
 
 	private BitmapFont font;
 
-	float xx;
-	float yy;
+	float xx;		//Clean reference for screen width
+	float yy;		//Clean reference for screen height
 
 
 
@@ -91,17 +88,17 @@ public class GameScreen implements Screen{
 
 		CoreLogic.initCore();
 
-		DEBUG = m;				//TODO add Debug Setting @mike
+		myGame.debugMode = m;				//TODO add Debug Setting @mike
 
-		if(DEBUG){
+		if(myGame.debugMode){
 			debug1 = new Tail(50,Color.MAGENTA);
 			debug2 = new Tail(50,Color.CYAN);
 		}
 
-		xx = Gdx.graphics.getWidth();
-		yy = Gdx.graphics.getHeight();
-		
-		epileptic = false;
+		xx = myGame.screenWidth;
+		yy = myGame.screenHeight;
+
+		//this.myGame.epileptic = false;
 		rand = new Random();
 
 	}
@@ -111,23 +108,23 @@ public class GameScreen implements Screen{
 
 		//handle Input and update Backend
 		//it is up to the backend team to decide if they want to handle input seperatly or not
-		
+
 		update(delta);
 		handleInput(delta);
-		//this really should be put back in CoreLogic if possible
-		//CoreLogic.getWorld().step(delta, 3, 8);
 
 		//server interactions here?
 
 		//update the models on the screen
 		paint(delta);
 
-
 	}
 
+	/*
+	 * Method is called every frame to paint the sprites to the screen
+	 */
 	private void paint(float delta) {
 		GL10 g1 = Gdx.graphics.getGL10();
-		if(epileptic){
+		if(myGame.epileptic){
 			Gdx.gl.glClearColor((rand.nextInt()%200), rand.nextInt()%200, rand.nextInt()%200, 1);
 		}else{
 			Gdx.gl.glClearColor(0, 0, 0, 1); 
@@ -137,8 +134,6 @@ public class GameScreen implements Screen{
 		//Start Drawing
 		spriteBatch.begin();
 
-
-
 		Tail.draw(spriteBatch);
 
 		//loop through all Entities
@@ -147,7 +142,7 @@ public class GameScreen implements Screen{
 		}
 
 
-		if(DEBUG){
+		if(myGame.debugMode){
 			font.setScale(.25f);
 			String out;
 			out = String.format("Ship Pos in Meters: (%f,%f) ", CoreLogic.getLocalShip().getBody().getPosition().x, CoreLogic.getLocalShip().getBody().getPosition().y);
@@ -161,10 +156,8 @@ public class GameScreen implements Screen{
 				font.draw(spriteBatch, "Thruster", xx * .01f, yy-(yy * .33f));
 			debug1.draw(spriteBatch);
 			debug2.draw(spriteBatch);
-			if(SHOOT)
+			if(CoreLogic.getLocalShip().getShooting())
 				font.draw(spriteBatch, "Pew Pew", xx * .01f, yy-(yy * .37f));
-
-
 		}
 
 
@@ -175,37 +168,55 @@ public class GameScreen implements Screen{
 			thrusterButton.draw(spriteBatch,.45f);
 		}
 
-		//Draw HUD
-		healthBar.draw(spriteBatch);
-		//healthBlock.draw(spriteBatch);
-		shieldBar.draw(spriteBatch);
-		//shieldBlock.draw(spriteBatch);
-		
-		float health = 1f;
 
-		spriteBatch.draw(healthBlockTexture, myGame.screenWidth*.01f,myGame.screenHeight*.5f, ((myGame.screenHeight*.5f)*.88f)*health, myGame.screenHeight*.5f, 0, 0, (int)((512f*.88f)*health), 512, false, false);
-		spriteBatch.draw(shieldBlockTexture, myGame.screenWidth*.01f,myGame.screenHeight*.5f, (myGame.screenHeight*.5f)*health, myGame.screenHeight*.5f, 0, 0, (int)(512f*health), 512, false, false);
-		
+		if(Multiplayer){
+			//Draw HUD
+			healthBar.draw(spriteBatch);
+			//healthBlock.draw(spriteBatch);
+			shieldBar.draw(spriteBatch);
+			//shieldBlock.draw(spriteBatch);
 
-		font.draw(spriteBatch, "HEALTH", xx*.05f, yy*.92f);
-		font.draw(spriteBatch, "SHIELD", xx*.08f, yy*.975f);
+			float health = 1f;
 
+			spriteBatch.draw(healthBlockTexture, xx*.01f,yy*.5f, ((yy*.5f)*.88f)*health, yy*.5f, 0, 0, (int)((512f*.88f)*health), 512, false, false);
+			spriteBatch.draw(shieldBlockTexture, xx*.01f,yy*.5f, (yy*.5f)*health, yy*.5f, 0, 0, (int)(512f*health), 512, false, false);
+
+
+			font.draw(spriteBatch, "HEALTH", xx*.05f, yy*.92f);
+			font.draw(spriteBatch, "SHIELD", xx*.08f, yy*.975f);
+
+			String out;
+			out = String.format("Score: %d ", 100);				//TODO ref score from player
+			font.draw(spriteBatch, out, xx*.01f, yy*.87f);
+
+		}else{
+			//Single player hud
+			String out;
+			out = String.format("Score: %d ", 100);				//TODO ref score from player
+			font.draw(spriteBatch, out, xx*.01f, yy*.98f);
+
+			int heartcount = 3;									//TODO ref Lives from player
+			for(int i = 0; i < heartcount; i++){
+				lives.setPosition(xx*(.005f+(i*.02f)),yy*.89f);
+				lives.draw(spriteBatch);
+			}
+
+		}
 
 
 		spriteBatch.end();
 
-
-
-
 	}
 
+	/*
+	 * Method is called every frame used to update logic
+	 */
 	private void update(float delta) {
 
-		
 		CoreLogic.update(delta);
 		Tail.update();
 
-		if(DEBUG){
+		if(myGame.debugMode){
 			debug1.update();
 			debug2.update();
 		}
@@ -215,7 +226,7 @@ public class GameScreen implements Screen{
 	private void handleInput(float delta) {
 
 
-		if(DEBUG){
+		if(myGame.debugMode){
 			//Special Debug keys
 			if(Gdx.input.isKeyPressed(Keys.F1)){
 				double x = ((float)Gdx.input.getX()/(float)Gdx.graphics.getWidth());
@@ -256,11 +267,11 @@ public class GameScreen implements Screen{
 
 		if(Gdx.input.isKeyPressed(Keys.SPACE)){
 			CoreLogic.execute(delta, InputDir.SHOOT);
-			SHOOT = true;
+			CoreLogic.getLocalShip().setShooting(true);
 		}else{
-			SHOOT = false;
+			CoreLogic.getLocalShip().setShooting(false);
 		}
-		
+
 		if(Gdx.input.isKeyPressed(Keys.UP)){
 			CoreLogic.execute(delta, InputDir.FORWARD);
 		}
@@ -277,27 +288,26 @@ public class GameScreen implements Screen{
 
 				float x1,x2,x3,y1,y2,y3;
 				if(Gdx.input.isTouched(0)){
-					x1 = ((float)Gdx.input.getX(0)/(float)myGame.screenWidth);
-					y1 = ((float)Gdx.input.getY(0)/(float)myGame.screenHeight);
+					x1 = ((float)Gdx.input.getX(0)/(float)xx);
+					y1 = ((float)Gdx.input.getY(0)/(float)yy);
 				}else{
 					x1 = -1;
 					y1 = -1;
 				}
 				if(Gdx.input.isTouched(1)){
-					x2 = ((float)Gdx.input.getX(1)/(float)myGame.screenWidth);
-					y2 = ((float)Gdx.input.getY(1)/(float)myGame.screenHeight);
+					x2 = ((float)Gdx.input.getX(1)/(float)xx);
+					y2 = ((float)Gdx.input.getY(1)/(float)yy);
 				}else{
 					x2 = -1;
 					y2 = -1;
 				}
 				if(Gdx.input.isTouched(2)){
-					x3 = ((float)Gdx.input.getX(2)/(float)myGame.screenWidth);
-					y3 = ((float)Gdx.input.getY(2)/(float)myGame.screenHeight);
+					x3 = ((float)Gdx.input.getX(2)/(float)xx);
+					y3 = ((float)Gdx.input.getY(2)/(float)yy);
 				}else{
 					x3 = -1;
 					y3 = -1;
 				}
-
 
 				if((.06 < x1 && x1 < .3
 						|| .06 < x2 && x2 < .3
@@ -341,18 +351,14 @@ public class GameScreen implements Screen{
 								|| .47 < y3 && y3 < .73)){
 					//pew pew
 					CoreLogic.execute(delta, InputDir.SHOOT);
-					SHOOT = true;
+					CoreLogic.getLocalShip().setShooting(true);
 				}else{
-					SHOOT = false;
+					CoreLogic.getLocalShip().setShooting(false);
 				}
 
 			}
 
 		}
-
-
-
-
 	}
 
 	@Override
@@ -369,41 +375,40 @@ public class GameScreen implements Screen{
 		shieldBarTexture = new Texture(Gdx.files.internal("data/shieldbracket.png"));
 		shieldBlockTexture = new Texture(Gdx.files.internal("data/shieldbar.png"));
 
-
 		healthBar = new Sprite(healthBarTexture,512,512);
 		healthBlock = new Sprite(healthBlockTexture,512,512);
 		shieldBar = new Sprite(shieldBarTexture,512,512);
 		shieldBlock = new Sprite(shieldBlockTexture,512,512);
 
+		healthBar.setPosition(xx*.01f,yy*.5f);
+		healthBlock.setPosition(xx*.01f,yy*.5f);
+		shieldBar.setPosition(xx*.01f,yy*.5f);
+		shieldBlock.setPosition(xx*.01f,yy*.5f);
 
-		healthBar.setPosition(myGame.screenWidth*.01f,myGame.screenHeight*.5f);
-		healthBlock.setPosition(myGame.screenWidth*.01f,myGame.screenHeight*.5f);
-		shieldBar.setPosition(myGame.screenWidth*.01f,myGame.screenHeight*.5f);
-		shieldBlock.setPosition(myGame.screenWidth*.01f,myGame.screenHeight*.5f);
+		healthBar.setSize(yy*.5f, yy*.5f);
+		healthBlock.setSize(yy*.5f, yy*.5f);
+		shieldBar.setSize(yy*.5f, yy*.5f);
+		shieldBlock.setSize(yy*.5f, yy*.5f);
 
-		healthBar.setSize(myGame.screenHeight*.5f, myGame.screenHeight*.5f);
-		healthBlock.setSize(myGame.screenHeight*.5f, myGame.screenHeight*.5f);
-		shieldBar.setSize(myGame.screenHeight*.5f, myGame.screenHeight*.5f);
-		shieldBlock.setSize(myGame.screenHeight*.5f, myGame.screenHeight*.5f);
-
-
-
+		livesTexture = new Texture(Gdx.files.internal("data/ship1.png"));
+		lives = new Sprite(livesTexture,512,512);
+		lives.setSize(yy*.05f,yy*.05f);
 
 		if(Gdx.app.getVersion() > 0){
 			dPadTexture = new Texture(Gdx.files.internal("data/leftrightpad.png"));
 			dPad = new Sprite(dPadTexture,512,512);
-			dPad.setPosition(myGame.screenWidth*(0),myGame.screenHeight*(-.1f));
-			dPad.setSize(myGame.screenHeight*.6f, myGame.screenHeight*.6f);
+			dPad.setPosition(xx*(0),yy*(-.1f));
+			dPad.setSize(yy*.6f, yy*.6f);
 
 			fireButtonTexture = new Texture(Gdx.files.internal("data/fireButton.png"));
 			fireButton = new Sprite(fireButtonTexture,512,512);
-			fireButton.setPosition(myGame.screenWidth*(.82f),myGame.screenHeight*(.25f));
-			fireButton.setSize(myGame.screenHeight*.32f, myGame.screenHeight*.32f);
+			fireButton.setPosition(xx*(.82f),yy*(.25f));
+			fireButton.setSize(yy*.32f, yy*.32f);
 
 			thrusterButtonTexture = new Texture(Gdx.files.internal("data/thrustButton.png"));
 			thrusterButton = new Sprite(thrusterButtonTexture,512,512);
-			thrusterButton.setPosition(myGame.screenWidth*(.69f),myGame.screenHeight*0);
-			thrusterButton.setSize(myGame.screenHeight*.32f, myGame.screenHeight*.32f);
+			thrusterButton.setPosition(xx*(.69f),yy*0);
+			thrusterButton.setSize(yy*.32f, yy*.32f);
 
 		}
 		font.setScale(.25f);
@@ -414,6 +419,7 @@ public class GameScreen implements Screen{
 	@Override
 	public void hide() {
 		// TODO @Kris Look to see if there is a way to wipe this object from memory when you leave the game
+		myGame.debugMode = false;
 
 	}
 

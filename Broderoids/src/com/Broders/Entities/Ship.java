@@ -24,7 +24,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 public class Ship extends Entity{	
 
 	private Boolean thrust;
+	private Boolean shooting;
 	private Sprite sprite;
+	
+	//TODO implement method for sound shooting and death sound
+
 
 	/**
 	 * Initializes a Ship by creating the appropriate physical body and sprite set.
@@ -90,6 +94,23 @@ public class Ship extends Entity{
 	 */
 	public void setThrust(boolean bool){
 		this.thrust = bool;
+	}
+	/**
+	 * Checks if the ship is currently shooting
+	 * 
+	 * @return true if shooting false if not
+	 */
+	public Boolean getShooting(){
+		return this.shooting;
+	}
+	
+	/**
+	 * Sets if the the ship is shooting or not
+	 * 
+	 * @param bool true if shooting false if not shooting
+	 */
+	public void setShooting(boolean bool){
+		this.shooting = bool;
 	}
 
 	/**

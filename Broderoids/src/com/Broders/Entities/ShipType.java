@@ -1,6 +1,7 @@
 package com.Broders.Entities;
 
 import com.Broders.Logic.Settings;
+import com.badlogic.gdx.graphics.Color;
 
 /**
  * This enum will be used to hold different Ship types and their corresponding default values for initialization.
@@ -10,12 +11,15 @@ import com.Broders.Logic.Settings;
  */
 public enum ShipType implements Type{
 
-	CLASSIC	("00", "classic", Settings.data_path + "ship1.png", Settings.data_path + "ship2.png");
+	CLASSIC	("00", "classic", Settings.data_path + "ship1.png", Settings.data_path + "ship2.png",6f,Color.CYAN);
 	
 	private String type;
 	private String str;
 	private String sprite1;
 	private String sprite2;
+	private float size;
+	private Color color;
+	
 	
 	/**
 	 * Carries default values for ship initialization.
@@ -26,11 +30,13 @@ public enum ShipType implements Type{
 	 * @param	sprite1		Non-thruster ship sprite file path
 	 * @param	sprite2		Thruster ship sprite file path
 	 */
-	private ShipType(String type, String str, String sprite1, String sprite2){
+	private ShipType(String type, String str, String sprite1, String sprite2,float s,Color c){
 		this.type = type;
 		this.str = str;
 		this.sprite1 = sprite1;
 		this.sprite2 = sprite2;
+		this.size = s;
+		this.color = c;
 	}
 	
 	/**
@@ -69,6 +75,13 @@ public enum ShipType implements Type{
 		return sprite2;
 	}
 	
+	public float getSize(){
+		return this.size;
+	}
+	
+	public Color getColor(){
+		return this.color;
+	}
 	/**
 	 * @see	Type#toString()
 	 */

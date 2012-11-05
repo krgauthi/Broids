@@ -40,16 +40,16 @@ public class Ship extends Entity{
 		super(id, type);		
 
 		Vector2 vertices[] = new Vector2[3];
-		vertices[0] = new Vector2(0.0f, 1.65f);
-		vertices[1] = new Vector2(0.0f, -1.65f);
-		vertices[2] = new Vector2(4.0f, 0.0f);
+		vertices[0] = new Vector2(0.0f, 1.0f);
+		vertices[1] = new Vector2(0.0f, -1.0f);
+		vertices[2] = new Vector2(0.44f, 0.0f);
 
 		PolygonShape shape = new PolygonShape();
 		shape.set(vertices);
 
 		FixtureDef fixDef = new FixtureDef();
 		fixDef.shape = shape;
-		fixDef.density = 0.1f;
+		fixDef.density = 6.0f;
 
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;
@@ -57,7 +57,7 @@ public class Ship extends Entity{
 		bodDef.linearDamping = 0.0f;
 
 		bodDef.position.set(CoreLogic.getWidth()/2, CoreLogic.getHeight()/2);
-		bodDef.angle = 0;
+		bodDef.angle = MathUtils.PI;
 		bodDef.allowSleep = false;
 		super.createBody(bodDef, fixDef);
 		

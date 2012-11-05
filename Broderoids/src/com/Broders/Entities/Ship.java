@@ -61,21 +61,25 @@ public class Ship extends Entity{
 		bodDef.allowSleep = false;
 		super.createBody(bodDef, fixDef);
 		
+		super.setSize(((ShipType)type.getSubType()).getSize());
+		super.setColor(((ShipType)type.getSubType()).getColor());
+		
 		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeight();			
 
 		super.setSprite(((ShipType)type.getSubType()).getSprite1Path());
 		super.getSprite().flip(false, true);
-		super.getSprite().setOrigin((meter*6)/2, (meter*6)/2);
-		super.getSprite().setSize(meter*6, meter*6);
-		super.getSprite().setColor(Color.MAGENTA);
+		super.getSprite().setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
+		super.getSprite().setSize(meter*this.getSize(), meter*this.getSize());
+		super.getSprite().setColor(super.getColor());
 
 		this.thrust = false;
 		Texture tempTexture = new Texture(Gdx.files.internal(((ShipType)type.getSubType()).getSprite2Path()));
 		this.sprite = new Sprite(tempTexture);
 		this.sprite.flip(false, true);
-		this.sprite.setOrigin((meter*6)/2, (meter*6)/2);
-		this.sprite.setSize(meter*6, meter*6);							//size needs to come from the type
-		this.sprite.setColor(Color.MAGENTA);
+		this.sprite.setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
+		this.sprite.setSize(meter*this.getSize(), meter*this.getSize());							//size needs to come from the type
+		this.sprite.setColor(super.getColor());
+
 	}
 
 	/**

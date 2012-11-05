@@ -28,20 +28,21 @@ public class MultiLobby implements Screen{
 
 
 	private Texture white;
-
-	float buff;
-
+	private Texture arrow;
+	
 	private Sprite whiteSprite;
+	private Sprite arrowSprite;
 
 	float xx;
 	float yy;
-
+	float buff;
 
 	//Test Variables?
 	int gameCount;
 	int page;
 	int curPage;
 	int selectedGame;
+	float testing = 0;;
 
 	String out;
 
@@ -124,60 +125,27 @@ public class MultiLobby implements Screen{
 
 			if(curPage < page){			//display both tabs
 
-				whiteSprite.setColor(Color.WHITE);
-				whiteSprite.setSize(xx*.08f, xx*.08f);
-				whiteSprite.setPosition(xx*.0375f, yy*.3f);
-				whiteSprite.draw(spriteBatch);
-
-				whiteSprite.setRotation(45f);
-				whiteSprite.setSize(xx*.0565685f, xx*.0565685f);			
-				whiteSprite.setPosition(xx*.0622f, yy*.239f);	
-				whiteSprite.draw(spriteBatch);
-				whiteSprite.setRotation(0f);
-
-				whiteSprite.setColor(Color.BLACK);
-				whiteSprite.setSize(xx*.065f, xx*.065f);
-				whiteSprite.setPosition(xx*.045f, yy*.315f);
-				whiteSprite.draw(spriteBatch);
-
-				whiteSprite.setRotation(45f);
-				whiteSprite.setSize(xx*.0459619f, xx*.0459619f);			
-				whiteSprite.setPosition(xx*.0622f, yy*.266f);	
-				whiteSprite.draw(spriteBatch);
-				whiteSprite.setRotation(0f);
-
+				arrowSprite.setPosition(xx*.005f, yy*.19f);
+				arrowSprite.draw(spriteBatch);
+				
 				out = String.format("%d ", curPage+1);
+				font.setColor(Color.BLACK);
 				font.draw(spriteBatch, out, xx*.07f, yy*.4f);
+				font.setColor(Color.WHITE);
 
 			}
 
 			if(curPage > 0){
 				//you are on the last tab display the top
-				whiteSprite.setColor(Color.WHITE);
-				whiteSprite.setSize(xx*.08f, xx*.08f);
-				whiteSprite.setPosition(xx*.0375f, yy*.5f);
-				whiteSprite.draw(spriteBatch);
-
-				whiteSprite.setRotation(45f);
-				whiteSprite.setSize(xx*.0565685f, xx*.0565685f);			
-				whiteSprite.setPosition(xx*.0622f, yy*.584f);									//	A = 32^.5
-				whiteSprite.draw(spriteBatch);
-				whiteSprite.setRotation(0f);
-
-				whiteSprite.setColor(Color.BLACK);
-				whiteSprite.setSize(xx*.065f, xx*.065f);
-				whiteSprite.setPosition(xx*.045f, yy*.51f);
-				whiteSprite.draw(spriteBatch);
-
-				whiteSprite.setRotation(45f);
-				whiteSprite.setSize(xx*.0459619f, xx*.0459619f);			
-				whiteSprite.setPosition(xx*.0622f, yy*.58f);									//	A = 21.125^.5
-				whiteSprite.draw(spriteBatch);
-				whiteSprite.setRotation(0f);
-				whiteSprite.setColor(Color.WHITE);
-
+				arrowSprite.setRotation(180);
+				arrowSprite.setPosition(xx*.01f, yy*.5f);
+				arrowSprite.draw(spriteBatch);
+				arrowSprite.setRotation(0);
+				
 				out = String.format("%d ", curPage);
+				font.setColor(Color.BLACK);
 				font.draw(spriteBatch, out, xx*.07f, yy*.6f);
+				font.setColor(Color.WHITE);
 			}
 
 		}
@@ -205,9 +173,6 @@ public class MultiLobby implements Screen{
 			font.draw(spriteBatch, "Name of Game", xx*.2f,yy*(.73f - (.16f*i)));	//TODO ref Name of Game
 
 		}
-
-
-
 
 		tail.draw(spriteBatch);
 
@@ -263,6 +228,7 @@ public class MultiLobby implements Screen{
 		if(Gdx.input.isKeyPressed(Keys.UP)){
 			if(curPage > 0){
 				curPage--;
+				testing = testing +1;
 			}
 		}
 
@@ -302,6 +268,11 @@ public class MultiLobby implements Screen{
 		white = new Texture(Gdx.files.internal("data/whitebox.png"));
 		whiteSprite = new Sprite(white,32,32);
 		whiteSprite.setColor(Color.WHITE);
+		
+		arrow = new Texture(Gdx.files.internal("data/Arrow.png"));
+		arrowSprite = new Sprite(arrow,1024,1024);
+		arrowSprite.setOrigin((yy*.25f)/2f, (yy*.25f)/2f);
+		arrowSprite.setSize(yy*.25f, yy*.25f);
 
 		spriteBatch = new SpriteBatch();
 

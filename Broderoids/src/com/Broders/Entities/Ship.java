@@ -54,8 +54,8 @@ public class Ship extends Entity{
 
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;
-		bodDef.angularDamping = 5.0f;
-		bodDef.linearDamping = 0.1f;
+		bodDef.angularDamping = 40.0f;
+		bodDef.linearDamping = 0.0f;
 
 		bodDef.position.set(CoreLogic.getWidth()/2, CoreLogic.getHeight()/2);
 		bodDef.angle = MathUtils.PI;

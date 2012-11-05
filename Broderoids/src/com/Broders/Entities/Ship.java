@@ -35,8 +35,9 @@ public class Ship extends Entity{
 	 * 
 	 * @param	id		Used to uniquely identify this entity
 	 * @param	type	The type of this entity
+	 * @param playerColor 
 	 */
-	public Ship(String id, EntityType type) {
+	public Ship(String id, EntityType type, Color playerColor) {
 		super(id, type);		
 
 		Vector2 vertices[] = new Vector2[3];
@@ -62,7 +63,7 @@ public class Ship extends Entity{
 		super.createBody(bodDef, fixDef);
 		
 		super.setSize(((ShipType)type.getSubType()).getSize());
-		super.setColor(((ShipType)type.getSubType()).getColor());
+		super.setColor(playerColor);
 		
 		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeight();			
 
@@ -70,7 +71,7 @@ public class Ship extends Entity{
 		super.getSprite().flip(false, true);
 		super.getSprite().setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
 		super.getSprite().setSize(meter*this.getSize(), meter*this.getSize());
-		super.getSprite().setColor(super.getColor());
+		super.getSprite().setColor(playerColor);
 
 		this.thrust = false;
 		Texture tempTexture = new Texture(Gdx.files.internal(((ShipType)type.getSubType()).getSprite2Path()));
@@ -78,7 +79,7 @@ public class Ship extends Entity{
 		this.sprite.flip(false, true);
 		this.sprite.setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
 		this.sprite.setSize(meter*this.getSize(), meter*this.getSize());							//size needs to come from the type
-		this.sprite.setColor(super.getColor());
+		this.sprite.setColor(playerColor);
 
 	}
 

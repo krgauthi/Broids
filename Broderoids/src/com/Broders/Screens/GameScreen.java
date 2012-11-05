@@ -86,7 +86,7 @@ public class GameScreen implements Screen{
 		font = this.myGame.font;
 		font.setScale(.25f);
 
-		CoreLogic.initCore();
+		CoreLogic.initCore(game);
 
 		myGame.debugMode = m;				//TODO add Debug Setting @mike
 

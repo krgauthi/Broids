@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
@@ -30,6 +31,10 @@ public class BaseGame extends Game {
 	public double exitBuffer;
 	public boolean epileptic;
 	public boolean debugMode;
+	public int difficulty;
+	public Color GameColor;		
+	public Color playerColor;	//TODO ref/move in new player class?
+	
 	
 	/*
 	 * (non-Javadoc)
@@ -43,6 +48,10 @@ public class BaseGame extends Game {
 	exitBuffer = 1;
 	epileptic = false;
 	debugMode = false;
+	difficulty = 5;
+	GameColor = Color.WHITE;
+	playerColor = Color.CYAN;
+	
 	font = new BitmapFont(Gdx.files.internal(Settings.data_path + "smallfonts.fnt"), Gdx.files.internal(Settings.data_path + "smallfonts_0.png"), false);
 	
 	Gdx.input.setCatchBackKey(true);

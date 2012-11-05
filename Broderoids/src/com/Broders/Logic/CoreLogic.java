@@ -1,6 +1,7 @@
 package com.Broders.Logic;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
@@ -13,6 +14,7 @@ import com.Broders.Entities.Bullet;
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.EntityType;
 import com.Broders.Entities.Ship;
+import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -36,16 +38,21 @@ public class CoreLogic {
 	private static Ship localPlayer;
 	private static float width;
 	private static float height;
+	private static BaseGame myGame;
+	private static Random rand;
 
 	private CoreLogic(){};
 
 	/**
 	 * Initializes the game core for use.
 	 */
-	public static void initCore(){
+	public static void initCore(BaseGame game){
+		myGame = game;
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, false);
 		entities = new OrderedMap<String, Entity>();
+
+		rand = new Random(69);
 
 		//make these scale to the aspect ratio
 		width = 160f;
@@ -57,11 +64,20 @@ public class CoreLogic {
 		 */
 		String clientID = "000";		// possibly let server handle clientID generation somehow?
 		String instanceID = "0000";		// check map to see how many of this type of entity already exist
-		localPlayer = new Ship(clientID + instanceID, EntityType.SHIP);
+		localPlayer = new Ship(clientID + instanceID, EntityType.SHIP,myGame.playerColor);
 		entities.put(localPlayer.toString(), localPlayer);
 	}
 
 	public static void update(float delta){
+
+
+		if(getAsteroids().size <= 0){
+			for(int i = 0; i < myGame.difficulty; i++){
+				//Spawn Broids
+			}
+		}
+
+
 		//Screen wrapping
 		if(localPlayer.getX() < -4){			//make it the size of the ship
 			localPlayer.teleport(width+3, localPlayer.getY());
@@ -80,8 +96,8 @@ public class CoreLogic {
 		}
 
 		localPlayer.setThrust(false);
-		
-		
+
+
 		world.step(delta, 3, 8);
 
 	}
@@ -95,7 +111,7 @@ public class CoreLogic {
 	 */
 	public static void execute(float delta, InputDir in){
 
-		
+
 		if(in.equals("left")){
 			localPlayer.getBody().applyTorque(10.0f);				//20 was obnoxious on android device make this adjustable in settings?
 		}else if(in.equals("right")){
@@ -107,7 +123,7 @@ public class CoreLogic {
 			Vector2 p = localPlayer.getBody().getWorldCenter();
 			localPlayer.getBody().applyForce(f, p);
 		}
-		
+
 		if(in.equals("shoot")){
 			//TODO have the localplayer shoot a bullet
 		}

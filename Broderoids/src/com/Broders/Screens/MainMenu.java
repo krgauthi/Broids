@@ -113,12 +113,15 @@ public class MainMenu implements Screen{
 			//make hit boxes
 			if(x >= .55 && x <= .82){
 				
-				//single player game X 650-850 Y 180 - 230
+				// single player game X 650-850 Y 180 - 230
 				if(y >= .20 && y <= .28){
+					// Single Player
 					myGame.setScreen(new GameScreen(this.myGame,false));
 				}else if(y >= .32 && y <= .43){
+					// Multiplayer
 					myGame.setScreen(new MultiLobby(this.myGame));
 				}else if(y >= .48 && y <= .60){
+					// Settings
 					myGame.setScreen(new SettingsScreen(this.myGame, this));
 				}
 			}

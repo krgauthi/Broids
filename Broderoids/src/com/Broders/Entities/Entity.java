@@ -2,6 +2,7 @@ package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -23,6 +24,10 @@ public abstract class Entity {
 	private EntityType type;
 	private Body body;
 	private Sprite sprite;
+	
+	//Extras
+	private float size;
+	private Color color;
 	
 	//save these for teleportation
 	private BodyDef bodDef;
@@ -124,7 +129,31 @@ public abstract class Entity {
 		Texture texture = new Texture(Gdx.files.internal(sp));
 		this.sprite = new Sprite(texture);
 	}
-
+	
+	/**
+	 * returns the size of the Entity in meters
+	 * @return size in meters
+	 */
+	public float getSize(){
+		return this.size;	
+	}
+	
+	/**
+	 * Sets the size of the Entity in meters
+	 * @param s size of Entity in meters
+	 */
+	public void setSize(float s){
+		this.size = s;
+	}
+	
+	public Color getColor(){
+		return this.color;
+	}
+	
+	public void setColor(Color c){
+		this.color = c;
+	}
+	
 	/**
 	 * Draws this Entity on the screen
 	 * 

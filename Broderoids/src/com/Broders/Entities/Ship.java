@@ -24,15 +24,20 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 public class Ship extends Entity{	
 
 	private Boolean thrust;
+	private Boolean shooting;
 	private Sprite sprite;
+	
+	//TODO implement method for sound shooting and death sound
+
 
 	/**
 	 * Initializes a Ship by creating the appropriate physical body and sprite set.
 	 * 
 	 * @param	id		Used to uniquely identify this entity
 	 * @param	type	The type of this entity
+	 * @param playerColor 
 	 */
-	public Ship(String id, EntityType type) {
+	public Ship(String id, EntityType type, Color playerColor) {
 		super(id, type);		
 
 		Vector2 vertices[] = new Vector2[3];
@@ -49,29 +54,35 @@ public class Ship extends Entity{
 
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;
-		bodDef.angularDamping = 5.0f;
-		bodDef.linearDamping = 0.1f;
+		bodDef.angularDamping = 40.0f;
+		bodDef.linearDamping = 0.0f;
 
 		bodDef.position.set(CoreLogic.getWidth()/2, CoreLogic.getHeight()/2);
 		bodDef.angle = MathUtils.PI;
 		bodDef.allowSleep = false;
 		super.createBody(bodDef, fixDef);
 		
-		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeight();			
+		super.setSize(((ShipType)type.getSubType()).getSize());
+		super.setColor(playerColor);
+		
+		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeightScreen();			
 
+		System.out.println(meter);
+		
 		super.setSprite(((ShipType)type.getSubType()).getSprite1Path());
 		super.getSprite().flip(false, true);
-		super.getSprite().setOrigin((meter*6)/2, (meter*6)/2);
-		super.getSprite().setSize(meter*6, meter*6);
-		super.getSprite().setColor(Color.MAGENTA);
+		super.getSprite().setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
+		super.getSprite().setSize(meter*this.getSize(), meter*this.getSize());
+		super.getSprite().setColor(playerColor);
 
 		this.thrust = false;
 		Texture tempTexture = new Texture(Gdx.files.internal(((ShipType)type.getSubType()).getSprite2Path()));
 		this.sprite = new Sprite(tempTexture);
 		this.sprite.flip(false, true);
-		this.sprite.setOrigin((meter*6)/2, (meter*6)/2);
-		this.sprite.setSize(meter*6, meter*6);							//size needs to come from the type
-		this.sprite.setColor(Color.MAGENTA);
+		this.sprite.setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
+		this.sprite.setSize(meter*this.getSize(), meter*this.getSize());							//size needs to come from the type
+		this.sprite.setColor(playerColor);
+
 	}
 
 	/**
@@ -91,6 +102,23 @@ public class Ship extends Entity{
 	public void setThrust(boolean bool){
 		this.thrust = bool;
 	}
+	/**
+	 * Checks if the ship is currently shooting
+	 * 
+	 * @return true if shooting false if not
+	 */
+	public Boolean getShooting(){
+		return this.shooting;
+	}
+	
+	/**
+	 * Sets if the the ship is shooting or not
+	 * 
+	 * @param bool true if shooting false if not shooting
+	 */
+	public void setShooting(boolean bool){
+		this.shooting = bool;
+	}
 
 	/**
 	 * @see Entity#Draw(SpriteBatch)
@@ -101,15 +129,15 @@ public class Ship extends Entity{
 		float screenWidth =  Gdx.graphics.getWidth();
 		float screenHeight =  Gdx.graphics.getHeight();
 
-		float x = super.getBody().getPosition().x;
-		float y = super.getBody().getPosition().y;
+		float x = super.getBody().getPosition().x - (this.getSize()/2f);
+		float y = super.getBody().getPosition().y - (this.getSize()/2f);
 
 		float posX;
 		float posY;
 
 		//this will only work for single player
-		posX = screenWidth*(x/CoreLogic.getWidth());
-		posY =  screenHeight*(y/CoreLogic.getHeight());
+		posX = screenWidth*((x-CoreLogic.getViewPortX())/CoreLogic.getWidthScreen());
+		posY =  screenHeight*((y-CoreLogic.getViewPortY())/CoreLogic.getHeightScreen());
 
 
 		if(this.getThrust()){

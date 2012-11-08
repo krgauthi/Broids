@@ -1,5 +1,7 @@
 package com.Broders.Screens;
 
+import java.util.Random;
+
 import com.Broders.Logic.Pos;
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
@@ -23,14 +25,27 @@ public class MultiLobby implements Screen{
 	private BaseGame myGame;
 	private BitmapFont font;
 
-	private Texture white;
 
-	float buff;
+
+	private Texture white;
+	private Texture arrow;
 	
 	private Sprite whiteSprite;
+	private Sprite arrowSprite;
 
 	float xx;
 	float yy;
+	float buff;
+
+	//Test Variables?
+	int gameCount;
+	int page;
+	int curPage;
+	int selectedGame;
+	float testing = 0;;
+
+	String out;
+
 
 	public MultiLobby(BaseGame game){
 		this.myGame = game;
@@ -43,13 +58,22 @@ public class MultiLobby implements Screen{
 		xx = Gdx.graphics.getWidth();
 		yy = Gdx.graphics.getHeight();
 
+		//temp
+		gameCount = 17;
+		page = gameCount/5;
+		curPage = 0;
+		
+		selectedGame = -1;
+
+
+
 	}
 
 	@Override
 	public void render(float delta) {
-		handleInput(delta);
-		update(delta);
 
+		update(delta);
+		handleInput(delta);
 		//server interactions here?
 
 		paint(delta);
@@ -80,25 +104,51 @@ public class MultiLobby implements Screen{
 		whiteSprite.setSize(xx*.2f, yy*.1f);
 		whiteSprite.setPosition(xx*.02f, yy*.85f);
 		whiteSprite.draw(spriteBatch);
-		
+
 		whiteSprite.setSize(xx*.2f, yy*.1f);
 		whiteSprite.setPosition(xx*.24f, yy*.85f);
 		whiteSprite.draw(spriteBatch);
-		
+
 
 		//host and join game button negative
 		whiteSprite.setColor(Color.BLACK);
 		whiteSprite.setSize(xx*.18f, yy*.08f);
 		whiteSprite.setPosition(xx*.03f, yy*.86f);
 		whiteSprite.draw(spriteBatch);
-		
+
 		whiteSprite.setSize(xx*.18f, yy*.08f);
 		whiteSprite.setPosition(xx*.25f, yy*.86f);
 		whiteSprite.draw(spriteBatch);
-		
-		
-		
 
+		//tabs
+		if(page > 0){							//TODO Ref Games from server
+
+			if(curPage < page){			//display both tabs
+
+				arrowSprite.setPosition(xx*.005f, yy*.19f);
+				arrowSprite.draw(spriteBatch);
+				
+				out = String.format("%d ", curPage+1);
+				font.setColor(Color.BLACK);
+				font.draw(spriteBatch, out, xx*.07f, yy*.4f);
+				font.setColor(Color.WHITE);
+
+			}
+
+			if(curPage > 0){
+				//you are on the last tab display the top
+				arrowSprite.setRotation(180);
+				arrowSprite.setPosition(xx*.01f, yy*.5f);
+				arrowSprite.draw(spriteBatch);
+				arrowSprite.setRotation(0);
+				
+				out = String.format("%d ", curPage);
+				font.setColor(Color.BLACK);
+				font.draw(spriteBatch, out, xx*.07f, yy*.6f);
+				font.setColor(Color.WHITE);
+			}
+
+		}
 
 
 
@@ -107,6 +157,22 @@ public class MultiLobby implements Screen{
 		font.draw(spriteBatch, "Join", xx*.31f, yy*.93f);
 
 		font.draw(spriteBatch, "Host", xx*.09f, yy*.93f);
+
+		whiteSprite.setSize(xx*.85f, yy*.01f);
+		whiteSprite.setColor(Color.WHITE);
+		//game list
+		for(int i = 0; i < (gameCount-(curPage*5)) && i < 5;i++){
+
+
+			whiteSprite.setPosition(xx*.15f, yy*(.8f - (.16f*((float)i+1))));
+			whiteSprite.draw(spriteBatch);
+
+			out = String.format("Total Players: %d ", i);							//TODO ref total players
+			font.draw(spriteBatch, out, xx*.7f,yy*(.73f - (.16f*i)));
+			
+			font.draw(spriteBatch, "Name of Game", xx*.2f,yy*(.73f - (.16f*i)));	//TODO ref Name of Game
+
+		}
 
 		tail.draw(spriteBatch);
 
@@ -136,11 +202,46 @@ public class MultiLobby implements Screen{
 				}else if(x >= .02 && x <= .22){
 					myGame.setScreen(new MultiHost(this.myGame));
 				}
+			}else if(y >= .55 && y <= .77){
+				if(x >= .037 && x <= .116){
+					if(curPage < page){
+						curPage++;
+						selectedGame = -1;
+					}
+				}
+			}else if(y >= .288 && y <= .498){
+				if(x >= .038 && x <= .116){
+					if(curPage > 0){
+						selectedGame = -1;
+						curPage--;
+					}
+						
+				}
 			}
 		}
 
 		if(Gdx.input.isTouched()){
 			tail.add(new Pos(Gdx.input.getX(),Gdx.input.getY()));
+		}
+
+
+		if(Gdx.input.isKeyPressed(Keys.UP)){
+			if(curPage > 0){
+				curPage--;
+				testing = testing +1;
+			}
+		}
+
+		if(Gdx.input.isKeyPressed(Keys.DOWN)){
+			if(curPage < page){
+				curPage++;
+			}
+		}
+
+		if(Gdx.input.isKeyPressed(Keys.F1)){
+			double x = ((float)Gdx.input.getX()/(float)Gdx.graphics.getWidth());
+			double y = ((float)Gdx.input.getY()/(float)Gdx.graphics.getHeight());
+			System.out.println("Mouse Pos: "+x+" "+y);
 		}
 
 		//Backout to main menu
@@ -167,6 +268,11 @@ public class MultiLobby implements Screen{
 		white = new Texture(Gdx.files.internal("data/whitebox.png"));
 		whiteSprite = new Sprite(white,32,32);
 		whiteSprite.setColor(Color.WHITE);
+		
+		arrow = new Texture(Gdx.files.internal("data/Arrow.png"));
+		arrowSprite = new Sprite(arrow,1024,1024);
+		arrowSprite.setOrigin((yy*.25f)/2f, (yy*.25f)/2f);
+		arrowSprite.setSize(yy*.25f, yy*.25f);
 
 		spriteBatch = new SpriteBatch();
 

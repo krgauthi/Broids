@@ -31,6 +31,7 @@ public class BaseGame extends Game {
 	public double exitBuffer;
 	public boolean epileptic;
 	public boolean debugMode;
+	public boolean multiplayer;
 	public int difficulty;
 	public Color GameColor;		
 	public Color playerColor;	//TODO ref/move in new player class?
@@ -47,10 +48,11 @@ public class BaseGame extends Game {
 	tailLength = 5;
 	exitBuffer = 1;
 	epileptic = false;
-	debugMode = false;
 	difficulty = 5;
+	multiplayer = false;
 	GameColor = Color.WHITE;
 	playerColor = Color.CYAN;
+	debugMode = multiplayer;
 	
 	font = new BitmapFont(Gdx.files.internal(Settings.data_path + "smallfonts.fnt"), Gdx.files.internal(Settings.data_path + "smallfonts_0.png"), false);
 	

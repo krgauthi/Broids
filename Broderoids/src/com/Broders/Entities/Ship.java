@@ -65,8 +65,10 @@ public class Ship extends Entity{
 		super.setSize(((ShipType)type.getSubType()).getSize());
 		super.setColor(playerColor);
 		
-		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeight();			
+		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeightScreen();			
 
+		System.out.println(meter);
+		
 		super.setSprite(((ShipType)type.getSubType()).getSprite1Path());
 		super.getSprite().flip(false, true);
 		super.getSprite().setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
@@ -134,8 +136,8 @@ public class Ship extends Entity{
 		float posY;
 
 		//this will only work for single player
-		posX = screenWidth*(x/CoreLogic.getWidth());
-		posY =  screenHeight*(y/CoreLogic.getHeight());
+		posX = screenWidth*((x-CoreLogic.getViewPortX())/CoreLogic.getWidthScreen());
+		posY =  screenHeight*((y-CoreLogic.getViewPortY())/CoreLogic.getHeightScreen());
 
 
 		if(this.getThrust()){

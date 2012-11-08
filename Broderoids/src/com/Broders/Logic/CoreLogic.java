@@ -36,11 +36,17 @@ public class CoreLogic {
 	private static World world;
 	private static OrderedMap<String, Entity> entities;
 	private static Ship localPlayer;
-	private static float width;
-	private static float height;
 	private static BaseGame myGame;
-	private static Random rand;
+	
+	private static float width;						//this is the map size
+	private static float height;
 
+	private static float widthScreen;				//screen size in meters
+	private static float heightScreen;
+	
+	private static float viewPortX;
+	private static float viewPortY;
+	
 	private CoreLogic(){};
 
 	/**
@@ -52,11 +58,30 @@ public class CoreLogic {
 		world = new World(gravity, false);
 		entities = new OrderedMap<String, Entity>();
 
-		rand = new Random(69);
-
+		
 		//make these scale to the aspect ratio
-		width = 160f;
-		height = 90f;
+		if(game.debugMode){
+			width = 1000f;
+			height = 1000f;
+			
+			widthScreen = 160f;
+			heightScreen = 90f;
+			
+			viewPortX = (width/2)-(widthScreen/2f);
+			viewPortY = (height/2) - (heightScreen/2f);
+		}else{
+			width = 160f;
+			height = 90f;
+			
+			widthScreen = 160f;
+			heightScreen = 90f;
+			
+			viewPortX = (width/2) - (widthScreen/2f);
+			viewPortY = (height/2) - (heightScreen/2f);
+		}
+		
+		
+		
 
 		/* Just putting these here as an example.
 		 * entity IDs will be of the following format:
@@ -70,13 +95,17 @@ public class CoreLogic {
 
 	public static void update(float delta){
 
+		if(!myGame.multiplayer){
 
-		if(getAsteroids().size <= 0){
-			for(int i = 0; i < myGame.difficulty; i++){
-				//Spawn Broids
+			if(getAsteroids().size <= 0){
+				for(int i = 0; i < myGame.difficulty; i++){
+					//Spawn Broids
+				}
 			}
-		}
+			
+			
 
+		}
 
 		//Screen wrapping
 		if(localPlayer.getX() < -4){			//make it the size of the ship
@@ -234,6 +263,30 @@ public class CoreLogic {
 	 */
 	public static float getHeight(){
 		return height;
+	}
+	
+	public static float getWidthScreen(){
+		return widthScreen;
+	}
+	
+	public static float getHeightScreen(){
+		return heightScreen;
+	}
+	
+	public static float getViewPortX(){
+		return viewPortX;
+	}
+	
+	public static float getViewPortY(){
+		return viewPortY;
+	}
+	
+	public static void adjViewPortX(float adj){
+		viewPortX = viewPortX + adj;
+	}
+	
+	public static void adjViewPortY(float adj){
+		viewPortY = viewPortY + adj;
 	}
 
 }

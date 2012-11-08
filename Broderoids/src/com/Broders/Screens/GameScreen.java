@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Shape.Type;
 import com.badlogic.gdx.utils.ObjectMap.Entry;
 import com.badlogic.gdx.utils.OrderedMap;
+import com.sun.jndi.url.corbaname.corbanameURLContextFactory;
 
 
 
@@ -45,6 +46,7 @@ public class GameScreen implements Screen{
 	private Texture shieldBlockTexture;
 
 	private Texture livesTexture;
+	private Texture white;
 
 	private Sprite dPad;
 	private Sprite fireButton;
@@ -54,6 +56,7 @@ public class GameScreen implements Screen{
 	private Sprite healthBlock; 
 	private Sprite shieldBar;
 	private Sprite shieldBlock;
+	private Sprite whiteSprite;
 
 	private Sprite lives;				//TODO reference in player/ship
 
@@ -86,9 +89,12 @@ public class GameScreen implements Screen{
 		font = this.myGame.font;
 		font.setScale(.25f);
 
-		CoreLogic.initCore();
-
 		myGame.debugMode = m;				//TODO add Debug Setting @mike
+		myGame.multiplayer = m;
+
+		CoreLogic.initCore(game);
+
+
 
 		if(myGame.debugMode){
 			debug1 = new Tail(50,Color.MAGENTA);
@@ -142,23 +148,7 @@ public class GameScreen implements Screen{
 		}
 
 
-		if(myGame.debugMode){
-			font.setScale(.25f);
-			String out;
-			out = String.format("Ship Pos in Meters: (%f,%f) ", CoreLogic.getLocalShip().getBody().getPosition().x, CoreLogic.getLocalShip().getBody().getPosition().y);
-			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .21f));
 
-			out = String.format("Ship angle in Radians: %f", CoreLogic.getLocalShip().getBody().getAngle());
-			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .25f));
-			out = String.format("FPS: %d", Gdx.graphics.getFramesPerSecond());
-			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .29f));
-			if(CoreLogic.getLocalShip().getThrust())
-				font.draw(spriteBatch, "Thruster", xx * .01f, yy-(yy * .33f));
-			debug1.draw(spriteBatch);
-			debug2.draw(spriteBatch);
-			if(CoreLogic.getLocalShip().getShooting())
-				font.draw(spriteBatch, "Pew Pew", xx * .01f, yy-(yy * .37f));
-		}
 
 
 		//If Android
@@ -203,6 +193,43 @@ public class GameScreen implements Screen{
 
 		}
 
+
+
+		if(myGame.debugMode){
+			font.setScale(.25f);
+			String out;
+			out = String.format("Ship Pos in Meters: (%f,%f) ", CoreLogic.getLocalShip().getBody().getPosition().x, CoreLogic.getLocalShip().getBody().getPosition().y);
+			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .21f));
+			out = String.format("ViewPort Pos in Meters: (%f,%f) ", CoreLogic.getViewPortX(), CoreLogic.getViewPortY());
+			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .25f));
+			out = String.format("Ship angle in Radians: %f", CoreLogic.getLocalShip().getBody().getAngle());
+			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .29f));
+			out = String.format("FPS: %d", Gdx.graphics.getFramesPerSecond());
+			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .33f));
+			if(CoreLogic.getLocalShip().getThrust())
+				font.draw(spriteBatch, "Thruster", xx * .01f, yy-(yy * .37f));
+			if(CoreLogic.getLocalShip().getShooting())
+				font.draw(spriteBatch, "Pew Pew", xx * .01f, yy-(yy * .4f));
+			whiteSprite.setSize(xx, yy*.001f);
+
+			debug1.draw(spriteBatch);
+			debug2.draw(spriteBatch);
+
+			float offsetX = CoreLogic.getViewPortX()%10;
+			float offsetY = CoreLogic.getViewPortY()%10;
+
+			for(int i = 0; i < CoreLogic.getHeightScreen(); i = i+10){
+				whiteSprite.setPosition(0, yy*((i+offsetY)/CoreLogic.getHeightScreen()));
+				whiteSprite.draw(spriteBatch);
+			}
+			whiteSprite.setSize(xx*.001f, yy);
+			for(int i = 0; i < CoreLogic.getWidthScreen(); i = i+10){
+				whiteSprite.setPosition(xx*((i+offsetX)/CoreLogic.getWidthScreen()), 0);
+				whiteSprite.draw(spriteBatch);
+			}
+
+
+		}
 
 		spriteBatch.end();
 
@@ -249,6 +276,26 @@ public class GameScreen implements Screen{
 
 			if(Gdx.input.isTouched(1)){
 				debug2.add(new Pos(Gdx.input.getX(1),Gdx.input.getY(1)));
+			}
+
+			if(Gdx.input.isKeyPressed(Keys.A)){
+				if(CoreLogic.getViewPortX() > 0)
+					CoreLogic.adjViewPortX(-1f);
+			}
+
+			if(Gdx.input.isKeyPressed(Keys.D)){
+				if(CoreLogic.getViewPortX() < CoreLogic.getWidth() )
+					CoreLogic.adjViewPortX(1f);
+			}
+
+			if(Gdx.input.isKeyPressed(Keys.W)){
+				if(CoreLogic.getViewPortY() < CoreLogic.getHeight())
+				CoreLogic.adjViewPortY(1f);
+			}
+			
+			if(Gdx.input.isKeyPressed(Keys.S)){
+				if(CoreLogic.getViewPortY() > 0)
+				CoreLogic.adjViewPortY(-1f);
 			}
 
 		}
@@ -394,6 +441,10 @@ public class GameScreen implements Screen{
 		lives = new Sprite(livesTexture,512,512);
 		lives.setSize(yy*.05f,yy*.05f);
 
+		white = new Texture(Gdx.files.internal("data/whitebox.png"));
+		whiteSprite = new Sprite(white,32,32);
+
+
 		if(Gdx.app.getVersion() > 0){
 			dPadTexture = new Texture(Gdx.files.internal("data/leftrightpad.png"));
 			dPad = new Sprite(dPadTexture,512,512);
@@ -420,6 +471,7 @@ public class GameScreen implements Screen{
 	public void hide() {
 		// TODO @Kris Look to see if there is a way to wipe this object from memory when you leave the game
 		myGame.debugMode = false;
+		myGame.multiplayer = false;
 
 	}
 

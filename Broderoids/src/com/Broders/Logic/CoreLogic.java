@@ -1,6 +1,7 @@
 package com.Broders.Logic;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
@@ -13,6 +14,7 @@ import com.Broders.Entities.Bullet;
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.EntityType;
 import com.Broders.Entities.Ship;
+import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -34,22 +36,52 @@ public class CoreLogic {
 	private static World world;
 	private static OrderedMap<String, Entity> entities;
 	private static Ship localPlayer;
-	private static float width;
+	private static BaseGame myGame;
+
+	private static float width;						//this is the map size
 	private static float height;
+
+	private static float widthScreen;				//screen size in meters
+	private static float heightScreen;
+
+	private static float viewPortX;
+	private static float viewPortY;
 
 	private CoreLogic(){};
 
 	/**
 	 * Initializes the game core for use.
 	 */
-	public static void initCore(){
+	public static void initCore(BaseGame game){
+		myGame = game;
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, false);
 		entities = new OrderedMap<String, Entity>();
 
+
 		//make these scale to the aspect ratio
-		width = 160f;
-		height = 90f;
+		if(game.debugMode){
+			width = 1000f;
+			height = 1000f;
+
+			widthScreen = 160f;
+			heightScreen = 90f;
+
+			viewPortX = (width/2)-(widthScreen/2f);
+			viewPortY = (height/2) - (heightScreen/2f);
+		}else{
+			width = 160f;
+			height = 90f;
+
+			widthScreen = 160f;
+			heightScreen = 90f;
+
+			viewPortX = (width/2) - (widthScreen/2f);
+			viewPortY = (height/2) - (heightScreen/2f);
+		}
+
+
+
 
 		/* Just putting these here as an example.
 		 * entity IDs will be of the following format:
@@ -57,31 +89,79 @@ public class CoreLogic {
 		 */
 		String clientID = "000";		// possibly let server handle clientID generation somehow?
 		String instanceID = "0000";		// check map to see how many of this type of entity already exist
-		localPlayer = new Ship(clientID + instanceID, EntityType.SHIP);
+		localPlayer = new Ship(clientID + instanceID, EntityType.SHIP,myGame.playerColor);
 		entities.put(localPlayer.toString(), localPlayer);
 	}
 
 	public static void update(float delta){
+
+		if(!myGame.multiplayer){
+
+			if(getAsteroids().size <= 0){
+				for(int i = 0; i < myGame.difficulty; i++){
+					//Spawn Broids
+				}
+			}
+
+
+
+		}
+
+		//viewport logic
+		if((localPlayer.getX()-viewPortX)/widthScreen > (1-myGame.bounds)){
+			if(viewPortX <= width-widthScreen){
+				float target = (((localPlayer.getX()-viewPortX)/widthScreen)-(1-myGame.bounds))/(myGame.bounds);
+				adjViewPortX(10*target);
+			}
+		}
+		
+		if((localPlayer.getX()-viewPortX)/widthScreen < myGame.bounds){
+			if(viewPortX > 0){
+				float target = ((myGame.bounds-(localPlayer.getX()-viewPortX)/widthScreen))/(myGame.bounds);
+				adjViewPortX(-10*target);
+			}
+		}
+		
+		if((localPlayer.getY()-viewPortY)/heightScreen > (1-myGame.bounds)){
+			if(viewPortY <= height-heightScreen){
+				float target = (((localPlayer.getY()-viewPortY)/heightScreen)-(1-myGame.bounds))/(myGame.bounds);
+				adjViewPortY(10*target);
+			}
+		}
+		
+		if((localPlayer.getY()-viewPortY)/heightScreen < myGame.bounds){
+			if(viewPortY > 0){
+				float target = ((myGame.bounds-(localPlayer.getY()-viewPortY)/heightScreen))/(myGame.bounds);
+				adjViewPortY(-10*target);
+			}
+		}
+		
+
+
 		//Screen wrapping
 		if(localPlayer.getX() < -4){			//make it the size of the ship
 			localPlayer.teleport(width+3, localPlayer.getY());
+			viewPortX = width-widthScreen;
 		}
 
 		if(localPlayer.getX() > width+4){
 			localPlayer.teleport(-3f, localPlayer.getY());
+			viewPortX = 0;
 		}
 
 		if(localPlayer.getY() < -4){
 			localPlayer.teleport(localPlayer.getX(), height+3);
+			viewPortY = height-heightScreen;
 		}
 
 		if(localPlayer.getY() > height+4){
 			localPlayer.teleport(localPlayer.getX(), -3f);
+			viewPortY = 0;
 		}
 
 		localPlayer.setThrust(false);
-		
-		
+
+
 		world.step(delta, 3, 8);
 
 	}
@@ -95,7 +175,7 @@ public class CoreLogic {
 	 */
 	public static void execute(float delta, InputDir in){
 
-		
+
 		if(in.equals("left")){
 			localPlayer.getBody().applyTorque(200.0f);				//20 was obnoxious on android device make this adjustable in settings?
 		}else if(in.equals("right")){
@@ -107,7 +187,7 @@ public class CoreLogic {
 			Vector2 p = localPlayer.getBody().getWorldCenter();
 			localPlayer.getBody().applyForce(f, p);
 		}
-		
+
 		if(in.equals("shoot")){
 			//TODO have the localplayer shoot a bullet
 		}
@@ -218,6 +298,30 @@ public class CoreLogic {
 	 */
 	public static float getHeight(){
 		return height;
+	}
+
+	public static float getWidthScreen(){
+		return widthScreen;
+	}
+
+	public static float getHeightScreen(){
+		return heightScreen;
+	}
+
+	public static float getViewPortX(){
+		return viewPortX;
+	}
+
+	public static float getViewPortY(){
+		return viewPortY;
+	}
+
+	public static void adjViewPortX(float adj){
+		viewPortX = viewPortX + adj;
+	}
+
+	public static void adjViewPortY(float adj){
+		viewPortY = viewPortY + adj;
 	}
 
 }

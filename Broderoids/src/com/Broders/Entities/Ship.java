@@ -129,8 +129,8 @@ public class Ship extends Entity{
 		float screenWidth =  Gdx.graphics.getWidth();
 		float screenHeight =  Gdx.graphics.getHeight();
 
-		float x = super.getBody().getPosition().x;
-		float y = super.getBody().getPosition().y;
+		float x = super.getBody().getPosition().x - (this.getSize()/2f);
+		float y = super.getBody().getPosition().y - (this.getSize()/2f);
 
 		float posX;
 		float posY;

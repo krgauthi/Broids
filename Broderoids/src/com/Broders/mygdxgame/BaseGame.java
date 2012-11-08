@@ -35,6 +35,7 @@ public class BaseGame extends Game {
 	public int difficulty;
 	public Color GameColor;		
 	public Color playerColor;	//TODO ref/move in new player class?
+	public float bounds;
 	
 	
 	/*
@@ -53,6 +54,7 @@ public class BaseGame extends Game {
 	GameColor = Color.WHITE;
 	playerColor = Color.CYAN;
 	debugMode = multiplayer;
+	bounds = .25f;
 	
 	font = new BitmapFont(Gdx.files.internal(Settings.data_path + "smallfonts.fnt"), Gdx.files.internal(Settings.data_path + "smallfonts_0.png"), false);
 	

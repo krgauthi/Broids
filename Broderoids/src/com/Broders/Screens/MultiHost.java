@@ -7,15 +7,24 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class MultiHost implements Screen{
 
 	private BaseGame myGame;
+	private SpriteBatch spriteBatch;
+	private BitmapFont font;
 	
-	
+	private float xx;
+	private float yy;
+
 
 	public MultiHost(BaseGame game){
 		this.myGame = game;
+		
+		xx = Gdx.graphics.getWidth();
+		yy = Gdx.graphics.getHeight();
 	}
 
 	@Override
@@ -29,8 +38,10 @@ public class MultiHost implements Screen{
 
 	private void paint(float delta) {
 		GL10 g1 = Gdx.graphics.getGL10();
-		Gdx.gl.glClearColor(0, 0, 1, 1); 
+		Gdx.gl.glClearColor(0, 0, 0, 1); 
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		font.draw(spriteBatch, "Mulipler Options", xx*.3f, yy*.9f);
 
 	}
 
@@ -44,7 +55,7 @@ public class MultiHost implements Screen{
 		if((Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACK))){
 			myGame.setScreen(new MultiLobby(this.myGame));
 		}
-		
+
 
 	}
 
@@ -56,7 +67,9 @@ public class MultiHost implements Screen{
 
 	@Override
 	public void show() {
-		
+		spriteBatch = new SpriteBatch();
+
+		font = myGame.font;
 
 	}
 

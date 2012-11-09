@@ -25,7 +25,6 @@ public class SplashScreen implements Screen{
     	
     	this.myGame = g;
     	
-    	
     }
     
     

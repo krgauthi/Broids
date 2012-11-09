@@ -1,7 +1,7 @@
 package com.Broders.Screens;
 
-import com.Broders.Entities.Ship;
-import com.Broders.Logic.CoreLogic;
+import java.text.DecimalFormat;
+
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.Gdx;
@@ -12,55 +12,47 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class SettingsScreen implements Screen {
 
 	
 	// Array of basic settings, implemented to draw on even intervals
-	private static final String[] settings = {"Music", "Sounds", "Background",
-		"Screen Resolution", "Single Player Difficulty"};
+	private static final String[] settings = { "Music", "Sounds", "Background",
+		"Screen Resolution", "Single Player Difficulty" };
 	
 	private MainMenu main;
 	private BaseGame game;
 	private Tail tail;
 	
 	private SpriteBatch spriteBatch;
-	
-	private Texture titleTex;
-	private Texture musicVolTex;
-	private Texture soundVolTex;
-	private Texture backTex;
-	private Texture backgroundTex;
-	private Texture resTex;
-	private Texture debugTex;
-	private Texture colorTex;
-	private Texture diffTex;
-	private Texture nameTex;
-	
-	private Sprite titleSprite;
-	private Sprite musicVolSprite;
-	private Sprite soundVolSprite;
-	private Sprite backSprite;
-	private Sprite backgroundSprite;
-	private Sprite resSprite;
-	private Sprite debugSprite;
-	private Sprite colorSprite;
-	private Sprite diffSprite;
-	private Sprite nameSprite;
+
+	private boolean musicBool;
+	private boolean soundBool;
+	private boolean volBool;
+	private boolean debugBool;
+	private boolean screenResBool;
+	private boolean backgroundBool;
+	private boolean sPDiffBool;
+	private boolean usernameBool;
 	
 	private BitmapFont font;
 	
 	private float buff;
 	
+	private double perc_X;
+	private double perc_Y;	
 	
 	public SettingsScreen(BaseGame g, MainMenu m) {
 		this.main = m;
 		this.game = g;
 		game.setSettings(this);
-		tail = new Tail(game.tailLength,Color.WHITE);
+		tail = new Tail(game.tailLength, Color.WHITE);
+		
+		// loadSettings();
+		
 	}
 	
 	@Override
@@ -76,38 +68,54 @@ public class SettingsScreen implements Screen {
 		gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		spriteBatch.begin();
 		
+		if (game.debugMode) {
+		// Debug Text
+		font.draw(spriteBatch, perc_X + " " + perc_Y, (float) (game.screenWidth * .01),
+				(float) (game.screenHeight * .99));
+		}
+
+		// Option Texts
+
 		// Title
-		font.setScale(.5f);
+		font.setScale(.75f);
 		font.draw(spriteBatch, "Settings", (float) (game.screenWidth * .4), (float) (game.screenHeight * .95));
-		font.setScale(.25f);
+		font.setScale(.5f);
 		
 		// Music
-		font.draw(spriteBatch, "Music: songTitle", (float) (game.screenWidth * .08), (float) (game.screenHeight * .2));
+		font.draw(spriteBatch, "Music: " + musicBool, (float) (game.screenWidth * .08),
+				(float) (game.screenHeight * .2));
 		
+		font.setColor(Color.WHITE);
 		// Sounds
-		font.draw(spriteBatch, "Sounds: soundPack", (float) (game.screenWidth * .08), (float) (game.screenHeight * .4));
+		font.draw(spriteBatch, "Sounds: " + soundBool, (float) (game.screenWidth * .08),
+				(float) (game.screenHeight * .4));
 
 		// Volume
-		font.draw(spriteBatch, "Volume: volLevel", (float) (game.screenWidth * .08), (float) (game.screenHeight * .6));
-		
+		font.draw(spriteBatch, "Volume: " + volBool, (float) (game.screenWidth * .08),
+				(float) (game.screenHeight * .6));
+		 
 		// Background Image
-		font.draw(spriteBatch, "Background: backgroundTitle", (float) (game.screenWidth * .08), (float) (game.screenHeight * .8));
+		font.draw(spriteBatch, "Background: " + backgroundBool,
+				(float) (game.screenWidth * .08), (float) (game.screenHeight * .8));
 		
 		// Screen Resolution
-		font.draw(spriteBatch, "Screen Resolution: screenRes", (float) (game.screenWidth * .50), (float) (game.screenHeight * .8));
+		font.draw(spriteBatch, "Screen Resolution: " + screenResBool,
+				(float) (game.screenWidth * .52), (float) (game.screenHeight * .8));
 		
-		// Debug Text
-		font.draw(spriteBatch, "Music: musicTitle", (float) (game.screenWidth * .50), (float) (game.screenHeight * .6));
+		// Debug Text Option
+		font.draw(spriteBatch, "Debug Text: " + game.debugMode,
+				(float) (game.screenWidth * .52), (float) (game.screenHeight * .6));
 		
 		// Single Player Difficulty
-		font.draw(spriteBatch, "Single Player Difficulty: spDiff", (float) (game.screenWidth * .50), (float) (game.screenHeight * .4));
-
+		font.draw(spriteBatch, "Single Player Difficulty: " + sPDiffBool,
+				(float) (game.screenWidth * .52), (float) (game.screenHeight * .4));
+		
 		// User Name
 		font.setScale(.25f);
-		font.draw(spriteBatch, "Ship Color", (float) (game.screenWidth * .70), (float) (game.screenHeight * .94));
+		font.draw(spriteBatch, "Ship Color", (float) (game.screenWidth * .70),
+				(float) (game.screenHeight * .94));
 		
-		// ShipColor
-		
+		// ShipColor		
 		
 		spriteBatch.end();		
 	}
@@ -122,6 +130,58 @@ public class SettingsScreen implements Screen {
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACK)){
 			game.setScreen(game.getMain());
 		}
+		
+		if(Gdx.input.justTouched()){
+			double x = ((float)Gdx.input.getX()/(float)game.screenWidth);
+			double y = (1.00 - (float)Gdx.input.getY()/(float)game.screenHeight);
+						
+			DecimalFormat twoDForm = new DecimalFormat("##.##");
+			
+			perc_X = Math.abs(Double.valueOf(twoDForm.format(x)));
+			perc_Y = Math.abs(Double.valueOf(twoDForm.format(y)));
+			
+			if (x >= .08 && x <= .46 && y >= .12 && y <= .2) {
+				
+				musicBool = musicBool ? false : true;
+				System.out.println("Music Option set to " + musicBool );
+				
+			} else if (x >= .08 && x <= .46 && y >= .32 && y <= .4) {
+				
+				soundBool = soundBool ? false : true;
+				System.out.println("Sound Option set to " + soundBool);
+				
+			} else if (x >= .08 && x <= .46 && y >= .52 && y <= .6) {
+				
+				volBool = volBool ? false : true;
+				System.out.println("Volume Option set to " + volBool);
+				
+			} else if (x >= .08 && x <= .46 && y >= .72 && y <= .8) {
+				
+				backgroundBool = backgroundBool ? false : true;
+				System.out.println("Background Option set to " + backgroundBool);
+				
+			} else if (x >= .51 && x <= .96 && y >= .72 && y <= .8) {
+			
+				screenResBool = screenResBool ? false : true;
+				System.out.println("Screen Resolution Optio set to " + screenResBool);
+			
+			} else if (x >= .51 && x <= .96 && y >= .52 && y <= .6) {
+				
+				game.debugMode = game.debugMode ? false : true;
+				System.out.println("Debug Text Option set to " + game.debugMode);
+				
+			} else if (x >= .51 && x <= .96 && y >= .32 && y <= .4) {
+				
+				sPDiffBool = sPDiffBool ? false : true;
+				System.out.println("SP Difficulty Option");
+				
+			} else if (false) {
+								
+				System.out.println("Set Username");
+				
+			}
+		}
+		
 	}
 
 	@Override
@@ -136,11 +196,7 @@ public class SettingsScreen implements Screen {
 		
 		spriteBatch = new SpriteBatch();
 		
-		
 		font = game.font;
-		
-		
-
 	}
 
 	@Override

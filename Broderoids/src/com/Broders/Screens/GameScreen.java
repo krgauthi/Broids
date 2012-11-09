@@ -219,12 +219,12 @@ public class GameScreen implements Screen{
 			float offsetY = CoreLogic.getViewPortY()%10;
 
 			for(int i = 0; i < CoreLogic.getHeightScreen(); i = i+10){
-				whiteSprite.setPosition(0, yy*((i+offsetY)/CoreLogic.getHeightScreen()));
+				whiteSprite.setPosition(0, yy*((i+10-offsetY)/CoreLogic.getHeightScreen()));
 				whiteSprite.draw(spriteBatch);
 			}
 			whiteSprite.setSize(xx*.001f, yy);
 			for(int i = 0; i < CoreLogic.getWidthScreen(); i = i+10){
-				whiteSprite.setPosition(xx*((i+offsetX)/CoreLogic.getWidthScreen()), 0);
+				whiteSprite.setPosition(xx*((i+10-offsetX)/CoreLogic.getWidthScreen()), 0);
 				whiteSprite.draw(spriteBatch);
 			}
 

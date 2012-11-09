@@ -3,6 +3,7 @@ package com.Broders.Logic;
 import java.util.HashMap;
 import java.util.Random;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Transform;
@@ -50,6 +51,16 @@ public class CoreLogic {
 	private CoreLogic(){};
 
 	/**
+	 * By the way, this is awful, but it calculates the GCD
+	 */
+	public static int gcd(int p, int q) {
+		if (q == 0) {
+			return p;
+		}
+		return gcd(q, p % q);
+	}
+
+	/**
 	 * Initializes the game core for use.
 	 */
 	public static void initCore(BaseGame game){
@@ -58,30 +69,20 @@ public class CoreLogic {
 		world = new World(gravity, false);
 		entities = new OrderedMap<String, Entity>();
 
+		int gcd = gcd(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		widthScreen = Gdx.graphics.getWidth() / gcd * 10;
+		heightScreen = Gdx.graphics.getHeight() / gcd * 10;
 
-		//make these scale to the aspect ratio
-		if(game.debugMode){
+		if(game.multiplayer){
 			width = 1000f;
 			height = 1000f;
-
-			widthScreen = 160f;
-			heightScreen = 90f;
-
-			viewPortX = (width/2)-(widthScreen/2f);
-			viewPortY = (height/2) - (heightScreen/2f);
 		}else{
-			width = 160f;
-			height = 90f;
-
-			widthScreen = 160f;
-			heightScreen = 90f;
-
-			viewPortX = (width/2) - (widthScreen/2f);
-			viewPortY = (height/2) - (heightScreen/2f);
+			width = widthScreen;
+			height = heightScreen;
 		}
-
-
-
+		
+		viewPortX = (width/2)-(widthScreen/2f);
+		viewPortY = (height/2)-(heightScreen/2f);
 
 		/* Just putting these here as an example.
 		 * entity IDs will be of the following format:
@@ -114,28 +115,28 @@ public class CoreLogic {
 				adjViewPortX(10*target);
 			}
 		}
-		
+
 		if((localPlayer.getX()-viewPortX)/widthScreen < myGame.bounds){
 			if(viewPortX > 0){
 				float target = ((myGame.bounds-(localPlayer.getX()-viewPortX)/widthScreen))/(myGame.bounds);
 				adjViewPortX(-10*target);
 			}
 		}
-		
+
 		if((localPlayer.getY()-viewPortY)/heightScreen > (1-myGame.bounds)){
 			if(viewPortY <= height-heightScreen){
 				float target = (((localPlayer.getY()-viewPortY)/heightScreen)-(1-myGame.bounds))/(myGame.bounds);
 				adjViewPortY(10*target);
 			}
 		}
-		
+
 		if((localPlayer.getY()-viewPortY)/heightScreen < myGame.bounds){
 			if(viewPortY > 0){
 				float target = ((myGame.bounds-(localPlayer.getY()-viewPortY)/heightScreen))/(myGame.bounds);
 				adjViewPortY(-10*target);
 			}
 		}
-		
+
 
 
 		//Screen wrapping
@@ -174,8 +175,6 @@ public class CoreLogic {
 	 * @param	in		The input direction
 	 */
 	public static void execute(float delta, InputDir in){
-
-
 		if(in.equals("left")){
 			localPlayer.getBody().applyTorque(200.0f);				//20 was obnoxious on android device make this adjustable in settings?
 		}else if(in.equals("right")){

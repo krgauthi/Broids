@@ -47,7 +47,10 @@ public class GameScreen implements Screen{
 
 	private Texture livesTexture;
 	private Texture white;
-
+	
+	private Texture whitePixel;
+	private Sprite whitePixelSprite;
+	
 	private Sprite dPad;
 	private Sprite fireButton;
 	private Sprite thrusterButton;
@@ -210,7 +213,6 @@ public class GameScreen implements Screen{
 				font.draw(spriteBatch, "Thruster", xx * .01f, yy-(yy * .37f));
 			if(CoreLogic.getLocalShip().getShooting())
 				font.draw(spriteBatch, "Pew Pew", xx * .01f, yy-(yy * .4f));
-			whiteSprite.setSize(xx, yy*.001f);
 
 			debug1.draw(spriteBatch);
 			debug2.draw(spriteBatch);
@@ -218,14 +220,15 @@ public class GameScreen implements Screen{
 			float offsetX = CoreLogic.getViewPortX()%10;
 			float offsetY = CoreLogic.getViewPortY()%10;
 
+			whitePixelSprite.setSize(xx, 1);
 			for(int i = 0; i < CoreLogic.getHeightScreen(); i = i+10){
-				whiteSprite.setPosition(0, yy*((i+10-offsetY)/CoreLogic.getHeightScreen()));
-				whiteSprite.draw(spriteBatch);
+				whitePixelSprite.setPosition(0, yy*((i+10-offsetY)/CoreLogic.getHeightScreen()));
+				whitePixelSprite.draw(spriteBatch);
 			}
-			whiteSprite.setSize(xx*.001f, yy);
+			whitePixelSprite.setSize(1, yy);
 			for(int i = 0; i < CoreLogic.getWidthScreen(); i = i+10){
-				whiteSprite.setPosition(xx*((i+10-offsetX)/CoreLogic.getWidthScreen()), 0);
-				whiteSprite.draw(spriteBatch);
+				whitePixelSprite.setPosition(xx*((i+10-offsetX)/CoreLogic.getWidthScreen()), 0);
+				whitePixelSprite.draw(spriteBatch);
 			}
 
 
@@ -443,6 +446,9 @@ public class GameScreen implements Screen{
 
 		white = new Texture(Gdx.files.internal("data/whitebox.png"));
 		whiteSprite = new Sprite(white,32,32);
+		
+		whitePixel = new Texture(Gdx.files.internal("data/whitepixel.png"));
+		whitePixelSprite = new Sprite(whitePixel,1,1);
 
 
 		if(Gdx.app.getVersion() > 0){

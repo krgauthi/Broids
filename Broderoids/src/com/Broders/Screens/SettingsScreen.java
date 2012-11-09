@@ -68,7 +68,7 @@ public class SettingsScreen implements Screen {
 		gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		spriteBatch.begin();
 		
-		if (debugBool) {
+		if (game.debugMode) {
 		// Debug Text
 		font.draw(spriteBatch, perc_X + " " + perc_Y, (float) (game.screenWidth * .01),
 				(float) (game.screenHeight * .99));
@@ -103,7 +103,7 @@ public class SettingsScreen implements Screen {
 				(float) (game.screenWidth * .52), (float) (game.screenHeight * .8));
 		
 		// Debug Text Option
-		font.draw(spriteBatch, "Debug Text: " + debugBool,
+		font.draw(spriteBatch, "Debug Text: " + game.debugMode,
 				(float) (game.screenWidth * .52), (float) (game.screenHeight * .6));
 		
 		// Single Player Difficulty
@@ -167,8 +167,8 @@ public class SettingsScreen implements Screen {
 			
 			} else if (x >= .51 && x <= .96 && y >= .52 && y <= .6) {
 				
-				debugBool = debugBool ? false : true;
-				System.out.println("Debug Text Option set to " + debugBool);
+				game.debugMode = game.debugMode ? false : true;
+				System.out.println("Debug Text Option set to " + game.debugMode);
 				
 			} else if (x >= .51 && x <= .96 && y >= .32 && y <= .4) {
 				

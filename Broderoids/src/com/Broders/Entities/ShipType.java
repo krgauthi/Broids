@@ -29,6 +29,7 @@ public enum ShipType implements Type{
 	 * @param	str			The string value of the ship type name
 	 * @param	sprite1		Non-thruster ship sprite file path
 	 * @param	sprite2		Thruster ship sprite file path
+	 * @param	size		Size of the ship (Relative to what?)
 	 */
 	private ShipType(String type, String str, String sprite1, String sprite2,float s){
 		this.type = type;

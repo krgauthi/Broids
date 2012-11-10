@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.Broders.Entities.Asteroid;
 import com.Broders.Entities.Bullet;
+import com.Broders.Entities.BulletType;
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.EntityType;
 import com.Broders.Entities.Ship;
@@ -188,7 +189,13 @@ public class CoreLogic {
 		}
 
 		if(in.equals("shoot")){
-			//TODO have the localplayer shoot a bullet
+			Pos pos = new Pos(localPlayer.getX(), localPlayer.getY());
+			float dir = localPlayer.getAngle();
+			pos.setX((float) (pos.getX() + (4.1 * Math.sin(dir))));
+			pos.setY((float) (pos.getY() + (4.1 * Math.cos(dir))));
+
+			Bullet shot = new Bullet("BZZZZAP!", EntityType.BULLET, pos, dir);
+			entities.put(shot.toString(), shot);
 		}
 
 		if(in.equals("forward")){

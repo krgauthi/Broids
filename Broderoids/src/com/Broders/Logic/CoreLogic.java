@@ -1,20 +1,14 @@
 package com.Broders.Logic;
 
 import java.util.ArrayList;
-
-
 import com.badlogic.gdx.Gdx;
-
 import com.Broders.Entities.Asteroid;
 import com.Broders.Entities.Bullet;
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.Ship;
 import com.Broders.mygdxgame.BaseGame;
-
 import com.badlogic.gdx.math.Vector2;
-
 import com.badlogic.gdx.physics.box2d.World;
-
 
 /**
  * 
@@ -25,6 +19,7 @@ public class CoreLogic {
 
 	private static World world;
 	private static ArrayList<Entity> entities;
+	private static ArrayList<Entity> rmEntities;
 	private static Ship localPlayer;
 	private static BaseGame myGame;
 
@@ -59,6 +54,7 @@ public class CoreLogic {
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, false);
 		entities = new ArrayList<Entity>();
+		rmEntities = new ArrayList<Entity>();
 
 		int gcd = gcd(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		widthScreen = Gdx.graphics.getWidth() / gcd * 10;
@@ -144,14 +140,22 @@ public class CoreLogic {
 				for(int i = 0; i < myGame.difficulty; i++){
 					float x = (float) (CoreLogic.getWidth() * Math.random());
 					float y = (float) (CoreLogic.getHeight() * Math.random());
-					
-					
+
+
 					entities.add(new Asteroid("large", x, y));
 				}
 			}
+		}
 
+		//update all entities
+		for (Entity i: entities) {
+			i.update();
+		}
 
-
+		if (!rmEntities.isEmpty()) {
+			for (Entity i: rmEntities) {
+				entities.remove(i);
+			}
 		}
 
 		//viewport logic
@@ -226,12 +230,12 @@ public class CoreLogic {
 				E.teleport(E.getX(), -3f);
 
 			}
-			
+
 			E.update();
 
 		}
-		
-		
+
+
 		localPlayer.setThrust(false);
 
 
@@ -412,8 +416,7 @@ public class CoreLogic {
 	}
 
 	public static void removeEntity(Entity ent) {
-		//TODO REmove entity from map/arraylist
-		//entities.remove(ent.toString());
+		rmEntities.add(ent);
 	}
 
 }

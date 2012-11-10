@@ -1,6 +1,7 @@
 package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
+import com.Broders.Logic.Settings;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -31,30 +32,31 @@ public class Ship extends Entity{
 
 
 	/**
+	 * Just pass in "classic"
 	 * Initializes a Ship by creating the appropriate physical body and sprite set.
 	 * 
 	 * @param	id		Used to uniquely identify this entity
 	 * @param	type	The type of this entity
 	 * @param playerColor 
 	 */
-	public Ship(String id, EntityType type, Color playerColor) {
-		super(id, type);		
-
+	public Ship(String type, Color playerColor) {
+		super(type);		
+		super.setEnt("ship");
 		Vector2 vertices[] = new Vector2[3];
-		vertices[0] = new Vector2(0.0f, 1.0f);
-		vertices[1] = new Vector2(0.0f, -1.0f);
-		vertices[2] = new Vector2(0.44f, 0.0f);
+		vertices[0] = new Vector2(-1.5f, 1.39f);
+		vertices[1] = new Vector2(-1.5f, -1.39f);
+		vertices[2] = new Vector2(2.67f, 0.0f);
 
 		PolygonShape shape = new PolygonShape();
 		shape.set(vertices);
 
 		FixtureDef fixDef = new FixtureDef();
 		fixDef.shape = shape;
-		fixDef.density = 6.0f;
+		fixDef.density = 0.5f;
 
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;
-		bodDef.angularDamping = 40.0f;
+		bodDef.angularDamping = 30.0f;
 		bodDef.linearDamping = 0.3f;
 
 		bodDef.position.set(CoreLogic.getWidth()/2, CoreLogic.getHeight()/2);
@@ -62,21 +64,21 @@ public class Ship extends Entity{
 		bodDef.allowSleep = false;
 		super.createBody(bodDef, fixDef);
 		
-		super.setSize(((ShipType)type.getSubType()).getSize());
+		super.setSize(6f);
 		super.setColor(playerColor);
 		
 		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeightScreen();			
 
 		System.out.println(meter);
 		
-		super.setSprite(((ShipType)type.getSubType()).getSprite1Path());
+		super.setSprite(Settings.data_path + "ship1.png");
 		super.getSprite().flip(false, true);
 		super.getSprite().setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
 		super.getSprite().setSize(meter*this.getSize(), meter*this.getSize());
 		super.getSprite().setColor(playerColor);
 
 		this.thrust = false;
-		Texture tempTexture = new Texture(Gdx.files.internal(((ShipType)type.getSubType()).getSprite2Path()));
+		Texture tempTexture = new Texture(Gdx.files.internal(Settings.data_path + "ship2.png"));
 		this.sprite = new Sprite(tempTexture);
 		this.sprite.flip(false, true);
 		this.sprite.setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
@@ -146,9 +148,21 @@ public class Ship extends Entity{
 			this.sprite.draw(sb);
 		}else{
 			super.getSprite().setPosition(posX, posY);
-			super.getSprite().setRotation((float)super.getAngle());
+			super.getSprite().setRotation((float)super.getAngle()+(float)(Math.PI/2));
 			super.getSprite().draw(sb);
 		}
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		CoreLogic.removeEntity(this);
 	}
 
 }

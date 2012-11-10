@@ -1,6 +1,7 @@
 package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
+import com.Broders.Logic.Settings;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,11 +14,17 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Asteroid extends Entity{
 
-	public Asteroid(String id, EntityType type, float x, float y) {
-		super(id, type);
+	public Asteroid(String type, float x, float y) {
+		super(type);
+		super.setEnt("asteroid");
+
+		super.setSize(15.0f);
+		super.setColor(Color.YELLOW);
+		
 		// TODO Write initialization for Asteroid body/sprite
+		/*
 		Vector2 vertices[] = new Vector2[7];
-		if(id.equals("small")){
+		if(type.equals("small")){git 
 			vertices[0] = new Vector2(0.548f, 2.5f);
 			vertices[1] = new Vector2(2.039f, 1.167f);
 			vertices[2] = new Vector2(1.347f, -0.241f);
@@ -25,8 +32,9 @@ public class Asteroid extends Entity{
 			vertices[4] = new Vector2(0.627f, -2.5f);
 			vertices[5] = new Vector2(-2.161f, -1.585f);
 			vertices[6] = new Vector2(-2.161f, 1.419f);
+			//super.setSprite(Settings.data_path + "broid.png");
 		}
-		if(id.equals("medium")){
+		if(type.equals("medium")){
 			vertices[0] = new Vector2(0.548f*2, 2.5f*2);
 			vertices[1] = new Vector2(2.039f*2, 1.167f*2);
 			vertices[2] = new Vector2(1.347f*2, -0.241f*2);
@@ -34,8 +42,13 @@ public class Asteroid extends Entity{
 			vertices[4] = new Vector2(0.627f*2, -2.5f*2);
 			vertices[5] = new Vector2(-2.161f*2, -1.585f*2);
 			vertices[6] = new Vector2(-2.161f*2, 1.419f*2);
+			//super.setSprite(Settings.data_path + "broid2.png");
 		}
-		if(id.equals("large")){
+<<<<<<< HEAD
+		if(type.equals("large")){
+=======
+		else{
+>>>>>>> db3a75f303db97bc0d29e97dd3902965a1241505
 			vertices[0] = new Vector2(0.548f*3, 2.5f*3);
 			vertices[1] = new Vector2(2.039f*3, 1.167f*3);
 			vertices[2] = new Vector2(1.347f*3, -0.241f*3);
@@ -43,10 +56,16 @@ public class Asteroid extends Entity{
 			vertices[4] = new Vector2(0.627f*3, -2.5f*3);
 			vertices[5] = new Vector2(-2.161f*3, -1.585f*3);
 			vertices[6] = new Vector2(-2.161f*3, 1.419f*3);
+			//super.setSprite(Settings.data_path + "broid3.png");
 		}
+		*/
+		
+		// if we implement separate files just uncomment the lines above and comment this line out
+		super.setSprite(Settings.data_path + "broid.png");
 		
 		PolygonShape shape = new PolygonShape();
-		shape.set(vertices);
+		shape.setAsBox(5f, 5f);
+		//shape.set(vertices);
 
 		FixtureDef fixDef = new FixtureDef();
 		fixDef.shape = shape;
@@ -58,16 +77,15 @@ public class Asteroid extends Entity{
 		bodDef.linearDamping = 0.0f;
 
 		bodDef.position.set(x, y);
-		bodDef.angle = MathUtils.PI;
+		bodDef.angle = (float) (MathUtils.PI * Math.random());
 		bodDef.allowSleep = false;
 		super.createBody(bodDef, fixDef);
 
 		//sprite
 		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeight();			
 
-		super.setSprite(type.getSubType().getSpritePath());
-		super.getSprite().setOrigin((meter)/2, (meter)/2);
-		super.getSprite().setSize(meter*(this.getSize()), meter*(this.getSize()));
+		super.getSprite().setOrigin(meter*(this.getSize()/2), meter*(this.getSize()/2)); 
+		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
 		super.getSprite().setColor(Color.WHITE);
 	}
 
@@ -90,9 +108,21 @@ public class Asteroid extends Entity{
 
 
 		super.getSprite().setPosition(posX, posY);
-		super.getSprite().setRotation(super.getBody().getAngle());
+		super.getSprite().setRotation((float)super.getAngle());
 		super.getSprite().draw(sb);
 
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		CoreLogic.removeEntity(this);
 	}
 
 }

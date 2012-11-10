@@ -219,15 +219,11 @@ public class CoreLogic {
 		if(in.equals("shoot")){
 			
 			float dir = localPlayer.getAngle();
-			float x = (float) (localPlayer.getY() + (4.1 * Math.sin(dir)));
-			float y = (float) (localPlayer.getY() + (4.1 * Math.cos(dir)));
+			float x = (float) (localPlayer.getX() + (2.085 * Math.cos(dir)));
+			float y = (float) (localPlayer.getY() + (2.085 * Math.sin(dir)));
 
 			Bullet shot = new Bullet("bullet", x, y, dir);
-			entities.add(shot);
-			
-			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, -5.0f));
-			Vector2 p = localPlayer.getBody().getWorldPoint(shot.getBody().getLocalCenter().add(new Vector2(0.0f,0.0f)));
-			localPlayer.getBody().applyForce(f, p);
+			entities.add(shot); 
 			
 			System.out.println("BZZZAP!!");
 		}

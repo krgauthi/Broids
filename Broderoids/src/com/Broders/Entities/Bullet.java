@@ -51,6 +51,11 @@ public class Bullet extends Entity{
 		//TODO Add fixtures
 		
 		super.createBody(bodDef, fixDef);
+		
+		//Set the velocity
+		float vX = (float) (10*Math.cos(dir));
+		float vY = (float) (10*Math.sin(dir));
+		super.body.setLinearVelocity(vX, vY);
 	}
 
 	@Override

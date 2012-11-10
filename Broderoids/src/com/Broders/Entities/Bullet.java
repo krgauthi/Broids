@@ -28,9 +28,11 @@ public class Bullet extends Entity{
 		//sprite
 		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeightScreen();			
 		
+		super.setSize(6f);
+		
 		super.setSprite(Settings.data_path + "bullet.png");
-		super.getSprite().setOrigin((meter)/2, (meter)/2);
-		super.getSprite().setSize(meter, meter);
+		super.getSprite().setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
+		super.getSprite().setSize(meter*this.getSize(), meter*this.getSize());
 		super.getSprite().setColor(Color.WHITE);
 
 		BodyDef bodDef = new BodyDef();

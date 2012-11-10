@@ -236,6 +236,8 @@ public class CoreLogic {
 				E.teleport(E.getX(), -3f);
 
 			}
+			
+			E.update();
 
 		}
 		

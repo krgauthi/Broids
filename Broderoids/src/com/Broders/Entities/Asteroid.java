@@ -22,6 +22,7 @@ public class Asteroid extends Entity{
 		super.setColor(Color.YELLOW);
 		
 		// TODO Write initialization for Asteroid body/sprite
+
 		
 		// if we implement separate files just uncomment the lines above and comment this line out
 		super.setSprite(Settings.data_path + "broid.png");

@@ -94,11 +94,30 @@ public class CoreLogic {
 		localPlayer = new Ship(clientID + instanceID, EntityType.SHIP,myGame.playerColor);
 		entities.put(localPlayer.toString(), localPlayer);
 		
-		for (int i=0; i<6; i++) {
+		//Spawning asteroids
+		int count = (int) Math.round(Math.random()*2) + 6;
+		for (int i=0; i<count; i++) {
+			
 			float x = (float) (CoreLogic.getWidth() * Math.random());
 			float y = (float) (CoreLogic.getHeight() * Math.random());
+			float dir = (float) (Math.PI * Math.random());
 			
 			Asteroid roid = new Asteroid("Roid" + i, EntityType.ASTEROID, x, y);
+			
+			float initForce = (float) (450 + (150 * Math.random()));
+			x = (float) (initForce * Math.sin(dir));
+			y = (float) (initForce * Math.cos(dir));
+			
+			Vector2 f = roid.getBody().getWorldVector(new Vector2(x, y));
+			Vector2 p = roid.getBody().getWorldPoint(roid.getBody().getLocalCenter().add(new Vector2(0.0f,0.0f)));
+			roid.getBody().applyForce(f, p);
+			
+			float spin = (float) (300 + (250 * Math.random()));
+			if (Math.random() >= 0.5f)
+				spin *= -1;
+			
+			roid.getBody().applyTorque(spin);
+			
 			entities.put(roid.toString(), roid);//TODO CHANGE PLZ!!
 		}
 		

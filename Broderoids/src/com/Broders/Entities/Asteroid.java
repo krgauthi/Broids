@@ -56,6 +56,7 @@ public class Asteroid extends Entity{
 		FixtureDef fixDef = new FixtureDef();
 		fixDef.shape = shape;
 		fixDef.density = 0.5f;
+		fixDef.restitution = 1;
 
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;

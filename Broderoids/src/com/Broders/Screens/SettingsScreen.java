@@ -81,6 +81,8 @@ public class SettingsScreen implements Screen {
 		font.draw(spriteBatch, "Settings", (float) (game.screenWidth * .4), (float) (game.screenHeight * .95));
 		font.setScale(.5f);
 		
+		// Left Column Options
+		
 		// Music
 		font.draw(spriteBatch, "Music: " + musicBool, (float) (game.screenWidth * .08),
 				(float) (game.screenHeight * .2));
@@ -98,6 +100,8 @@ public class SettingsScreen implements Screen {
 		font.draw(spriteBatch, "Background: " + backgroundBool,
 				(float) (game.screenWidth * .08), (float) (game.screenHeight * .8));
 		
+		// Right Column Options
+		
 		// Screen Resolution
 		font.draw(spriteBatch, "Screen Resolution: " + screenResBool,
 				(float) (game.screenWidth * .52), (float) (game.screenHeight * .8));
@@ -109,6 +113,10 @@ public class SettingsScreen implements Screen {
 		// Single Player Difficulty
 		font.draw(spriteBatch, "Single Player Difficulty: " + sPDiffBool,
 				(float) (game.screenWidth * .52), (float) (game.screenHeight * .4));
+		
+		// Epileptic Mode
+		font.draw(spriteBatch, "Epileptic Mode: " + game.epileptic,
+				(float) (game.screenWidth * .52), (float) (game.screenHeight * .2));
 		
 		// User Name
 		font.setScale(.25f);
@@ -175,9 +183,10 @@ public class SettingsScreen implements Screen {
 				sPDiffBool = sPDiffBool ? false : true;
 				System.out.println("SP Difficulty Option");
 				
-			} else if (false) {
+			} else if (x >= .51 && x <= .96 && y >= .12 && y <= .2) {
 								
-				System.out.println("Set Username");
+				game.epileptic = game.epileptic ? false : true;
+				System.out.println("Epileptic Mode set to " + game.epileptic);
 				
 			}
 		}

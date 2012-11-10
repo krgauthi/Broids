@@ -47,10 +47,10 @@ public class GameScreen implements Screen{
 
 	private Texture livesTexture;
 	private Texture white;
-	
+
 	private Texture whitePixel;
 	private Sprite whitePixelSprite;
-	
+
 	private Sprite dPad;
 	private Sprite fireButton;
 	private Sprite thrusterButton;
@@ -147,7 +147,7 @@ public class GameScreen implements Screen{
 			E.value.Draw(spriteBatch);
 		}
 
-		
+
 		//If Android
 		if(Gdx.app.getVersion() > 0){
 			dPad.draw(spriteBatch,.45f);					//TODO @mike .45f make this a setting for how transparent to have android controls
@@ -287,12 +287,12 @@ public class GameScreen implements Screen{
 
 			if(Gdx.input.isKeyPressed(Keys.W)){
 				if(CoreLogic.getViewPortY() < CoreLogic.getHeight())
-				CoreLogic.adjViewPortY(1f);
+					CoreLogic.adjViewPortY(1f);
 			}
-			
+
 			if(Gdx.input.isKeyPressed(Keys.S)){
 				if(CoreLogic.getViewPortY() > 0)
-				CoreLogic.adjViewPortY(-1f);
+					CoreLogic.adjViewPortY(-1f);
 			}
 
 		}
@@ -440,7 +440,7 @@ public class GameScreen implements Screen{
 
 		white = new Texture(Gdx.files.internal("data/whitebox.png"));
 		whiteSprite = new Sprite(white,32,32);
-		
+
 		whitePixel = new Texture(Gdx.files.internal("data/whitepixel.png"));
 		whitePixelSprite = new Sprite(whitePixel,1,1);
 

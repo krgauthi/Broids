@@ -73,13 +73,33 @@ public class CoreLogic {
 		heightScreen = Gdx.graphics.getHeight() / gcd * 10;
 
 		if(game.multiplayer){
-			width = 1000f;
-			height = 1000f;
+
+			switch(myGame.gameSize){
+			case 0:
+				width = widthScreen;
+				height = heightScreen;
+				System.out.println("small");
+				break;
+			case 1:
+				width = 500;
+				height = 500;
+				System.out.println("medium");
+				break;
+			case 2:
+				width = 1000;
+				height = 1000;
+				System.out.println("large");
+				break;
+			default:
+				width = widthScreen;
+				height = heightScreen;
+			}
+
 		}else{
 			width = widthScreen;
 			height = heightScreen;
 		}
-		
+
 		viewPortX = (width/2)-(widthScreen/2f);
 		viewPortY = (height/2)-(heightScreen/2f);
 

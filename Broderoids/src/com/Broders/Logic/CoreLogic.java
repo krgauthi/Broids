@@ -271,8 +271,8 @@ public class CoreLogic {
 
 			if(!spacePressed || bulletCooldown >= 0.5) {
 				float dir = localPlayer.getAngle();
-				float x = (float) (localPlayer.getX() + (2.805 * Math.cos(dir)));
-				float y = (float) (localPlayer.getY() + (2.805 * Math.sin(dir)));
+				float x = (float) (localPlayer.getX() + (2.805 * Math.cos(Math.toRadians(dir))));
+				float y = (float) (localPlayer.getY() + (2.805 * Math.sin(Math.toRadians(dir))));
 
 				Bullet shot = new Bullet("bullet", x, y, dir);
 				entities.add(shot);

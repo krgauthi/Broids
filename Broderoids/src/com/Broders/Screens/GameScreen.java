@@ -435,7 +435,7 @@ public class GameScreen implements Screen{
 		shieldBlock.setSize(yy*.5f, yy*.5f);
 
 		livesTexture = new Texture(Gdx.files.internal("data/ship1.png"));
-		lives = new Sprite(livesTexture,512,512);
+		lives = new Sprite(livesTexture,1024,1024);
 		lives.setSize(yy*.05f,yy*.05f);
 
 		white = new Texture(Gdx.files.internal("data/whitebox.png"));

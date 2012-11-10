@@ -44,7 +44,15 @@ public class MultiHost implements Screen{
 
 		spriteBatch.begin();
 		
+		//Box Selections
+		
+		
+		//text
 		font.draw(spriteBatch, "Muliplayer Options", xx*.4f, yy*.9f);
+		font.draw(spriteBatch, "World Size", xx*.17f, yy*.8f);
+		font.draw(spriteBatch, "Small", xx*.1f, yy*.7f);
+		font.draw(spriteBatch, "Medium", xx*.19f, yy*.7f);
+		font.draw(spriteBatch, "Large", xx*.32f, yy*.7f);
 		
 		spriteBatch.end();
 

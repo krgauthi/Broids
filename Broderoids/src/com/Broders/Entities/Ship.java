@@ -135,7 +135,7 @@ public class Ship extends Entity{
 		float posX;
 		float posY;
 
-		//this will only work for single player
+	
 		posX = screenWidth*((x-CoreLogic.getViewPortX())/CoreLogic.getWidthScreen());
 		posY =  screenHeight*((y-CoreLogic.getViewPortY())/CoreLogic.getHeightScreen());
 

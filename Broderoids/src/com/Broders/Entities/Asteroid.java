@@ -67,25 +67,27 @@ public class Asteroid extends Entity{
 
 		super.setSprite(type.getSubType().getSpritePath());
 		super.getSprite().setOrigin((meter)/2, (meter)/2);
-		super.getSprite().setSize(meter, meter);
+		super.getSprite().setSize(meter*(this.getSize()), meter*(this.getSize()));
 		super.getSprite().setColor(Color.WHITE);
 	}
 
 	@Override
 	public void Draw(SpriteBatch sb) {
-		// TODO Kris - Implement this draw method
+
+
 		float screenWidth =  Gdx.graphics.getWidth();
 		float screenHeight =  Gdx.graphics.getHeight();
 
-		float x = super.getBody().getPosition().x;
-		float y = super.getBody().getPosition().y;
+		float x = super.getBody().getPosition().x - (this.getSize()/2f);
+		float y = super.getBody().getPosition().y - (this.getSize()/2f);
 
 		float posX;
 		float posY;
 
-		//this will only work for single player
-		posX = screenWidth*(x/CoreLogic.getWidth());
-		posY =  screenHeight*(y/CoreLogic.getHeight());
+	
+		posX = screenWidth*((x-CoreLogic.getViewPortX())/CoreLogic.getWidthScreen());
+		posY =  screenHeight*((y-CoreLogic.getViewPortY())/CoreLogic.getHeightScreen());
+
 
 		super.getSprite().setPosition(posX, posY);
 		super.getSprite().setRotation(super.getBody().getAngle());

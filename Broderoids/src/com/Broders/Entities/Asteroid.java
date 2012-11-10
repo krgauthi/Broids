@@ -23,7 +23,6 @@ public class Asteroid extends Entity{
 		
 		// TODO Write initialization for Asteroid body/sprite
 		
-		
 		// if we implement separate files just uncomment the lines above and comment this line out
 		super.setSprite(Settings.data_path + "broid.png");
 		
@@ -34,6 +33,7 @@ public class Asteroid extends Entity{
 		FixtureDef fixDef = new FixtureDef();
 		fixDef.shape = shape;
 		fixDef.density = 0.5f;
+		fixDef.restitution = 1;
 
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;

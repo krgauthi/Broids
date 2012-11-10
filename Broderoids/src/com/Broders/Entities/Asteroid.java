@@ -24,7 +24,7 @@ public class Asteroid extends Entity{
 		// TODO Write initialization for Asteroid body/sprite
 		/*
 		Vector2 vertices[] = new Vector2[7];
-		if(type.equals("small")){
+		if(type.equals("small")){git 
 			vertices[0] = new Vector2(0.548f, 2.5f);
 			vertices[1] = new Vector2(2.039f, 1.167f);
 			vertices[2] = new Vector2(1.347f, -0.241f);

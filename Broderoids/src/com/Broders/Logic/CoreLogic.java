@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.Broders.Entities.Asteroid;
 import com.Broders.Entities.Bullet;
+import com.Broders.Entities.BulletType;
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.EntityType;
 import com.Broders.Entities.Ship;
@@ -92,6 +93,15 @@ public class CoreLogic {
 		String instanceID = "0000";		// check map to see how many of this type of entity already exist
 		localPlayer = new Ship(clientID + instanceID, EntityType.SHIP,myGame.playerColor);
 		entities.put(localPlayer.toString(), localPlayer);
+		
+		for (int i=0; i<6; i++) {
+			float x = (float) (CoreLogic.getWidth() * Math.random());
+			float y = (float) (CoreLogic.getHeight() * Math.random());
+			
+			Asteroid roid = new Asteroid("Roid" + i, EntityType.ASTEROID, x, y);
+			entities.put(roid.toString(), roid);//TODO CHANGE PLZ!!
+		}
+		
 	}
 
 	public static void update(float delta){
@@ -188,7 +198,19 @@ public class CoreLogic {
 		}
 
 		if(in.equals("shoot")){
-			//TODO have the localplayer shoot a bullet
+			
+			float dir = localPlayer.getAngle();
+			float x = (float) (localPlayer.getY() + (4.1 * Math.sin(dir)));
+			float y = (float) (localPlayer.getY() + (4.1 * Math.cos(dir)));
+
+			Bullet shot = new Bullet("BZZZZAP!", EntityType.BULLET, x, y, dir);
+			entities.put(shot.toString(), shot);
+			
+			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, -5.0f));
+			Vector2 p = localPlayer.getBody().getWorldPoint(shot.getBody().getLocalCenter().add(new Vector2(0.0f,0.0f)));
+			localPlayer.getBody().applyForce(f, p);
+			
+			System.out.println("BZZZAP!!");
 		}
 
 		if(in.equals("forward")){
@@ -321,6 +343,11 @@ public class CoreLogic {
 
 	public static void adjViewPortY(float adj){
 		viewPortY = viewPortY + adj;
+	}
+	
+	public static void removeEntity(Entity ent) {
+		//TODO REmove entity from map/arraylist
+		//entities.remove(ent.toString());
 	}
 
 }

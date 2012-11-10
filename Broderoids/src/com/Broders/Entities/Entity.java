@@ -201,4 +201,8 @@ public abstract class Entity {
 		this.body.setAngularVelocity(angV);
 		this.body.setLinearVelocity(linV);
 	}
+	
+	public abstract void update();
+	
+	public abstract void destroy();
 }

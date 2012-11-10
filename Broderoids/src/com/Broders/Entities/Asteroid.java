@@ -17,7 +17,12 @@ public class Asteroid extends Entity{
 	public Asteroid(String type, float x, float y) {
 		super(type);
 		super.setEnt("asteroid");
+
+		super.setSize(15.0f);
+		super.setColor(Color.YELLOW);
+		
 		// TODO Write initialization for Asteroid body/sprite
+		/*
 		Vector2 vertices[] = new Vector2[7];
 		if(type.equals("small")){
 			vertices[0] = new Vector2(0.548f, 2.5f);
@@ -39,7 +44,11 @@ public class Asteroid extends Entity{
 			vertices[6] = new Vector2(-2.161f*2, 1.419f*2);
 			//super.setSprite(Settings.data_path + "broid2.png");
 		}
+<<<<<<< HEAD
 		if(type.equals("large")){
+=======
+		else{
+>>>>>>> db3a75f303db97bc0d29e97dd3902965a1241505
 			vertices[0] = new Vector2(0.548f*3, 2.5f*3);
 			vertices[1] = new Vector2(2.039f*3, 1.167f*3);
 			vertices[2] = new Vector2(1.347f*3, -0.241f*3);
@@ -49,12 +58,14 @@ public class Asteroid extends Entity{
 			vertices[6] = new Vector2(-2.161f*3, 1.419f*3);
 			//super.setSprite(Settings.data_path + "broid3.png");
 		}
+		*/
 		
 		// if we implement separate files just uncomment the lines above and comment this line out
 		super.setSprite(Settings.data_path + "broid.png");
 		
 		PolygonShape shape = new PolygonShape();
-		shape.set(vertices);
+		shape.setAsBox(5f, 5f);
+		//shape.set(vertices);
 
 		FixtureDef fixDef = new FixtureDef();
 		fixDef.shape = shape;
@@ -66,15 +77,15 @@ public class Asteroid extends Entity{
 		bodDef.linearDamping = 0.0f;
 
 		bodDef.position.set(x, y);
-		bodDef.angle = MathUtils.PI;
+		bodDef.angle = (float) (MathUtils.PI * Math.random());
 		bodDef.allowSleep = false;
 		super.createBody(bodDef, fixDef);
 
 		//sprite
 		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeight();			
 
-		super.getSprite().setOrigin((meter)/2, (meter)/2);
-		super.getSprite().setSize(meter*(this.getSize()), meter*(this.getSize()));
+		super.getSprite().setOrigin(meter*(this.getSize()/2), meter*(this.getSize()/2)); 
+		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
 		super.getSprite().setColor(Color.WHITE);
 	}
 
@@ -97,9 +108,21 @@ public class Asteroid extends Entity{
 
 
 		super.getSprite().setPosition(posX, posY);
-		super.getSprite().setRotation(super.getBody().getAngle());
+		super.getSprite().setRotation((float)super.getAngle());
 		super.getSprite().draw(sb);
 
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		CoreLogic.removeEntity(this);
 	}
 
 }

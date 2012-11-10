@@ -14,7 +14,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.Broders.Entities.Asteroid;
 import com.Broders.Entities.Bullet;
 import com.Broders.Entities.Entity;
-import com.Broders.Entities.EntityType;
 import com.Broders.Entities.Ship;
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.math.Polygon;
@@ -26,7 +25,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.OrderedMap;
 import com.badlogic.gdx.utils.Json.Serializer;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.badlogic.gdx.utils.OrderedMap;
 
 /**
  * 
@@ -94,13 +92,22 @@ public class CoreLogic {
 		//String instanceID = "0000";		// check map to see how many of this type of entity already exist
 		localPlayer = new Ship("classic",myGame.playerColor);
 		entities.add(localPlayer);
+		
+		for (int i=0; i<6; i++) {
+			float x = (float) (CoreLogic.getWidth() * Math.random());
+			float y = (float) (CoreLogic.getHeight() * Math.random());
+			
+			Asteroid roid = new Asteroid("large", x, y);
+			entities.add(roid);//TODO CHANGE PLZ!!
+		}
+		
 	}
 
 	public static void update(float delta){
 
 		if(!myGame.multiplayer){
 
-			if(getAsteroids().size <= 0){
+			if(getAsteroids().size() <= 0){
 				for(int i = 0; i < myGame.difficulty; i++){
 					//Spawn Broids
 				}
@@ -178,9 +185,9 @@ public class CoreLogic {
 	 */
 	public static void execute(float delta, InputDir in){
 		if(in.equals("left")){
-			localPlayer.getBody().applyTorque(200.0f);				//20 was obnoxious on android device make this adjustable in settings?
+			localPlayer.getBody().applyTorque(500.0f);				//20 was obnoxious on android device make this adjustable in settings?
 		}else if(in.equals("right")){
-			localPlayer.getBody().applyTorque(-200.0f);
+			localPlayer.getBody().applyTorque(-500.0f);
 		}
 
 		if(in.equals("backward")){
@@ -190,11 +197,23 @@ public class CoreLogic {
 		}
 
 		if(in.equals("shoot")){
-			//TODO have the localplayer shoot a bullet
+			
+			float dir = localPlayer.getAngle();
+			float x = (float) (localPlayer.getY() + (4.1 * Math.sin(dir)));
+			float y = (float) (localPlayer.getY() + (4.1 * Math.cos(dir)));
+
+			Bullet shot = new Bullet("bullet", x, y, dir);
+			entities.add(shot);
+			
+			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, -5.0f));
+			Vector2 p = localPlayer.getBody().getWorldPoint(shot.getBody().getLocalCenter().add(new Vector2(0.0f,0.0f)));
+			localPlayer.getBody().applyForce(f, p);
+			
+			System.out.println("BZZZAP!!");
 		}
 
 		if(in.equals("forward")){
-			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, -30.0f));
+			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, -35.0f));
 			Vector2 p = localPlayer.getBody().getWorldPoint(localPlayer.getBody().getLocalCenter().add(new Vector2(0.0f,0.0f)));
 			localPlayer.getBody().applyForce(f, p);
 			localPlayer.setThrust(true);
@@ -323,6 +342,11 @@ public class CoreLogic {
 
 	public static void adjViewPortY(float adj){
 		viewPortY = viewPortY + adj;
+	}
+	
+	public static void removeEntity(Entity ent) {
+		//TODO REmove entity from map/arraylist
+		//entities.remove(ent.toString());
 	}
 
 }

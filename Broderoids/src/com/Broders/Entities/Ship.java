@@ -43,20 +43,20 @@ public class Ship extends Entity{
 		super(type);		
 		super.setEnt("ship");
 		Vector2 vertices[] = new Vector2[3];
-		vertices[0] = new Vector2(0.0f, 1.0f);
-		vertices[1] = new Vector2(0.0f, -1.0f);
-		vertices[2] = new Vector2(0.44f, 0.0f);
+		vertices[0] = new Vector2(-1.5f, 1.39f);
+		vertices[1] = new Vector2(-1.5f, -1.39f);
+		vertices[2] = new Vector2(2.67f, 0.0f);
 
 		PolygonShape shape = new PolygonShape();
 		shape.set(vertices);
 
 		FixtureDef fixDef = new FixtureDef();
 		fixDef.shape = shape;
-		fixDef.density = 6.0f;
+		fixDef.density = 0.5f;
 
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;
-		bodDef.angularDamping = 40.0f;
+		bodDef.angularDamping = 30.0f;
 		bodDef.linearDamping = 0.3f;
 
 		bodDef.position.set(CoreLogic.getWidth()/2, CoreLogic.getHeight()/2);
@@ -148,9 +148,21 @@ public class Ship extends Entity{
 			this.sprite.draw(sb);
 		}else{
 			super.getSprite().setPosition(posX, posY);
-			super.getSprite().setRotation((float)super.getAngle());
+			super.getSprite().setRotation((float)super.getAngle()+(float)(Math.PI/2));
 			super.getSprite().draw(sb);
 		}
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		CoreLogic.removeEntity(this);
 	}
 
 }

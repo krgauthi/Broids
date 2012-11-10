@@ -22,7 +22,10 @@ public class MultiHost implements Screen{
 	private Texture white;
 	private Sprite whiteSprite;
 
-	int worldSize[] = {1,1,0};
+	private Texture ship;
+	private Sprite shipSprite;
+
+	int worldSize = 0;
 
 	private float xx;
 	private float yy;
@@ -52,32 +55,23 @@ public class MultiHost implements Screen{
 
 		spriteBatch.begin();
 
+
+
+
 		//Box Selections
-		if(worldSize[0] == 1){
-			whiteSprite.setColor(Color.WHITE);
-			whiteSprite.setSize(xx * .085f, yy * .08f);
-			whiteSprite.setPosition(xx * .095f, yy * .63f);
-			whiteSprite.draw(spriteBatch);
-			whiteSprite.setColor(Color.BLACK);
-			whiteSprite.setSize(xx * .08f, yy * .073f);
-			whiteSprite.setPosition(xx * .097f, yy * .634f);
-			whiteSprite.draw(spriteBatch);
-			
+		if(worldSize == 0){
+			shipSprite.setPosition(xx*.12f, yy*.58f);
+			shipSprite.draw(spriteBatch);
 		}
 
-		if(worldSize[1] == 1){
-			whiteSprite.setColor(Color.WHITE);
-			whiteSprite.setSize(xx * .13f, yy * .08f);
-			whiteSprite.setPosition(xx * .186f, yy * .63f);
-			whiteSprite.draw(spriteBatch);
-			whiteSprite.setColor(Color.BLACK);
-			whiteSprite.setSize(xx * .11f, yy * .073f);
-			whiteSprite.setPosition(xx * .188f, yy * .634f);
-			whiteSprite.draw(spriteBatch);
+		if(worldSize == 1){
+			shipSprite.setPosition(xx*.23f, yy*.58f);
+			shipSprite.draw(spriteBatch);
 		}
 
-		if(worldSize[2] == 1){
-
+		if(worldSize == 2){
+			shipSprite.setPosition(xx*.33f, yy*.58f);
+			shipSprite.draw(spriteBatch);
 		}
 
 		//text
@@ -85,7 +79,9 @@ public class MultiHost implements Screen{
 		font.draw(spriteBatch, "World Size", xx*.17f, yy*.8f);
 		font.draw(spriteBatch, "Small", xx*.1f, yy*.7f);
 		font.draw(spriteBatch, "Medium", xx*.19f, yy*.7f);
-		font.draw(spriteBatch, "Large", xx*.32f, yy*.7f);
+		font.draw(spriteBatch, "Large", xx*.31f, yy*.7f);
+		
+		font.draw(spriteBatch, "Play!", xx*.8f, yy*.9f);
 
 		spriteBatch.end();
 
@@ -97,10 +93,49 @@ public class MultiHost implements Screen{
 	}
 
 	private void handleInput(float delta) {
+
+		float inputx = Gdx.input.getX()/xx;
+		float inputy = Gdx.input.getY()/yy;
+
 		//TODO go back to multilobby
 		if((Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACK))){
 			myGame.setScreen(new MultiLobby(this.myGame));
 		}
+
+		if(Gdx.input.isKeyPressed(Keys.F1)){
+			double x = ((float)Gdx.input.getX()/(float)Gdx.graphics.getWidth());
+			double y = ((float)Gdx.input.getY()/(float)Gdx.graphics.getHeight());
+			System.out.println("Mouse Pos: "+x+" "+y);
+		}
+
+		if(Gdx.input.justTouched()){
+			//world size
+			if(inputy < .364 && inputy > .289){
+				//small
+				if(inputx > .098 && inputx < .173){
+					worldSize = 0;
+				}
+				//medium
+				if(inputx > .187 && inputx < .292){
+					worldSize = 1;
+				}
+				//large
+				if(inputx > .306 && inputx < .382){
+					worldSize = 2;
+				}
+			}
+			
+			
+			if(inputy > .09 && inputy < .173){
+				if(inputx > .795 && inputx < .863){
+					myGame.gameSize = worldSize;
+					myGame.setScreen(new GameScreen(myGame, true));
+				}
+			}
+		}
+
+
+
 
 
 	}
@@ -117,6 +152,10 @@ public class MultiHost implements Screen{
 
 		white = new Texture(Gdx.files.internal("data/whitebox.png"));
 		whiteSprite = new Sprite(white,32,32);
+
+		ship = new Texture(Gdx.files.internal("data/ship1.png"));
+		shipSprite = new Sprite(ship,1024,1024);
+		shipSprite.setSize(yy*.05f, yy*.05f);
 
 	}
 

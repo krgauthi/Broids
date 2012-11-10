@@ -47,10 +47,10 @@ public class GameScreen implements Screen{
 
 	private Texture livesTexture;
 	private Texture white;
-	
+
 	private Texture whitePixel;
 	private Sprite whitePixelSprite;
-	
+
 	private Sprite dPad;
 	private Sprite fireButton;
 	private Sprite thrusterButton;
@@ -143,11 +143,11 @@ public class GameScreen implements Screen{
 		Tail.draw(spriteBatch);
 
 		//loop through all Entities
-		for(Entry<String, Entity> E : CoreLogic.getEntities().entries()){
-			E.value.Draw(spriteBatch);
+		for(Entity E : CoreLogic.getEntities()){
+			E.Draw(spriteBatch);
 		}
 
-		
+
 		//If Android
 		if(Gdx.app.getVersion() > 0){
 			dPad.draw(spriteBatch,.45f);					//TODO @mike .45f make this a setting for how transparent to have android controls
@@ -287,12 +287,12 @@ public class GameScreen implements Screen{
 
 			if(Gdx.input.isKeyPressed(Keys.W)){
 				if(CoreLogic.getViewPortY() < CoreLogic.getHeight())
-				CoreLogic.adjViewPortY(1f);
+					CoreLogic.adjViewPortY(1f);
 			}
-			
+
 			if(Gdx.input.isKeyPressed(Keys.S)){
 				if(CoreLogic.getViewPortY() > 0)
-				CoreLogic.adjViewPortY(-1f);
+					CoreLogic.adjViewPortY(-1f);
 			}
 
 		}
@@ -435,12 +435,12 @@ public class GameScreen implements Screen{
 		shieldBlock.setSize(yy*.5f, yy*.5f);
 
 		livesTexture = new Texture(Gdx.files.internal("data/ship1.png"));
-		lives = new Sprite(livesTexture,512,512);
+		lives = new Sprite(livesTexture,1024,1024);
 		lives.setSize(yy*.05f,yy*.05f);
 
 		white = new Texture(Gdx.files.internal("data/whitebox.png"));
 		whiteSprite = new Sprite(white,32,32);
-		
+
 		whitePixel = new Texture(Gdx.files.internal("data/whitepixel.png"));
 		whitePixelSprite = new Sprite(whitePixel,1,1);
 

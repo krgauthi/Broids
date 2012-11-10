@@ -1,6 +1,7 @@
 package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
+import com.Broders.Logic.Settings;
 import com.Broders.Logic.Pos;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -19,20 +20,17 @@ public class Bullet extends Entity{
 	private float age;
 	private static float deathTime = 3f;
 
-	public Bullet(String id, EntityType type, float x, float y, float dir) {
-		super(id, type);
-		super.setSize(10.0f); //TODO get from package/enum/whatever
-		super.setColor(Color.WHITE);
+	public Bullet(String type, float dir, float x, float y) {
+		super(type);
+		// TODO Write initialization for Bullet body/sprite
 		
-		age = 0;
-		
-		//
+		super.setEnt("bullet");
 		//sprite
 		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeight();			
 		
-		super.setSprite(type.getSubType().getSpritePath());
-		super.getSprite().setOrigin(meter*(this.getSize()/2), meter*(this.getSize()/2)); 
-		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
+		super.setSprite(Settings.data_path + "bullet.png");
+		super.getSprite().setOrigin((meter)/2, (meter)/2);
+		super.getSprite().setSize(meter, meter);
 		super.getSprite().setColor(Color.WHITE);
 
 		BodyDef bodDef = new BodyDef();

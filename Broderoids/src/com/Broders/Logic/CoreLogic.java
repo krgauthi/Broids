@@ -1,5 +1,6 @@
 package com.Broders.Logic;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -13,7 +14,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.Broders.Entities.Asteroid;
 import com.Broders.Entities.Bullet;
 import com.Broders.Entities.Entity;
-import com.Broders.Entities.EntityType;
 import com.Broders.Entities.Ship;
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.math.Polygon;
@@ -25,7 +25,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.OrderedMap;
 import com.badlogic.gdx.utils.Json.Serializer;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.badlogic.gdx.utils.OrderedMap;
 
 /**
  * 
@@ -35,7 +34,7 @@ import com.badlogic.gdx.utils.OrderedMap;
 public class CoreLogic {
 
 	private static World world;
-	private static OrderedMap<String, Entity> entities;
+	private static ArrayList<Entity> entities;
 	private static Ship localPlayer;
 	private static BaseGame myGame;
 
@@ -67,7 +66,7 @@ public class CoreLogic {
 		myGame = game;
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, false);
-		entities = new OrderedMap<String, Entity>();
+		entities = new ArrayList<Entity>();
 
 		int gcd = gcd(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		widthScreen = Gdx.graphics.getWidth() / gcd * 10;
@@ -84,21 +83,31 @@ public class CoreLogic {
 		viewPortX = (width/2)-(widthScreen/2f);
 		viewPortY = (height/2)-(heightScreen/2f);
 
-		/* Just putting these here as an example.
+		/* forget this
+		 * Just putting these here as an example.
 		 * entity IDs will be of the following format:
 		 * EntityID + TypeID + ClientID + InstanceID = 00 00 000 0000
 		 */
-		String clientID = "000";		// possibly let server handle clientID generation somehow?
-		String instanceID = "0000";		// check map to see how many of this type of entity already exist
-		localPlayer = new Ship(clientID + instanceID, EntityType.SHIP,myGame.playerColor);
-		entities.put(localPlayer.toString(), localPlayer);
+		//String clientID = "000";		// possibly let server handle clientID generation somehow?
+		//String instanceID = "0000";		// check map to see how many of this type of entity already exist
+		localPlayer = new Ship("classic",myGame.playerColor);
+		entities.add(localPlayer);
+		
+		for (int i=0; i<6; i++) {
+			float x = (float) (CoreLogic.getWidth() * Math.random());
+			float y = (float) (CoreLogic.getHeight() * Math.random());
+			
+			Asteroid roid = new Asteroid("large", x, y);
+			entities.add(roid);//TODO CHANGE PLZ!!
+		}
+		
 	}
 
 	public static void update(float delta){
 
 		if(!myGame.multiplayer){
 
-			if(getAsteroids().size <= 0){
+			if(getAsteroids().size() <= 0){
 				for(int i = 0; i < myGame.difficulty; i++){
 					//Spawn Broids
 				}
@@ -110,7 +119,7 @@ public class CoreLogic {
 
 		//viewport logic
 		if((localPlayer.getX()-viewPortX)/widthScreen > (1-myGame.bounds)){
-			if(viewPortX <= width-widthScreen){
+			if(viewPortX < width-widthScreen){
 				float target = (((localPlayer.getX()-viewPortX)/widthScreen)-(1-myGame.bounds))/(myGame.bounds);
 				adjViewPortX(10*target);
 			}
@@ -124,7 +133,7 @@ public class CoreLogic {
 		}
 
 		if((localPlayer.getY()-viewPortY)/heightScreen > (1-myGame.bounds)){
-			if(viewPortY <= height-heightScreen){
+			if(viewPortY < height-heightScreen){
 				float target = (((localPlayer.getY()-viewPortY)/heightScreen)-(1-myGame.bounds))/(myGame.bounds);
 				adjViewPortY(10*target);
 			}
@@ -176,9 +185,9 @@ public class CoreLogic {
 	 */
 	public static void execute(float delta, InputDir in){
 		if(in.equals("left")){
-			localPlayer.getBody().applyTorque(200.0f);				//20 was obnoxious on android device make this adjustable in settings?
+			localPlayer.getBody().applyTorque(500.0f);				//20 was obnoxious on android device make this adjustable in settings?
 		}else if(in.equals("right")){
-			localPlayer.getBody().applyTorque(-200.0f);
+			localPlayer.getBody().applyTorque(-500.0f);
 		}
 
 		if(in.equals("backward")){
@@ -188,11 +197,23 @@ public class CoreLogic {
 		}
 
 		if(in.equals("shoot")){
-			//TODO have the localplayer shoot a bullet
+			
+			float dir = localPlayer.getAngle();
+			float x = (float) (localPlayer.getY() + (4.1 * Math.sin(dir)));
+			float y = (float) (localPlayer.getY() + (4.1 * Math.cos(dir)));
+
+			Bullet shot = new Bullet("bullet", x, y, dir);
+			entities.add(shot);
+			
+			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, -5.0f));
+			Vector2 p = localPlayer.getBody().getWorldPoint(shot.getBody().getLocalCenter().add(new Vector2(0.0f,0.0f)));
+			localPlayer.getBody().applyForce(f, p);
+			
+			System.out.println("BZZZAP!!");
 		}
 
 		if(in.equals("forward")){
-			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, -30.0f));
+			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, -35.0f));
 			Vector2 p = localPlayer.getBody().getWorldPoint(localPlayer.getBody().getLocalCenter().add(new Vector2(0.0f,0.0f)));
 			localPlayer.getBody().applyForce(f, p);
 			localPlayer.setThrust(true);
@@ -208,7 +229,7 @@ public class CoreLogic {
 	 * 
 	 * @return	Entities Map
 	 */
-	public static OrderedMap<String, Entity> getEntities(){
+	public static ArrayList<Entity> getEntities(){
 		return entities;
 	}
 
@@ -217,12 +238,12 @@ public class CoreLogic {
 	 * 
 	 * @return Map of Ships
 	 */
-	public static OrderedMap<String, Ship> getShips(){
-		OrderedMap<String, Ship> ships = new OrderedMap<String, Ship>();
+	public static ArrayList<Ship> getShips(){
+		ArrayList<Ship> ships = new ArrayList<Ship>();
 
-		for(Entity entity : entities.values()){
-			if(entity.getType().equals(EntityType.SHIP)){
-				ships.put(entity.toString(), (Ship) entity);
+		for(Entity entity : entities){
+			if(entity.getEnt().equals("ship")){
+				ships.add((Ship) entity);
 			}
 		}
 
@@ -234,12 +255,12 @@ public class CoreLogic {
 	 * 
 	 * @return Map of Asteroids
 	 */
-	public static OrderedMap<String, Asteroid> getAsteroids(){
-		OrderedMap<String, Asteroid> asteroids = new OrderedMap<String, Asteroid>();
+	public static ArrayList<Asteroid> getAsteroids(){
+		ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 
-		for(Entity entity : entities.values()){
-			if(entity.getType().equals(EntityType.ASTEROID)){
-				asteroids.put(entity.toString(), (Asteroid) entity);
+		for(Entity entity : entities){
+			if(entity.getEnt().equals("asteroid")){
+				asteroids.add((Asteroid) entity);
 			}
 		}
 
@@ -251,12 +272,12 @@ public class CoreLogic {
 	 * 
 	 * @return Map of Bullets
 	 */
-	public static OrderedMap<String, Bullet> getBullets(){
-		OrderedMap<String, Bullet> bullets = new OrderedMap<String, Bullet>();
+	public static ArrayList<Bullet> getBullets(){
+		ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
-		for(Entity entity : entities.values()){
-			if(entity.getType().equals(EntityType.BULLET)){
-				bullets.put(entity.toString(), (Bullet) entity);
+		for(Entity entity : entities){
+			if(entity.getEnt().equals("bullet")){
+				bullets.add((Bullet) entity);
 			}
 		}
 
@@ -321,6 +342,11 @@ public class CoreLogic {
 
 	public static void adjViewPortY(float adj){
 		viewPortY = viewPortY + adj;
+	}
+	
+	public static void removeEntity(Entity ent) {
+		//TODO REmove entity from map/arraylist
+		//entities.remove(ent.toString());
 	}
 
 }

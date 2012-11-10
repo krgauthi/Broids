@@ -15,7 +15,10 @@ public class Asteroid extends Entity{
 
 	public Asteroid(String id, EntityType type, float x, float y) {
 		super(id, type);
+		super.setSize(15.0f);
+		super.setColor(Color.YELLOW);
 		// TODO Write initialization for Asteroid body/sprite
+		/*
 		Vector2 vertices[] = new Vector2[7];
 		if(id.equals("small")){
 			vertices[0] = new Vector2(0.548f, 2.5f);
@@ -35,7 +38,7 @@ public class Asteroid extends Entity{
 			vertices[5] = new Vector2(-2.161f*2, -1.585f*2);
 			vertices[6] = new Vector2(-2.161f*2, 1.419f*2);
 		}
-		if(id.equals("large")){
+		else{
 			vertices[0] = new Vector2(0.548f*3, 2.5f*3);
 			vertices[1] = new Vector2(2.039f*3, 1.167f*3);
 			vertices[2] = new Vector2(1.347f*3, -0.241f*3);
@@ -44,9 +47,11 @@ public class Asteroid extends Entity{
 			vertices[5] = new Vector2(-2.161f*3, -1.585f*3);
 			vertices[6] = new Vector2(-2.161f*3, 1.419f*3);
 		}
+		*/
 		
 		PolygonShape shape = new PolygonShape();
-		shape.set(vertices);
+		shape.setAsBox(5f, 5f);
+		//shape.set(vertices);
 
 		FixtureDef fixDef = new FixtureDef();
 		fixDef.shape = shape;
@@ -58,7 +63,7 @@ public class Asteroid extends Entity{
 		bodDef.linearDamping = 0.0f;
 
 		bodDef.position.set(x, y);
-		bodDef.angle = MathUtils.PI;
+		bodDef.angle = (float) (MathUtils.PI * Math.random());
 		bodDef.allowSleep = false;
 		super.createBody(bodDef, fixDef);
 
@@ -66,8 +71,8 @@ public class Asteroid extends Entity{
 		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeight();			
 
 		super.setSprite(type.getSubType().getSpritePath());
-		super.getSprite().setOrigin((meter)/2, (meter)/2);
-		super.getSprite().setSize(meter*(this.getSize()), meter*(this.getSize()));
+		super.getSprite().setOrigin(meter*(this.getSize()/2), meter*(this.getSize()/2)); 
+		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
 		super.getSprite().setColor(Color.WHITE);
 	}
 
@@ -90,7 +95,7 @@ public class Asteroid extends Entity{
 
 
 		super.getSprite().setPosition(posX, posY);
-		super.getSprite().setRotation(super.getBody().getAngle());
+		super.getSprite().setRotation((float)super.getAngle());
 		super.getSprite().draw(sb);
 
 	}

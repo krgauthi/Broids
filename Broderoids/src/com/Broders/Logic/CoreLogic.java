@@ -93,6 +93,15 @@ public class CoreLogic {
 		String instanceID = "0000";		// check map to see how many of this type of entity already exist
 		localPlayer = new Ship(clientID + instanceID, EntityType.SHIP,myGame.playerColor);
 		entities.put(localPlayer.toString(), localPlayer);
+		
+		for (int i=0; i<6; i++) {
+			float x = (float) (CoreLogic.getWidth() * Math.random());
+			float y = (float) (CoreLogic.getHeight() * Math.random());
+			
+			Asteroid roid = new Asteroid("Roid" + i, EntityType.ASTEROID, x, y);
+			entities.put(roid.toString(), roid);//TODO CHANGE PLZ!!
+		}
+		
 	}
 
 	public static void update(float delta){
@@ -190,12 +199,11 @@ public class CoreLogic {
 
 		if(in.equals("shoot")){
 			
-			Pos pos = new Pos(localPlayer.getX(), localPlayer.getY());
 			float dir = localPlayer.getAngle();
-			pos.setX((float) (pos.getX() + (4.1 * Math.sin(dir))));
-			pos.setY((float) (pos.getY() + (4.1 * Math.cos(dir))));
+			float x = (float) (localPlayer.getY() + (4.1 * Math.sin(dir)));
+			float y = (float) (localPlayer.getY() + (4.1 * Math.cos(dir)));
 
-			Bullet shot = new Bullet("BZZZZAP!", EntityType.BULLET, pos, dir);
+			Bullet shot = new Bullet("BZZZZAP!", EntityType.BULLET, x, y, dir);
 			entities.put(shot.toString(), shot);
 			
 			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, -5.0f));

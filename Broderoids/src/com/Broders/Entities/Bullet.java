@@ -19,12 +19,10 @@ public class Bullet extends Entity{
 	private float age;
 	private static float deathTime = 3f;
 
-	public Bullet(String id, EntityType type, Pos pos, float dir) {
+	public Bullet(String id, EntityType type, float x, float y, float dir) {
 		super(id, type);
 		super.setSize(10.0f); //TODO get from package/enum/whatever
 		super.setColor(Color.WHITE);
-		//this.pos = pos;
-		//this.dir = dir;
 		
 		age = 0;
 		
@@ -41,7 +39,7 @@ public class Bullet extends Entity{
 		bodDef.type = BodyType.KinematicBody;
 		bodDef.linearDamping = 0.0f;
 
-		bodDef.position.set(pos.getX(), pos.getY());
+		bodDef.position.set(x, y);
 		bodDef.angle = dir;
 		bodDef.allowSleep = false;
 		

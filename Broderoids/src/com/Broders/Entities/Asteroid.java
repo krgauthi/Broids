@@ -22,6 +22,7 @@ public class Asteroid extends Entity{
 		super.setColor(Color.YELLOW);
 		
 		// TODO Write initialization for Asteroid body/sprite
+<<<<<<< HEAD
 		/*
 		Vector2 vertices[] = new Vector2[7];
 		if(type.equals("small")){git 
@@ -57,12 +58,15 @@ public class Asteroid extends Entity{
 			//super.setSprite(Settings.data_path + "broid3.png");
 		}
 		*/
+=======
+		
+>>>>>>> a8aa770791be470cfde54c5514e04fa3738f6e72
 		
 		// if we implement separate files just uncomment the lines above and comment this line out
 		super.setSprite(Settings.data_path + "broid.png");
 		
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(5f, 5f);
+		shape.setAsBox(6f,6f);
 		//shape.set(vertices);
 
 		FixtureDef fixDef = new FixtureDef();
@@ -81,7 +85,7 @@ public class Asteroid extends Entity{
 		super.createBody(bodDef, fixDef);
 
 		//sprite
-		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeight();			
+		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeightScreen();			
 
 		super.getSprite().setOrigin(meter*(this.getSize()/2), meter*(this.getSize()/2)); 
 		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());

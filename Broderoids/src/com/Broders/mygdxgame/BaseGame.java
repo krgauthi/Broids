@@ -33,9 +33,10 @@ public class BaseGame extends Game {
 	public boolean debugMode;
 	public boolean multiplayer;
 	public int difficulty;
-	public Color GameColor;		
+	public Color gameColor;		
 	public Color playerColor;	//TODO ref/move in new player class?
 	public float bounds;
+	public int gameSize;		//multi only
 	
 	
 	/*
@@ -50,9 +51,10 @@ public class BaseGame extends Game {
 	exitBuffer = 1;
 	difficulty = 5;
 	multiplayer = false;
-	GameColor = Color.WHITE;
+	gameColor = Color.WHITE;
 	playerColor = Color.CYAN;
 	bounds = .25f;  									//max of .5
+	gameSize = 0;
 
 	
 	font = new BitmapFont(Gdx.files.internal(Settings.data_path + "smallfonts.fnt"), Gdx.files.internal(Settings.data_path + "smallfonts_0.png"), false);

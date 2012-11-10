@@ -55,8 +55,8 @@ public class Bullet extends Entity{
 		super.createBody(bodDef, fixDef);
 		
 		//Set the velocity
-		float vX = (float) (10*Math.cos(Math.toRadians(dir)));
-		float vY = (float) (10*Math.sin(Math.toRadians(dir)));
+		float vX = (float) (20*Math.cos(Math.toRadians(dir)));
+		float vY = (float) (20*Math.sin(Math.toRadians(dir)));
 		super.body.setLinearVelocity(vX, vY);
 	}
 

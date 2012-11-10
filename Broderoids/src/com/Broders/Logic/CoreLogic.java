@@ -189,6 +189,7 @@ public class CoreLogic {
 		}
 
 		if(in.equals("shoot")){
+			
 			Pos pos = new Pos(localPlayer.getX(), localPlayer.getY());
 			float dir = localPlayer.getAngle();
 			pos.setX((float) (pos.getX() + (4.1 * Math.sin(dir))));
@@ -196,6 +197,12 @@ public class CoreLogic {
 
 			Bullet shot = new Bullet("BZZZZAP!", EntityType.BULLET, pos, dir);
 			entities.put(shot.toString(), shot);
+			
+			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, -5.0f));
+			Vector2 p = localPlayer.getBody().getWorldPoint(shot.getBody().getLocalCenter().add(new Vector2(0.0f,0.0f)));
+			localPlayer.getBody().applyForce(f, p);
+			
+			System.out.println("BZZZAP!!");
 		}
 
 		if(in.equals("forward")){
@@ -328,6 +335,11 @@ public class CoreLogic {
 
 	public static void adjViewPortY(float adj){
 		viewPortY = viewPortY + adj;
+	}
+	
+	public static void removeEntity(Entity ent) {
+		//TODO REmove entity from map/arraylist
+		//entities.remove(ent.toString());
 	}
 
 }

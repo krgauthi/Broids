@@ -14,11 +14,20 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class Bullet extends Entity{
 	
-	Pos pos;
-	float dir;
+	//private Pos pos;
+	//private float dir;
+	private float age;
+	private static float deathTime = 3f;
 
 	public Bullet(String id, EntityType type, Pos pos, float dir) {
 		super(id, type);
+		super.setSize(10.0f); //TODO get from package/enum/whatever
+		super.setColor(Color.WHITE);
+		//this.pos = pos;
+		//this.dir = dir;
+		
+		age = 0;
+		
 		//
 		//sprite
 		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeight();			
@@ -26,14 +35,13 @@ public class Bullet extends Entity{
 		super.setSprite(type.getSubType().getSpritePath());
 		super.getSprite().setOrigin(meter*(this.getSize()/2), meter*(this.getSize()/2)); 
 		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
-		super.getSprite().setColor(Color.GREEN);
+		super.getSprite().setColor(Color.WHITE);
 
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.KinematicBody;
 		bodDef.linearDamping = 0.0f;
 
-		//bodDef.position.set(pos.getX(), pos.getY());
-		bodDef.position.set(CoreLogic.getWidth()/2, CoreLogic.getHeight()/2);
+		bodDef.position.set(pos.getX(), pos.getY());
 		bodDef.angle = dir;
 		bodDef.allowSleep = false;
 		
@@ -42,17 +50,11 @@ public class Bullet extends Entity{
 
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(1f, 1f);
-
 		fixDef.shape = shape;
-
-		fixDef.density = 0.01f;
+		fixDef.density = 1f;
 		//TODO Add fixtures
 		
 		super.createBody(bodDef, fixDef);
-		
-		super.setSize(2.0f); //TODO get from package/enum/whatever
-		super.setColor(Color.WHITE);
-		
 	}
 
 	@Override
@@ -74,6 +76,22 @@ public class Bullet extends Entity{
 		super.getSprite().setPosition(posX, posY);
 		super.getSprite().setRotation(super.getBody().getAngle());
 		super.getSprite().draw(sb);
+		
+	}
+
+	@Override
+	public void update() {
+		age += Gdx.graphics.getDeltaTime();
+		
+		if (age >= deathTime) {
+			CoreLogic.removeEntity(this);
+		}
+		
+	}
+
+	@Override
+	public void destroy() {
+		CoreLogic.removeEntity(this);
 		
 	}
 

@@ -13,7 +13,7 @@ public class Settings {
 		
 	public static int screen_resolution;
 	
-	public static boolean debug_text;
+//	public static boolean debug_text;
 	
 	public static String username;
 	

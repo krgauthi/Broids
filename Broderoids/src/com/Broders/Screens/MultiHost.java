@@ -15,13 +15,16 @@ public class MultiHost implements Screen{
 	private BaseGame myGame;
 	private SpriteBatch spriteBatch;
 	private BitmapFont font;
-	
+
 	private float xx;
 	private float yy;
 
 
 	public MultiHost(BaseGame game){
 		this.myGame = game;
+
+		font = this.myGame.font;
+		font.setScale(.5f);
 		
 		xx = Gdx.graphics.getWidth();
 		yy = Gdx.graphics.getHeight();
@@ -31,17 +34,19 @@ public class MultiHost implements Screen{
 	public void render(float delta) {
 		handleInput(delta);
 		update(delta);
-
 		paint(delta);
-
 	}
 
 	private void paint(float delta) {
 		GL10 g1 = Gdx.graphics.getGL10();
 		Gdx.gl.glClearColor(0, 0, 0, 1); 
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		spriteBatch.begin();
 		
-		//font.draw(spriteBatch, "Mulipler Options", xx*.3f, yy*.9f);
+		font.draw(spriteBatch, "Muliplayer Options", xx*.4f, yy*.9f);
+		
+		spriteBatch.end();
 
 	}
 
@@ -68,8 +73,6 @@ public class MultiHost implements Screen{
 	@Override
 	public void show() {
 		spriteBatch = new SpriteBatch();
-
-		font = myGame.font;
 
 	}
 

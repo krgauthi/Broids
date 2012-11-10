@@ -176,9 +176,9 @@ public class CoreLogic {
 	 */
 	public static void execute(float delta, InputDir in){
 		if(in.equals("left")){
-			localPlayer.getBody().applyTorque(200.0f);				//20 was obnoxious on android device make this adjustable in settings?
+			localPlayer.getBody().applyTorque(500.0f);				//20 was obnoxious on android device make this adjustable in settings?
 		}else if(in.equals("right")){
-			localPlayer.getBody().applyTorque(-200.0f);
+			localPlayer.getBody().applyTorque(-500.0f);
 		}
 
 		if(in.equals("backward")){
@@ -192,7 +192,7 @@ public class CoreLogic {
 		}
 
 		if(in.equals("forward")){
-			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, -30.0f));
+			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, -35.0f));
 			Vector2 p = localPlayer.getBody().getWorldPoint(localPlayer.getBody().getLocalCenter().add(new Vector2(0.0f,0.0f)));
 			localPlayer.getBody().applyForce(f, p);
 			localPlayer.setThrust(true);

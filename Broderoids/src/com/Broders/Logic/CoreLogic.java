@@ -112,7 +112,7 @@ public class CoreLogic {
 
 		//viewport logic
 		if((localPlayer.getX()-viewPortX)/widthScreen > (1-myGame.bounds)){
-			if(viewPortX <= width-widthScreen){
+			if(viewPortX < width-widthScreen){
 				float target = (((localPlayer.getX()-viewPortX)/widthScreen)-(1-myGame.bounds))/(myGame.bounds);
 				adjViewPortX(10*target);
 			}
@@ -126,7 +126,7 @@ public class CoreLogic {
 		}
 
 		if((localPlayer.getY()-viewPortY)/heightScreen > (1-myGame.bounds)){
-			if(viewPortY <= height-heightScreen){
+			if(viewPortY < height-heightScreen){
 				float target = (((localPlayer.getY()-viewPortY)/heightScreen)-(1-myGame.bounds))/(myGame.bounds);
 				adjViewPortY(10*target);
 			}

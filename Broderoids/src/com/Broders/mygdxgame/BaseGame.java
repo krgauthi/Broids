@@ -48,7 +48,6 @@ public class BaseGame extends Game {
 	screenWidth =  Gdx.graphics.getWidth();
 	tailLength = 5;
 	exitBuffer = 1;
-	epileptic = false;
 	difficulty = 5;
 	multiplayer = false;
 	GameColor = Color.WHITE;

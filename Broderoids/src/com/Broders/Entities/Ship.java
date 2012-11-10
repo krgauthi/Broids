@@ -53,7 +53,7 @@ public class Ship extends Entity{
 		FixtureDef fixDef = new FixtureDef();
 		fixDef.shape = shape;
 		fixDef.density = 0.5f;
-
+		
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;
 		bodDef.angularDamping = 30.0f;

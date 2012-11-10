@@ -26,7 +26,7 @@ public class Bullet extends Entity{
 		
 		super.setEnt("bullet");
 		//sprite
-		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeight();			
+		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeightScreen();			
 		
 		super.setSprite(Settings.data_path + "bullet.png");
 		super.getSprite().setOrigin((meter)/2, (meter)/2);

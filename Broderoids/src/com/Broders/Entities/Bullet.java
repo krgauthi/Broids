@@ -1,21 +1,22 @@
 package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
+import com.Broders.Logic.Settings;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Bullet extends Entity{
 
-	public Bullet(String id, EntityType type) {
-		super(id, type);
+	public Bullet(String type) {
+		super(type);
 		// TODO Write initialization for Bullet body/sprite
 		
-		
+		super.setEnt("bullet");
 		//sprite
 		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeight();			
 		
-		super.setSprite(type.getSubType().getSpritePath());
+		super.setSprite(Settings.data_path + "bullet.png");
 		super.getSprite().setOrigin((meter)/2, (meter)/2);
 		super.getSprite().setSize(meter, meter);
 		super.getSprite().setColor(Color.WHITE);

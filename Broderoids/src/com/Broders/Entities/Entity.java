@@ -20,8 +20,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
  */
 public abstract class Entity {
 	
-	private String identity;
-	private EntityType type;
+	private String ent;
+	private String type;
 	private Body body;
 	private Sprite sprite;
 	
@@ -39,9 +39,8 @@ public abstract class Entity {
 	 * @param	id		Used to uniquely identify this entity
 	 * @param	type	The type of this entity
 	 */
-	public Entity(String id, EntityType type) {
-		this.identity = type.toString() + id;
-		this.type = type;
+	public Entity(String type) {
+		
 	}
 
 	/**
@@ -51,6 +50,14 @@ public abstract class Entity {
 	 */
 	public Body getBody() {
 		return this.body;
+	}
+	
+	public void setEnt(String ent){
+		this.ent = ent;
+	}
+	
+	public String getEnt(){
+		return ent;
 	}
 	
 	/**
@@ -82,24 +89,6 @@ public abstract class Entity {
 		this.fixDef = fixDef;
 		this.body = CoreLogic.getWorld().createBody(bodDef);
 		this.body.createFixture(fixDef);
-	}
-	
-	/**
-	 * Returns the unique identity of this entity.
-	 * 
-	 * @return	Unique Entity ID
-	 */
-	public String getIdentity() {
-		return this.identity;
-	}
-	
-	/**
-	 * Returns the type of this entity
-	 * 
-	 * @return	The Entity Type
-	 */
-	public EntityType getType() {
-		return this.type;
 	}
 	
 	/**
@@ -167,7 +156,7 @@ public abstract class Entity {
 	 * @see	#getIdentity()
 	 */
 	public String toString(){
-		return this.identity;
+		return this.type;
 	}
 	
 	/**
@@ -177,7 +166,7 @@ public abstract class Entity {
 	 * @return			True if entities are the same, false otherwise
 	 */
 	public boolean equals(Entity entity){
-		return entity.toString().equals(this.identity);
+		return entity.toString().equals(this.type);
 	}
 	
 	/**

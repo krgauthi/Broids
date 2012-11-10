@@ -1,5 +1,6 @@
 package com.Broders.Logic;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -35,7 +36,7 @@ import com.badlogic.gdx.utils.OrderedMap;
 public class CoreLogic {
 
 	private static World world;
-	private static OrderedMap<String, Entity> entities;
+	private static ArrayList<Entity> entities;
 	private static Ship localPlayer;
 	private static BaseGame myGame;
 
@@ -67,7 +68,7 @@ public class CoreLogic {
 		myGame = game;
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, false);
-		entities = new OrderedMap<String, Entity>();
+		entities = new ArrayList<Entity>();
 
 		int gcd = gcd(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		widthScreen = Gdx.graphics.getWidth() / gcd * 10;
@@ -84,14 +85,15 @@ public class CoreLogic {
 		viewPortX = (width/2)-(widthScreen/2f);
 		viewPortY = (height/2)-(heightScreen/2f);
 
-		/* Just putting these here as an example.
+		/* forget this
+		 * Just putting these here as an example.
 		 * entity IDs will be of the following format:
 		 * EntityID + TypeID + ClientID + InstanceID = 00 00 000 0000
 		 */
-		String clientID = "000";		// possibly let server handle clientID generation somehow?
-		String instanceID = "0000";		// check map to see how many of this type of entity already exist
-		localPlayer = new Ship(clientID + instanceID, EntityType.SHIP,myGame.playerColor);
-		entities.put(localPlayer.toString(), localPlayer);
+		//String clientID = "000";		// possibly let server handle clientID generation somehow?
+		//String instanceID = "0000";		// check map to see how many of this type of entity already exist
+		localPlayer = new Ship("classic",myGame.playerColor);
+		entities.add(localPlayer);
 	}
 
 	public static void update(float delta){
@@ -208,7 +210,7 @@ public class CoreLogic {
 	 * 
 	 * @return	Entities Map
 	 */
-	public static OrderedMap<String, Entity> getEntities(){
+	public static ArrayList<Entity> getEntities(){
 		return entities;
 	}
 
@@ -217,12 +219,12 @@ public class CoreLogic {
 	 * 
 	 * @return Map of Ships
 	 */
-	public static OrderedMap<String, Ship> getShips(){
-		OrderedMap<String, Ship> ships = new OrderedMap<String, Ship>();
+	public static ArrayList<Ship> getShips(){
+		ArrayList<Ship> ships = new ArrayList<Ship>();
 
-		for(Entity entity : entities.values()){
-			if(entity.getType().equals(EntityType.SHIP)){
-				ships.put(entity.toString(), (Ship) entity);
+		for(Entity entity : entities){
+			if(entity.getEnt().equals("ship")){
+				ships.add((Ship) entity);
 			}
 		}
 
@@ -234,12 +236,12 @@ public class CoreLogic {
 	 * 
 	 * @return Map of Asteroids
 	 */
-	public static OrderedMap<String, Asteroid> getAsteroids(){
-		OrderedMap<String, Asteroid> asteroids = new OrderedMap<String, Asteroid>();
+	public static ArrayList<Asteroid> getAsteroids(){
+		ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 
-		for(Entity entity : entities.values()){
-			if(entity.getType().equals(EntityType.ASTEROID)){
-				asteroids.put(entity.toString(), (Asteroid) entity);
+		for(Entity entity : entities){
+			if(entity.getEnt().equals("asteroid")){
+				asteroids.add((Asteroid) entity);
 			}
 		}
 
@@ -251,12 +253,12 @@ public class CoreLogic {
 	 * 
 	 * @return Map of Bullets
 	 */
-	public static OrderedMap<String, Bullet> getBullets(){
-		OrderedMap<String, Bullet> bullets = new OrderedMap<String, Bullet>();
+	public static ArrayList<Bullet> getBullets(){
+		ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
-		for(Entity entity : entities.values()){
-			if(entity.getType().equals(EntityType.BULLET)){
-				bullets.put(entity.toString(), (Bullet) entity);
+		for(Entity entity : entities){
+			if(entity.getEnt().equals("bullet")){
+				bullets.add((Bullet) entity);
 			}
 		}
 

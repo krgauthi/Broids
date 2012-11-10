@@ -143,8 +143,8 @@ public class GameScreen implements Screen{
 		Tail.draw(spriteBatch);
 
 		//loop through all Entities
-		for(Entry<String, Entity> E : CoreLogic.getEntities().entries()){
-			E.value.Draw(spriteBatch);
+		for(Entity E : CoreLogic.getEntities()){
+			E.Draw(spriteBatch);
 		}
 
 

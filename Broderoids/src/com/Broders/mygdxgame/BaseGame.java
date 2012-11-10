@@ -53,8 +53,8 @@ public class BaseGame extends Game {
 	multiplayer = false;
 	GameColor = Color.WHITE;
 	playerColor = Color.CYAN;
-	debugMode = multiplayer;
-	bounds = .25f;  //max of .5
+	bounds = .25f;  									//max of .5
+
 	
 	font = new BitmapFont(Gdx.files.internal(Settings.data_path + "smallfonts.fnt"), Gdx.files.internal(Settings.data_path + "smallfonts_0.png"), false);
 	

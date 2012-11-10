@@ -41,7 +41,7 @@ public class MultiHost implements Screen{
 		Gdx.gl.glClearColor(0, 0, 0, 1); 
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		font.draw(spriteBatch, "Mulipler Options", xx*.3f, yy*.9f);
+		//font.draw(spriteBatch, "Mulipler Options", xx*.3f, yy*.9f);
 
 	}
 

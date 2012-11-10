@@ -32,7 +32,7 @@ public class GameScreen implements Screen{
 
 	private BaseGame myGame;
 
-	private boolean Multiplayer;
+	private boolean multiplayer;
 
 	private Random rand;
 
@@ -79,7 +79,7 @@ public class GameScreen implements Screen{
 
 	public GameScreen(BaseGame game, boolean m){
 		this.myGame = game;
-		this.Multiplayer = m;
+		this.multiplayer = m;
 
 		if(m){
 			System.out.println("Multi");
@@ -92,12 +92,9 @@ public class GameScreen implements Screen{
 		font = this.myGame.font;
 		font.setScale(.25f);
 
-		myGame.debugMode = m;				//TODO add Debug Setting @mike
 		myGame.multiplayer = m;
 
 		CoreLogic.initCore(game);
-
-
 
 		if(myGame.debugMode){
 			debug1 = new Tail(50,Color.MAGENTA);
@@ -150,10 +147,7 @@ public class GameScreen implements Screen{
 			E.value.Draw(spriteBatch);
 		}
 
-
-
-
-
+		
 		//If Android
 		if(Gdx.app.getVersion() > 0){
 			dPad.draw(spriteBatch,.45f);					//TODO @mike .45f make this a setting for how transparent to have android controls
@@ -162,7 +156,7 @@ public class GameScreen implements Screen{
 		}
 
 
-		if(Multiplayer){
+		if(multiplayer){
 			//Draw HUD
 			healthBar.draw(spriteBatch);
 			//healthBlock.draw(spriteBatch);
@@ -476,9 +470,7 @@ public class GameScreen implements Screen{
 	@Override
 	public void hide() {
 		// TODO @Kris Look to see if there is a way to wipe this object from memory when you leave the game
-		myGame.debugMode = false;
 		myGame.multiplayer = false;
-
 	}
 
 	@Override

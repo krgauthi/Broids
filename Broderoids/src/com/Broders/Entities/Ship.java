@@ -69,8 +69,7 @@ public class Ship extends Entity{
 		
 		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeightScreen();			
 
-		System.out.println(meter);
-		
+
 		
 		super.setSprite(Settings.data_path + "ship1.png");
 		super.getSprite().flip(false, true);

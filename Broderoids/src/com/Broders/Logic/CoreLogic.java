@@ -114,11 +114,7 @@ public class CoreLogic {
 		entities.add(localPlayer);
 		
 		for (int i=0; i<6; i++) {
-			float x = (float) (CoreLogic.getWidth() * Math.random());
-			float y = (float) (CoreLogic.getHeight() * Math.random());
-			
-			Asteroid roid = new Asteroid("large", x, y);
-			entities.add(roid);//TODO CHANGE PLZ!!
+
 		}
 		
 	}
@@ -129,7 +125,11 @@ public class CoreLogic {
 
 			if(getAsteroids().size() <= 0){
 				for(int i = 0; i < myGame.difficulty; i++){
-					//Spawn Broids
+					float x = (float) (CoreLogic.getWidth() * Math.random());
+					float y = (float) (CoreLogic.getHeight() * Math.random());
+					
+					
+					entities.add(new Asteroid("large", x, y));
 				}
 			}
 
@@ -189,6 +189,30 @@ public class CoreLogic {
 			viewPortY = 0;
 		}
 
+		for(Entity E : entities){
+			if(E.getX() < -4){			//make it the size of the ship
+				E.teleport(width+3, E.getY());
+
+			}
+
+			if(E.getX() > width+4){
+				E.teleport(-3f, E.getY());
+
+			}
+
+			if(E.getY() < -4){
+				E.teleport(E.getX(), height+3);
+
+			}
+
+			if(E.getY() > height+4){
+				E.teleport(E.getX(), -3f);
+
+			}
+
+		}
+		
+		
 		localPlayer.setThrust(false);
 
 

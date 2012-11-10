@@ -236,6 +236,8 @@ public class CoreLogic {
 				E.teleport(E.getX(), -3f);
 
 			}
+			
+			E.update();
 
 		}
 		
@@ -271,15 +273,11 @@ public class CoreLogic {
 
 			if(!spacePressed || bulletCooldown >= 0.5) {
 				float dir = localPlayer.getAngle();
-				float x = (float) (localPlayer.getX() + (2.805 * Math.cos(dir)));
-				float y = (float) (localPlayer.getY() + (2.805 * Math.sin(dir)));
+				float x = (float) (localPlayer.getX() + (2.805 * Math.cos(Math.toRadians(dir))));
+				float y = (float) (localPlayer.getY() + (2.805 * Math.sin(Math.toRadians(dir))));
 
 				Bullet shot = new Bullet("bullet", x, y, dir);
 				entities.add(shot);
-
-				Vector2 f = shot.getBody().getWorldVector(new Vector2(0.0f, -5.0f));
-				Vector2 p = shot.getBody().getWorldPoint(shot.getBody().getLocalCenter().add(new Vector2(0.0f,0.0f)));
-				shot.getBody().applyForce(f, p);
 
 				System.out.println("BZZZAP!!");
 				bulletCooldown = 0;

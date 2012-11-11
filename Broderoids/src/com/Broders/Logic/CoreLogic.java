@@ -1,30 +1,14 @@
 package com.Broders.Logic;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.physics.box2d.Transform;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.Broders.Entities.Asteroid;
 import com.Broders.Entities.Bullet;
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.Ship;
 import com.Broders.mygdxgame.BaseGame;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.OrderedMap;
-import com.badlogic.gdx.utils.Json.Serializer;
-import com.badlogic.gdx.utils.ObjectMap;
 
 /**
  * 
@@ -35,6 +19,7 @@ public class CoreLogic {
 
 	private static World world;
 	private static ArrayList<Entity> entities;
+	private static ArrayList<Entity> rmEntities;
 	private static Ship localPlayer;
 	private static BaseGame myGame;
 
@@ -71,6 +56,7 @@ public class CoreLogic {
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, false);
 		entities = new ArrayList<Entity>();
+		rmEntities = new ArrayList<Entity>();
 
 		int gcd = gcd(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		widthScreen = Gdx.graphics.getWidth() / gcd * 10;
@@ -155,7 +141,6 @@ public class CoreLogic {
 	public static void update(float delta) {
 
 		if (!myGame.multiplayer) {
-
 			if (getAsteroids().size() <= 0) {
 				for (int i = 0; i < myGame.difficulty; i++) {
 					float x = (float) (CoreLogic.getWidth() * Math.random());
@@ -164,7 +149,18 @@ public class CoreLogic {
 					entities.add(new Asteroid("large", x, y));
 				}
 			}
+		}
 
+		// update all entities
+		for (Entity i : entities) {
+			i.update();
+		}
+
+		if (!rmEntities.isEmpty()) {
+			for (Entity i : rmEntities) {
+				entities.remove(i);
+				// world.destroyBody(i.getBody());
+			}
 		}
 
 		// viewport logic
@@ -436,8 +432,7 @@ public class CoreLogic {
 	}
 
 	public static void removeEntity(Entity ent) {
-		// TODO REmove entity from map/arraylist
-		// entities.remove(ent.toString());
+		rmEntities.add(ent);
 	}
 
 }

@@ -88,6 +88,8 @@ public class Bullet extends Entity {
 	public void update() {
 		age += Gdx.graphics.getDeltaTime();
 
+		// NOTE: This will cause issues with destroy().
+		// We need a find a way for everything to live in harmony
 		if (age >= deathTime) {
 			CoreLogic.removeEntity(this);
 		}
@@ -96,8 +98,7 @@ public class Bullet extends Entity {
 
 	@Override
 	public void destroy() {
+		System.out.println("Destroy!");
 		CoreLogic.removeEntity(this);
-
 	}
-
 }

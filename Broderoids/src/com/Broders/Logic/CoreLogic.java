@@ -32,7 +32,6 @@ public class CoreLogic {
 	private static float viewPortX;
 	private static float viewPortY;
 
-	private static boolean spacePressed;
 	private static float bulletCooldown;
 
 	private CoreLogic() {
@@ -62,7 +61,6 @@ public class CoreLogic {
 		widthScreen = Gdx.graphics.getWidth() / gcd * 10;
 		heightScreen = Gdx.graphics.getHeight() / gcd * 10;
 
-		spacePressed = false;
 		bulletCooldown = 0;
 
 		if (game.multiplayer) {
@@ -139,8 +137,10 @@ public class CoreLogic {
 	}
 
 	public static void update(float delta) {
+		bulletCooldown += Gdx.graphics.getDeltaTime();
 
 		if (!myGame.multiplayer) {
+
 			if (getAsteroids().size() <= 0) {
 				for (int i = 0; i < myGame.difficulty; i++) {
 					float x = (float) (CoreLogic.getWidth() * Math.random());
@@ -151,17 +151,16 @@ public class CoreLogic {
 			}
 		}
 
-		// update all entities
-		for (Entity i : entities) {
+		//update all entities
+		for (Entity i: entities) {
 			i.update();
 		}
 
-		if (!rmEntities.isEmpty()) {
-			for (Entity i : rmEntities) {
-				entities.remove(i);
-				// world.destroyBody(i.getBody());
-			}
+		for (Entity i: rmEntities) {
+			entities.remove(i);
+			world.destroyBody(i.getBody());
 		}
+		rmEntities.clear();
 
 		// viewport logic
 		if ((localPlayer.getX() - viewPortX) / widthScreen > (1 - myGame.bounds)) {
@@ -274,10 +273,9 @@ public class CoreLogic {
 			Vector2 p = localPlayer.getBody().getWorldCenter();
 			localPlayer.getBody().applyForce(f, p);
 		}
-
+		
 		if (in.equals("shoot")) {
-
-			if (!spacePressed || bulletCooldown >= 0.5) {
+			if (bulletCooldown >= 0.5) {
 				float dir = localPlayer.getAngle();
 				float x = (float) (localPlayer.getX() + (2.805 * Math.cos(Math
 						.toRadians(dir))));
@@ -289,12 +287,7 @@ public class CoreLogic {
 
 				System.out.println("BZZZAP!!");
 				bulletCooldown = 0;
-			} else {
-				bulletCooldown += Gdx.graphics.getDeltaTime();
 			}
-			spacePressed = true;
-		} else {
-			spacePressed = false;
 		}
 
 		if (in.equals("forward")) {

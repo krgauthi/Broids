@@ -13,26 +13,28 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
-public class Bullet extends Entity{
-	
-	//private Pos pos;
-	//private float dir;
+public class Bullet extends Entity {
+
+	// private Pos pos;
+	// private float dir;
 	private float age;
 	private static float deathTime = 3f;
 
 	public Bullet(String type, float dir, float x, float y) {
 		super(type);
 		// TODO Write initialization for Bullet body/sprite
-		
+
 		super.setEnt("bullet");
-		//sprite
-		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeightScreen();			
-		
+		// sprite
+		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
+
 		super.setSize(6f);
-		
+
 		super.setSprite(Settings.data_path + "bullet.png");
-		super.getSprite().setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
-		super.getSprite().setSize(meter*this.getSize(), meter*this.getSize());
+		super.getSprite().setOrigin((meter * this.getSize()) / 2,
+				(meter * this.getSize()) / 2);
+		super.getSprite().setSize(meter * this.getSize(),
+				meter * this.getSize());
 		super.getSprite().setColor(Color.WHITE);
 
 		BodyDef bodDef = new BodyDef();
@@ -42,60 +44,60 @@ public class Bullet extends Entity{
 		bodDef.position.set(x, y);
 		bodDef.angle = dir;
 		bodDef.allowSleep = false;
-		
-		//Fixtures
+
+		// Fixtures
 		FixtureDef fixDef = new FixtureDef();
 
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(1f, 1f);
 		fixDef.shape = shape;
 		fixDef.density = 1f;
-		//TODO Add fixtures
-		
+		// TODO Add fixtures
+
 		super.createBody(bodDef, fixDef);
-		
-		//Set the velocity
-		float vX = (float) (10*Math.cos(Math.toRadians(dir)));
-		float vY = (float) (10*Math.sin(Math.toRadians(dir)));
+
+		// Set the velocity
+		float vX = (float) (10 * Math.cos(Math.toRadians(dir)));
+		float vY = (float) (10 * Math.sin(Math.toRadians(dir)));
 		super.body.setLinearVelocity(vX, vY);
 	}
 
 	@Override
 	public void Draw(SpriteBatch sb) {
-		float screenWidth =  Gdx.graphics.getWidth();
-		float screenHeight =  Gdx.graphics.getHeight();
+		float screenWidth = Gdx.graphics.getWidth();
+		float screenHeight = Gdx.graphics.getHeight();
 
-		float x = super.getBody().getPosition().x - (this.getSize()/2f);
-		float y = super.getBody().getPosition().y - (this.getSize()/2f);
+		float x = super.getBody().getPosition().x - (this.getSize() / 2f);
+		float y = super.getBody().getPosition().y - (this.getSize() / 2f);
 
 		float posX;
 		float posY;
 
-	
-		posX = screenWidth*((x-CoreLogic.getViewPortX())/CoreLogic.getWidthScreen());
-		posY =  screenHeight*((y-CoreLogic.getViewPortY())/CoreLogic.getHeightScreen());
-
+		posX = screenWidth
+				* ((x - CoreLogic.getViewPortX()) / CoreLogic.getWidthScreen());
+		posY = screenHeight
+				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
 
 		super.getSprite().setPosition(posX, posY);
 		super.getSprite().setRotation(super.getBody().getAngle());
 		super.getSprite().draw(sb);
-		
+
 	}
 
 	@Override
 	public void update() {
 		age += Gdx.graphics.getDeltaTime();
-		
+
 		if (age >= deathTime) {
 			CoreLogic.removeEntity(this);
 		}
-		
+
 	}
 
 	@Override
 	public void destroy() {
 		CoreLogic.removeEntity(this);
-		
+
 	}
 
 }

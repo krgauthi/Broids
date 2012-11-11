@@ -20,27 +20,28 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
  * @author ntpeters
  * @author krgauthi
  * @author ejrinkus
- *
+ * 
  */
-public class Ship extends Entity{	
+public class Ship extends Entity {
 
 	private Boolean thrust;
 	private Boolean shooting;
 	private Sprite sprite;
-	
-	//TODO implement method for sound shooting and death sound
 
+	// TODO implement method for sound shooting and death sound
 
 	/**
-	 * Just pass in "classic"
-	 * Initializes a Ship by creating the appropriate physical body and sprite set.
+	 * Just pass in "classic" Initializes a Ship by creating the appropriate
+	 * physical body and sprite set.
 	 * 
-	 * @param	id		Used to uniquely identify this entity
-	 * @param	type	The type of this entity
-	 * @param playerColor 
+	 * @param id
+	 *            Used to uniquely identify this entity
+	 * @param type
+	 *            The type of this entity
+	 * @param playerColor
 	 */
 	public Ship(String type, Color playerColor) {
-		super(type);		
+		super(type);
 		super.setEnt("ship");
 		Vector2 vertices[] = new Vector2[3];
 		vertices[0] = new Vector2(-1.5f, 1.39f);
@@ -53,36 +54,45 @@ public class Ship extends Entity{
 		FixtureDef fixDef = new FixtureDef();
 		fixDef.shape = shape;
 		fixDef.density = 0.5f;
-		
+
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;
 		bodDef.angularDamping = 30.0f;
 		bodDef.linearDamping = 0.3f;
 
-		bodDef.position.set(CoreLogic.getWidth()/2, CoreLogic.getHeight()/2);
+		bodDef.position
+				.set(CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
 		bodDef.angle = MathUtils.PI;
 		bodDef.allowSleep = false;
 		super.createBody(bodDef, fixDef);
-		
+
 		super.setSize(6f);
 		super.setColor(playerColor);
-		
-		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeightScreen();			
 
+		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
-		
 		super.setSprite(Settings.data_path + "ship1.png");
 		super.getSprite().flip(false, true);
-		super.getSprite().setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
-		super.getSprite().setSize(meter*this.getSize(), meter*this.getSize());
+		super.getSprite().setOrigin((meter * this.getSize()) / 2,
+				(meter * this.getSize()) / 2);
+		super.getSprite().setSize(meter * this.getSize(),
+				meter * this.getSize());
 		super.getSprite().setColor(playerColor);
 
 		this.thrust = false;
-		Texture tempTexture = new Texture(Gdx.files.internal(Settings.data_path + "ship2.png"));
-		this.sprite = new Sprite(tempTexture,1024,1024);
+		Texture tempTexture = new Texture(Gdx.files.internal(Settings.data_path
+				+ "ship2.png"));
+		this.sprite = new Sprite(tempTexture, 1024, 1024);
 		this.sprite.flip(false, true);
-		this.sprite.setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
-		this.sprite.setSize(meter*this.getSize(), meter*this.getSize());							//size needs to come from the type
+		this.sprite.setOrigin((meter * this.getSize()) / 2,
+				(meter * this.getSize()) / 2);
+		this.sprite.setSize(meter * this.getSize(), meter * this.getSize()); // size
+																				// needs
+																				// to
+																				// come
+																				// from
+																				// the
+																				// type
 		this.sprite.setColor(playerColor);
 
 	}
@@ -90,35 +100,38 @@ public class Ship extends Entity{
 	/**
 	 * Checks if the thrust is engaged/disengaged
 	 * 
-	 * @return	True if thrusting, false if not
+	 * @return True if thrusting, false if not
 	 */
-	public Boolean getThrust(){
+	public Boolean getThrust() {
 		return this.thrust;
 	}
 
 	/**
 	 * Sets whether the thrust is engaged or disengaged
 	 * 
-	 * @param bool	True to enable, false to disable
+	 * @param bool
+	 *            True to enable, false to disable
 	 */
-	public void setThrust(boolean bool){
+	public void setThrust(boolean bool) {
 		this.thrust = bool;
 	}
+
 	/**
 	 * Checks if the ship is currently shooting
 	 * 
 	 * @return true if shooting false if not
 	 */
-	public Boolean getShooting(){
+	public Boolean getShooting() {
 		return this.shooting;
 	}
-	
+
 	/**
 	 * Sets if the the ship is shooting or not
 	 * 
-	 * @param bool true if shooting false if not shooting
+	 * @param bool
+	 *            true if shooting false if not shooting
 	 */
-	public void setShooting(boolean bool){
+	public void setShooting(boolean bool) {
 		this.shooting = bool;
 	}
 
@@ -128,27 +141,28 @@ public class Ship extends Entity{
 	@Override
 	public void Draw(SpriteBatch sb) {
 
-		float screenWidth =  Gdx.graphics.getWidth();
-		float screenHeight =  Gdx.graphics.getHeight();
+		float screenWidth = Gdx.graphics.getWidth();
+		float screenHeight = Gdx.graphics.getHeight();
 
-		float x = super.getBody().getPosition().x - (this.getSize()/2f);
-		float y = super.getBody().getPosition().y - (this.getSize()/2f);
+		float x = super.getBody().getPosition().x - (this.getSize() / 2f);
+		float y = super.getBody().getPosition().y - (this.getSize() / 2f);
 
 		float posX;
 		float posY;
 
-	
-		posX = screenWidth*((x-CoreLogic.getViewPortX())/CoreLogic.getWidthScreen());
-		posY =  screenHeight*((y-CoreLogic.getViewPortY())/CoreLogic.getHeightScreen());
+		posX = screenWidth
+				* ((x - CoreLogic.getViewPortX()) / CoreLogic.getWidthScreen());
+		posY = screenHeight
+				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
 
-
-		if(this.getThrust()){
+		if (this.getThrust()) {
 			this.sprite.setPosition(posX, posY);
-			this.sprite.setRotation((float)super.getAngle());
+			this.sprite.setRotation((float) super.getAngle());
 			this.sprite.draw(sb);
-		}else{
+		} else {
 			super.getSprite().setPosition(posX, posY);
-			super.getSprite().setRotation((float)super.getAngle()+(float)(Math.PI/2));
+			super.getSprite().setRotation(
+					(float) super.getAngle() + (float) (Math.PI / 2));
 			super.getSprite().draw(sb);
 		}
 	}
@@ -156,7 +170,7 @@ public class Ship extends Entity{
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

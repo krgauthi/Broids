@@ -20,7 +20,7 @@ public class Bullet extends Entity {
 	private float age;
 	private static float deathTime = 3f;
 
-	public Bullet(String type, float dir, float x, float y) {
+	public Bullet(String type, float dir,Color c, float x, float y) {
 		super(type);
 		// TODO Write initialization for Bullet body/sprite
 
@@ -35,7 +35,7 @@ public class Bullet extends Entity {
 				(meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(),
 				meter * this.getSize());
-		super.getSprite().setColor(Color.WHITE);
+		super.getSprite().setColor(c);
 
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.KinematicBody;

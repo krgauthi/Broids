@@ -19,7 +19,7 @@ public class Bullet extends Entity {
 	// private Pos pos;
 	// private float dir;
 	private float age;
-	private static float deathTime = 3f;
+	private static float deathTime = 1.5f;
 
 	public Bullet(String type, float dir, Vector2 velocity, float x, float y) {
 		super(type);
@@ -71,8 +71,8 @@ public class Bullet extends Entity {
 		this.body.setLinearVelocity(linV);*/
 		
 		// Set the velocity
-		float vX = (float) (100 * Math.cos(Math.toRadians(dir)));
-		float vY = (float) (100 * Math.sin(Math.toRadians(dir)));
+		float vX = (float) (50 * Math.cos(Math.toRadians(dir)));
+		float vY = (float) (50 * Math.sin(Math.toRadians(dir)));
 		super.body.setLinearVelocity(vX, vY);
 		
 		System.out.println(this.getX() + "-" + this.getY());

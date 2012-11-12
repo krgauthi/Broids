@@ -23,6 +23,7 @@ public class CoreLogic {
 	private static LinkedList<Entity> rmEntities;
 	private static Ship localPlayer;
 	private static BaseGame myGame;
+	private static CollisionDetector listener;
 
 	private static float width; // this is the map size
 	private static float height;
@@ -66,6 +67,9 @@ public class CoreLogic {
 		world = new World(gravity, false);
 		entities = new HashMap<String, Entity>();
 		rmEntities = new LinkedList<Entity>();
+		listener = new CollisionDetector();
+		
+		world.setContactListener(listener);
 
 		int gcd = gcd(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		widthScreen = Gdx.graphics.getWidth() / gcd * 10;

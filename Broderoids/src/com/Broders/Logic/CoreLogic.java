@@ -113,39 +113,10 @@ public class CoreLogic {
 		// generation somehow?
 		// String instanceID = "0000"; // check map to see how many of this type
 		// of entity already exist
-		localPlayer = new Ship("classic", myGame.playerColor);
-		localPlayer.setId(nextId());
+		localPlayer = new Ship("classic", myGame.playerColor,width/2,height/2);
 		entities.put(localPlayer.getId(), localPlayer);
 
-		// Spawning asteroids
-		int count = (int) Math.round(Math.random() * 2) + 6;
-		for (int i = 0; i < count; i++) {
 
-			float x = (float) (CoreLogic.getWidth() * Math.random());
-			float y = (float) (CoreLogic.getHeight() * Math.random());
-			float dir = (float) (Math.PI * Math.random());
-
-			Asteroid roid = new Asteroid("large", x, y);
-
-			float initForce = (float) (450 + (150 * Math.random()));
-			x = (float) (initForce * Math.cos(dir));
-			y = (float) (initForce * Math.sin(dir));
-
-			Vector2 f = roid.getBody().getWorldVector(new Vector2(x, y));
-			Vector2 p = roid.getBody().getWorldPoint(
-					roid.getBody().getLocalCenter()
-							.add(new Vector2(0.0f, 0.0f)));
-			roid.getBody().applyForce(f, p);
-
-			float spin = (float) (300 + (250 * Math.random()));
-			if (Math.random() >= 0.5f)
-				spin *= -1;
-
-			roid.getBody().applyTorque(spin);
-
-			roid.setId(nextId());
-			entities.put(roid.getId(), roid);
-		}
 	}
 
 	/**
@@ -158,14 +129,31 @@ public class CoreLogic {
 		bulletCooldown += Gdx.graphics.getDeltaTime();
 
 		if (!myGame.multiplayer) {
-
+			//asteroids
 			if (getAsteroids().size() <= 0) {
 				for (int i = 0; i < myGame.difficulty; i++) {
 					float x = (float) (CoreLogic.getWidth() * Math.random());
 					float y = (float) (CoreLogic.getHeight() * Math.random());
+					float dir = (float) (Math.PI * Math.random());
 
-					Asteroid roid = new Asteroid("large", x, y);
-					roid.setId(nextId());
+					Asteroid roid = new Asteroid("large",myGame.gameColor, x, y);
+
+					float initForce = (float) (450 + (150 * Math.random()));
+					x = (float) (initForce * Math.cos(dir));
+					y = (float) (initForce * Math.sin(dir));
+
+					Vector2 f = roid.getBody().getWorldVector(new Vector2(x, y));
+					Vector2 p = roid.getBody().getWorldPoint(
+							roid.getBody().getLocalCenter()
+									.add(new Vector2(0.0f, 0.0f)));
+					roid.getBody().applyForce(f, p);
+
+					float spin = (float) (300 + (250 * Math.random()));
+					if (Math.random() >= 0.5f)
+						spin *= -1;
+
+					roid.getBody().applyTorque(spin);
+
 					entities.put(roid.getId(), roid);
 				}
 			}
@@ -300,7 +288,6 @@ public class CoreLogic {
 				float dir = localPlayer.getAngle(); //TODO Delete
 				
 				Bullet shot = new Bullet("bullet", x, y, dir);
-				shot.setId(nextId());
 				entities.put(shot.getId(), shot);
 
 				System.out.println("BZZZAP!!");

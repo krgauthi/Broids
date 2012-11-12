@@ -40,7 +40,7 @@ public class Ship extends Entity {
 	 *            The type of this entity
 	 * @param playerColor
 	 */
-	public Ship(String type, Color playerColor) {
+	public Ship(String type, Color playerColor, float x, float y) {
 		super(type);
 		super.setEnt("ship");
 		Vector2 vertices[] = new Vector2[3];
@@ -60,8 +60,7 @@ public class Ship extends Entity {
 		bodDef.angularDamping = 30.0f;
 		bodDef.linearDamping = 0.3f;
 
-		bodDef.position
-				.set(CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
+		bodDef.position.set(x, y);
 		bodDef.angle = MathUtils.PI;
 		bodDef.allowSleep = false;
 		super.createBody(bodDef, fixDef);
@@ -73,27 +72,17 @@ public class Ship extends Entity {
 
 		super.setSprite(Settings.data_path + "ship1.png");
 		super.getSprite().flip(false, true);
-		super.getSprite().setOrigin((meter * this.getSize()) / 2,
-				(meter * this.getSize()) / 2);
-		super.getSprite().setSize(meter * this.getSize(),
-				meter * this.getSize());
+		super.getSprite().setOrigin((meter * this.getSize()) / 2,(meter * this.getSize()) / 2);
+		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
 		super.getSprite().setColor(playerColor);
 
 		this.thrust = false;
-		Texture tempTexture = new Texture(Gdx.files.internal(Settings.data_path
-				+ "ship2.png"));
+		Texture tempTexture = new Texture(Gdx.files.internal(Settings.data_path	+ "ship2.png"));
 		this.sprite = new Sprite(tempTexture, 1024, 1024);
 		this.sprite.flip(false, true);
-		this.sprite.setOrigin((meter * this.getSize()) / 2,
-				(meter * this.getSize()) / 2);
-		this.sprite.setSize(meter * this.getSize(), meter * this.getSize()); // size
-																				// needs
-																				// to
-																				// come
-																				// from
-																				// the
-																				// type
-		this.sprite.setColor(playerColor);
+		this.sprite.setOrigin((meter * this.getSize()) / 2,	(meter * this.getSize()) / 2);
+		this.sprite.setSize(meter * this.getSize(), meter * this.getSize());
+		this.sprite.setColor(this.getColor());
 
 	}
 

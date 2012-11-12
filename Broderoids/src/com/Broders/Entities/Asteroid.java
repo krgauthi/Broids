@@ -14,12 +14,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Asteroid extends Entity {
 
-	public Asteroid(String type, float x, float y) {
+	public Asteroid(String type, Color c, float x, float y) {
 		super(type);
 		super.setEnt("asteroid");
 
 		super.setSize(15.0f);
-		super.setColor(Color.YELLOW);
+		super.setColor(c);
 
 		// TODO Write initialization for Asteroid body/sprite
 
@@ -53,7 +53,7 @@ public class Asteroid extends Entity {
 				meter * (this.getSize() / 2));
 		super.getSprite().setSize(meter * this.getSize(),
 				meter * this.getSize());
-		super.getSprite().setColor(Color.WHITE);
+		super.getSprite().setColor(this.getColor());
 	}
 
 	@Override

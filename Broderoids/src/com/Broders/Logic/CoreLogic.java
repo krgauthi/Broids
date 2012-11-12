@@ -20,7 +20,7 @@ public class CoreLogic {
 
 	private static World world;
 	private static HashMap<String, Entity> entities;
-	private static ArrayList<Entity> rmEntities;
+	private static LinkedList<Entity> rmEntities;
 	private static Ship localPlayer;
 	private static BaseGame myGame;
 
@@ -65,7 +65,7 @@ public class CoreLogic {
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, false);
 		entities = new HashMap<String, Entity>();
-		rmEntities = new ArrayList<Entity>();
+		rmEntities = new LinkedList<Entity>();
 
 		int gcd = gcd(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		widthScreen = Gdx.graphics.getWidth() / gcd * 10;
@@ -148,6 +148,12 @@ public class CoreLogic {
 		}
 	}
 
+	/**
+	 * NOTE: The call to each entities update at the method is at the bottom
+	 * of one of the wrapping loops.
+	 * 
+	 * @param delta
+	 */
 	public static void update(float delta) {
 		bulletCooldown += Gdx.graphics.getDeltaTime();
 
@@ -164,17 +170,6 @@ public class CoreLogic {
 				}
 			}
 		}
-
-		// update all entities
-		for (Entity i : getEntities()) {
-			i.update();
-		}
-
-		for (Entity i : rmEntities) {
-			entities.remove(i.getId());
-			world.destroyBody(i.getBody());
-		}
-		rmEntities.clear();
 
 		// viewport logic
 		if ((localPlayer.getX() - viewPortX) / widthScreen > (1 - myGame.bounds)) {
@@ -235,27 +230,30 @@ public class CoreLogic {
 		for (Entity E : getEntities()) {
 			if (E.getX() < -4) { // make it the size of the ship
 				E.teleport(width + 3, E.getY());
-
 			}
 
 			if (E.getX() > width + 4) {
 				E.teleport(-3f, E.getY());
-
 			}
 
 			if (E.getY() < -4) {
 				E.teleport(E.getX(), height + 3);
-
 			}
 
 			if (E.getY() > height + 4) {
 				E.teleport(E.getX(), -3f);
-
 			}
-
-			E.update();
-
+			E.update(); //THIS IS THE UPDATE! DO NOT PUT ELSEWHERE. Or at least make
+			//sure that there is only one. 
 		}
+
+		for (Entity i : rmEntities) {
+			entities.remove(i.getId());
+			world.destroyBody(i.getBody());
+			System.out.println("Bullet is Dropping " + rmEntities.size());
+			i.destroy();
+		}
+		rmEntities.clear();
 
 		localPlayer.setThrust(false);
 
@@ -288,14 +286,19 @@ public class CoreLogic {
 			localPlayer.getBody().applyForce(f, p);
 		}
 
-		/*if (in.equals("shoot")) {
-			if (bulletCooldown >= 0.5) {
+		if (in.equals("shoot")) {
+			if (bulletCooldown >= 1.0f) {
+				/*
 				float dir = localPlayer.getAngle();
 				float x = (float) (localPlayer.getX() + (2.805 * Math.cos(Math
 						.toRadians(dir))));
 				float y = (float) (localPlayer.getY() + (2.805 * Math.sin(Math
 						.toRadians(dir))));
-
+				*/
+				float x = 0; //TODO Delete
+				float y = 0; //TODO Delete
+				float dir = localPlayer.getAngle(); //TODO Delete
+				
 				Bullet shot = new Bullet("bullet", x, y, dir);
 				shot.setId(nextId());
 				entities.put(shot.getId(), shot);
@@ -303,7 +306,7 @@ public class CoreLogic {
 				System.out.println("BZZZAP!!");
 				bulletCooldown = 0;
 			}
-		}*/
+		}
 
 		if (in.equals("forward")) {
 			Vector2 f = localPlayer.getBody().getWorldVector(
@@ -440,6 +443,7 @@ public class CoreLogic {
 	}
 
 	public static void removeEntity(Entity ent) {
+		System.out.println("Bullet is about to Drop");
 		rmEntities.add(ent);
 	}
 

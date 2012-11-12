@@ -38,7 +38,7 @@ public class Bullet extends Entity {
 		super.getSprite().setColor(Color.WHITE);
 
 		BodyDef bodDef = new BodyDef();
-		bodDef.type = BodyType.KinematicBody;
+		bodDef.type = BodyType.DynamicBody;
 		bodDef.linearDamping = 0.0f;
 
 		bodDef.position.set(x, y);
@@ -49,7 +49,7 @@ public class Bullet extends Entity {
 		FixtureDef fixDef = new FixtureDef();
 
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(1f, 1f);
+		shape.setAsBox(0.5f, 0.5f);
 		fixDef.shape = shape;
 		fixDef.density = 1f;
 		// TODO Add fixtures
@@ -88,9 +88,8 @@ public class Bullet extends Entity {
 	public void update() {
 		age += Gdx.graphics.getDeltaTime();
 
-		// NOTE: This will cause issues with destroy().
-		// We need a find a way for everything to live in harmony
 		if (age >= deathTime) {
+			System.out.println("Bullet is updating death");
 			CoreLogic.removeEntity(this);
 		}
 
@@ -98,7 +97,6 @@ public class Bullet extends Entity {
 
 	@Override
 	public void destroy() {
-		System.out.println("Destroy!");
-		CoreLogic.removeEntity(this);
+		System.out.println("Bullet Drop!");
 	}
 }

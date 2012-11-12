@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -48,8 +49,8 @@ public class Bullet extends Entity {
 		// Fixtures
 		FixtureDef fixDef = new FixtureDef();
 
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(0.5f, 0.5f);
+		CircleShape shape = new CircleShape();
+		shape.setRadius(0.5f);
 		fixDef.shape = shape;
 		fixDef.density = 1f;
 		// TODO Add fixtures
@@ -89,7 +90,6 @@ public class Bullet extends Entity {
 		age += Gdx.graphics.getDeltaTime();
 
 		if (age >= deathTime) {
-			System.out.println("Bullet is updating death");
 			CoreLogic.removeEntity(this);
 		}
 

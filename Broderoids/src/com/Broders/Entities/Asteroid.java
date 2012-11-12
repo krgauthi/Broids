@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -21,14 +22,13 @@ public class Asteroid extends Entity {
 		super.setSize(15.0f);
 		super.setColor(c);
 
-		// TODO Write initialization for Asteroid body/sprite
-
 		// if we implement separate files just uncomment the lines above and
 		// comment this line out
 		super.setSprite(Settings.data_path + "broid.png");
 
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(6f, 6f);
+		//PolygonShape shape = new PolygonShape();
+		CircleShape shape = new CircleShape();
+		shape.setRadius(6f);
 		// shape.set(vertices);
 
 		FixtureDef fixDef = new FixtureDef();

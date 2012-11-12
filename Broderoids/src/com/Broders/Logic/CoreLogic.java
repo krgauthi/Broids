@@ -238,7 +238,6 @@ public class CoreLogic {
 		for (Entity i : rmEntities) {
 			entities.remove(i.getId());
 			world.destroyBody(i.getBody());
-			System.out.println("Bullet is Dropping " + rmEntities.size());
 			i.destroy();
 		}
 		rmEntities.clear();
@@ -276,16 +275,18 @@ public class CoreLogic {
 
 		if (in.equals("shoot")) {
 			if (bulletCooldown >= 1.0f) {
-				/*
+				
 				float dir = localPlayer.getAngle();
 				float x = (float) (localPlayer.getX() + (2.805 * Math.cos(Math
 						.toRadians(dir))));
 				float y = (float) (localPlayer.getY() + (2.805 * Math.sin(Math
 						.toRadians(dir))));
-				*/
-				float x = 0; //TODO Delete
-				float y = 0; //TODO Delete
-				float dir = localPlayer.getAngle(); //TODO Delete
+				
+				System.out.println("X-- Ship: " + localPlayer.getX() + "\tGun: " + x);
+				System.out.println("Y-- Ship: " + localPlayer.getY() + "\tGun: " + y);
+				//float x = 0; //TODO Delete
+				//float y = 0; //TODO Delete
+				//float dir = localPlayer.getAngle(); //TODO Delete
 				
 				Bullet shot = new Bullet("bullet", x, y, dir);
 				entities.put(shot.getId(), shot);

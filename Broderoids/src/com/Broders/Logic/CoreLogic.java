@@ -117,48 +117,38 @@ public class CoreLogic {
 		localPlayer.setId(nextId());
 		entities.put(localPlayer.getId(), localPlayer);
 
-		// Spawning asteroids
-		int count = (int) Math.round(Math.random() * 2) + 6;
-		for (int i = 0; i < count; i++) {
 
-			float x = (float) (CoreLogic.getWidth() * Math.random());
-			float y = (float) (CoreLogic.getHeight() * Math.random());
-			float dir = (float) (Math.PI * Math.random());
-
-			Asteroid roid = new Asteroid("large", x, y);
-
-			float initForce = (float) (450 + (150 * Math.random()));
-			x = (float) (initForce * Math.cos(dir));
-			y = (float) (initForce * Math.sin(dir));
-
-			Vector2 f = roid.getBody().getWorldVector(new Vector2(x, y));
-			Vector2 p = roid.getBody().getWorldPoint(
-					roid.getBody().getLocalCenter()
-							.add(new Vector2(0.0f, 0.0f)));
-			roid.getBody().applyForce(f, p);
-
-			float spin = (float) (300 + (250 * Math.random()));
-			if (Math.random() >= 0.5f)
-				spin *= -1;
-
-			roid.getBody().applyTorque(spin);
-
-			roid.setId(nextId());
-			entities.put(roid.getId(), roid);
-		}
 	}
 
 	public static void update(float delta) {
 		bulletCooldown += Gdx.graphics.getDeltaTime();
 
 		if (!myGame.multiplayer) {
-
+			//asteroids
 			if (getAsteroids().size() <= 0) {
 				for (int i = 0; i < myGame.difficulty; i++) {
 					float x = (float) (CoreLogic.getWidth() * Math.random());
 					float y = (float) (CoreLogic.getHeight() * Math.random());
+					float dir = (float) (Math.PI * Math.random());
 
 					Asteroid roid = new Asteroid("large", x, y);
+
+					float initForce = (float) (450 + (150 * Math.random()));
+					x = (float) (initForce * Math.cos(dir));
+					y = (float) (initForce * Math.sin(dir));
+
+					Vector2 f = roid.getBody().getWorldVector(new Vector2(x, y));
+					Vector2 p = roid.getBody().getWorldPoint(
+							roid.getBody().getLocalCenter()
+									.add(new Vector2(0.0f, 0.0f)));
+					roid.getBody().applyForce(f, p);
+
+					float spin = (float) (300 + (250 * Math.random()));
+					if (Math.random() >= 0.5f)
+						spin *= -1;
+
+					roid.getBody().applyTorque(spin);
+
 					roid.setId(nextId());
 					entities.put(roid.getId(), roid);
 				}

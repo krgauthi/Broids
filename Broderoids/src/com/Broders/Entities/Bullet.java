@@ -20,7 +20,7 @@ public class Bullet extends Entity {
 	private float age;
 	private static float deathTime = 3f;
 
-	public Bullet(String type, float dir, float x, float y) {
+	public Bullet(String type, float dir, Vector2 velocity, float x, float y) {
 		super(type);
 		// TODO Write initialization for Bullet body/sprite
 
@@ -56,10 +56,25 @@ public class Bullet extends Entity {
 
 		super.createBody(bodDef, fixDef);
 
+		/*Vector2 linV = this.body.getLinearVelocity();
+		float angV = this.body.getAngularVelocity();
+		float angle = this.body.getAngle();
+
+		CoreLogic.getWorld().destroyBody(this.body);
+
+		this.bodDef.position.set(x, y);
+		this.bodDef.angle = angle;
+		this.body = CoreLogic.getWorld().createBody(bodDef);
+		this.body.createFixture(this.fixDef);
+		this.body.setAngularVelocity(angV);
+		this.body.setLinearVelocity(linV);*/
+		
 		// Set the velocity
-		float vX = (float) (20 * Math.cos(Math.toRadians(dir)));
-		float vY = (float) (20 * Math.sin(Math.toRadians(dir)));
+		float vX = (float) (100 * Math.cos(Math.toRadians(dir)));
+		float vY = (float) (100 * Math.sin(Math.toRadians(dir)));
 		super.body.setLinearVelocity(vX, vY);
+		
+		System.out.println(this.getX() + "-" + this.getY());
 	}
 
 	@Override
@@ -81,7 +96,6 @@ public class Bullet extends Entity {
 		super.getSprite().setPosition(posX, posY);
 		super.getSprite().setRotation(super.getBody().getAngle());
 		super.getSprite().draw(sb);
-
 	}
 
 	@Override
@@ -89,7 +103,6 @@ public class Bullet extends Entity {
 		age += Gdx.graphics.getDeltaTime();
 
 		if (age >= deathTime) {
-			System.out.println("Bullet is updating death");
 			CoreLogic.removeEntity(this);
 		}
 
@@ -97,6 +110,5 @@ public class Bullet extends Entity {
 
 	@Override
 	public void destroy() {
-		System.out.println("Bullet Drop!");
 	}
 }

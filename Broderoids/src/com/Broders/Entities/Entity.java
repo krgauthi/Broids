@@ -209,6 +209,10 @@ public abstract class Entity {
 		this.body.setLinearVelocity(linV);
 	}
 
+	public Vector2 getLinearVelocity() {
+		return this.body.getLinearVelocity();
+	}
+	
 	public abstract void update();
 
 	public abstract void destroy();

@@ -288,7 +288,7 @@ public class CoreLogic {
 			localPlayer.getBody().applyForce(f, p);
 		}
 
-		if (in.equals("shoot")) {
+		/*if (in.equals("shoot")) {
 			if (bulletCooldown >= 0.5) {
 				float dir = localPlayer.getAngle();
 				float x = (float) (localPlayer.getX() + (2.805 * Math.cos(Math
@@ -303,7 +303,7 @@ public class CoreLogic {
 				System.out.println("BZZZAP!!");
 				bulletCooldown = 0;
 			}
-		}
+		}*/
 
 		if (in.equals("forward")) {
 			Vector2 f = localPlayer.getBody().getWorldVector(

@@ -47,6 +47,8 @@ public class CoreLogic {
 	private static float viewPortX;
 	private static float viewPortY;
 
+	private static boolean spacePressed = false;
+	private static float bulletCooldown;
 	private CoreLogic(){};
 
 	/**
@@ -72,14 +74,37 @@ public class CoreLogic {
 		widthScreen = Gdx.graphics.getWidth() / gcd * 10;
 		heightScreen = Gdx.graphics.getHeight() / gcd * 10;
 
+		spacePressed = false;
+		bulletCooldown = 0;
+
 		if(game.multiplayer){
-			width = 1000f;
-			height = 1000f;
+
+			switch(myGame.gameSize){
+			case 0:
+				width = widthScreen;
+				height = heightScreen;
+				System.out.println("small");
+				break;
+			case 1:
+				width = 500;
+				height = 500;
+				System.out.println("medium");
+				break;
+			case 2:
+				width = 1000;
+				height = 1000;
+				System.out.println("large");
+				break;
+			default:
+				width = widthScreen;
+				height = heightScreen;
+			}
+
 		}else{
 			width = widthScreen;
 			height = heightScreen;
 		}
-		
+
 		viewPortX = (width/2)-(widthScreen/2f);
 		viewPortY = (height/2)-(heightScreen/2f);
 
@@ -92,15 +117,33 @@ public class CoreLogic {
 		//String instanceID = "0000";		// check map to see how many of this type of entity already exist
 		localPlayer = new Ship("classic",myGame.playerColor);
 		entities.add(localPlayer);
-		
-		for (int i=0; i<6; i++) {
+
+		//Spawning asteroids
+		int count = (int) Math.round(Math.random()*2) + 6;
+		for (int i=0; i<count; i++) {
+
 			float x = (float) (CoreLogic.getWidth() * Math.random());
 			float y = (float) (CoreLogic.getHeight() * Math.random());
-			
+			float dir = (float) (Math.PI * Math.random());
+
 			Asteroid roid = new Asteroid("large", x, y);
-			entities.add(roid);//TODO CHANGE PLZ!!
+
+			float initForce = (float) (450 + (150 * Math.random()));
+			x = (float) (initForce * Math.cos(dir));
+			y = (float) (initForce * Math.sin(dir));
+
+			Vector2 f = roid.getBody().getWorldVector(new Vector2(x, y));
+			Vector2 p = roid.getBody().getWorldPoint(roid.getBody().getLocalCenter().add(new Vector2(0.0f,0.0f)));
+			roid.getBody().applyForce(f, p);
+
+			float spin = (float) (300 + (250 * Math.random()));
+			if (Math.random() >= 0.5f)
+				spin *= -1;
+
+			roid.getBody().applyTorque(spin);
+
+			entities.add(roid);
 		}
-		
 	}
 
 	public static void update(float delta){
@@ -109,7 +152,11 @@ public class CoreLogic {
 
 			if(getAsteroids().size() <= 0){
 				for(int i = 0; i < myGame.difficulty; i++){
-					//Spawn Broids
+					float x = (float) (CoreLogic.getWidth() * Math.random());
+					float y = (float) (CoreLogic.getHeight() * Math.random());
+					
+					
+					entities.add(new Asteroid("large", x, y));
 				}
 			}
 
@@ -169,6 +216,32 @@ public class CoreLogic {
 			viewPortY = 0;
 		}
 
+		for(Entity E : entities){
+			if(E.getX() < -4){			//make it the size of the ship
+				E.teleport(width+3, E.getY());
+
+			}
+
+			if(E.getX() > width+4){
+				E.teleport(-3f, E.getY());
+
+			}
+
+			if(E.getY() < -4){
+				E.teleport(E.getX(), height+3);
+
+			}
+
+			if(E.getY() > height+4){
+				E.teleport(E.getX(), -3f);
+
+			}
+			
+			E.update();
+
+		}
+		
+		
 		localPlayer.setThrust(false);
 
 
@@ -195,22 +268,19 @@ public class CoreLogic {
 			Vector2 p = localPlayer.getBody().getWorldCenter();
 			localPlayer.getBody().applyForce(f, p);
 		}
-
 		if(in.equals("shoot")){
-			
-			float dir = localPlayer.getAngle();
-			float x = (float) (localPlayer.getY() + (4.1 * Math.sin(dir)));
-			float y = (float) (localPlayer.getY() + (4.1 * Math.cos(dir)));
+			if(!spacePressed) {
+				float dir = (float) Math.toRadians(localPlayer.getAngle());
+				float x = (float) (localPlayer.getX() + (2.085*Math.sin(dir)));
+				float y = (float) (localPlayer.getY() - (2.085*Math.cos(dir)));
+				Bullet shot = new Bullet("bullet", dir, x, y);
+				entities.add(shot);
 
-			Bullet shot = new Bullet("bullet", x, y, dir);
-			entities.add(shot);
-			
-			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, -5.0f));
-			Vector2 p = localPlayer.getBody().getWorldPoint(shot.getBody().getLocalCenter().add(new Vector2(0.0f,0.0f)));
-			localPlayer.getBody().applyForce(f, p);
-			
-			System.out.println("BZZZAP!!");
+				System.out.println("BZZZAP!!");
+			}
+			spacePressed = true;
 		}
+		if(in.equals("noshoot")) spacePressed = false;
 
 		if(in.equals("forward")){
 			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, -35.0f));
@@ -343,10 +413,9 @@ public class CoreLogic {
 	public static void adjViewPortY(float adj){
 		viewPortY = viewPortY + adj;
 	}
-	
+
 	public static void removeEntity(Entity ent) {
-		//TODO REmove entity from map/arraylist
-		//entities.remove(ent.toString());
+		//entities.remove(ent);
 	}
 
 }

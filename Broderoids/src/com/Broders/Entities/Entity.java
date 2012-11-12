@@ -22,7 +22,7 @@ public abstract class Entity {
 	
 	private String ent;
 	private String type;
-	private Body body;
+	protected Body body;
 	private Sprite sprite;
 	
 	//Extras

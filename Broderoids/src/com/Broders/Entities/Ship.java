@@ -53,7 +53,7 @@ public class Ship extends Entity{
 		FixtureDef fixDef = new FixtureDef();
 		fixDef.shape = shape;
 		fixDef.density = 0.5f;
-
+		
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;
 		bodDef.angularDamping = 30.0f;
@@ -69,7 +69,7 @@ public class Ship extends Entity{
 		
 		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeightScreen();			
 
-		System.out.println(meter);
+
 		
 		super.setSprite(Settings.data_path + "ship1.png");
 		super.getSprite().flip(false, true);
@@ -79,7 +79,7 @@ public class Ship extends Entity{
 
 		this.thrust = false;
 		Texture tempTexture = new Texture(Gdx.files.internal(Settings.data_path + "ship2.png"));
-		this.sprite = new Sprite(tempTexture);
+		this.sprite = new Sprite(tempTexture,1024,1024);
 		this.sprite.flip(false, true);
 		this.sprite.setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
 		this.sprite.setSize(meter*this.getSize(), meter*this.getSize());							//size needs to come from the type

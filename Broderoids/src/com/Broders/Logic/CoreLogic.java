@@ -274,31 +274,24 @@ public class CoreLogic {
 		}
 
 		if (in.equals("shoot")) {
-			if (bulletCooldown >= 1.0f) {
-				
-				float dir = localPlayer.getAngle();
+			
+			if (bulletCooldown >= 0.2f) {
+				float dir = localPlayer.getAngle() - 90.0f;
+
 				float x = (float) (localPlayer.getX() + (2.805 * Math.cos(Math
 						.toRadians(dir))));
 				float y = (float) (localPlayer.getY() + (2.805 * Math.sin(Math
 						.toRadians(dir))));
 				
-				System.out.println("X-- Ship: " + localPlayer.getX() + "\tGun: " + x);
-				System.out.println("Y-- Ship: " + localPlayer.getY() + "\tGun: " + y);
-				//float x = 0; //TODO Delete
-				//float y = 0; //TODO Delete
-				//float dir = localPlayer.getAngle(); //TODO Delete
-				
-				Bullet shot = new Bullet("bullet", x, y, dir);
+				Bullet shot = new Bullet("bullet", dir, localPlayer.getLinearVelocity(), x, y);
 				entities.put(shot.getId(), shot);
-
-				System.out.println("BZZZAP!!");
 				bulletCooldown = 0;
 			}
 		}
 
 		if (in.equals("forward")) {
 			Vector2 f = localPlayer.getBody().getWorldVector(
-					new Vector2(0.0f, -35.0f));
+					new Vector2(0.0f, -100.0f));
 			Vector2 p = localPlayer.getBody().getWorldPoint(
 					localPlayer.getBody().getLocalCenter()
 							.add(new Vector2(0.0f, 0.0f)));
@@ -431,7 +424,6 @@ public class CoreLogic {
 	}
 
 	public static void removeEntity(Entity ent) {
-		System.out.println("Bullet is about to Drop");
 		rmEntities.add(ent);
 	}
 

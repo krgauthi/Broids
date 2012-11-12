@@ -57,8 +57,8 @@ public class Ship extends Entity {
 
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;
-		bodDef.angularDamping = 30.0f;
-		bodDef.linearDamping = 0.3f;
+		bodDef.angularDamping = 15.0f;
+		bodDef.linearDamping = 0.2f;
 
 		bodDef.position.set(x, y);
 		bodDef.angle = MathUtils.PI;

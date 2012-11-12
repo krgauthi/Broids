@@ -21,8 +21,8 @@ public class Net extends Thread {
 
 	// Responses from Lobby Commands
 	public static final int FRAME_LIST_RESPONSE = 10;
-	public static final int FRAME_CREATE_RESPONSE = 10;
-	public static final int FRAME_JOIN_RESPONSE = 10;
+	public static final int FRAME_CREATE_RESPONSE = 11;
+	public static final int FRAME_JOIN_RESPONSE = 12;
 
 	// Commands we will be sending
 	public static final int COMMAND_ERROR = -1;
@@ -187,11 +187,11 @@ public class Net extends Thread {
 						//CoreLogic.entities = entities;
 						theGame.entitiesLock.release();
 					} else if (c == FRAME_DELTA_UPDATE) {
-
+						
 					} else if (c == FRAME_DELTA_CREATE) {
 
 					} else if (c == FRAME_DELTA_REMOVE) {
-
+						
 					} else {
 						// TODO: Be less draconian
 						break;

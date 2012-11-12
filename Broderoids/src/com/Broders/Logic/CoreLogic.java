@@ -114,7 +114,6 @@ public class CoreLogic {
 		// String instanceID = "0000"; // check map to see how many of this type
 		// of entity already exist
 		localPlayer = new Ship("classic", myGame.playerColor,width/2,height/2);
-		localPlayer.setId(nextId());
 		entities.put(localPlayer.getId(), localPlayer);
 
 
@@ -149,7 +148,6 @@ public class CoreLogic {
 
 					roid.getBody().applyTorque(spin);
 
-					roid.setId(nextId());
 					entities.put(roid.getId(), roid);
 				}
 			}
@@ -287,7 +285,6 @@ public class CoreLogic {
 						.toRadians(dir))));
 
 				Bullet shot = new Bullet("bullet", x, y, dir);
-				shot.setId(nextId());
 				entities.put(shot.getId(), shot);
 
 				System.out.println("BZZZAP!!");

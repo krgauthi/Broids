@@ -47,7 +47,7 @@ public class CoreLogic {
 	private static float viewPortX;
 	private static float viewPortY;
 
-	private static boolean spacePressed;
+	private static boolean spacePressed = false;
 	private static float bulletCooldown;
 	private CoreLogic(){};
 
@@ -268,26 +268,19 @@ public class CoreLogic {
 			Vector2 p = localPlayer.getBody().getWorldCenter();
 			localPlayer.getBody().applyForce(f, p);
 		}
-
 		if(in.equals("shoot")){
-
-			if(!spacePressed || bulletCooldown >= 0.5) {
-				float dir = localPlayer.getAngle();
-				float x = (float) (localPlayer.getX() + (2.805 * Math.cos(Math.toRadians(dir))));
-				float y = (float) (localPlayer.getY() + (2.805 * Math.sin(Math.toRadians(dir))));
-
-				Bullet shot = new Bullet("bullet", x, y, dir);
+			if(!spacePressed) {
+				float dir = (float) Math.toRadians(localPlayer.getAngle());
+				float x = (float) (localPlayer.getX() + (2.085*Math.sin(dir)));
+				float y = (float) (localPlayer.getY() - (2.085*Math.cos(dir)));
+				Bullet shot = new Bullet("bullet", dir, x, y);
 				entities.add(shot);
 
 				System.out.println("BZZZAP!!");
-				bulletCooldown = 0;
-			} else {
-				bulletCooldown += Gdx.graphics.getDeltaTime();
 			}
 			spacePressed = true;
-		} else {
-			spacePressed = false;
 		}
+		if(in.equals("noshoot")) spacePressed = false;
 
 		if(in.equals("forward")){
 			Vector2 f = localPlayer.getBody().getWorldVector(new Vector2(0.0f, -35.0f));
@@ -422,8 +415,7 @@ public class CoreLogic {
 	}
 
 	public static void removeEntity(Entity ent) {
-		//TODO REmove entity from map/arraylist
-		//entities.remove(ent.toString());
+		//entities.remove(ent);
 	}
 
 }

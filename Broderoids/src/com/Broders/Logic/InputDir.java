@@ -15,6 +15,7 @@ public enum InputDir {
 	LEFT ("left"),
 	RIGHT ("right"),
 	SHOOT ("shoot"),
+	NOSHOOT ("noshoot"),
 	NULL ("");
 	
 	private String dir;

@@ -22,42 +22,40 @@ public class Bullet extends Entity{
 
 	public Bullet(String type, float dir, float x, float y) {
 		super(type);
-		// TODO Write initialization for Bullet body/sprite
-		
 		super.setEnt("bullet");
+		
+		//FixtureDef & shape
+		FixtureDef fixDef = new FixtureDef();
+		PolygonShape shape = new PolygonShape();
+		shape.setAsBox(0.1f, 0.1f, new Vector2(0f,0f), 0f);
+		fixDef.shape = shape;
+		fixDef.density = 1f;
+
+		//BodyDef
+		BodyDef bodDef = new BodyDef();
+		bodDef.type = BodyType.KinematicBody;
+		bodDef.linearDamping = 0.0f;
+		bodDef.position.set(x, y);
+		bodDef.angle = dir;
+		bodDef.allowSleep = false;
+		
+		//Create the body
+		super.createBody(bodDef, fixDef);
+		super.getBody().setBullet(true);
+		
+		//Set the velocity
+		float vX = (float) (20*Math.sin(dir));
+		float vY = (float) (-20*Math.cos(dir));
+		super.body.setLinearVelocity(vX, vY);
 		//sprite
 		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeightScreen();			
 		
-		super.setSize(6f);
+		super.setSize(3.5f);
 		
 		super.setSprite(Settings.data_path + "bullet.png");
 		super.getSprite().setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
 		super.getSprite().setSize(meter*this.getSize(), meter*this.getSize());
 		super.getSprite().setColor(Color.WHITE);
-
-		BodyDef bodDef = new BodyDef();
-		bodDef.type = BodyType.KinematicBody;
-		bodDef.linearDamping = 0.0f;
-
-		bodDef.position.set(x, y);
-		bodDef.angle = dir;
-		bodDef.allowSleep = false;
-		
-		//Fixtures
-		FixtureDef fixDef = new FixtureDef();
-
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(1f, 1f);
-		fixDef.shape = shape;
-		fixDef.density = 1f;
-		//TODO Add fixtures
-		
-		super.createBody(bodDef, fixDef);
-		
-		//Set the velocity
-		float vX = (float) (10*Math.cos(Math.toRadians(dir)));
-		float vY = (float) (10*Math.sin(Math.toRadians(dir)));
-		super.body.setLinearVelocity(vX, vY);
 	}
 
 	@Override

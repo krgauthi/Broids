@@ -162,7 +162,7 @@ public class Ship extends Entity{
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		CoreLogic.removeEntity(this);
+		//CoreLogic.removeEntity(this);
 	}
 
 }

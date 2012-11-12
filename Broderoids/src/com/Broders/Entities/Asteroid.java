@@ -28,7 +28,7 @@ public class Asteroid extends Entity{
 		super.setSprite(Settings.data_path + "broid.png");
 		
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(6f,6f);
+		shape.setAsBox(6f,6f,new Vector2(0f,0f),0f);
 		//shape.set(vertices);
 
 		FixtureDef fixDef = new FixtureDef();
@@ -87,7 +87,7 @@ public class Asteroid extends Entity{
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		CoreLogic.removeEntity(this);
+		//CoreLogic.removeEntity(this);
 	}
 
 }

@@ -7,6 +7,7 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Transform;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -37,6 +38,8 @@ public class CoreLogic {
 	private static ArrayList<Entity> entities;
 	private static Ship localPlayer;
 	private static BaseGame myGame;
+	private static ContactListener collisions;
+	private static ArrayList<Body> removalList;
 
 	private static float width;						//this is the map size
 	private static float height;
@@ -47,8 +50,8 @@ public class CoreLogic {
 	private static float viewPortX;
 	private static float viewPortY;
 
-	private static boolean spacePressed = false;
-	private static float bulletCooldown;
+	private static boolean spacePressed;
+	
 	private CoreLogic(){};
 
 	/**
@@ -69,13 +72,15 @@ public class CoreLogic {
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, false);
 		entities = new ArrayList<Entity>();
+		collisions = new CollisionLogic();
+		world.setContactListener(collisions);
+		removalList = new ArrayList<Body>();
 
 		int gcd = gcd(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		widthScreen = Gdx.graphics.getWidth() / gcd * 10;
 		heightScreen = Gdx.graphics.getHeight() / gcd * 10;
 
 		spacePressed = false;
-		bulletCooldown = 0;
 
 		if(game.multiplayer){
 
@@ -125,6 +130,20 @@ public class CoreLogic {
 			float x = (float) (CoreLogic.getWidth() * Math.random());
 			float y = (float) (CoreLogic.getHeight() * Math.random());
 			float dir = (float) (Math.PI * Math.random());
+			
+			//Prevent spawning on the player
+			if(localPlayer.getX()-16 <= x && x <= localPlayer.getX()+16){
+				if(x <= localPlayer.getX())
+					x = localPlayer.getX()-16;
+				else
+					x = localPlayer.getX()+16;
+			}
+			if(localPlayer.getY()-16 <= x && x <= localPlayer.getY()+16){
+				if(x <= localPlayer.getY())
+					x = localPlayer.getY()-16;
+				else
+					x = localPlayer.getY()+16;
+			}
 
 			Asteroid roid = new Asteroid("large", x, y);
 
@@ -244,7 +263,7 @@ public class CoreLogic {
 		
 		localPlayer.setThrust(false);
 
-
+		removeEntities();
 		world.step(delta, 3, 8);
 
 	}
@@ -414,8 +433,18 @@ public class CoreLogic {
 		viewPortY = viewPortY + adj;
 	}
 
-	public static void removeEntity(Entity ent) {
-		//entities.remove(ent);
+	public static void removeEntities() {
+		for(Entity e:entities){
+			if(removalList.contains(e.getBody())){
+				removalList.remove(e.getBody());
+				world.destroyBody(e.getBody());
+				entities.remove(e);
+			}
+		}
+	}
+	
+	public static void destroyBody(Body body){
+		//removalList.add(body);
 	}
 
 }

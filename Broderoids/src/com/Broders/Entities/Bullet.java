@@ -85,14 +85,14 @@ public class Bullet extends Entity{
 		age += Gdx.graphics.getDeltaTime();
 		
 		if (age >= deathTime) {
-			CoreLogic.removeEntity(this);
+			//CoreLogic.removeEntity(this);
 		}
 		
 	}
 
 	@Override
 	public void destroy() {
-		CoreLogic.removeEntity(this);
+		//CoreLogic.removeEntity(this);
 		
 	}
 

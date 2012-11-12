@@ -113,7 +113,7 @@ public class CoreLogic {
 		// generation somehow?
 		// String instanceID = "0000"; // check map to see how many of this type
 		// of entity already exist
-		localPlayer = new Ship("classic", myGame.playerColor);
+		localPlayer = new Ship("classic", myGame.playerColor,width/2,height/2);
 		localPlayer.setId(nextId());
 		entities.put(localPlayer.getId(), localPlayer);
 
@@ -131,7 +131,7 @@ public class CoreLogic {
 					float y = (float) (CoreLogic.getHeight() * Math.random());
 					float dir = (float) (Math.PI * Math.random());
 
-					Asteroid roid = new Asteroid("large", x, y);
+					Asteroid roid = new Asteroid("large",myGame.gameColor, x, y);
 
 					float initForce = (float) (450 + (150 * Math.random()));
 					x = (float) (initForce * Math.cos(dir));

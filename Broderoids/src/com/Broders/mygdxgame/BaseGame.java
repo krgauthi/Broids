@@ -48,7 +48,7 @@ public class BaseGame extends Game {
 		exitBuffer = 1;
 		difficulty = 5;
 		multiplayer = false;
-		gameColor = Color.WHITE;
+		gameColor = Color.GREEN;
 		playerColor = Color.CYAN;
 		bounds = .25f; // max of .5
 		gameSize = 0;

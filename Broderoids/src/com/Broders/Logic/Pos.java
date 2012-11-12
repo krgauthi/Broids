@@ -2,7 +2,6 @@ package com.Broders.Logic;
 
 import com.badlogic.gdx.Gdx;
 
-
 /*
  * The Pos object converts meters to percentages that can be used to get pixels
  * 
@@ -13,47 +12,45 @@ import com.badlogic.gdx.Gdx;
  * 
  * Pos = X/k
  */
-public class Pos{
+public class Pos {
 	float x;
 	float y;
-	
-	public Pos(float xx, float yy){
+
+	public Pos(float xx, float yy) {
 		x = xx;
 		y = yy;
 	}
-	
-	public Pos(int xx,int yy){
-		x = ((float)xx/(float)Gdx.graphics.getWidth());
-		y = ((float)yy/(float)Gdx.graphics.getHeight());
+
+	public Pos(int xx, int yy) {
+		x = ((float) xx / (float) Gdx.graphics.getWidth());
+		y = ((float) yy / (float) Gdx.graphics.getHeight());
 	}
-	
-	
-	public float getX(){
+
+	public float getX() {
 		return x;
 	}
-	
-	public float getY(){
+
+	public float getY() {
 		return y;
 	}
-	
-	public void setX(float xx){
+
+	public void setX(float xx) {
 		x = xx;
 	}
-	
-	public void setY(float yy){
+
+	public void setY(float yy) {
 		y = yy;
 	}
-	
+
 	/*
 	 * Give the touch input int and it automatically makes the Virtual pos
 	 */
-	public void setX(int xx){
-		x = ((float)xx/(float)Gdx.graphics.getWidth());
+	public void setX(int xx) {
+		x = ((float) xx / (float) Gdx.graphics.getWidth());
 	}
-	
-	public void setY(int yy){
-		y = ((float)yy/(float)Gdx.graphics.getHeight());
+
+	public void setY(int yy) {
+		y = ((float) yy / (float) Gdx.graphics.getHeight());
 	}
-	
-	
+
 }

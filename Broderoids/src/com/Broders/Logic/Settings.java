@@ -9,17 +9,16 @@ public class Settings {
 
 	public static int sp_Diff;
 
-//	public static Song music;
-		
+	// public static Song music;
+
 	public static int screen_resolution;
-	
-//	public static boolean debug_text;
-	
+
+	// public static boolean debug_text;
+
 	public static String username;
-	
-//	public static Image background;
-	
+
+	// public static Image background;
+
 	public static String data_path = "data/";
-	
-	
+
 }

@@ -195,7 +195,7 @@ public class GameScreen implements Screen{
 		if(myGame.debugMode){
 			font.setScale(.25f);
 			String out;
-			out = String.format("Ship Pos in Meters: (%f,%f) ", CoreLogic.getLocalShip().getBody().getPosition().x, CoreLogic.getLocalShip().getBody().getPosition().y);
+			out = String.format("Ship Pos in Meters: (%f,%f) ", CoreLogic.getLocalShip().getX(), CoreLogic.getLocalShip().getY());
 			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .21f));
 			out = String.format("ViewPort Pos in Meters: (%f,%f) ", CoreLogic.getViewPortX(), CoreLogic.getViewPortY());
 			font.draw(spriteBatch, out, xx * .01f, yy-(yy * .25f));

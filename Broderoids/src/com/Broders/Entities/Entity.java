@@ -32,6 +32,8 @@ public abstract class Entity {
 	// save these for teleportation
 	private BodyDef bodDef;
 	private FixtureDef fixDef;
+	
+	private String id;
 
 	/**
 	 * Initializes the Entity with an identity and a type
@@ -43,6 +45,13 @@ public abstract class Entity {
 	 */
 	public Entity(String type) {
 
+	}
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String newId) {
+		id = newId;
 	}
 
 	/**

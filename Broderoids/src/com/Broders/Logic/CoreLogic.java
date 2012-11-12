@@ -1,6 +1,7 @@
 package com.Broders.Logic;
 
-import java.util.ArrayList;
+import java.util.*;
+
 import com.badlogic.gdx.Gdx;
 import com.Broders.Entities.Asteroid;
 import com.Broders.Entities.Bullet;
@@ -18,7 +19,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class CoreLogic {
 
 	private static World world;
-	private static ArrayList<Entity> entities;
+	private static HashMap<String, Entity> entities;
 	private static ArrayList<Entity> rmEntities;
 	private static Ship localPlayer;
 	private static BaseGame myGame;
@@ -33,9 +34,18 @@ public class CoreLogic {
 	private static float viewPortY;
 
 	private static float bulletCooldown;
+	
+	private static int nextEntityId;
+	private static int clientId;
 
-	private CoreLogic() {
-	};
+	public static String nextId() {
+		while (entities.containsKey(Integer.toString(clientId) + "-"
+				+ Integer.toString(nextEntityId))) {
+			nextEntityId++;
+		}
+		return Integer.toString(clientId) + "-"
+				+ Integer.toString(nextEntityId);
+	}
 
 	/**
 	 * By the way, this is awful, but it calculates the GCD
@@ -54,7 +64,7 @@ public class CoreLogic {
 		myGame = game;
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, false);
-		entities = new ArrayList<Entity>();
+		entities = new HashMap<String, Entity>();
 		rmEntities = new ArrayList<Entity>();
 
 		int gcd = gcd(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -104,7 +114,8 @@ public class CoreLogic {
 		// String instanceID = "0000"; // check map to see how many of this type
 		// of entity already exist
 		localPlayer = new Ship("classic", myGame.playerColor);
-		entities.add(localPlayer);
+		localPlayer.setId(nextId());
+		entities.put(localPlayer.getId(), localPlayer);
 
 		// Spawning asteroids
 		int count = (int) Math.round(Math.random() * 2) + 6;
@@ -132,7 +143,8 @@ public class CoreLogic {
 
 			roid.getBody().applyTorque(spin);
 
-			entities.add(roid);
+			roid.setId(nextId());
+			entities.put(roid.getId(), roid);
 		}
 	}
 
@@ -146,18 +158,20 @@ public class CoreLogic {
 					float x = (float) (CoreLogic.getWidth() * Math.random());
 					float y = (float) (CoreLogic.getHeight() * Math.random());
 
-					entities.add(new Asteroid("large", x, y));
+					Asteroid roid = new Asteroid("large", x, y);
+					roid.setId(nextId());
+					entities.put(roid.getId(), roid);
 				}
 			}
 		}
 
-		//update all entities
-		for (Entity i: entities) {
+		// update all entities
+		for (Entity i : getEntities()) {
 			i.update();
 		}
 
-		for (Entity i: rmEntities) {
-			entities.remove(i);
+		for (Entity i : rmEntities) {
+			entities.remove(i.getId());
 			world.destroyBody(i.getBody());
 		}
 		rmEntities.clear();
@@ -218,7 +232,7 @@ public class CoreLogic {
 			viewPortY = 0;
 		}
 
-		for (Entity E : entities) {
+		for (Entity E : getEntities()) {
 			if (E.getX() < -4) { // make it the size of the ship
 				E.teleport(width + 3, E.getY());
 
@@ -273,7 +287,7 @@ public class CoreLogic {
 			Vector2 p = localPlayer.getBody().getWorldCenter();
 			localPlayer.getBody().applyForce(f, p);
 		}
-		
+
 		if (in.equals("shoot")) {
 			if (bulletCooldown >= 0.5) {
 				float dir = localPlayer.getAngle();
@@ -283,7 +297,8 @@ public class CoreLogic {
 						.toRadians(dir))));
 
 				Bullet shot = new Bullet("bullet", x, y, dir);
-				entities.add(shot);
+				shot.setId(nextId());
+				entities.put(shot.getId(), shot);
 
 				System.out.println("BZZZAP!!");
 				bulletCooldown = 0;
@@ -309,8 +324,8 @@ public class CoreLogic {
 	 * 
 	 * @return Entities Map
 	 */
-	public static ArrayList<Entity> getEntities() {
-		return entities;
+	public static Iterable<Entity> getEntities() {
+		return entities.values();
 	}
 
 	/**
@@ -321,7 +336,7 @@ public class CoreLogic {
 	public static ArrayList<Ship> getShips() {
 		ArrayList<Ship> ships = new ArrayList<Ship>();
 
-		for (Entity entity : entities) {
+		for (Entity entity : getEntities()) {
 			if (entity.getEnt().equals("ship")) {
 				ships.add((Ship) entity);
 			}
@@ -338,7 +353,7 @@ public class CoreLogic {
 	public static ArrayList<Asteroid> getAsteroids() {
 		ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 
-		for (Entity entity : entities) {
+		for (Entity entity : getEntities()) {
 			if (entity.getEnt().equals("asteroid")) {
 				asteroids.add((Asteroid) entity);
 			}
@@ -355,7 +370,7 @@ public class CoreLogic {
 	public static ArrayList<Bullet> getBullets() {
 		ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
-		for (Entity entity : entities) {
+		for (Entity entity : getEntities()) {
 			if (entity.getEnt().equals("bullet")) {
 				bullets.add((Bullet) entity);
 			}

@@ -29,6 +29,7 @@ public class CoreLogic {
 	private static World world;
 	private static HashMap<String, Entity> entities;
 	private static LinkedList<Entity> rmEntities;
+	private static LinkedList<Body> rmBodies;
 	private static Ship localPlayer;
 	private static BaseGame myGame;
 	private static ContactListener collisions;
@@ -73,8 +74,9 @@ public class CoreLogic {
 		myGame = game;
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, false);
-		entities = new ArrayList<Entity>();
-		collisions = new CollisionLogic();
+		entities = new HashMap<String, Entity>();
+		rmBodies = new LinkedList<Body>();
+		collisions = new CollisionLogic(rmBodies);
 		world.setContactListener(collisions);
 		entities = new HashMap<String, Entity>();
 		rmEntities = new LinkedList<Entity>();
@@ -248,6 +250,8 @@ public class CoreLogic {
 		}
 
 		for (Entity E : getEntities()) {
+			if(rmBodies.contains(E.getBody()))
+				rmEntities.add(E);
 			if (E.getX() < -4) { // make it the size of the ship
 				E.teleport(width + 3, E.getY());
 			}
@@ -273,6 +277,7 @@ public class CoreLogic {
 			i.destroy();
 		}
 		rmEntities.clear();
+		rmBodies.clear();
 		localPlayer.setThrust(false);
 
 		world.step(delta, 3, 8);

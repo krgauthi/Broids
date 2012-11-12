@@ -19,7 +19,7 @@ public class Bullet extends Entity {
 	// private Pos pos;
 	// private float dir;
 	private float age;
-	private static float deathTime = 1.5f;
+	private static float deathTime = 1f;
 
 	public Bullet(String type, float dir, Vector2 velocity, float x, float y) {
 		super(type);
@@ -39,7 +39,7 @@ public class Bullet extends Entity {
 
 		//BodyDef
 		BodyDef bodDef = new BodyDef();
-		bodDef.type = BodyType.DynamicBody;
+		bodDef.type = BodyType.KinematicBody;
 		bodDef.linearDamping = 0.0f;
 		bodDef.position.set(x, y);
 		bodDef.angle = dir;
@@ -52,13 +52,13 @@ public class Bullet extends Entity {
 		shape.setRadius(0.5f);
 		fixDef.shape = shape;
 		fixDef.density = 1f;
-		// TODO Add fixtures
 
 		super.createBody(bodDef, fixDef);
+		super.getBody().setBullet(true);
 		
 		// Set the velocity
-		float vX = (float) (100 * Math.cos(Math.toRadians(dir)));
-		float vY = (float) (100 * Math.sin(Math.toRadians(dir)));
+		float vX = (float) (75 * Math.cos(Math.toRadians(dir)));
+		float vY = (float) (75 * Math.sin(Math.toRadians(dir)));
 		super.body.setLinearVelocity(vX, vY);
 	}
 
@@ -88,13 +88,13 @@ public class Bullet extends Entity {
 		age += Gdx.graphics.getDeltaTime();
 
 		if (age >= deathTime) {
-			//CoreLogic.removeEntity(this);
+			CoreLogic.removeEntity(this);
 		}
 
 	}
 
 	@Override
 	public void destroy() {
-
+		
 	}
 }

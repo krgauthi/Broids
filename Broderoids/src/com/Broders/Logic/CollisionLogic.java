@@ -1,5 +1,7 @@
 package com.Broders.Logic;
 
+import java.util.LinkedList;
+
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -8,6 +10,12 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class CollisionLogic implements ContactListener {
+	
+	LinkedList<Body> rmBodies;
+	
+	public CollisionLogic(LinkedList<Body> bodies){
+		rmBodies = bodies;
+	}
 	
 	/**
 	 * 
@@ -20,8 +28,8 @@ public class CollisionLogic implements ContactListener {
 		//General collision (testing only)
 		if(bA.isBullet() || bB.isBullet()){
 			System.out.println("found bullet collision");
-//			CoreLogic.destroyBody(bA);
-//			CoreLogic.destroyBody(bB);
+			rmBodies.add(bA);
+			rmBodies.add(bB);
 		}
 		else{
 			System.out.println("found non-bullet collision");

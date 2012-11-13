@@ -7,16 +7,21 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Asteroid extends Entity {
+	
+	public static final int LARGE = 0;
+	public static final int MEDIUM = 1;
+	public static final int SMALL = 2;
+	
+	private int type;
 
 	public Asteroid(String type, Color c, float x, float y) {
 		super(type);
+		
+		this.setEnt("asteroid");
 
 		super.setColor(c);
 
@@ -25,18 +30,16 @@ public class Asteroid extends Entity {
 		super.setSprite(Settings.data_path + "broid.png");
 
 		CircleShape shape = new CircleShape();
-		if(type.equals("small")){
-			super.setEnt("small asteroid");
+		if (type.equals("small")) {
+			this.type = SMALL;
 			super.setSize(3.75f);
 			shape.setRadius(1.5f);
-		}
-		else if(type.equals("medium")){
-			super.setEnt("medium asteroid");
+		} else if (type.equals("medium")) {
+			this.type = MEDIUM;
 			super.setSize(7.5f);
 			shape.setRadius(3f);
-		}
-		else{
-			super.setEnt("large asteroid");
+		} else {
+			this.type = LARGE;
 			super.setSize(15.0f);
 			shape.setRadius(6f);
 		}
@@ -64,9 +67,9 @@ public class Asteroid extends Entity {
 		super.getSprite().setSize(meter * this.getSize(),
 				meter * this.getSize());
 		super.getSprite().setColor(this.getColor());
-		
-		//Set type data
-		super.getBody().setUserData(new TypeData("asteroid"));
+
+		// Set type data
+		super.getBody().setUserData(this);
 	}
 
 	@Override
@@ -100,8 +103,99 @@ public class Asteroid extends Entity {
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
-		//CoreLogic.removeEntity(this);
-	}
+		Asteroid roid1;
+		Asteroid roid2;
+		float x1;
+		float x2;
+		float y1;
+		float y2;
+		float dir;
+		if (this.type == LARGE) {
+			dir = (float) Math.toRadians(this.getAngle());
+			x1 = (float) (this.getX() + 7.5 * Math.cos(dir));
+			x2 = (float) (this.getX() + 7.5 * Math.cos(dir));
+			y1 = (float) (this.getY() - 7.5 * Math.sin(dir));
+			y2 = (float) (this.getY() - 7.5 * Math.sin(dir));
 
+			roid1 = new Asteroid("medium", CoreLogic.getGame().gameColor, x1,
+					y1);
+
+			float initForce = (float) (450 + (150 * Math.random()));
+			float x = (float) (initForce * Math.cos(dir));
+			float y = (float) (initForce * Math.sin(dir));
+
+			Vector2 f = roid1.getBody().getWorldVector(new Vector2(x, y));
+			Vector2 p = roid1.getBody().getWorldPoint(
+					roid1.getBody().getLocalCenter());
+			roid1.getBody().applyForce(f, p);
+
+			float spin = (float) (300 + (250 * Math.random()));
+			if (Math.random() >= 0.5f)
+				spin *= -1;
+
+			roid1.getBody().applyTorque(spin);
+			CoreLogic.getEntityMap().put(roid1.getId(), roid1);
+
+			roid2 = new Asteroid("medium", CoreLogic.getGame().gameColor, x2,
+					y2);
+
+			initForce = (float) (450 + (150 * Math.random()));
+			x = (float) (initForce * Math.cos(dir));
+			y = (float) (initForce * Math.sin(dir));
+
+			f = roid2.getBody().getWorldVector(new Vector2(x, y));
+			p = roid2.getBody().getWorldPoint(roid2.getBody().getLocalCenter());
+			roid2.getBody().applyForce(f, p);
+
+			spin = (float) (300 + (250 * Math.random()));
+			if (Math.random() >= 0.5f)
+				spin *= -1;
+
+			roid2.getBody().applyTorque(spin);
+			CoreLogic.getEntityMap().put(roid2.getId(), roid2);
+		} else if (this.type == MEDIUM) {
+			dir = (float) Math.toRadians(this.getAngle());
+			x1 = (float) (this.getX() + 3.75 * Math.cos(dir));
+			x2 = (float) (this.getX() + 3.75 * Math.cos(dir));
+			y1 = (float) (this.getY() - 3.75 * Math.sin(dir));
+			y2 = (float) (this.getY() - 3.75 * Math.sin(dir));
+
+			roid1 = new Asteroid("small", CoreLogic.getGame().gameColor, x1, y1);
+
+			float initForce = (float) (450 + (150 * Math.random()));
+			float x = (float) (initForce * Math.cos(dir));
+			float y = (float) (initForce * Math.sin(dir));
+
+			Vector2 f = roid1.getBody().getWorldVector(new Vector2(x, y));
+			Vector2 p = roid1.getBody().getWorldPoint(
+					roid1.getBody().getLocalCenter());
+			roid1.getBody().applyForce(f, p);
+
+			float spin = (float) (300 + (250 * Math.random()));
+			if (Math.random() >= 0.5f)
+				spin *= -1;
+
+			roid1.getBody().applyTorque(spin);
+			CoreLogic.getEntityMap().put(roid1.getId(), roid1);
+
+			roid2 = new Asteroid("small", CoreLogic.getGame().gameColor, x2, y2);
+
+			initForce = (float) (450 + (150 * Math.random()));
+			x = (float) (initForce * Math.cos(dir));
+			y = (float) (initForce * Math.sin(dir));
+
+			f = roid2.getBody().getWorldVector(new Vector2(x, y));
+			p = roid2.getBody().getWorldPoint(roid2.getBody().getLocalCenter());
+			roid2.getBody().applyForce(f, p);
+
+			spin = (float) (300 + (250 * Math.random()));
+			if (Math.random() >= 0.5f)
+				spin *= -1;
+
+			roid2.getBody().applyTorque(spin);
+			CoreLogic.getEntityMap().put(roid2.getId(), roid2);
+		} else {
+
+		}
+	}
 }

@@ -60,7 +60,7 @@ public class Bullet extends Entity {
 		super.body.setLinearVelocity(vX, vY);
 
 		//Set type data
-		super.getBody().setUserData(new TypeData("bullet"));
+		super.getBody().setUserData(this);
 	}
 
 	@Override

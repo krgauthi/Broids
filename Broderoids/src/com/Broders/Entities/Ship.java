@@ -85,7 +85,7 @@ public class Ship extends Entity {
 		this.sprite.setColor(this.getColor());
 		
 		//Set type data
-		super.getBody().setUserData(new TypeData("ship"));
+		super.getBody().setUserData(this);
 	}
 
 	/**

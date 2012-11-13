@@ -12,24 +12,24 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public class Asteroid extends Entity{
+public class Asteroid extends Entity {
 
-	public Asteroid(String type, float x, float y) {
+	public Asteroid(String type, Color c, float x, float y) {
 		super(type);
 		super.setEnt("asteroid");
 
 		super.setSize(15.0f);
-		super.setColor(Color.YELLOW);
-		
+		super.setColor(c);
+
 		// TODO Write initialization for Asteroid body/sprite
 
-		
-		// if we implement separate files just uncomment the lines above and comment this line out
+		// if we implement separate files just uncomment the lines above and
+		// comment this line out
 		super.setSprite(Settings.data_path + "broid.png");
-		
+
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(6f,6f);
-		//shape.set(vertices);
+		shape.setAsBox(6f, 6f);
+		// shape.set(vertices);
 
 		FixtureDef fixDef = new FixtureDef();
 		fixDef.shape = shape;
@@ -46,34 +46,35 @@ public class Asteroid extends Entity{
 		bodDef.allowSleep = false;
 		super.createBody(bodDef, fixDef);
 
-		//sprite
-		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeightScreen();			
+		// sprite
+		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
-		super.getSprite().setOrigin(meter*(this.getSize()/2), meter*(this.getSize()/2)); 
-		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
-		super.getSprite().setColor(Color.WHITE);
+		super.getSprite().setOrigin(meter * (this.getSize() / 2),
+				meter * (this.getSize() / 2));
+		super.getSprite().setSize(meter * this.getSize(),
+				meter * this.getSize());
+		super.getSprite().setColor(this.getColor());
 	}
 
 	@Override
 	public void Draw(SpriteBatch sb) {
 
+		float screenWidth = Gdx.graphics.getWidth();
+		float screenHeight = Gdx.graphics.getHeight();
 
-		float screenWidth =  Gdx.graphics.getWidth();
-		float screenHeight =  Gdx.graphics.getHeight();
-
-		float x = super.getBody().getPosition().x - (this.getSize()/2f);
-		float y = super.getBody().getPosition().y - (this.getSize()/2f);
+		float x = super.getBody().getPosition().x - (this.getSize() / 2f);
+		float y = super.getBody().getPosition().y - (this.getSize() / 2f);
 
 		float posX;
 		float posY;
 
-	
-		posX = screenWidth*((x-CoreLogic.getViewPortX())/CoreLogic.getWidthScreen());
-		posY =  screenHeight*((y-CoreLogic.getViewPortY())/CoreLogic.getHeightScreen());
-
+		posX = screenWidth
+				* ((x - CoreLogic.getViewPortX()) / CoreLogic.getWidthScreen());
+		posY = screenHeight
+				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
 
 		super.getSprite().setPosition(posX, posY);
-		super.getSprite().setRotation((float)super.getAngle());
+		super.getSprite().setRotation((float) super.getAngle());
 		super.getSprite().draw(sb);
 
 	}
@@ -81,7 +82,7 @@ public class Asteroid extends Entity{
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

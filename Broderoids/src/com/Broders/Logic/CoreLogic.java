@@ -43,15 +43,9 @@ public class CoreLogic {
 
 	private static float viewPortX;
 	private static float viewPortY;
-<<<<<<< HEAD
 
-
-	private static boolean spacePressed = false;
-
-=======
->>>>>>> a7fba53dc95ac2bc2178d43557b78112cedf1f77
 	private static float bulletCooldown;
-	private static boolean spacePressed;
+//	private static boolean spacePressed;
 
 	private static int nextEntityId;
 	private static int clientId;
@@ -88,7 +82,6 @@ public class CoreLogic {
 		world.setContactListener(collisions);
 		entities = new HashMap<String, Entity>();
 		rmEntities = new LinkedList<Entity>();
-		spacePressed = false;
 
 		int gcd = gcd(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		widthScreen = Gdx.graphics.getWidth() / gcd * 10;
@@ -312,47 +305,21 @@ public class CoreLogic {
 			Vector2 p = localPlayer.getBody().getWorldCenter();
 			localPlayer.getBody().applyForce(f, p);
 		}
-<<<<<<< HEAD
-
-//		if(in.equals("shoot")){
-//			if(!spacePressed) {
-//				float dir = (float) Math.toRadians(localPlayer.getAngle());
-//				float x = (float) (localPlayer.getX() + (2.085*Math.sin(dir)));
-//				float y = (float) (localPlayer.getY() - (2.085*Math.cos(dir)));
-//				Bullet shot = new Bullet("bullet", dir, x, y);
-//				entities.add(shot);
-//
-//				System.out.println("BZZZAP!!");
-//			}
-//			spacePressed = true;
-
-=======
->>>>>>> a7fba53dc95ac2bc2178d43557b78112cedf1f77
 
 		if (in.equals("shoot")) {
-
-			if (bulletCooldown >= 0.2f && !spacePressed) {
+			if (bulletCooldown >= 0.2f) {
 				float dir = localPlayer.getAngle() - 90.0f;
-<<<<<<< HEAD
-				dir = (float) Math.toRadians(dir);
-				float x = (float) (localPlayer.getX() + (2.805 * Math.cos(dir)));
-				float y = (float) (localPlayer.getY() + (2.805 * Math.sin(dir)));
-				
-=======
 
 				float x = (float) (localPlayer.getX() + (2.805 * Math.cos(Math
 						.toRadians(dir))));
 				float y = (float) (localPlayer.getY() + (2.805 * Math.sin(Math
 						.toRadians(dir))));
 
->>>>>>> a7fba53dc95ac2bc2178d43557b78112cedf1f77
 				Bullet shot = new Bullet("bullet", dir, localPlayer.getLinearVelocity(), x, y);
 				entities.put(shot.getId(), shot);
 				bulletCooldown = 0;
-				spacePressed = true;
 			}
 		}
-		if(in.equals("noshoot")) spacePressed = false;
 
 		if (in.equals("forward")) {
 			Vector2 f = localPlayer.getBody().getWorldVector(
@@ -491,10 +458,8 @@ public class CoreLogic {
 	}
 
 	public static void removeEntity(Entity ent) {
-<<<<<<< HEAD
+
 		//entities.remove(ent);
-=======
->>>>>>> a7fba53dc95ac2bc2178d43557b78112cedf1f77
 		rmEntities.add(ent);
 	}
 	

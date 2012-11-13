@@ -23,26 +23,6 @@ public class Bullet extends Entity {
 
 	public Bullet(String type, float dir, Vector2 velocity, float x, float y) {
 		super(type);
-//<<<<<<< HEAD
-//
-//		//Rinkus' stuff is commented out
-//		super.setEnt("bullet");
-//		//		
-//		//		//FixtureDef & shape
-//		//		FixtureDef fixDef = new FixtureDef();
-//		//		PolygonShape shape = new PolygonShape();
-//		//		shape.setAsBox(0.1f, 0.1f, new Vector2(0f,0f), 0f);
-//		//		fixDef.shape = shape;
-//		//		fixDef.density = 1f;
-//
-//		// Fixtures
-//		FixtureDef fixDef = new FixtureDef();
-//
-//		PolygonShape shape = new PolygonShape();
-//		shape.setAsBox(0.5f, 0.5f);
-//		fixDef.shape = shape;
-//		fixDef.density = 1f;
-//=======
 		super.setEnt("bullet");
 
 		// sprite
@@ -56,7 +36,6 @@ public class Bullet extends Entity {
 		super.getSprite().setSize(meter * this.getSize(),
 				meter * this.getSize());
 		super.getSprite().setColor(Color.WHITE);
-//>>>>>>> a7fba53dc95ac2bc2178d43557b78112cedf1f77
 
 		//BodyDef
 		BodyDef bodDef = new BodyDef();
@@ -66,42 +45,6 @@ public class Bullet extends Entity {
 		bodDef.angle = dir;
 		bodDef.allowSleep = false;
 
-		//super.createBody(bodDef, fixDef);
-		//		
-		//		//Create the body
-		//		super.createBody(bodDef, fixDef);
-		//		super.getBody().setBullet(true);
-		//		
-		//		//Set the velocity
-//				float vX = (float) (20*Math.cos(dir));
-//				float vY = (float) (20*Math.sin(dir));
-//				super.body.setLinearVelocity(vX, vY);
-
-//		// Set the velocity
-//		float vX = (float) (100 * Math.cos(dir));
-//		float vY = (float) (100 * Math.sin(dir));		
-//		super.body.setLinearVelocity(vX, vY);
-
-//<<<<<<< HEAD
-//		//		//sprite
-//		//		float meter = Gdx.graphics.getHeight()/CoreLogic.getHeightScreen();			
-//		//		
-//		//super.setSize(3.5f);
-//
-//		// sprite
-//		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
-//
-//		super.setSize(6f);
-//
-//		super.setSprite(Settings.data_path + "bullet.png");
-//		super.getSprite().setOrigin((meter * this.getSize()) / 2,
-//				(meter * this.getSize()) / 2);
-//		super.getSprite().setSize(meter * this.getSize(),
-//				meter * this.getSize());
-//		super.getSprite().setColor(Color.WHITE);
-//
-//
-//=======
 		FixtureDef fixDef = new FixtureDef();
 		CircleShape shape = new CircleShape();
 		shape.setRadius(0.5f);
@@ -118,7 +61,6 @@ public class Bullet extends Entity {
 
 		//Set type data
 		super.getBody().setUserData(new TypeData("bullet"));
-//>>>>>>> a7fba53dc95ac2bc2178d43557b78112cedf1f77
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -16,20 +17,29 @@ public class Asteroid extends Entity {
 
 	public Asteroid(String type, Color c, float x, float y) {
 		super(type);
-		super.setEnt("asteroid");
 
-		super.setSize(15.0f);
 		super.setColor(c);
-
-		// TODO Write initialization for Asteroid body/sprite
 
 		// if we implement separate files just uncomment the lines above and
 		// comment this line out
 		super.setSprite(Settings.data_path + "broid.png");
 
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(6f, 6f);
-		// shape.set(vertices);
+		CircleShape shape = new CircleShape();
+		if(type.equals("small")){
+			super.setEnt("small asteroid");
+			super.setSize(3.75f);
+			shape.setRadius(1.5f);
+		}
+		else if(type.equals("medium")){
+			super.setEnt("medium asteroid");
+			super.setSize(7.5f);
+			shape.setRadius(3f);
+		}
+		else{
+			super.setEnt("large asteroid");
+			super.setSize(15.0f);
+			shape.setRadius(6f);
+		}
 
 		FixtureDef fixDef = new FixtureDef();
 		fixDef.shape = shape;
@@ -54,6 +64,9 @@ public class Asteroid extends Entity {
 		super.getSprite().setSize(meter * this.getSize(),
 				meter * this.getSize());
 		super.getSprite().setColor(this.getColor());
+		
+		//Set type data
+		super.getBody().setUserData(new TypeData("asteroid"));
 	}
 
 	@Override
@@ -88,7 +101,7 @@ public class Asteroid extends Entity {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		CoreLogic.removeEntity(this);
+		//CoreLogic.removeEntity(this);
 	}
 
 }

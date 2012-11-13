@@ -53,7 +53,7 @@ public class Ship extends Entity {
 
 		FixtureDef fixDef = new FixtureDef();
 		fixDef.shape = shape;
-		fixDef.density = 0.5f;
+		fixDef.density = 0.75f;
 
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;
@@ -83,7 +83,9 @@ public class Ship extends Entity {
 		this.sprite.setOrigin((meter * this.getSize()) / 2,	(meter * this.getSize()) / 2);
 		this.sprite.setSize(meter * this.getSize(), meter * this.getSize());
 		this.sprite.setColor(this.getColor());
-
+		
+		//Set type data
+		super.getBody().setUserData(new TypeData("ship"));
 	}
 
 	/**
@@ -165,7 +167,7 @@ public class Ship extends Entity {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		CoreLogic.removeEntity(this);
+		//CoreLogic.removeEntity(this);
 	}
 
 }

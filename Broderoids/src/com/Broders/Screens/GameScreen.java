@@ -313,6 +313,7 @@ public class GameScreen implements Screen{
 			CoreLogic.execute(delta, InputDir.SHOOT);
 			CoreLogic.getLocalShip().setShooting(true);
 		}else{
+			CoreLogic.execute(delta, InputDir.NOSHOOT);
 			CoreLogic.getLocalShip().setShooting(false);
 		}
 

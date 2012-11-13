@@ -195,6 +195,7 @@ public abstract class Entity {
 	 *            Y-Coordinate in the world (meters)
 	 */
 	public void teleport(float x, float y) {
+		TypeData d = (TypeData) this.body.getUserData();
 		Vector2 linV = this.body.getLinearVelocity();
 		float angV = this.body.getAngularVelocity();
 		float angle = this.body.getAngle();
@@ -207,6 +208,8 @@ public abstract class Entity {
 		this.body.createFixture(this.fixDef);
 		this.body.setAngularVelocity(angV);
 		this.body.setLinearVelocity(linV);
+		
+		this.body.setUserData(d);
 	}
 
 	public Vector2 getLinearVelocity() {

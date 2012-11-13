@@ -24,7 +24,7 @@ public class Bullet extends Entity {
 	public Bullet(String type, float dir, Vector2 velocity, float x, float y) {
 		super(type);
 		super.setEnt("bullet");
-		
+
 		// sprite
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
@@ -55,11 +55,14 @@ public class Bullet extends Entity {
 
 		super.createBody(bodDef, fixDef);
 		super.getBody().setBullet(true);
-		
+
 		// Set the velocity
 		float vX = (float) (75 * Math.cos(Math.toRadians(dir)));
 		float vY = (float) (75 * Math.sin(Math.toRadians(dir)));
 		super.body.setLinearVelocity(vX, vY);
+
+		//Set type data
+		super.getBody().setUserData(new TypeData("bullet"));
 	}
 
 	@Override
@@ -95,6 +98,6 @@ public class Bullet extends Entity {
 
 	@Override
 	public void destroy() {
-		
+
 	}
 }

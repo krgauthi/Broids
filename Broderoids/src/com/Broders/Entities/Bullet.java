@@ -19,13 +19,12 @@ public class Bullet extends Entity {
 	// private Pos pos;
 	// private float dir;
 	private float age;
-	private static float deathTime = 1.5f;
+	private static float deathTime = 1f;
 
 	public Bullet(String type, float dir, Vector2 velocity, float x, float y) {
 		super(type);
-		// TODO Write initialization for Bullet body/sprite
-
 		super.setEnt("bullet");
+
 		// sprite
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
@@ -38,44 +37,30 @@ public class Bullet extends Entity {
 				meter * this.getSize());
 		super.getSprite().setColor(Color.WHITE);
 
+		//BodyDef
 		BodyDef bodDef = new BodyDef();
-		bodDef.type = BodyType.DynamicBody;
+		bodDef.type = BodyType.KinematicBody;
 		bodDef.linearDamping = 0.0f;
-
 		bodDef.position.set(x, y);
 		bodDef.angle = dir;
 		bodDef.allowSleep = false;
 
-		// Fixtures
 		FixtureDef fixDef = new FixtureDef();
-
 		CircleShape shape = new CircleShape();
 		shape.setRadius(0.5f);
 		fixDef.shape = shape;
 		fixDef.density = 1f;
-		// TODO Add fixtures
 
 		super.createBody(bodDef, fixDef);
+		super.getBody().setBullet(true);
 
-		/*Vector2 linV = this.body.getLinearVelocity();
-		float angV = this.body.getAngularVelocity();
-		float angle = this.body.getAngle();
-
-		CoreLogic.getWorld().destroyBody(this.body);
-
-		this.bodDef.position.set(x, y);
-		this.bodDef.angle = angle;
-		this.body = CoreLogic.getWorld().createBody(bodDef);
-		this.body.createFixture(this.fixDef);
-		this.body.setAngularVelocity(angV);
-		this.body.setLinearVelocity(linV);*/
-		
 		// Set the velocity
-		float vX = (float) (50 * Math.cos(Math.toRadians(dir)));
-		float vY = (float) (50 * Math.sin(Math.toRadians(dir)));
+		float vX = (float) (75 * Math.cos(Math.toRadians(dir)));
+		float vY = (float) (75 * Math.sin(Math.toRadians(dir)));
 		super.body.setLinearVelocity(vX, vY);
-		
-		System.out.println(this.getX() + "-" + this.getY());
+
+		//Set type data
+		super.getBody().setUserData(new TypeData("bullet"));
 	}
 
 	@Override
@@ -111,5 +96,6 @@ public class Bullet extends Entity {
 
 	@Override
 	public void destroy() {
+
 	}
 }

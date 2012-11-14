@@ -61,7 +61,6 @@ public class BaseGame extends Game {
 		Gdx.input.setCatchBackKey(true);
 
 		this.setScreen(new SplashScreen(this));
-		super.render();
 
 	}
 
@@ -73,6 +72,11 @@ public class BaseGame extends Game {
 		return main;
 	}
 
+	@Override
+	public void render() {
+		super.render();
+	}
+	
 	@Override
 	public void dispose() {
 

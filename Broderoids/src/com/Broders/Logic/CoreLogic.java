@@ -258,12 +258,7 @@ public class CoreLogic {
 			//sure that there is only one. 
 		}
 
-		for (Entity i : rmEntities) {
-			entities.remove(i.getId());
-			world.destroyBody(i.getBody());
-			i.destroy();
-		}
-		rmEntities.clear();
+		cleanEntities();
 		localPlayer.setThrust(false);
 
 		world.step(delta, 3, 8);
@@ -445,8 +440,15 @@ public class CoreLogic {
 	}
 
 	public static void removeEntity(Entity ent) {
-
-		//entities.remove(ent);
 		rmEntities.add(ent);
+	}
+	
+	public static void cleanEntities() {
+		for (Entity i : rmEntities) {
+			entities.remove(i.getId());
+			world.destroyBody(i.getBody());
+			i.destroy();
+		}
+		rmEntities.clear();	
 	}
 }

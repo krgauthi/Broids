@@ -31,7 +31,7 @@ public class SplashScreen implements Screen {
 	public void render(float delta) {
 		timeout -= delta;
 		if (timeout <= 0 || this.handleInput(delta)) {
-			loadMenu();
+			myGame.setScreen(new MainMenu(this.myGame));
 			return;
 		}
 
@@ -53,13 +53,6 @@ public class SplashScreen implements Screen {
 		return false;
 	}
 
-	public void loadMenu() {
-		myGame.setScreen(new MainMenu(this.myGame));
-
-		// We're done with the splash now
-		this.dispose();
-	}
-
 	@Override
 	public void show() {
 		splsh = new Texture(Gdx.files.internal("data/Brocoders.png"));
@@ -71,8 +64,7 @@ public class SplashScreen implements Screen {
 
 	@Override
 	public void hide() {
-		// called when current screen changes from this to a different screen
-
+		this.dispose();
 	}
 
 	@Override

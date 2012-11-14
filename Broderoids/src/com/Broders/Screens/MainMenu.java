@@ -202,8 +202,7 @@ public class MainMenu implements Screen{
 
 	@Override
 	public void hide() {
-
-
+		this.dispose();
 	}
 
 	@Override
@@ -219,8 +218,11 @@ public class MainMenu implements Screen{
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
+		this.spriteBatch.dispose();
+		this.titleTex.dispose();
+		this.settingsTex.dispose();
+		this.multiTex.dispose();
+		this.settingsTex.dispose();
 	}
 
 }

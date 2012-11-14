@@ -140,8 +140,8 @@ public class GameScreen implements Screen {
 		// If Android
 		if (Gdx.app.getVersion() > 0) {
 			dPad.draw(spriteBatch, .45f); // TODO @mike .45f make this a setting
-											// for how transparent to have
-											// android controls
+			// for how transparent to have
+			// android controls
 			fireButton.draw(spriteBatch, .45f);
 			thrusterButton.draw(spriteBatch, .45f);
 		}
@@ -167,14 +167,14 @@ public class GameScreen implements Screen {
 
 			String out;
 			out = String.format("Score: %d ", 100); // TODO ref score from
-													// player
+			// player
 			font.draw(spriteBatch, out, xx * .01f, yy * .87f);
 
 		} else {
 			// Single player hud
 			String out;
 			out = String.format("Score: %d ", 100); // TODO ref score from
-													// player
+			// player
 			font.draw(spriteBatch, out, xx * .01f, yy * .98f);
 
 			int heartcount = 3; // TODO ref Lives from player
@@ -323,7 +323,7 @@ public class GameScreen implements Screen {
 		// Backout to main menu
 		if (Gdx.input.isKeyPressed(Keys.ESCAPE)
 				|| Gdx.input.isKeyPressed(Keys.BACK)) {
-			myGame.setScreen(myGame.getMain());
+			myGame.setScreen(new MainMenu(myGame));
 		}
 
 		// if Android
@@ -468,9 +468,8 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void hide() {
-		// TODO @Kris Look to see if there is a way to wipe this object from
-		// memory when you leave the game
 		myGame.multiplayer = false;
+		this.dispose();
 	}
 
 	@Override
@@ -485,8 +484,29 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO @kris look at hide()
+		this.spriteBatch.dispose();
 
+		if (Gdx.app.getVersion() > 0) {
+			this.dPadTexture.dispose();
+			this.fireButtonTexture.dispose();
+			this.thrusterButtonTexture.dispose();
+		}
+
+		this.healthBarTexture.dispose();
+		this.healthBlockTexture.dispose();
+		this.shieldBarTexture.dispose();
+		this.shieldBlockTexture.dispose();
+
+		this.livesTexture.dispose();
+		this.white.dispose();
+
+		this.whitePixel.dispose();
+		this.font.dispose();
+		
+		for (Entity E : CoreLogic.getEntities()) {
+			CoreLogic.removeEntity(E);
+		}
+		
+		CoreLogic.cleanEntities();
 	}
-
 }

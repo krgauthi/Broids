@@ -23,7 +23,7 @@ public abstract class Entity {
 	private String ent;
 	private String type;
 	protected Body body;
-	protected Sprite sprite;
+	private Sprite sprite;
 
 	// Extras
 	private float size;

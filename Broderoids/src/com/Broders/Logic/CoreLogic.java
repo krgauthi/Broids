@@ -48,11 +48,11 @@ public class CoreLogic {
 		return Integer.toString(clientId) + "-"
 		+ Integer.toString(nextEntityId);
 	}
-	
+
 	public static BaseGame getGame() {
 		return myGame;
 	}
-	
+
 	public static Map<String, Entity> getEntityMap() {
 		return entities;
 	}
@@ -145,7 +145,7 @@ public class CoreLogic {
 					float x = (float) (CoreLogic.getWidth() * Math.random());
 					float y = (float) (CoreLogic.getHeight() * Math.random());
 					float dir = (float) (Math.PI * Math.random());
-					
+
 					//Prevent spawning on the player
 					if(localPlayer.getX()-16 <= x && x <= localPlayer.getX()+16){
 						if(x <= localPlayer.getX())
@@ -257,17 +257,18 @@ public class CoreLogic {
 			E.update(); //THIS IS THE UPDATE! DO NOT PUT ELSEWHERE. Or at least make
 			//sure that there is only one. 
 		}
-
+		//Line below for debugging to check the # of bodies against # of entities (uncomment to use)
+		//System.out.println("Bodies - " + world.getBodyCount() + " Entities - " + entities.size());
 		for (Entity i : rmEntities) {
 			entities.remove(i.getId());
 			world.destroyBody(i.getBody());
 			i.destroy();
+			i = null;
 		}
 		rmEntities.clear();
 		localPlayer.setThrust(false);
 
-		world.step(delta, 3, 3);
-
+		world.step(delta, 1, 8);
 	}
 
 	/**
@@ -445,8 +446,7 @@ public class CoreLogic {
 	}
 
 	public static void removeEntity(Entity ent) {
-
-		//entities.remove(ent);
-		rmEntities.add(ent);
+		if(!rmEntities.contains(ent))
+			rmEntities.add(ent);
 	}
 }

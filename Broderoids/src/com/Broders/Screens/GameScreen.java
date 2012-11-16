@@ -100,6 +100,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 
+		delta = (float) (1.0/30.0);
 		// handle Input and update Backend
 		// it is up to the backend team to decide if they want to handle input
 		// seperatly or not

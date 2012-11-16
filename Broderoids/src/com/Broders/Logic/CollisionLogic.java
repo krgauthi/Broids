@@ -44,8 +44,8 @@ public class CollisionLogic implements ContactListener {
 
 		// Asteroid-Bullet
 		if (sA.equals("asteroid") && sB.equals("bullet")) {
-			CoreLogic.removeEntity(((Entity) bA.getUserData()));
 			CoreLogic.removeEntity(((Entity) bB.getUserData()));
+			CoreLogic.removeEntity(((Entity) bA.getUserData()));
 		}
 
 		// Ship-Bullet

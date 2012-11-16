@@ -49,10 +49,9 @@ public class Bullet extends Entity {
 		CircleShape shape = new CircleShape();
 		shape.setRadius(0.5f);
 		fixDef.shape = shape;
-		fixDef.density = 1f;
+		fixDef.density = 0f;
 
 		super.createBody(bodDef, fixDef);
-		super.getBody().setBullet(true);
 
 		// Set the velocity
 		float vX = (float) (75 * Math.cos(Math.toRadians(dir)));

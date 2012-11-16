@@ -162,7 +162,7 @@ public class CoreLogic {
 
 					Asteroid roid = new Asteroid("large",myGame.gameColor, x, y);
 
-					float initForce = (float) (450 + (150 * Math.random()));
+					float initForce = (float) (4000 + (2000 * Math.random()));
 					x = (float) (initForce * Math.cos(dir));
 					y = (float) (initForce * Math.sin(dir));
 
@@ -261,7 +261,7 @@ public class CoreLogic {
 		cleanEntities();
 		localPlayer.setThrust(false);
 
-		world.step(delta, 3, 8);
+		world.step(delta, 3, 3);
 
 	}
 

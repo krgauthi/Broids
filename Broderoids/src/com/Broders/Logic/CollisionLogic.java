@@ -17,7 +17,7 @@ public class CollisionLogic implements ContactListener {
 	}
 
 	/**
-	 * 
+	 * This method gets called
 	 */
 	@Override
 	public void beginContact(Contact contact) {
@@ -44,8 +44,8 @@ public class CollisionLogic implements ContactListener {
 
 		// Asteroid-Bullet
 		if (sA.equals("asteroid") && sB.equals("bullet")) {
-			CoreLogic.removeEntity(((Entity) bA.getUserData()));
 			CoreLogic.removeEntity(((Entity) bB.getUserData()));
+			CoreLogic.removeEntity(((Entity) bA.getUserData()));
 		}
 
 		// Ship-Bullet
@@ -58,8 +58,25 @@ public class CollisionLogic implements ContactListener {
 	 */
 	@Override
 	public void endContact(Contact contact) {
-		// TODO Auto-generated method stub
+		String sA = "";
+		String sB = "";
+		Body bA = contact.getFixtureA().getBody();
+		if (bA.getUserData() != null) {
+			sA = ((Entity) bA.getUserData()).getEnt();
+		}
+		Body bB = contact.getFixtureB().getBody();
+		if (bB.getUserData() != null) {
+			sB = ((Entity) bB.getUserData()).getEnt();
+		}
+		// Bullet-Asteroid
+		if (sA.equals("bullet") && sB.equals("asteroid")) {
+			contact.setEnabled(false);
+		}
 
+		// Asteroid-Bullet
+		if (sA.equals("asteroid") && sB.equals("bullet")) {
+			contact.setEnabled(false);
+		}
 	}
 
 	/**
@@ -67,7 +84,6 @@ public class CollisionLogic implements ContactListener {
 	 */
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
-		// TODO Auto-generated method stub
 
 	}
 

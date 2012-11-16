@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -19,7 +20,7 @@ public class Bullet extends Entity {
 	// private Pos pos;
 	// private float dir;
 	private float age;
-	private static float deathTime = 1f;
+	private static float deathTime = 1.0f;
 
 	public Bullet(String type, float dir, Vector2 velocity, float x, float y) {
 		super(type);
@@ -49,14 +50,13 @@ public class Bullet extends Entity {
 		CircleShape shape = new CircleShape();
 		shape.setRadius(0.5f);
 		fixDef.shape = shape;
-		fixDef.density = 1f;
+		fixDef.density = 0f;
 
 		super.createBody(bodDef, fixDef);
-		super.getBody().setBullet(true);
 
 		// Set the velocity
-		float vX = (float) (75 * Math.cos(Math.toRadians(dir)));
-		float vY = (float) (75 * Math.sin(Math.toRadians(dir)));
+		float vX = (float) (37.5 * Math.cos(Math.toRadians(dir)));
+		float vY = (float) (37.5 * Math.sin(Math.toRadians(dir)));
 		super.body.setLinearVelocity(vX, vY);
 
 		//Set type data
@@ -96,6 +96,6 @@ public class Bullet extends Entity {
 
 	@Override
 	public void destroy() {
-
+		
 	}
 }

@@ -257,15 +257,8 @@ public class CoreLogic {
 			E.update(); //THIS IS THE UPDATE! DO NOT PUT ELSEWHERE. Or at least make
 			//sure that there is only one. 
 		}
-		//Line below for debugging to check the # of bodies against # of entities (uncomment to use)
-		//System.out.println("Bodies - " + world.getBodyCount() + " Entities - " + entities.size());
-		for (Entity i : rmEntities) {
-			entities.remove(i.getId());
-			world.destroyBody(i.getBody());
-			i.destroy();
-			i = null;
-		}
-		rmEntities.clear();
+
+		cleanEntities();
 		localPlayer.setThrust(false);
 
 		world.step(delta, 1, 8);
@@ -448,5 +441,14 @@ public class CoreLogic {
 	public static void removeEntity(Entity ent) {
 		if(!rmEntities.contains(ent))
 			rmEntities.add(ent);
+	}
+	
+	public static void cleanEntities() {
+		for (Entity i : rmEntities) {
+			entities.remove(i.getId());
+			world.destroyBody(i.getBody());
+			i.destroy();
+		}
+		rmEntities.clear();	
 	}
 }

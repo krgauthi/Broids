@@ -48,11 +48,11 @@ public class CoreLogic {
 		return Integer.toString(clientId) + "-"
 		+ Integer.toString(nextEntityId);
 	}
-	
+
 	public static BaseGame getGame() {
 		return myGame;
 	}
-	
+
 	public static Map<String, Entity> getEntityMap() {
 		return entities;
 	}
@@ -145,7 +145,7 @@ public class CoreLogic {
 					float x = (float) (CoreLogic.getWidth() * Math.random());
 					float y = (float) (CoreLogic.getHeight() * Math.random());
 					float dir = (float) (Math.PI * Math.random());
-					
+
 					//Prevent spawning on the player
 					if(localPlayer.getX()-16 <= x && x <= localPlayer.getX()+16){
 						if(x <= localPlayer.getX())
@@ -162,7 +162,7 @@ public class CoreLogic {
 
 					Asteroid roid = new Asteroid("large",myGame.gameColor, x, y);
 
-					float initForce = (float) (450 + (150 * Math.random()));
+					float initForce = (float) (4000 + (2000 * Math.random()));
 					x = (float) (initForce * Math.cos(dir));
 					y = (float) (initForce * Math.sin(dir));
 
@@ -261,8 +261,7 @@ public class CoreLogic {
 		cleanEntities();
 		localPlayer.setThrust(false);
 
-		world.step(delta, 3, 8);
-
+		world.step(delta, 1, 8);
 	}
 
 	/**
@@ -440,7 +439,8 @@ public class CoreLogic {
 	}
 
 	public static void removeEntity(Entity ent) {
-		rmEntities.add(ent);
+		if(!rmEntities.contains(ent))
+			rmEntities.add(ent);
 	}
 	
 	public static void cleanEntities() {

@@ -122,7 +122,7 @@ public class Asteroid extends Entity {
 			roid1 = new Asteroid("medium", CoreLogic.getGame().gameColor, x1,
 					y1);
 
-			float initForce = (float) (4000 + (2000 * Math.random()));
+			float initForce = (float) (8000 + (4000 * Math.random()));
 			float x = (float) (initForce * Math.cos(dir));
 			float y = (float) (initForce * Math.sin(dir));
 
@@ -131,7 +131,7 @@ public class Asteroid extends Entity {
 					roid1.getBody().getLocalCenter());
 			roid1.getBody().applyForce(f, p);
 
-			float spin = (float) (300 + (250 * Math.random()));
+			float spin = (float) (4000 + (2000 * Math.random()));
 			if (Math.random() >= 0.5f)
 				spin *= -1;
 
@@ -141,7 +141,7 @@ public class Asteroid extends Entity {
 			roid2 = new Asteroid("medium", CoreLogic.getGame().gameColor, x2,
 					y2);
 
-			initForce = (float) (2000 + (1000 * Math.random()));
+			initForce = (float) (8000 + (2000 * Math.random()));
 			x = (float) (initForce * Math.cos(dir));
 			y = (float) (initForce * Math.sin(dir));
 
@@ -149,7 +149,7 @@ public class Asteroid extends Entity {
 			p = roid2.getBody().getWorldPoint(roid2.getBody().getLocalCenter());
 			roid2.getBody().applyForce(f, p);
 
-			spin = (float) (300 + (250 * Math.random()));
+			spin = (float) (4000 + (2000 * Math.random()));
 			if (Math.random() >= 0.5f)
 				spin *= -1;
 
@@ -164,7 +164,7 @@ public class Asteroid extends Entity {
 
 			roid1 = new Asteroid("small", CoreLogic.getGame().gameColor, x1, y1);
 
-			float initForce = (float) (500 + (250 * Math.random()));
+			float initForce = (float) (1000 + (500 * Math.random()));
 			float x = (float) (initForce * Math.cos(Math.random()*2*Math.PI));
 			float y = (float) (initForce * Math.sin(Math.random()*2*Math.PI));
 
@@ -173,7 +173,7 @@ public class Asteroid extends Entity {
 					roid1.getBody().getLocalCenter());
 			roid1.getBody().applyForce(f, p);
 
-			float spin = (float) (300 + (250 * Math.random()));
+			float spin = (float) (100 + (50 * Math.random()));
 			if (Math.random() >= 0.5f)
 				spin *= -1;
 
@@ -182,7 +182,7 @@ public class Asteroid extends Entity {
 
 			roid2 = new Asteroid("small", CoreLogic.getGame().gameColor, x2, y2);
 
-			initForce = (float) (500 + (250 * Math.random()));
+			initForce = (float) (1000 + (500 * Math.random()));
 			x = (float) (initForce * Math.cos(dir));
 			y = (float) (initForce * Math.sin(dir));
 
@@ -190,7 +190,7 @@ public class Asteroid extends Entity {
 			p = roid2.getBody().getWorldPoint(roid2.getBody().getLocalCenter());
 			roid2.getBody().applyForce(f, p);
 
-			spin = (float) (300 + (250 * Math.random()));
+			spin = (float) (100 + (50 * Math.random()));
 			if (Math.random() >= 0.5f)
 				spin *= -1;
 
@@ -198,6 +198,14 @@ public class Asteroid extends Entity {
 			CoreLogic.getEntityMap().put(roid2.getId(), roid2);
 		} else {
 
+		}
+		//Score logic, change limit of if conditional to change max multiplier
+		if(CoreLogic.getBonus() >= 5){
+			CoreLogic.setScore(10*5);
+		}
+		else{
+			CoreLogic.setBonus(0.2f);
+			CoreLogic.setScore(10*CoreLogic.getBonus());
 		}
 	}
 }

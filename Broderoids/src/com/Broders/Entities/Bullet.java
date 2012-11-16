@@ -55,8 +55,8 @@ public class Bullet extends Entity {
 		super.createBody(bodDef, fixDef);
 
 		// Set the velocity
-		float vX = (float) (37.5 * Math.cos(Math.toRadians(dir)));
-		float vY = (float) (37.5 * Math.sin(Math.toRadians(dir)));
+		float vX = (float) (velocity.x + 75 * Math.cos(Math.toRadians(dir)));
+		float vY = (float) (velocity.y + 75 * Math.sin(Math.toRadians(dir)));
 		super.body.setLinearVelocity(vX, vY);
 
 		//Set type data
@@ -89,6 +89,7 @@ public class Bullet extends Entity {
 		age += Gdx.graphics.getDeltaTime();
 
 		if (age >= deathTime) {
+			CoreLogic.resetBonus();
 			CoreLogic.removeEntity(this);
 		}
 

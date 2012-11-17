@@ -291,7 +291,7 @@ public class MultiLobby implements Screen {
 		this.spriteBatch.dispose();
 		this.arrow.dispose();
 		this.white.dispose();
-		this.font.dispose();
+
 	}
 
 }

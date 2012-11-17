@@ -502,7 +502,7 @@ public class GameScreen implements Screen {
 		this.white.dispose();
 
 		this.whitePixel.dispose();
-		this.font.dispose();
+
 		
 		for (Entity E : CoreLogic.getEntities()) {
 			CoreLogic.removeEntity(E);

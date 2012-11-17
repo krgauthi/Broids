@@ -18,6 +18,7 @@ public class BaseGame extends Game {
 
 	SettingsScreen settings;
 
+
 	public BitmapFont font;
 
 	public int screenHeight;		//TODO Ref in Settings
@@ -57,6 +58,7 @@ public class BaseGame extends Game {
 		bounds = .25f; // max of .5
 		gameSize = 0;
 		entitiesLock = new Semaphore(1);
+
 
 		font = new BitmapFont(Gdx.files.internal(Settings.data_path
 				+ "smallfonts.fnt"), Gdx.files.internal(Settings.data_path

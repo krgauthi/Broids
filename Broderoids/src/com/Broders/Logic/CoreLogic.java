@@ -21,11 +21,11 @@ public class CoreLogic {
 
 	private static World world;
 	private static HashMap<String,Player> players;
-	//private static HashMap<String, Entity> entities;
+
 	private static LinkedList<Entity> rmEntities;
 	private static Player local;
 	private static Player comp;
-	//private static Ship localPlayer;
+
 	private static BaseGame myGame;
 	private static ContactListener collisions;
 
@@ -46,6 +46,8 @@ public class CoreLogic {
 	private static int round;
 
 	private static boolean host;
+	private static float delay;
+	private static boolean display;
 
 	public static String nextId() {
 		for(Player p : players.values()){
@@ -138,7 +140,7 @@ public class CoreLogic {
 			players.put("comp", comp);
 		}
 
-		
+
 		players.put("local", local);
 
 		//localPlayer = new Ship("classic", myGame.playerColor,width/2,height/2);
@@ -155,28 +157,33 @@ public class CoreLogic {
 	public static void update(float delta) {
 		bulletCooldown += Gdx.graphics.getDeltaTime();
 
-		if (!myGame.multiplayer) {
-			//asteroids
-			if (getAsteroids().size() <= 0) {
-				round++;
-				for (int i = 0; i < myGame.difficulty; i++) {
-					while(spawnBroid() == -1);	//lols
-				}
-			}
-		}else{
-			if(host){
-				//asteroids
-				if (getAsteroids().size() <= 0) {
-					round++;
-					int mod = (myGame.gameSize*15);
+
+		int mod = 0;
+
+
+		//asteroids
+		if (getAsteroids().size() <= 0) {
+			if(delay < 5){
+				display = true;
+				delay = delay + delta;
+			}else{
+				if(host){
+					if (myGame.multiplayer) {
+						mod  = (myGame.gameSize*15);
+					}	
 					if(mod == 0)
 						mod = 1;
+					round++;
 					for (int i = 0; i < myGame.difficulty*mod; i++) {
-						while(spawnBroid() == 1);
+						while(spawnBroid() == -1);	//lols
 					}
 				}
+				delay = 0;
+				display = false;
 			}
+
 		}
+
 
 
 		// viewport logic
@@ -511,8 +518,16 @@ public class CoreLogic {
 	public static Player getComp(){
 		return comp;
 	}
-	
+
 	public static Player getLocal(){
 		return local;
+	}
+
+	public static boolean getRoundBool() {
+		return display;
+	}
+	
+	public static int getRound(){
+		return round;
 	}
 }

@@ -14,3 +14,10 @@ Broderoids-desktop/*.log
 
 # Eclipse overhead
 .metadata/
+
+# Ant crap
+Broderoids-android/libs/gson-2.2.2.jar
+Broderoids-android/libs/gdx.jar
+Broderoids-android/gen/R.java.d
+Broderoids-android/local.properties
+Broderoids-android/proguard-project.txt

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -53,12 +54,12 @@ public class Ship extends Entity {
 
 		FixtureDef fixDef = new FixtureDef();
 		fixDef.shape = shape;
-		fixDef.density = 0.5f;
+		fixDef.density = 0.75f;
 
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;
-		bodDef.angularDamping = 30.0f;
-		bodDef.linearDamping = 0.3f;
+		bodDef.angularDamping = 15.0f;
+		bodDef.linearDamping = 0.2f;
 
 		bodDef.position.set(x, y);
 		bodDef.angle = MathUtils.PI;
@@ -83,7 +84,9 @@ public class Ship extends Entity {
 		this.sprite.setOrigin((meter * this.getSize()) / 2,	(meter * this.getSize()) / 2);
 		this.sprite.setSize(meter * this.getSize(), meter * this.getSize());
 		this.sprite.setColor(this.getColor());
-
+		
+		//Set type data
+		super.getBody().setUserData(this);
 	}
 
 	/**
@@ -164,8 +167,7 @@ public class Ship extends Entity {
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
-		CoreLogic.removeEntity(this);
+		
 	}
 
 }

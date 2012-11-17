@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -18,13 +20,16 @@ public class Bullet extends Entity {
 	// private Pos pos;
 	// private float dir;
 	private float age;
-	private static float deathTime = 3f;
+	private static float deathTime = 1.0f;
 
+<<<<<<< HEAD
 	public Bullet(String type, float dir,Color c, float x, float y) {
+=======
+	public Bullet(String type, float dir, Vector2 velocity, float x, float y) {
+>>>>>>> 3283698f7801b2351ad7544afaf96ed6c2055143
 		super(type);
-		// TODO Write initialization for Bullet body/sprite
-
 		super.setEnt("bullet");
+
 		// sprite
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
@@ -37,29 +42,29 @@ public class Bullet extends Entity {
 				meter * this.getSize());
 		super.getSprite().setColor(c);
 
+		//BodyDef
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.KinematicBody;
 		bodDef.linearDamping = 0.0f;
-
 		bodDef.position.set(x, y);
 		bodDef.angle = dir;
 		bodDef.allowSleep = false;
 
-		// Fixtures
 		FixtureDef fixDef = new FixtureDef();
-
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(1f, 1f);
+		CircleShape shape = new CircleShape();
+		shape.setRadius(0.5f);
 		fixDef.shape = shape;
-		fixDef.density = 1f;
-		// TODO Add fixtures
+		fixDef.density = 0f;
 
 		super.createBody(bodDef, fixDef);
 
 		// Set the velocity
-		float vX = (float) (20 * Math.cos(Math.toRadians(dir)));
-		float vY = (float) (20 * Math.sin(Math.toRadians(dir)));
+		float vX = (float) (37.5 * Math.cos(Math.toRadians(dir)));
+		float vY = (float) (37.5 * Math.sin(Math.toRadians(dir)));
 		super.body.setLinearVelocity(vX, vY);
+
+		//Set type data
+		super.getBody().setUserData(this);
 	}
 
 	@Override
@@ -81,15 +86,12 @@ public class Bullet extends Entity {
 		super.getSprite().setPosition(posX, posY);
 		super.getSprite().setRotation(super.getBody().getAngle());
 		super.getSprite().draw(sb);
-
 	}
 
 	@Override
 	public void update() {
 		age += Gdx.graphics.getDeltaTime();
 
-		// NOTE: This will cause issues with destroy().
-		// We need a find a way for everything to live in harmony
 		if (age >= deathTime) {
 			CoreLogic.removeEntity(this);
 		}
@@ -98,7 +100,6 @@ public class Bullet extends Entity {
 
 	@Override
 	public void destroy() {
-		System.out.println("Destroy!");
-		CoreLogic.removeEntity(this);
+		
 	}
 }

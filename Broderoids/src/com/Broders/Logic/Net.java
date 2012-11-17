@@ -21,8 +21,8 @@ public class Net extends Thread {
 
 	// Responses from Lobby Commands
 	public static final int FRAME_LIST_RESPONSE = 10;
-	public static final int FRAME_CREATE_RESPONSE = 10;
-	public static final int FRAME_JOIN_RESPONSE = 10;
+	public static final int FRAME_CREATE_RESPONSE = 11;
+	public static final int FRAME_JOIN_RESPONSE = 12;
 
 	// Commands we will be sending
 	public static final int COMMAND_ERROR = -1;
@@ -63,12 +63,14 @@ public class Net extends Thread {
 			Gson g = new Gson();
 			Socket s;
 
+			// Create a socket and json readers and writers
 			s = new Socket("localhost", 9988);
 			out = new JsonWriter(new BufferedWriter(new OutputStreamWriter(
 					s.getOutputStream())));
 			in = new JsonStreamParser(new BufferedReader(new InputStreamReader(
 					s.getInputStream())));
 			
+			// Keep reading from the stream as long as we can
 			while (in.hasNext()) {
 				JsonElement element = in.next();
 				JsonObject obj = element.getAsJsonObject();
@@ -76,20 +78,16 @@ public class Net extends Thread {
 				// So, we have a json object... now what?
 				JsonElement e = obj.get("c");
 				if (!e.isJsonPrimitive()) {
-					// Well, shit. We got some shitty data from the server.
 					// Connection must be bad, lets get out of here.
 					// TODO: Be less draconian
 					break;
 				}
 
+				// Get which command is incoming
 				int c = e.getAsInt();
 				if (state == STATUS_LOBBY) {
 					if (c == FRAME_LIST_RESPONSE) {
 						
-					} else if (c == FRAME_LIST_RESPONSE) {
-
-					} else if (c == FRAME_LIST_RESPONSE) {
-
 					} else {
 						// TODO: Be less draconian
 						break;
@@ -157,6 +155,7 @@ public class Net extends Thread {
 							}
 							float YVelocity = e.getAsFloat();
 							
+							// This updates or creates a new entity based onthe incoming json
 							/*if (CoreLogic.entities.containsKey(id)) {
 								// Update
 								Entity ent = CoreLogic.entities.get(id);
@@ -187,11 +186,11 @@ public class Net extends Thread {
 						//CoreLogic.entities = entities;
 						theGame.entitiesLock.release();
 					} else if (c == FRAME_DELTA_UPDATE) {
-
+						
 					} else if (c == FRAME_DELTA_CREATE) {
 
 					} else if (c == FRAME_DELTA_REMOVE) {
-
+						
 					} else {
 						// TODO: Be less draconian
 						break;

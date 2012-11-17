@@ -44,14 +44,11 @@ public abstract class Entity {
 	 *            The type of this entity
 	 */
 	public Entity(String type) {
-
+		id = CoreLogic.nextId();
 	}
 	
 	public String getId() {
 		return id;
-	}
-	public void setId(String newId) {
-		id = newId;
 	}
 
 	/**
@@ -210,8 +207,14 @@ public abstract class Entity {
 		this.body.createFixture(this.fixDef);
 		this.body.setAngularVelocity(angV);
 		this.body.setLinearVelocity(linV);
+		
+		this.body.setUserData(this);
 	}
 
+	public Vector2 getLinearVelocity() {
+		return this.body.getLinearVelocity();
+	}
+	
 	public abstract void update();
 
 	public abstract void destroy();

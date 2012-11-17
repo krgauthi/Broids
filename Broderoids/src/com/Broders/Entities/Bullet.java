@@ -65,26 +65,7 @@ public class Bullet extends Entity {
 		super.getBody().setUserData(this);
 	}
 
-	@Override
-	public void Draw(SpriteBatch sb) {
-		float screenWidth = Gdx.graphics.getWidth();
-		float screenHeight = Gdx.graphics.getHeight();
-
-		float x = super.getBody().getPosition().x - (this.getSize() / 2f);
-		float y = super.getBody().getPosition().y - (this.getSize() / 2f);
-
-		float posX;
-		float posY;
-
-		posX = screenWidth
-				* ((x - CoreLogic.getViewPortX()) / CoreLogic.getWidthScreen());
-		posY = screenHeight
-				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
-
-		super.getSprite().setPosition(posX, posY);
-		super.getSprite().setRotation(super.getBody().getAngle());
-		super.getSprite().draw(sb);
-	}
+	
 
 	@Override
 	public void update() {

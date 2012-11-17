@@ -39,7 +39,7 @@ public class CoreLogic {
 
 	private static int nextEntityId;
 	private static int clientId;
-	
+
 	private static int round;
 
 	public static String nextId() {
@@ -145,42 +145,7 @@ public class CoreLogic {
 			//asteroids
 			if (getAsteroids().size() <= 0) {
 				for (int i = 0; i < myGame.difficulty; i++) {
-					float x = (float) (CoreLogic.getWidth() * Math.random());
-					float y = (float) (CoreLogic.getHeight() * Math.random());
-					float dir = (float) (Math.PI * Math.random());
-
-					//Prevent spawning on the player
-					if(localPlayer.getX()-16 <= x && x <= localPlayer.getX()+16){
-						if(x <= localPlayer.getX())
-							x = localPlayer.getX()-16;
-						else
-							x = localPlayer.getX()+16;
-					}
-					if(localPlayer.getY()-16 <= x && x <= localPlayer.getY()+16){
-						if(x <= localPlayer.getY())
-							x = localPlayer.getY()-16;
-						else
-							x = localPlayer.getY()+16;
-					}
-
-					Asteroid roid = new Asteroid("large",myGame.gameColor, x, y);
-
-					float initForce = (float) (4000f + (2000f * Math.random()))*(round/10+1f);
-					x = (float) (initForce * Math.cos(dir));
-					y = (float) (initForce * Math.sin(dir));
-
-					Vector2 f = roid.getBody().getWorldVector(new Vector2(x, y));
-					Vector2 p = roid.getBody().getWorldPoint(
-							roid.getBody().getLocalCenter());
-					roid.getBody().applyForce(f, p);
-
-					float spin = (float) (300 + (250 * Math.random()));
-					if (Math.random() >= 0.5f)
-						spin *= -1;
-
-					roid.getBody().applyTorque(spin);
-
-					entities.put(roid.getId(), roid);
+					while(spawnBroid() == 1);	//lols
 				}
 			}
 		}else{
@@ -190,42 +155,7 @@ public class CoreLogic {
 				if(mod == 0)
 					mod = 1;
 				for (int i = 0; i < myGame.difficulty*mod; i++) {
-					float x = (float) (CoreLogic.getWidth() * Math.random());
-					float y = (float) (CoreLogic.getHeight() * Math.random());
-					float dir = (float) (Math.PI * Math.random());
-
-					//Prevent spawning on the player
-					if(localPlayer.getX()-16 <= x && x <= localPlayer.getX()+16){
-						if(x <= localPlayer.getX())
-							x = localPlayer.getX()-16;
-						else
-							x = localPlayer.getX()+16;
-					}
-					if(localPlayer.getY()-16 <= x && x <= localPlayer.getY()+16){
-						if(x <= localPlayer.getY())
-							x = localPlayer.getY()-16;
-						else
-							x = localPlayer.getY()+16;
-					}
-
-					Asteroid roid = new Asteroid("large",myGame.gameColor, x, y);
-
-					float initForce = (float) (4000 + (2000 * Math.random()));
-					x = (float) (initForce * Math.cos(dir));
-					y = (float) (initForce * Math.sin(dir));
-
-					Vector2 f = roid.getBody().getWorldVector(new Vector2(x, y));
-					Vector2 p = roid.getBody().getWorldPoint(
-							roid.getBody().getLocalCenter());
-					roid.getBody().applyForce(f, p);
-
-					float spin = (float) (300 + (250 * Math.random()));
-					if (Math.random() >= 0.5f)
-						spin *= -1;
-
-					roid.getBody().applyTorque(spin);
-
-					entities.put(roid.getId(), roid);
+					while(spawnBroid() == 1);
 				}
 			}
 		}
@@ -281,7 +211,7 @@ public class CoreLogic {
 		if (localPlayer.getY() > height + 4) {
 			viewPortY = 0;
 		}
-		
+
 		// Screen wrapping 		
 		for (Entity E : getEntities()) {
 			if (E.getX() + (E.getSize()/2f) < 0) { // make it the size of the ship
@@ -308,6 +238,43 @@ public class CoreLogic {
 
 		world.step(delta, 1, 8);
 	}
+
+	public static int spawnBroid(){
+		float x = (float) (CoreLogic.getWidth() * Math.random());
+		float y = (float) (CoreLogic.getHeight() * Math.random());
+		float dir = (float) (Math.PI * Math.random());
+
+		//Prevent spawning on the player(s) 
+		for(Ship S : getShips()){
+			if(localPlayer.getX()-16 <= x && x <= localPlayer.getX()+16){
+				return -1;		//lols Lazy logic TODO make better lazy logic
+			}
+			if(localPlayer.getY()-16 <= x && x <= localPlayer.getY()+16){
+				return -1;
+			}
+		}
+
+		Asteroid roid = new Asteroid("large",myGame.gameColor, x, y);
+
+		float initForce = (float) (4000 + (2000 * Math.random()));
+		x = (float) (initForce * Math.cos(dir));
+		y = (float) (initForce * Math.sin(dir));
+
+		Vector2 f = roid.getBody().getWorldVector(new Vector2(x, y));
+		Vector2 p = roid.getBody().getWorldPoint(
+				roid.getBody().getLocalCenter());
+		roid.getBody().applyForce(f, p);
+
+		float spin = (float) (300 + (250 * Math.random()));
+		if (Math.random() >= 0.5f)
+			spin *= -1;
+
+		roid.getBody().applyTorque(spin);
+
+		entities.put(roid.getId(), roid);
+		return 0;
+	}
+
 
 	/**
 	 * Executes the game logic.
@@ -377,8 +344,8 @@ public class CoreLogic {
 	 * 
 	 * @return Map of Ships
 	 */
-	public static ArrayList<Ship> getShips() {
-		ArrayList<Ship> ships = new ArrayList<Ship>();
+	public static LinkedList<Ship> getShips() {
+		LinkedList<Ship> ships = new LinkedList<Ship>();
 
 		for (Entity entity : getEntities()) {
 			if (entity.getEnt().equals("ship")) {
@@ -394,8 +361,8 @@ public class CoreLogic {
 	 * 
 	 * @return Map of Asteroids
 	 */
-	public static ArrayList<Asteroid> getAsteroids() {
-		ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
+	public static LinkedList<Asteroid> getAsteroids() {
+		LinkedList<Asteroid> asteroids = new LinkedList<Asteroid>();
 
 		for (Entity entity : getEntities()) {
 			if (entity.getEnt().equals("asteroid")) {
@@ -411,8 +378,8 @@ public class CoreLogic {
 	 * 
 	 * @return Map of Bullets
 	 */
-	public static ArrayList<Bullet> getBullets() {
-		ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+	public static LinkedList<Bullet> getBullets() {
+		LinkedList<Bullet> bullets = new LinkedList<Bullet>();
 
 		for (Entity entity : getEntities()) {
 			if (entity.getEnt().equals("bullet")) {
@@ -487,7 +454,7 @@ public class CoreLogic {
 		if(!rmEntities.contains(ent))
 			rmEntities.add(ent);
 	}
-	
+
 	public static void cleanEntities() {
 		for (Entity i : rmEntities) {
 			entities.remove(i.getId());

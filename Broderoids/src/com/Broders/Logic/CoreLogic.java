@@ -20,9 +20,12 @@ import com.badlogic.gdx.physics.box2d.World;
 public class CoreLogic {
 
 	private static World world;
-	private static HashMap<String, Entity> entities;
+	private static HashMap<String,Player> players;
+	//private static HashMap<String, Entity> entities;
 	private static LinkedList<Entity> rmEntities;
-	private static Ship localPlayer;
+	private static Player local;
+	private static Player comp;
+	//private static Ship localPlayer;
 	private static BaseGame myGame;
 	private static ContactListener collisions;
 
@@ -42,10 +45,14 @@ public class CoreLogic {
 
 	private static int round;
 
+	private static boolean host;
+
 	public static String nextId() {
-		while (entities.containsKey(Integer.toString(clientId) + "-"
-				+ Integer.toString(nextEntityId))) {
-			nextEntityId++;
+		for(Player p : players.values()){
+			while (p.getEntitiesMap().containsKey(Integer.toString(clientId) + "-"
+					+ Integer.toString(nextEntityId))) {
+				nextEntityId++;
+			}
 		}
 		return Integer.toString(clientId) + "-"
 		+ Integer.toString(nextEntityId);
@@ -55,9 +62,6 @@ public class CoreLogic {
 		return myGame;
 	}
 
-	public static Map<String, Entity> getEntityMap() {
-		return entities;
-	}
 
 	/**
 	 * By the way, this is awful, but it calculates the GCD
@@ -72,22 +76,23 @@ public class CoreLogic {
 	/**
 	 * Initializes the game core for use.
 	 */
-	public static void initCore(BaseGame game) {
+	public static void initCore(BaseGame game,Boolean h) {
 		myGame = game;
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, false);
-		entities = new HashMap<String, Entity>();
+		//entities = new HashMap<String, Entity>();
 		collisions = new CollisionLogic();
 		world.setContactListener(collisions);
-		entities = new HashMap<String, Entity>();
+		players = new HashMap<String, Player>();
 		rmEntities = new LinkedList<Entity>();
+		host = h;
 
 		int gcd = gcd(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		widthScreen = Gdx.graphics.getWidth() / gcd * 10;
 		heightScreen = Gdx.graphics.getHeight() / gcd * 10;
 
 		bulletCooldown = 0;
-		round = 0;
+		round = -1;
 
 		if (game.multiplayer) {
 			switch (myGame.gameSize) {
@@ -110,7 +115,6 @@ public class CoreLogic {
 				width = widthScreen;
 				height = heightScreen;
 			}
-
 		} else {
 			width = widthScreen;
 			height = heightScreen;
@@ -128,8 +132,18 @@ public class CoreLogic {
 		// generation somehow?
 		// String instanceID = "0000"; // check map to see how many of this type
 		// of entity already exist
-		localPlayer = new Ship("classic", myGame.playerColor,width/2,height/2);
-		entities.put(localPlayer.getId(), localPlayer);
+		local =  new Player("Player");
+		if(host){
+			comp = new Player("Comp");
+			players.put("comp", comp);
+		}
+
+		
+		players.put("local", local);
+
+		//localPlayer = new Ship("classic", myGame.playerColor,width/2,height/2);
+
+		//entities.put(localPlayer.getId(), localPlayer);
 	}
 
 	/**
@@ -144,51 +158,56 @@ public class CoreLogic {
 		if (!myGame.multiplayer) {
 			//asteroids
 			if (getAsteroids().size() <= 0) {
+				round++;
 				for (int i = 0; i < myGame.difficulty; i++) {
-					while(spawnBroid() == 1);	//lols
+					while(spawnBroid() == -1);	//lols
 				}
 			}
 		}else{
-			//asteroids
-			if (getAsteroids().size() <= 0) {
-				int mod = (myGame.gameSize*15);
-				if(mod == 0)
-					mod = 1;
-				for (int i = 0; i < myGame.difficulty*mod; i++) {
-					while(spawnBroid() == 1);
+			if(host){
+				//asteroids
+				if (getAsteroids().size() <= 0) {
+					round++;
+					int mod = (myGame.gameSize*15);
+					if(mod == 0)
+						mod = 1;
+					for (int i = 0; i < myGame.difficulty*mod; i++) {
+						while(spawnBroid() == 1);
+					}
 				}
 			}
 		}
 
+
 		// viewport logic
-		if ((localPlayer.getX() - viewPortX) / widthScreen > (1 - myGame.bounds)) {
+		if ((local.getShip().getX() - viewPortX) / widthScreen > (1 - myGame.bounds)) {
 			if (viewPortX < width - widthScreen) {
-				float target = (((localPlayer.getX() - viewPortX) / widthScreen) - (1 - myGame.bounds))
+				float target = (((local.getShip().getX() - viewPortX) / widthScreen) - (1 - myGame.bounds))
 						/ (myGame.bounds);
 				adjViewPortX(10 * target);
 			}
 		}
 
-		if ((localPlayer.getX() - viewPortX) / widthScreen < myGame.bounds) {
+		if ((local.getShip().getX() - viewPortX) / widthScreen < myGame.bounds) {
 			if (viewPortX > 0) {
-				float target = ((myGame.bounds - (localPlayer.getX() - viewPortX)
+				float target = ((myGame.bounds - (local.getShip().getX() - viewPortX)
 						/ widthScreen))
 						/ (myGame.bounds);
 				adjViewPortX(-10 * target);
 			}
 		}
 
-		if ((localPlayer.getY() - viewPortY) / heightScreen > (1 - myGame.bounds)) {
+		if ((local.getShip().getY() - viewPortY) / heightScreen > (1 - myGame.bounds)) {
 			if (viewPortY < height - heightScreen) {
-				float target = (((localPlayer.getY() - viewPortY) / heightScreen) - (1 - myGame.bounds))
+				float target = (((local.getShip().getY() - viewPortY) / heightScreen) - (1 - myGame.bounds))
 						/ (myGame.bounds);
 				adjViewPortY(10 * target);
 			}
 		}
 
-		if ((localPlayer.getY() - viewPortY) / heightScreen < myGame.bounds) {
+		if ((local.getShip().getY() - viewPortY) / heightScreen < myGame.bounds) {
 			if (viewPortY > 0) {
-				float target = ((myGame.bounds - (localPlayer.getY() - viewPortY)
+				float target = ((myGame.bounds - (local.getShip().getY() - viewPortY)
 						/ heightScreen))
 						/ (myGame.bounds);
 				adjViewPortY(-10 * target);
@@ -196,45 +215,47 @@ public class CoreLogic {
 		}
 
 		//viewport in relation to ship
-		if (localPlayer.getX() < -4) { // make it the size of the ship
+		if (local.getShip().getX() < -4) { // make it the size of the ship
 			viewPortX = width - widthScreen;
 		}
 
-		if (localPlayer.getX() > width + 4) {
+		if (local.getShip().getX() > width + 4) {
 			viewPortX = 0;
 		}
 
-		if (localPlayer.getY() < -4) {
+		if (local.getShip().getY() < -4) {
 			viewPortY = height - heightScreen;
 		}
 
-		if (localPlayer.getY() > height + 4) {
+		if (local.getShip().getY() > height + 4) {
 			viewPortY = 0;
 		}
 
 		// Screen wrapping 		
-		for (Entity E : getEntities()) {
-			if (E.getX() + (E.getSize()/2f) < 0) { // make it the size of the ship
-				E.teleport(width + (E.getSize()/2f), E.getY());
+		for(Player p : players.values()){
+			for (Entity E : getEntities(p)) {
+				if (E.getX() + (E.getSize()/2f) < 0) { // make it the size of the ship
+					E.teleport(width + (E.getSize()/2f), E.getY());
+				}
+
+				if (E.getX() - (E.getSize()/2f) > width) {
+					E.teleport(-(E.getSize()/2f), E.getY());
+				}
+
+				if (E.getY() + (E.getSize()/2f) < 0) {
+					E.teleport(E.getX(), height + (E.getSize()/2f));
+				}
+
+				if (E.getY() - (E.getSize()/2f) > height) {
+					E.teleport(E.getX(), -(E.getSize()/2f));
+				}
+				E.update(); //THIS IS THE UPDATE! DO NOT PUT ELSEWHERE. Or at least make
+				//sure that there is only one. 
 			}
 
-			if (E.getX() - (E.getSize()/2f) > width) {
-				E.teleport(-(E.getSize()/2f), E.getY());
-			}
-
-			if (E.getY() + (E.getSize()/2f) < 0) {
-				E.teleport(E.getX(), height + (E.getSize()/2f));
-			}
-
-			if (E.getY() - (E.getSize()/2f) > height) {
-				E.teleport(E.getX(), -(E.getSize()/2f));
-			}
-			E.update(); //THIS IS THE UPDATE! DO NOT PUT ELSEWHERE. Or at least make
-			//sure that there is only one. 
 		}
-
 		cleanEntities();
-		localPlayer.setThrust(false);
+		local.getShip().setThrust(false);
 
 		world.step(delta, 1, 8);
 	}
@@ -246,10 +267,10 @@ public class CoreLogic {
 
 		//Prevent spawning on the player(s) 
 		for(Ship S : getShips()){
-			if(localPlayer.getX()-16 <= x && x <= localPlayer.getX()+16){
+			if(local.getShip().getX()-16 <= x && x <= local.getShip().getX()+16){
 				return -1;		//lols Lazy logic TODO make better lazy logic
 			}
-			if(localPlayer.getY()-16 <= x && x <= localPlayer.getY()+16){
+			if(local.getShip().getY()-16 <= x && x <= local.getShip().getY()+16){
 				return -1;
 			}
 		}
@@ -271,7 +292,7 @@ public class CoreLogic {
 
 		roid.getBody().applyTorque(spin);
 
-		entities.put(roid.getId(), roid);
+		comp.getEntitiesMap().put(roid.getId(), roid);
 		return 0;
 	}
 
@@ -286,46 +307,43 @@ public class CoreLogic {
 	 */
 	public static void execute(float delta, InputDir in) {
 		if (in.equals("left")) {
-			localPlayer.getBody().applyTorque(500.0f); // 20 was obnoxious on
-			// android device make
-			// this adjustable in
-			// settings?
+			local.getShip().getBody().applyTorque(500.0f);
 		} else if (in.equals("right")) {
-			localPlayer.getBody().applyTorque(-500.0f);
+			local.getShip().getBody().applyTorque(-500.0f);
 		}
 
 		if (in.equals("backward")) {
-			Vector2 f = localPlayer.getBody().getWorldVector(
+			Vector2 f = local.getShip().getBody().getWorldVector(
 					new Vector2(0.0f, 30.0f));
-			Vector2 p = localPlayer.getBody().getWorldCenter();
-			localPlayer.getBody().applyForce(f, p);
+			Vector2 p = local.getShip().getBody().getWorldCenter();
+			local.getShip().getBody().applyForce(f, p);
 		}
 
 		if (in.equals("shoot")) {
 			if (bulletCooldown >= 0.2f) {
-				float dir = localPlayer.getAngle() - 90.0f;
+				float dir = local.getShip().getAngle() - 90.0f;
 
-				float x = (float) (localPlayer.getX() + (2.805 * Math.cos(Math
+				float x = (float) (local.getShip().getX() + (2.805 * Math.cos(Math
 						.toRadians(dir))));
-				float y = (float) (localPlayer.getY() + (2.805 * Math.sin(Math
+				float y = (float) (local.getShip().getY() + (2.805 * Math.sin(Math
 						.toRadians(dir))));
 
-				Bullet shot = new Bullet("bullet", dir, localPlayer.getLinearVelocity(), x, y);
-				entities.put(shot.getId(), shot);
+				Bullet shot = new Bullet("bullet", dir, local.getShip().getLinearVelocity(), x, y);
+				local.getEntitiesMap().put(shot.getId(), shot);
 				bulletCooldown = 0;
 			}
 		}
 
 		if (in.equals("forward")) {
-			Vector2 f = localPlayer.getBody().getWorldVector(
+			Vector2 f = local.getShip().getBody().getWorldVector(
 					new Vector2(0.0f, -100.0f));
-			Vector2 p = localPlayer.getBody().getWorldPoint(
-					localPlayer.getBody().getLocalCenter()
+			Vector2 p = local.getShip().getBody().getWorldPoint(
+					local.getShip().getBody().getLocalCenter()
 					.add(new Vector2(0.0f, 0.0f)));
-			localPlayer.getBody().applyForce(f, p);
-			localPlayer.setThrust(true);
+			local.getShip().getBody().applyForce(f, p);
+			local.getShip().setThrust(true);
 		} else {
-			localPlayer.setThrust(false);
+			local.getShip().setThrust(false);
 		}
 
 	}
@@ -335,8 +353,8 @@ public class CoreLogic {
 	 * 
 	 * @return Entities Map
 	 */
-	public static Iterable<Entity> getEntities() {
-		return entities.values();
+	public static Iterable<Entity> getEntities(Player p) {
+		return p.getEntities();
 	}
 
 	/**
@@ -346,10 +364,11 @@ public class CoreLogic {
 	 */
 	public static LinkedList<Ship> getShips() {
 		LinkedList<Ship> ships = new LinkedList<Ship>();
-
-		for (Entity entity : getEntities()) {
-			if (entity.getEnt().equals("ship")) {
-				ships.add((Ship) entity);
+		for(Player p : players.values()){
+			for (Entity entity : getEntities(p)) {
+				if (entity.getEnt().equals("ship")) {
+					ships.add((Ship) entity);
+				}
 			}
 		}
 
@@ -363,10 +382,11 @@ public class CoreLogic {
 	 */
 	public static LinkedList<Asteroid> getAsteroids() {
 		LinkedList<Asteroid> asteroids = new LinkedList<Asteroid>();
-
-		for (Entity entity : getEntities()) {
-			if (entity.getEnt().equals("asteroid")) {
-				asteroids.add((Asteroid) entity);
+		for(Player p : players.values()){
+			for (Entity entity : getEntities(p)) {
+				if (entity.getEnt().equals("asteroid")) {
+					asteroids.add((Asteroid) entity);
+				}
 			}
 		}
 
@@ -380,14 +400,27 @@ public class CoreLogic {
 	 */
 	public static LinkedList<Bullet> getBullets() {
 		LinkedList<Bullet> bullets = new LinkedList<Bullet>();
-
-		for (Entity entity : getEntities()) {
-			if (entity.getEnt().equals("bullet")) {
-				bullets.add((Bullet) entity);
+		for(Player p : players.values()){
+			for (Entity entity : getEntities(p)) {
+				if (entity.getEnt().equals("bullet")) {
+					bullets.add((Bullet) entity);
+				}
 			}
 		}
 
 		return bullets;
+	}
+
+	public static LinkedList<Entity> getAllEntities(){
+		LinkedList<Entity> entities = new LinkedList<Entity>();
+		for(Player p : players.values()){
+			for (Entity entity : getEntities(p)) {
+
+				entities.add(entity);
+
+			}
+		}
+		return entities;
 	}
 
 	/**
@@ -396,7 +429,7 @@ public class CoreLogic {
 	 * @return Local player ship
 	 */
 	public static Ship getLocalShip() {
-		return localPlayer;
+		return local.getShip();
 	}
 
 	/**
@@ -457,9 +490,13 @@ public class CoreLogic {
 
 	public static void cleanEntities() {
 		for (Entity i : rmEntities) {
-			entities.remove(i.getId());
-			world.destroyBody(i.getBody());
-			i.destroy();
+			for(Player p : players.values()){
+				if(p.getEntitiesMap().containsKey(i.getId())){
+					p.getEntitiesMap().remove(i.getId());
+					world.destroyBody(i.getBody());
+					i.destroy();
+				}
+			}
 		}
 		rmEntities.clear();	
 	}
@@ -468,6 +505,14 @@ public class CoreLogic {
 		//world.dispose();
 		//entities.clear();
 		//rmEntities.clear();
-		//localPlayer.destroy();
+		//local.getShip().destroy();
+	}
+
+	public static Player getComp(){
+		return comp;
+	}
+	
+	public static Player getLocal(){
+		return local;
 	}
 }

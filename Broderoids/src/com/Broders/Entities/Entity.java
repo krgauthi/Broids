@@ -1,6 +1,7 @@
 package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
+import com.Broders.Logic.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,7 +25,8 @@ public abstract class Entity {
 	private String type;
 	protected Body body;
 	private Sprite sprite;
-
+	private Player playa;
+	
 	// Extras
 	private float size;
 	private Color color;
@@ -236,4 +238,9 @@ public abstract class Entity {
 	public abstract void update();
 
 	public abstract void destroy();
+	
+	public Player belongsTo(){
+		return playa;
+	}
+	
 }

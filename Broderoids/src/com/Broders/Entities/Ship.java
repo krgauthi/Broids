@@ -89,6 +89,8 @@ public class Ship extends Entity {
 		super.getBody().setUserData(this);
 	}
 
+	
+
 	/**
 	 * Checks if the thrust is engaged/disengaged
 	 * 

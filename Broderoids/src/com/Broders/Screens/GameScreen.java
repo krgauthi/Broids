@@ -52,7 +52,7 @@ public class GameScreen implements Screen {
 	private Sprite shieldBlock;
 	private Sprite whiteSprite;
 
-	private Sprite lives; // TODO reference in player/ship
+	private Sprite lives;
 
 	private SpriteBatch spriteBatch;
 
@@ -66,10 +66,10 @@ public class GameScreen implements Screen {
 	float xx; // Clean reference for screen width
 	float yy; // Clean reference for screen height
 
-	public GameScreen(BaseGame game, boolean m) {
+	public GameScreen(BaseGame game, boolean m, boolean h) {
 		this.myGame = game;
 		this.multiplayer = m;
-
+		
 		if (m) {
 			System.out.println("Multi");
 		} else {
@@ -82,7 +82,7 @@ public class GameScreen implements Screen {
 
 		myGame.multiplayer = m;
 
-		CoreLogic.initCore(game);
+		CoreLogic.initCore(game,h);
 
 		if (myGame.debugMode) {
 			debug1 = new Tail(50, Color.MAGENTA);
@@ -134,7 +134,7 @@ public class GameScreen implements Screen {
 		Tail.draw(spriteBatch);
 
 		// loop through all Entities
-		for (Entity E : CoreLogic.getEntities()) {
+		for (Entity E : CoreLogic.getAllEntities()) {
 			E.Draw(spriteBatch);
 		}
 
@@ -167,18 +167,18 @@ public class GameScreen implements Screen {
 			font.draw(spriteBatch, "SHIELD", xx * .08f, yy * .975f);
 
 			String out;
-			out = String.format("Score: %d ", 100); // TODO ref score from
+			out = String.format("Score: %d ", CoreLogic.getLocal().getScore()); 
 			// player
 			font.draw(spriteBatch, out, xx * .01f, yy * .87f);
 
 		} else {
 			// Single player hud
 			String out;
-			out = String.format("Score: %d ", 100); // TODO ref score from
+			out = String.format("Score: %d ", CoreLogic.getLocal().getScore());
 			// player
 			font.draw(spriteBatch, out, xx * .01f, yy * .98f);
 
-			int heartcount = 3; // TODO ref Lives from player
+			int heartcount = CoreLogic.getLocal().getLives();
 			for (int i = 0; i < heartcount; i++) {
 				lives.setPosition(xx * (.005f + (i * .02f)), yy * .89f);
 				lives.draw(spriteBatch);
@@ -504,7 +504,7 @@ public class GameScreen implements Screen {
 		this.whitePixel.dispose();
 
 		CoreLogic.cleanEntities();
-		for (Entity E : CoreLogic.getEntities()) {
+		for (Entity E : CoreLogic.getAllEntities()) {
 			CoreLogic.removeEntity(E);
 		}
 		

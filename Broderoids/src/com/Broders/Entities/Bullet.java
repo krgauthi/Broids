@@ -22,11 +22,9 @@ public class Bullet extends Entity {
 	private float age;
 	private static float deathTime = 1.0f;
 
-<<<<<<< HEAD
-	public Bullet(String type, float dir,Color c, float x, float y) {
-=======
+
 	public Bullet(String type, float dir, Vector2 velocity, float x, float y) {
->>>>>>> 3283698f7801b2351ad7544afaf96ed6c2055143
+
 		super(type);
 		super.setEnt("bullet");
 
@@ -40,7 +38,7 @@ public class Bullet extends Entity {
 				(meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(),
 				meter * this.getSize());
-		super.getSprite().setColor(c);
+		super.getSprite().setColor(CoreLogic.getGame().playerColor);
 
 		//BodyDef
 		BodyDef bodDef = new BodyDef();

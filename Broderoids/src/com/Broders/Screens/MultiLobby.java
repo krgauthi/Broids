@@ -187,7 +187,7 @@ public class MultiLobby implements Screen {
 
 				// join
 				if (x >= .24 && x <= .44) {
-					myGame.setScreen(new GameScreen(this.myGame, true));
+					myGame.setScreen(new GameScreen(this.myGame, true,false));
 				} else if (x >= .02 && x <= .22) {
 					myGame.setScreen(new MultiHost(this.myGame));
 				}
@@ -237,7 +237,7 @@ public class MultiLobby implements Screen {
 		// Backout to main menu
 		if ((Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input
 				.isKeyPressed(Keys.BACK)) && buff > myGame.exitBuffer) {
-			myGame.setScreen(myGame.getMain());
+			myGame.setScreen(new MainMenu(myGame));
 		} else {
 			if (buff < myGame.exitBuffer) {
 				buff = buff + delta;

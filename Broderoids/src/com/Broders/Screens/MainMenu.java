@@ -34,7 +34,7 @@ public class MainMenu implements Screen{
 	private Sprite multiSprite;
 	private Sprite settingsSprite;
 	
-	private Tail tail;
+
 	
 	private float buff;
 
@@ -46,8 +46,7 @@ public class MainMenu implements Screen{
 	public MainMenu(BaseGame g){
 
 		this.myGame = g;
-		myGame.setMain(this); //now all screens can reference back to this main menu
-		tail = new Tail(myGame.tailLength,Color.WHITE);
+
 		
 		xx = myGame.screenWidth;
 		yy = myGame.screenHeight;
@@ -87,7 +86,6 @@ public class MainMenu implements Screen{
 		singleSprite.draw(spriteBatch);
 		multiSprite.draw(spriteBatch);
 		settingsSprite.draw(spriteBatch);
-		tail.draw(spriteBatch);
 		spriteBatch.end();
 
 	}
@@ -97,7 +95,7 @@ public class MainMenu implements Screen{
 	 */
 	private void update(float delta) {
 
-		tail.update();
+	
 
 	}
 
@@ -106,10 +104,6 @@ public class MainMenu implements Screen{
 	public void handleInput(float delta){
 
 		
-		
-		if(Gdx.input.isTouched()){
-			tail.add(new Pos(Gdx.input.getX(),Gdx.input.getY()));
-		}
 		
 		if(Gdx.input.justTouched()){
 			double x = ((float)Gdx.input.getX()/xx);
@@ -121,7 +115,7 @@ public class MainMenu implements Screen{
 				// single player game X 650-850 Y 180 - 230
 				if(y >= .20 && y <= .28){
 					// Single Player
-					myGame.setScreen(new GameScreen(this.myGame,false));
+					myGame.setScreen(new GameScreen(this.myGame,false,true));
 				}else if(y >= .32 && y <= .43){
 					// Multiplayer
 					myGame.setScreen(new MultiLobby(this.myGame));

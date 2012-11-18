@@ -25,7 +25,7 @@ public class SettingsScreen implements Screen {
 	
 	private MainMenu main;
 	private BaseGame game;
-	private Tail tail;
+
 	
 	private SpriteBatch spriteBatch;
 
@@ -49,7 +49,7 @@ public class SettingsScreen implements Screen {
 		this.main = m;
 		this.game = g;
 		game.setSettings(this);
-		tail = new Tail(game.tailLength, Color.WHITE);
+		
 		
 		// loadSettings();
 		
@@ -130,13 +130,13 @@ public class SettingsScreen implements Screen {
 	
 	private void update(float delta) {
 		
-		tail.update();		
+
 	
 	}
 
 	private void handleInput(float delta) {
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACK)){
-			game.setScreen(game.getMain());
+			game.setScreen(new MainMenu(game));
 		}
 		
 		if(Gdx.input.justTouched()){

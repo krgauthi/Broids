@@ -15,21 +15,28 @@ import java.util.concurrent.*;
 
 public class BaseGame extends Game {
 
-	MainMenu main;
+
 	SettingsScreen settings;
+
 
 	public BitmapFont font;
 
-	public int screenHeight;
-	public int screenWidth;
-	public int tailLength;
-	public double exitBuffer;
-	public boolean epileptic;
-	public boolean debugMode;
+	public int screenHeight;		//TODO Ref in Settings
+	public int screenWidth;			//TODO Ref in Settings
+	
+		
+	public double exitBuffer;		//TODO Ref in Settings
+	public boolean epileptic;		//is Ref'd in Settings
+	public boolean debugMode;		//TODO Ref in Settings
+	public int difficulty;			//TODO Ref in Settings
+	public String playerName;		//TODO Ref in Settings
+	public boolean godMode;			//TODO Ref in Settings
+	
 	public boolean multiplayer;
-	public int difficulty;
-	public Color gameColor;
-	public Color playerColor; // TODO ref/move in new player class?
+	
+	public Color gameColor;			//TODO Ref in Settings
+	public Color playerColor; 		//TODO Ref in Settings
+	
 	public float bounds;
 	public int gameSize; // multi only
 
@@ -44,7 +51,6 @@ public class BaseGame extends Game {
 	public void create() {
 		screenHeight = Gdx.graphics.getHeight();
 		screenWidth = Gdx.graphics.getWidth();
-		tailLength = 5;
 		exitBuffer = 1;
 		difficulty = 5;
 		multiplayer = false;
@@ -52,7 +58,9 @@ public class BaseGame extends Game {
 		playerColor = Color.CYAN;
 		bounds = .25f; // max of .5
 		gameSize = 0;
+		godMode = false;
 		entitiesLock = new Semaphore(1);
+
 
 		font = new BitmapFont(Gdx.files.internal(Settings.data_path
 				+ "smallfonts.fnt"), Gdx.files.internal(Settings.data_path
@@ -64,13 +72,8 @@ public class BaseGame extends Game {
 
 	}
 
-	public void setMain(MainMenu m) {
-		main = m;
-	}
 
-	public MainMenu getMain() {
-		return main;
-	}
+
 
 	@Override
 	public void render() {

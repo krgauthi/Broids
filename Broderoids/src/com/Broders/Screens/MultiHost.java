@@ -129,7 +129,7 @@ public class MultiHost implements Screen{
 			if(inputy > .09 && inputy < .173){
 				if(inputx > .795 && inputx < .863){
 					myGame.gameSize = worldSize;
-					myGame.setScreen(new GameScreen(myGame, true));
+					myGame.setScreen(new GameScreen(myGame, true,true));
 				}
 			}
 		}

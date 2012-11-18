@@ -174,7 +174,13 @@ public class Ship extends Entity {
 
 	@Override
 	public void destroy() {
-
+		float temp = (float) (10+Math.random()%10);
+		for(int i = 0; i < temp;i++){
+			temp = 360/temp;
+			
+			Dust D = new Dust("debris", (float)(Math.random()%10)+(temp*i) , this.getX(), this.getY());
+			CoreLogic.getComp().getEntitiesMap().put(D.getId(), D);
+		}
 	}
 
 }

@@ -23,7 +23,7 @@ public class Bullet extends Entity {
 	private static float deathTime = 1.0f;
 
 
-	public Bullet(String type, float dir, Vector2 velocity, float x, float y) {
+	public Bullet(String type, float dir, float x, float y) {
 
 		super(type);
 		super.setEnt("bullet");

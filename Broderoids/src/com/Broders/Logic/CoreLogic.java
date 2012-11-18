@@ -286,8 +286,8 @@ public class CoreLogic {
 		Asteroid roid = new Asteroid("large",myGame.gameColor, x, y);
 
 		float initForce = (float) (4000 + (2000 * Math.random()));
-		x = (float) (initForce * Math.cos(dir));
-		y = (float) (initForce * Math.sin(dir));
+		x = (float) (initForce * Math.cos(dir)*((round/10)+1f));
+		y = (float) (initForce * Math.sin(dir)*((round/10)+1f));
 
 		Vector2 f = roid.getBody().getWorldVector(new Vector2(x, y));
 		Vector2 p = roid.getBody().getWorldPoint(
@@ -336,7 +336,7 @@ public class CoreLogic {
 				float y = (float) (local.getShip().getY() + (2.805 * Math.sin(Math
 						.toRadians(dir))));
 
-				Bullet shot = new Bullet("bullet", dir, local.getShip().getLinearVelocity(), x, y);
+				Bullet shot = new Bullet("bullet", dir, x, y);
 				local.getEntitiesMap().put(shot.getId(), shot);
 				bulletCooldown = 0;
 				local.getShip().setShooting(true);

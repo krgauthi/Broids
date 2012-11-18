@@ -30,6 +30,7 @@ public class BaseGame extends Game {
 	public boolean debugMode;		//TODO Ref in Settings
 	public int difficulty;			//TODO Ref in Settings
 	public String playerName;		//TODO Ref in Settings
+	public boolean godMode;			//TODO Ref in Settings
 	
 	public boolean multiplayer;
 	
@@ -57,6 +58,7 @@ public class BaseGame extends Game {
 		playerColor = Color.CYAN;
 		bounds = .25f; // max of .5
 		gameSize = 0;
+		godMode = false;
 		entitiesLock = new Semaphore(1);
 
 

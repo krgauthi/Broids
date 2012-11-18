@@ -92,6 +92,14 @@ public class Asteroid extends Entity {
 		float y2;
 		float dir;
 		if (this.type == LARGE) {
+			float temp = (float) (10+Math.random()%10);
+			for(int i = 0; i < temp;i++){
+				temp = 360/temp;
+				
+				Dust D = new Dust("debris", (float)(Math.random()%10)+(temp*i) , this.getX(), this.getY());
+				CoreLogic.getComp().getEntitiesMap().put(D.getId(), D);
+			}
+			
 			dir = (float) Math.toRadians(this.getAngle());
 			x1 = (float) (this.getX() + 7.5 * Math.cos(dir));
 			x2 = (float) (this.getX() + 7.5 * Math.cos(dir));
@@ -135,6 +143,14 @@ public class Asteroid extends Entity {
 			roid2.getBody().applyTorque(spin);
 			CoreLogic.getComp().getEntitiesMap().put(roid2.getId(), roid2);
 		} else if (this.type == MEDIUM) {
+			float temp = (float) (5+Math.random()%10);
+			for(int i = 0; i < temp;i++){
+				temp = 360/temp;
+				Dust D = new Dust("debris", (float)(Math.random()%10)+(temp*i), this.getX(), this.getY());
+				CoreLogic.getComp().getEntitiesMap().put(D.getId(), D);
+			}
+			this.getX();
+			
 			dir = (float) Math.toRadians(this.getAngle());
 			x1 = (float) (this.getX() + 3.75 * Math.cos(dir));
 			x2 = (float) (this.getX() + 3.75 * Math.cos(dir));
@@ -176,7 +192,12 @@ public class Asteroid extends Entity {
 			roid2.getBody().applyTorque(spin);
 			CoreLogic.getComp().getEntitiesMap().put(roid2.getId(), roid2);
 		} else {
-
+			float temp = (float) (3+Math.random()%10);
+			for(int i = 0; i < temp;i++){
+				temp = 360/temp;
+				Dust D = new Dust("debris", (float)(Math.random()%10)+(temp*i), this.getX(), this.getY());
+				CoreLogic.getComp().getEntitiesMap().put(D.getId(), D);
+			}
 		}
 	}
 }

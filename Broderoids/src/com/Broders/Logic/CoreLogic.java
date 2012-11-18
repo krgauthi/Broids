@@ -263,6 +263,7 @@ public class CoreLogic {
 		}
 		cleanEntities();
 		local.getShip().setThrust(false);
+		local.getShip().setShooting(false);
 
 		world.step(delta, 1, 8);
 	}
@@ -338,6 +339,7 @@ public class CoreLogic {
 				Bullet shot = new Bullet("bullet", dir, local.getShip().getLinearVelocity(), x, y);
 				local.getEntitiesMap().put(shot.getId(), shot);
 				bulletCooldown = 0;
+				local.getShip().setShooting(true);
 			}
 		}
 
@@ -349,8 +351,6 @@ public class CoreLogic {
 					.add(new Vector2(0.0f, 0.0f)));
 			local.getShip().getBody().applyForce(f, p);
 			local.getShip().setThrust(true);
-		} else {
-			local.getShip().setThrust(false);
 		}
 
 	}

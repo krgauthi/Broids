@@ -58,7 +58,6 @@ public class GameScreen implements Screen {
 
 	private SpriteBatch spriteBatch;
 
-	private Tail Tail;
 
 	private Tail debug1;
 	private Tail debug2;
@@ -78,7 +77,7 @@ public class GameScreen implements Screen {
 			System.out.println("Single");
 		}
 
-		Tail = new Tail(5, Color.WHITE);
+
 		font = this.myGame.font;
 		font.setScale(.25f);
 
@@ -133,7 +132,7 @@ public class GameScreen implements Screen {
 		// Start Drawing
 		spriteBatch.begin();
 
-		Tail.draw(spriteBatch);
+
 
 		// loop through all Entities
 		for (Entity E : CoreLogic.getAllEntities()) {
@@ -246,7 +245,7 @@ public class GameScreen implements Screen {
 	private void update(float delta) {
 
 		CoreLogic.update(delta);
-		Tail.update();
+
 
 		if (myGame.debugMode) {
 			debug1.update();
@@ -321,10 +320,7 @@ public class GameScreen implements Screen {
 
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
 			CoreLogic.execute(delta, InputDir.SHOOT);
-			CoreLogic.getLocalShip().setShooting(true);
-		} else {
-			CoreLogic.execute(delta, InputDir.NOSHOOT);
-			CoreLogic.getLocalShip().setShooting(false);
+			
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.UP)) {
@@ -378,9 +374,6 @@ public class GameScreen implements Screen {
 					} else {
 						CoreLogic.execute(delta, InputDir.RIGHT);
 					}
-				} else {
-					// touch tail
-					Tail.add(new Pos(Gdx.input.getX(), Gdx.input.getY()));
 				}
 
 				// check for button touch
@@ -390,9 +383,7 @@ public class GameScreen implements Screen {
 								&& y3 < .98)) {
 
 					CoreLogic.execute(delta, InputDir.FORWARD);
-					CoreLogic.getLocalShip().setThrust(true);
-				} else {
-					CoreLogic.getLocalShip().setThrust(false);
+
 				}
 				if ((.83 < x1 && x1 < .98 || .83 < x2 && x2 < .98 || .83 < x3
 						&& x3 < .98)
@@ -400,9 +391,6 @@ public class GameScreen implements Screen {
 								&& y3 < .73)) {
 					// pew pew
 					CoreLogic.execute(delta, InputDir.SHOOT);
-					CoreLogic.getLocalShip().setShooting(true);
-				} else {
-					CoreLogic.getLocalShip().setShooting(false);
 				}
 
 			}

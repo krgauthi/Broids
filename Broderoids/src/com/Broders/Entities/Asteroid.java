@@ -115,7 +115,7 @@ public class Asteroid extends Entity {
 				spin *= -1;
 
 			roid1.getBody().applyTorque(spin);
-			CoreLogic.getEntityMap().put(roid1.getId(), roid1);
+			CoreLogic.getComp().getEntitiesMap().put(roid1.getId(), roid1);
 
 			roid2 = new Asteroid("medium", CoreLogic.getGame().gameColor, x2,
 					y2);
@@ -133,7 +133,7 @@ public class Asteroid extends Entity {
 				spin *= -1;
 
 			roid2.getBody().applyTorque(spin);
-			CoreLogic.getEntityMap().put(roid2.getId(), roid2);
+			CoreLogic.getComp().getEntitiesMap().put(roid2.getId(), roid2);
 		} else if (this.type == MEDIUM) {
 			dir = (float) Math.toRadians(this.getAngle());
 			x1 = (float) (this.getX() + 3.75 * Math.cos(dir));
@@ -157,7 +157,7 @@ public class Asteroid extends Entity {
 				spin *= -1;
 
 			roid1.getBody().applyTorque(spin);
-			CoreLogic.getEntityMap().put(roid1.getId(), roid1);
+			CoreLogic.getComp().getEntitiesMap().put(roid1.getId(), roid1);
 
 			roid2 = new Asteroid("small", CoreLogic.getGame().gameColor, x2, y2);
 
@@ -174,7 +174,7 @@ public class Asteroid extends Entity {
 				spin *= -1;
 
 			roid2.getBody().applyTorque(spin);
-			CoreLogic.getEntityMap().put(roid2.getId(), roid2);
+			CoreLogic.getComp().getEntitiesMap().put(roid2.getId(), roid2);
 		} else {
 
 		}

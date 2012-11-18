@@ -84,10 +84,12 @@ public class Ship extends Entity {
 		this.sprite.setOrigin((meter * this.getSize()) / 2,	(meter * this.getSize()) / 2);
 		this.sprite.setSize(meter * this.getSize(), meter * this.getSize());
 		this.sprite.setColor(this.getColor());
-		
+
 		//Set type data
 		super.getBody().setUserData(this);
 	}
+
+
 
 	/**
 	 * Checks if the thrust is engaged/disengaged
@@ -147,15 +149,20 @@ public class Ship extends Entity {
 		posY = screenHeight
 				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
 
-		if (this.getThrust()) {
-			this.sprite.setPosition(posX, posY);
-			this.sprite.setRotation((float) super.getAngle());
-			this.sprite.draw(sb);
-		} else {
-			super.getSprite().setPosition(posX, posY);
-			super.getSprite().setRotation(
-					(float) super.getAngle() + (float) (Math.PI / 2));
-			super.getSprite().draw(sb);
+
+		if(posX > -this.getSize()*8 && posX < (screenWidth+this.getSize()*8) 
+				&& posY > -this.getSize()*8 && posY < (screenHeight+this.getSize()*8)){
+
+			if (this.getThrust()) {
+				this.sprite.setPosition(posX, posY);
+				this.sprite.setRotation((float) super.getAngle());
+				this.sprite.draw(sb);
+			} else {
+				super.getSprite().setPosition(posX, posY);
+				super.getSprite().setRotation(
+						(float) super.getAngle() + (float) (Math.PI / 2));
+				super.getSprite().draw(sb);
+			}
 		}
 	}
 
@@ -167,7 +174,7 @@ public class Ship extends Entity {
 
 	@Override
 	public void destroy() {
-		
+
 	}
 
 }

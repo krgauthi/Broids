@@ -11,6 +11,7 @@ import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
@@ -22,6 +23,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class GameScreen implements Screen {
 
 	private BaseGame myGame;
+	AssetManager assetManager;
 
 	private boolean multiplayer;
 
@@ -52,11 +54,10 @@ public class GameScreen implements Screen {
 	private Sprite shieldBlock;
 	private Sprite whiteSprite;
 
-	private Sprite lives; // TODO reference in player/ship
+	private Sprite lives;
 
 	private SpriteBatch spriteBatch;
 
-	private Tail Tail;
 
 	private Tail debug1;
 	private Tail debug2;
@@ -66,7 +67,7 @@ public class GameScreen implements Screen {
 	float xx; // Clean reference for screen width
 	float yy; // Clean reference for screen height
 
-	public GameScreen(BaseGame game, boolean m) {
+	public GameScreen(BaseGame game, boolean m, boolean h) {
 		this.myGame = game;
 		this.multiplayer = m;
 
@@ -76,13 +77,13 @@ public class GameScreen implements Screen {
 			System.out.println("Single");
 		}
 
-		Tail = new Tail(5, Color.WHITE);
+
 		font = this.myGame.font;
 		font.setScale(.25f);
 
 		myGame.multiplayer = m;
 
-		CoreLogic.initCore(game);
+		CoreLogic.initCore(game,h);
 
 		if (myGame.debugMode) {
 			debug1 = new Tail(50, Color.MAGENTA);
@@ -131,10 +132,10 @@ public class GameScreen implements Screen {
 		// Start Drawing
 		spriteBatch.begin();
 
-		Tail.draw(spriteBatch);
+
 
 		// loop through all Entities
-		for (Entity E : CoreLogic.getEntities()) {
+		for (Entity E : CoreLogic.getAllEntities()) {
 			E.Draw(spriteBatch);
 		}
 
@@ -167,18 +168,18 @@ public class GameScreen implements Screen {
 			font.draw(spriteBatch, "SHIELD", xx * .08f, yy * .975f);
 
 			String out;
-			out = String.format("Score: %d ", 100); // TODO ref score from
+			out = String.format("Score: %d ", CoreLogic.getLocal().getScore()); 
 			// player
 			font.draw(spriteBatch, out, xx * .01f, yy * .87f);
 
 		} else {
 			// Single player hud
 			String out;
-			out = String.format("Score: %d ", 100); // TODO ref score from
+			out = String.format("Score: %d ", CoreLogic.getLocal().getScore());
 			// player
 			font.draw(spriteBatch, out, xx * .01f, yy * .98f);
 
-			int heartcount = 3; // TODO ref Lives from player
+			int heartcount = CoreLogic.getLocal().getLives();
 			for (int i = 0; i < heartcount; i++) {
 				lives.setPosition(xx * (.005f + (i * .02f)), yy * .89f);
 				lives.draw(spriteBatch);
@@ -225,6 +226,14 @@ public class GameScreen implements Screen {
 			}
 
 		}
+		
+		if(CoreLogic.getRoundBool()){
+			font .setScale(2f);
+			String out;
+			out = String.format("Round: %d! ", CoreLogic.getRound()+2); 
+			font.draw(spriteBatch, out, xx*.25f, yy*.65f);
+			font.setScale(.25f);
+		}
 
 		spriteBatch.end();
 
@@ -236,7 +245,7 @@ public class GameScreen implements Screen {
 	private void update(float delta) {
 
 		CoreLogic.update(delta);
-		Tail.update();
+
 
 		if (myGame.debugMode) {
 			debug1.update();
@@ -311,10 +320,7 @@ public class GameScreen implements Screen {
 
 		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
 			CoreLogic.execute(delta, InputDir.SHOOT);
-			CoreLogic.getLocalShip().setShooting(true);
-		} else {
-			CoreLogic.execute(delta, InputDir.NOSHOOT);
-			CoreLogic.getLocalShip().setShooting(false);
+			
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.UP)) {
@@ -368,9 +374,6 @@ public class GameScreen implements Screen {
 					} else {
 						CoreLogic.execute(delta, InputDir.RIGHT);
 					}
-				} else {
-					// touch tail
-					Tail.add(new Pos(Gdx.input.getX(), Gdx.input.getY()));
 				}
 
 				// check for button touch
@@ -380,9 +383,7 @@ public class GameScreen implements Screen {
 								&& y3 < .98)) {
 
 					CoreLogic.execute(delta, InputDir.FORWARD);
-					CoreLogic.getLocalShip().setThrust(true);
-				} else {
-					CoreLogic.getLocalShip().setThrust(false);
+
 				}
 				if ((.83 < x1 && x1 < .98 || .83 < x2 && x2 < .98 || .83 < x3
 						&& x3 < .98)
@@ -390,9 +391,6 @@ public class GameScreen implements Screen {
 								&& y3 < .73)) {
 					// pew pew
 					CoreLogic.execute(delta, InputDir.SHOOT);
-					CoreLogic.getLocalShip().setShooting(true);
-				} else {
-					CoreLogic.getLocalShip().setShooting(false);
 				}
 
 			}
@@ -408,8 +406,25 @@ public class GameScreen implements Screen {
 	@Override
 	public void show() {
 
-		healthBarTexture = new Texture(
-				Gdx.files.internal("data/healthbracket.png"));
+		spriteBatch = new SpriteBatch();
+
+		spriteBatch.begin();
+		GL10 g1 = Gdx.graphics.getGL10();
+		Gdx.gl.glClearColor(0, 0, 1, 1);
+		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		spriteBatch.end();
+
+		assetManager = new AssetManager();
+
+		
+		/*
+		assetManager.load("data/healthbracket.png",Texture.class);
+		assetManager.load("data/healthbar.png",Texture.class);
+		assetManager.load("data/sheildbracket.png",Texture.class);
+		assetManager.load("data/shieldbar.png",Texture.class);
+*/
+		
+		healthBarTexture = new Texture(Gdx.files.internal("data/healthbracket.png"));
 		healthBlockTexture = new Texture(
 				Gdx.files.internal("data/healthbar.png"));
 		shieldBarTexture = new Texture(
@@ -463,7 +478,7 @@ public class GameScreen implements Screen {
 
 		}
 		font.setScale(.25f);
-		spriteBatch = new SpriteBatch();
+
 
 	}
 
@@ -504,11 +519,11 @@ public class GameScreen implements Screen {
 		this.whitePixel.dispose();
 
 		CoreLogic.cleanEntities();
-		for (Entity E : CoreLogic.getEntities()) {
+		for (Entity E : CoreLogic.getAllEntities()) {
 			CoreLogic.removeEntity(E);
 		}
-		
+
 		CoreLogic.dispose();
-		
+
 	}
 }

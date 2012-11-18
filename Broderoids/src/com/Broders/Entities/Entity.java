@@ -26,7 +26,7 @@ public abstract class Entity {
 	protected Body body;
 	private Sprite sprite;
 	private Player playa;
-	
+
 	// Extras
 	private float size;
 	private Color color;
@@ -34,7 +34,7 @@ public abstract class Entity {
 	// save these for teleportation
 	private BodyDef bodDef;
 	private FixtureDef fixDef;
-	
+
 	private String id;
 
 	/**
@@ -48,7 +48,7 @@ public abstract class Entity {
 	public Entity(String type) {
 		id = CoreLogic.nextId();
 	}
-	
+
 	public String getId() {
 		return id;
 	}
@@ -179,9 +179,13 @@ public abstract class Entity {
 		posY = screenHeight
 				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
 
-		this.getSprite().setPosition(posX, posY);
-		this.getSprite().setRotation(this.getBody().getAngle());
-		this.getSprite().draw(sb);
+		if(posX > -(this.getSize()*8) && posX < (screenWidth+(this.getSize()*8)) 
+				&& posY > -(this.getSize()*8) && posY < (screenHeight+(this.getSize()*8))){
+
+			this.getSprite().setPosition(posX, posY);
+			this.getSprite().setRotation(this.getBody().getAngle());
+			this.getSprite().draw(sb);
+		}
 	}
 
 	/**
@@ -227,20 +231,20 @@ public abstract class Entity {
 		this.body.createFixture(this.fixDef);
 		this.body.setAngularVelocity(angV);
 		this.body.setLinearVelocity(linV);
-		
+
 		this.body.setUserData(this);
 	}
 
 	public Vector2 getLinearVelocity() {
 		return this.body.getLinearVelocity();
 	}
-	
+
 	public abstract void update();
 
 	public abstract void destroy();
-	
+
 	public Player belongsTo(){
 		return playa;
 	}
-	
+
 }

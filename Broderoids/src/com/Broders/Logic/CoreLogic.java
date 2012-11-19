@@ -54,6 +54,8 @@ public class CoreLogic {
 	
 	private static long score;	// Total player score
 	private static float bonus; // Accuracy bonus (increases every 5 hits in a row, resets on miss)
+	
+	private static int round;
 
 	/**
 	 * Generates a full ID for an entity and increments nextEntityId
@@ -116,6 +118,7 @@ public class CoreLogic {
 		heightScreen = Gdx.graphics.getHeight() / gcd * 10;
 
 		bulletCooldown = 0;
+		round = 0;
 		
 		//Switch cases for different multiplayer sizes
 		if (game.multiplayer) {
@@ -203,7 +206,52 @@ public class CoreLogic {
 					 * Apply an initial force and torque (in random directions) to
 					 * get the asteroid moving after it is spawned
 					 */
-					float initForce = (float) (8000 + (4000 * Math.random()));
+					float initForce = (float) (4000f + (2000f * Math.random()))*(round/10+1f);
+					x = (float) (initForce * Math.cos(dir));
+					y = (float) (initForce * Math.sin(dir));
+
+					Vector2 f = roid.getBody().getWorldVector(new Vector2(x, y));
+					Vector2 p = roid.getBody().getWorldPoint(
+							roid.getBody().getLocalCenter());
+					roid.getBody().applyForce(f, p);
+
+					float spin = (float) (300 + (250 * Math.random()));
+					if (Math.random() >= 0.5f)
+						spin *= -1;
+
+					roid.getBody().applyTorque(spin);
+
+					entities.put(roid.getId(), roid);
+				}
+			}
+		}else{
+			//asteroids
+			if (getAsteroids().size() <= 0) {
+				int mod = (myGame.gameSize*15);
+				if(mod == 0)
+					mod = 1;
+				for (int i = 0; i < myGame.difficulty*mod; i++) {
+					float x = (float) (CoreLogic.getWidth() * Math.random());
+					float y = (float) (CoreLogic.getHeight() * Math.random());
+					float dir = (float) (Math.PI * Math.random());
+
+					//Prevent spawning on the player
+					if(localPlayer.getX()-16 <= x && x <= localPlayer.getX()+16){
+						if(x <= localPlayer.getX())
+							x = localPlayer.getX()-16;
+						else
+							x = localPlayer.getX()+16;
+					}
+					if(localPlayer.getY()-16 <= x && x <= localPlayer.getY()+16){
+						if(x <= localPlayer.getY())
+							x = localPlayer.getY()-16;
+						else
+							x = localPlayer.getY()+16;
+					}
+
+					Asteroid roid = new Asteroid("large",myGame.gameColor, x, y);
+
+					float initForce = (float) (4000 + (2000 * Math.random()));
 					x = (float) (initForce * Math.cos(dir));
 					y = (float) (initForce * Math.sin(dir));
 
@@ -259,28 +307,24 @@ public class CoreLogic {
 			}
 		}
 
-		// Screen wrapping (for the player)
+		//viewport in relation to ship
 		if (localPlayer.getX() < -4) { // make it the size of the ship
-			localPlayer.teleport(width + 3, localPlayer.getY());
 			viewPortX = width - widthScreen;
 		}
 
 		if (localPlayer.getX() > width + 4) {
-			localPlayer.teleport(-3f, localPlayer.getY());
 			viewPortX = 0;
 		}
 
 		if (localPlayer.getY() < -4) {
-			localPlayer.teleport(localPlayer.getX(), height + 3);
 			viewPortY = height - heightScreen;
 		}
 
 		if (localPlayer.getY() > height + 4) {
-			localPlayer.teleport(localPlayer.getX(), -3f);
 			viewPortY = 0;
 		}
-
-		//Screen wrapping (for Entities, use their size to determine when/where to teleport
+		
+		// Screen wrapping
 		for (Entity E : getEntities()) {
 			if (E.getX() + (E.getSize()/2f) < 0) { 
 				E.teleport(width + (E.getSize()/2f), E.getY());
@@ -581,5 +625,12 @@ public class CoreLogic {
 	 */
 	public static void setBonus(float inc){
 		bonus += inc;
+	}
+
+	public static void dispose() {
+		//world.dispose();
+		//entities.clear();
+		//rmEntities.clear();
+		//localPlayer.destroy();
 	}
 }

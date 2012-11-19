@@ -111,30 +111,6 @@ public class Asteroid extends Entity {
 		super.getBody().setUserData(this);
 	}
 
-	@Override
-	public void Draw(SpriteBatch sb) {
-
-		//Getting the screen dimensions.
-		float screenWidth = Gdx.graphics.getWidth();
-		float screenHeight = Gdx.graphics.getHeight();
-
-		//Getting the center of the Body.
-		float x = super.getBody().getPosition().x - (this.getSize() / 2f);
-		float y = super.getBody().getPosition().y - (this.getSize() / 2f);
-
-		//Setting the absolute screen position to draw the sprite to.
-		float posX = screenWidth
-				* ((x - CoreLogic.getViewPortX()) / CoreLogic.getWidthScreen());
-		float posY = screenHeight
-				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
-
-		//Draws the sprite on top of the Body.
-		super.getSprite().setPosition(posX, posY);
-		super.getSprite().setRotation((float) super.getAngle());
-		super.getSprite().draw(sb);
-
-	}
-
 	/**
 	 * Overridden from Entity. If any information about the Asteroid needs to change
 	 * with time, the required code will go here. Asteroids are pretty inert, so this

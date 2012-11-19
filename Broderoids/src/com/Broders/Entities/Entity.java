@@ -196,7 +196,25 @@ public abstract class Entity {
 	 * 
 	 * @param sb
 	 */
-	public abstract void Draw(SpriteBatch sb);
+	public void Draw(SpriteBatch sb){
+		float screenWidth = Gdx.graphics.getWidth();
+		float screenHeight = Gdx.graphics.getHeight();
+
+		float x = this.getBody().getPosition().x - (this.getSize() / 2f);
+		float y = this.getBody().getPosition().y - (this.getSize() / 2f);
+
+		float posX;
+		float posY;
+
+		posX = screenWidth
+				* ((x - CoreLogic.getViewPortX()) / CoreLogic.getWidthScreen());
+		posY = screenHeight
+				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
+
+		this.getSprite().setPosition(posX, posY);
+		this.getSprite().setRotation(this.getBody().getAngle());
+		this.getSprite().draw(sb);
+	}
 
 	/**
 	 * The same as getIdentity(). Entities should only ever be referenced using

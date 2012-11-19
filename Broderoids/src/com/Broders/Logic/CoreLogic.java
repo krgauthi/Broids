@@ -305,7 +305,6 @@ public class CoreLogic {
 
 		cleanEntities();
 		localPlayer.setThrust(false);
-
 		world.step(delta, 1, 8);
 	}
 

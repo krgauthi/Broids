@@ -39,6 +39,8 @@ public class CoreLogic {
 
 	private static int nextEntityId;
 	private static int clientId;
+	
+	private static int round;
 
 	public static String nextId() {
 		while (entities.containsKey(Integer.toString(clientId) + "-"
@@ -48,11 +50,11 @@ public class CoreLogic {
 		return Integer.toString(clientId) + "-"
 		+ Integer.toString(nextEntityId);
 	}
-	
+
 	public static BaseGame getGame() {
 		return myGame;
 	}
-	
+
 	public static Map<String, Entity> getEntityMap() {
 		return entities;
 	}
@@ -85,6 +87,7 @@ public class CoreLogic {
 		heightScreen = Gdx.graphics.getHeight() / gcd * 10;
 
 		bulletCooldown = 0;
+		round = 0;
 
 		if (game.multiplayer) {
 			switch (myGame.gameSize) {
@@ -145,7 +148,7 @@ public class CoreLogic {
 					float x = (float) (CoreLogic.getWidth() * Math.random());
 					float y = (float) (CoreLogic.getHeight() * Math.random());
 					float dir = (float) (Math.PI * Math.random());
-					
+
 					//Prevent spawning on the player
 					if(localPlayer.getX()-16 <= x && x <= localPlayer.getX()+16){
 						if(x <= localPlayer.getX())
@@ -162,7 +165,52 @@ public class CoreLogic {
 
 					Asteroid roid = new Asteroid("large",myGame.gameColor, x, y);
 
-					float initForce = (float) (450 + (150 * Math.random()));
+					float initForce = (float) (4000f + (2000f * Math.random()))*(round/10+1f);
+					x = (float) (initForce * Math.cos(dir));
+					y = (float) (initForce * Math.sin(dir));
+
+					Vector2 f = roid.getBody().getWorldVector(new Vector2(x, y));
+					Vector2 p = roid.getBody().getWorldPoint(
+							roid.getBody().getLocalCenter());
+					roid.getBody().applyForce(f, p);
+
+					float spin = (float) (300 + (250 * Math.random()));
+					if (Math.random() >= 0.5f)
+						spin *= -1;
+
+					roid.getBody().applyTorque(spin);
+
+					entities.put(roid.getId(), roid);
+				}
+			}
+		}else{
+			//asteroids
+			if (getAsteroids().size() <= 0) {
+				int mod = (myGame.gameSize*15);
+				if(mod == 0)
+					mod = 1;
+				for (int i = 0; i < myGame.difficulty*mod; i++) {
+					float x = (float) (CoreLogic.getWidth() * Math.random());
+					float y = (float) (CoreLogic.getHeight() * Math.random());
+					float dir = (float) (Math.PI * Math.random());
+
+					//Prevent spawning on the player
+					if(localPlayer.getX()-16 <= x && x <= localPlayer.getX()+16){
+						if(x <= localPlayer.getX())
+							x = localPlayer.getX()-16;
+						else
+							x = localPlayer.getX()+16;
+					}
+					if(localPlayer.getY()-16 <= x && x <= localPlayer.getY()+16){
+						if(x <= localPlayer.getY())
+							x = localPlayer.getY()-16;
+						else
+							x = localPlayer.getY()+16;
+					}
+
+					Asteroid roid = new Asteroid("large",myGame.gameColor, x, y);
+
+					float initForce = (float) (4000 + (2000 * Math.random()));
 					x = (float) (initForce * Math.cos(dir));
 					y = (float) (initForce * Math.sin(dir));
 
@@ -217,27 +265,24 @@ public class CoreLogic {
 			}
 		}
 
-		// Screen wrapping
+		//viewport in relation to ship
 		if (localPlayer.getX() < -4) { // make it the size of the ship
-			localPlayer.teleport(width + 3, localPlayer.getY());
 			viewPortX = width - widthScreen;
 		}
 
 		if (localPlayer.getX() > width + 4) {
-			localPlayer.teleport(-3f, localPlayer.getY());
 			viewPortX = 0;
 		}
 
 		if (localPlayer.getY() < -4) {
-			localPlayer.teleport(localPlayer.getX(), height + 3);
 			viewPortY = height - heightScreen;
 		}
 
 		if (localPlayer.getY() > height + 4) {
-			localPlayer.teleport(localPlayer.getX(), -3f);
 			viewPortY = 0;
 		}
-
+		
+		// Screen wrapping 		
 		for (Entity E : getEntities()) {
 			if (E.getX() + (E.getSize()/2f) < 0) { // make it the size of the ship
 				E.teleport(width + (E.getSize()/2f), E.getY());
@@ -258,16 +303,9 @@ public class CoreLogic {
 			//sure that there is only one. 
 		}
 
-		for (Entity i : rmEntities) {
-			entities.remove(i.getId());
-			world.destroyBody(i.getBody());
-			i.destroy();
-		}
-		rmEntities.clear();
+		cleanEntities();
 		localPlayer.setThrust(false);
-
-		world.step(delta, 1, 1);
-
+		world.step(delta, 1, 8);
 	}
 
 	/**
@@ -445,8 +483,23 @@ public class CoreLogic {
 	}
 
 	public static void removeEntity(Entity ent) {
+		if(!rmEntities.contains(ent))
+			rmEntities.add(ent);
+	}
+	
+	public static void cleanEntities() {
+		for (Entity i : rmEntities) {
+			entities.remove(i.getId());
+			world.destroyBody(i.getBody());
+			i.destroy();
+		}
+		rmEntities.clear();	
+	}
 
-		//entities.remove(ent);
-		rmEntities.add(ent);
+	public static void dispose() {
+		//world.dispose();
+		//entities.clear();
+		//rmEntities.clear();
+		//localPlayer.destroy();
 	}
 }

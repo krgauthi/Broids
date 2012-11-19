@@ -161,8 +161,7 @@ public class MultiHost implements Screen{
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-
+		this.dispose();
 	}
 
 	@Override
@@ -179,7 +178,9 @@ public class MultiHost implements Screen{
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
+		this.spriteBatch.dispose();
+		this.white.dispose();
+		this.ship.dispose();
 
 	}
 

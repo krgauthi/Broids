@@ -52,7 +52,7 @@ public class Bullet extends Entity {
 		fixDef.density = 1f;
 
 		super.createBody(bodDef, fixDef);
-		super.getBody().setBullet(true);
+		//super.getBody().setBullet(true);
 
 		// Set the velocity
 		float vX = (float) (75 * Math.cos(Math.toRadians(dir)));

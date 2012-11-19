@@ -266,7 +266,7 @@ public class CoreLogic {
 		rmEntities.clear();
 		localPlayer.setThrust(false);
 
-		world.step(delta, 3, 8);
+		world.step(delta, 1, 1);
 
 	}
 

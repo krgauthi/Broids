@@ -177,7 +177,7 @@ public class CoreLogic {
 		if (!myGame.multiplayer) {
 			// Spawn more asteroids when none are left on the screen
 			if (getAsteroids().size() <= 0) {
-				for (int i = 0; i < myGame.difficulty; i++) {
+				for (int i = 0; i < 84; i++) {
 					float x = (float) (CoreLogic.getWidth() * Math.random());
 					float y = (float) (CoreLogic.getHeight() * Math.random());
 					float dir = (float) (Math.PI * Math.random());

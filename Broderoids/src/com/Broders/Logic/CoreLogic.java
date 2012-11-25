@@ -264,7 +264,6 @@ public class CoreLogic {
 		cleanEntities();
 		local.getShip().setThrust(false);
 		local.getShip().setShooting(false);
-
 		world.step(delta, 1, 8);
 	}
 

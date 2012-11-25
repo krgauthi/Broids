@@ -1,8 +1,11 @@
 package com.Broders.Screens;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.text.DecimalFormat;
 
-import com.Broders.Logic.Tail;
+
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -10,10 +13,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SettingsScreen implements Screen {
@@ -29,14 +29,13 @@ public class SettingsScreen implements Screen {
 	
 	private SpriteBatch spriteBatch;
 
-	private boolean musicBool;
-	private boolean soundBool;
-	private boolean volBool;
-	private boolean debugBool;
-	private boolean screenResBool;
-	private boolean backgroundBool;
-	private boolean sPDiffBool;
-	private boolean usernameBool;
+	private boolean musicBool; // not currently implemented
+	private boolean soundBool; // not currently implemented
+	private boolean volBool; // not currently implemented
+	private boolean screenResBool; // will be two seperate integers
+	private boolean backgroundBool; // currently unused
+	private int sPDiff;  // 1: easy 2: med 3: hard
+	private boolean usernameBool; // need to implement the textfield
 	
 	private BitmapFont font;
 	
@@ -48,8 +47,7 @@ public class SettingsScreen implements Screen {
 	public SettingsScreen(BaseGame g, MainMenu m) {
 		this.main = m;
 		this.game = g;
-		game.setSettings(this);
-		
+
 		
 		// loadSettings();
 		
@@ -103,19 +101,19 @@ public class SettingsScreen implements Screen {
 		// Right Column Options
 		
 		// Screen Resolution
-		font.draw(spriteBatch, "Screen Resolution: " + screenResBool,
+		font.draw(spriteBatch, "Screen Resolution: " + game.screenWidth + " x " + game.screenHeight,
 				(float) (game.screenWidth * .52), (float) (game.screenHeight * .8));
 		
 		// Debug Text Option
-		font.draw(spriteBatch, "Debug Text: " + game.debugMode,
+		font.draw(spriteBatch, "Debug Text: " + (game.debugMode ? "On" : "Off"),
 				(float) (game.screenWidth * .52), (float) (game.screenHeight * .6));
 		
 		// Single Player Difficulty
-		font.draw(spriteBatch, "Single Player Difficulty: " + sPDiffBool,
+		font.draw(spriteBatch, "Single Player Difficulty: " + sPDiffString(sPDiff),
 				(float) (game.screenWidth * .52), (float) (game.screenHeight * .4));
 		
 		// Epileptic Mode
-		font.draw(spriteBatch, "Epileptic Mode: " + game.epileptic,
+		font.draw(spriteBatch, "Epileptic Mode: " + (game.epileptic ? "On" : "Off"), 
 				(float) (game.screenWidth * .52), (float) (game.screenHeight * .2));
 		
 		// User Name
@@ -167,6 +165,13 @@ public class SettingsScreen implements Screen {
 				
 				backgroundBool = backgroundBool ? false : true;
 				System.out.println("Background Option set to " + backgroundBool);
+				System.out.println("CYAN " + Color.CYAN.toString());
+				System.out.println("RED " + Color.RED.toString());
+				System.out.println("GREEN " + Color.GREEN.toString());
+				System.out.println("BLUE " + Color.BLUE.toString());
+				System.out.println("WHITE " + Color.WHITE.toString());
+				System.out.println("BLACK " + Color.BLACK.toString());
+				
 				
 			} else if (x >= .51 && x <= .96 && y >= .72 && y <= .8) {
 			
@@ -180,7 +185,7 @@ public class SettingsScreen implements Screen {
 				
 			} else if (x >= .51 && x <= .96 && y >= .32 && y <= .4) {
 				
-				sPDiffBool = sPDiffBool ? false : true;
+				sPDiff = sPDiff == 2 ? 0 : ++sPDiff;
 				System.out.println("SP Difficulty Option");
 				
 			} else if (x >= .51 && x <= .96 && y >= .12 && y <= .2) {
@@ -210,8 +215,30 @@ public class SettingsScreen implements Screen {
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
+		try {
+			saveSettings();
+		} catch (FileNotFoundException e) {
+			 System.out.println("Could not save settings: config/broids.cfg not found");
+			e.printStackTrace();
+		}		
+	}
+
+	private void saveSettings() throws FileNotFoundException {
+		PrintWriter pw = new PrintWriter(new File("config/broids.cfg"));
+				
+		pw.println("Username: " + "TestName");
+		pw.printf("Ship Color: %s%n", swapHex(game.playerColor.toString()));
 		
+		pw.println("Background: " + this.backgroundBool);
+		pw.println("Volume: " + this.volBool);
+		pw.println("Sounds: " + this.soundBool);
+		pw.println("Music: " + this.musicBool);
+		pw.println("Resolution: " + game.screenWidth + " x " + game.screenHeight);
+		pw.println("Debug: " + game.debugMode);
+		pw.println("SP Difficulty: " + this.sPDiff);
+		pw.println("Epileptic: " + game.epileptic);
+	
+		pw.close();
 	}
 
 	@Override
@@ -225,13 +252,27 @@ public class SettingsScreen implements Screen {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	public String sPDiffString(int sPDiff) {
+		switch (sPDiff) {
+			case 0: return "Easy";
+			case 1: return "Medium"; 
+			case 2: return "Hard";
+			default: return null;
+		}
+	}
 	
-	
+	public String swapHex(String hex) {
+		String bgr = hex.substring(2); // Why libgdx???
+		String red = bgr.substring(4);
+		String green = bgr.substring(2, 4);
+		String blue = bgr.substring(0, 2);
+		return red + green + blue;
+	}
 }

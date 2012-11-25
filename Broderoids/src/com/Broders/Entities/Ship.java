@@ -1,6 +1,7 @@
 package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
+import com.Broders.Logic.Player;
 import com.Broders.Logic.Settings;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -41,7 +42,7 @@ public class Ship extends Entity {
 	 *            The type of this entity
 	 * @param playerColor
 	 */
-	public Ship(String type, Color playerColor, float x, float y) {
+	public Ship(String type, Player player, float x, float y) {
 		super(type);
 		super.setEnt("ship");
 		Vector2 vertices[] = new Vector2[3];
@@ -67,7 +68,7 @@ public class Ship extends Entity {
 		super.createBody(bodDef, fixDef);
 
 		super.setSize(6f);
-		super.setColor(playerColor);
+		super.setColor(player.getColor());
 
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
@@ -75,7 +76,7 @@ public class Ship extends Entity {
 		super.getSprite().flip(false, true);
 		super.getSprite().setOrigin((meter * this.getSize()) / 2,(meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
-		super.getSprite().setColor(playerColor);
+		super.getSprite().setColor(player.getColor());
 
 		this.thrust = false;
 		Texture tempTexture = new Texture(Gdx.files.internal(Settings.data_path	+ "ship2.png"));
@@ -87,6 +88,7 @@ public class Ship extends Entity {
 
 		//Set type data
 		super.getBody().setUserData(this);
+		super.setPlayer(player);
 	}
 
 

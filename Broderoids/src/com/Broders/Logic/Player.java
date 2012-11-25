@@ -29,8 +29,9 @@ public class Player{
 		if(type.equals("Player")){
 			playerColor = myGame.playerColor;
 
-			playerShip = new Ship("classic", playerColor,CoreLogic.getWidth()/2,CoreLogic.getHeight()/2);
+			playerShip = new Ship("classic", this,CoreLogic.getWidth()/2,CoreLogic.getHeight()/2);
 			entities.put(playerShip.getId(), playerShip);
+			playerShip.setPlayer(this);
 			
 			score = 0;
 			
@@ -60,6 +61,10 @@ public class Player{
 	
 	public int getScore(){
 		return score;
+	}
+	
+	public Color getColor(){
+		return playerColor;
 	}
 	
 	public void modShield(int s){

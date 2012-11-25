@@ -246,5 +246,9 @@ public abstract class Entity {
 	public Player belongsTo(){
 		return playa;
 	}
+	
+	public void setPlayer(Player p){
+		playa = p;
+	}
 
 }

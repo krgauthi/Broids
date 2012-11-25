@@ -499,6 +499,11 @@ public class CoreLogic {
 		for (Entity i : rmEntities) {
 			for(Player p : players.values()){
 				if(p.getEntitiesMap().containsKey(i.getId())){
+					if(i.equals("ship")){
+						if(!myGame.multiplayer){
+							i.belongsTo().modLives(-1);
+						}
+					}
 					p.getEntitiesMap().remove(i.getId());
 					world.destroyBody(i.getBody());
 					i.destroy();
@@ -526,7 +531,7 @@ public class CoreLogic {
 	public static boolean getRoundBool() {
 		return display;
 	}
-	
+
 	public static int getRound(){
 		return round;
 	}

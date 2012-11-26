@@ -40,7 +40,7 @@ public class Settings {
 
 			// checks option to see which option is being read
 			// and then sets that option to the value.
-			//checkSettings(option, value);
+			checkSettings(option, value);
 		}
 	}
 	
@@ -91,6 +91,11 @@ public class Settings {
 	}
 	
 	public void loadVolumeSetting(String value) {
+		if (value.equals("false")) {
+			value = "0";
+		} else if (value.equals("true")) {
+			value = "100";
+		}
 		int vol = Integer.parseInt(value);
 		System.out.printf("Loaded volume setting [%d] from config file%n", vol);
 	}

@@ -60,7 +60,7 @@ public class Asteroid extends Entity {
 
 		FixtureDef fixDef = new FixtureDef();
 		CircleShape shape = new CircleShape();
-		
+
 		//These physical properties of the Asteroid are dependent upon
 		//its size.
 		if (type.equals("small")) {
@@ -89,7 +89,7 @@ public class Asteroid extends Entity {
 		bodDef.angularDamping = 0.0f;
 		bodDef.linearDamping = 0.0f;
 		bodDef.allowSleep = false;
-		
+
 		//Setting position, given by the parameters, and direction.
 		bodDef.position.set(x, y);
 		bodDef.angle = (float) (MathUtils.PI * Math.random());
@@ -111,30 +111,6 @@ public class Asteroid extends Entity {
 		super.getBody().setUserData(this);
 	}
 
-	@Override
-	public void Draw(SpriteBatch sb) {
-
-		//Getting the screen dimensions.
-		float screenWidth = Gdx.graphics.getWidth();
-		float screenHeight = Gdx.graphics.getHeight();
-
-		//Getting the center of the Body.
-		float x = super.getBody().getPosition().x - (this.getSize() / 2f);
-		float y = super.getBody().getPosition().y - (this.getSize() / 2f);
-
-		//Setting the absolute screen position to draw the sprite to.
-		float posX = screenWidth
-				* ((x - CoreLogic.getViewPortX()) / CoreLogic.getWidthScreen());
-		float posY = screenHeight
-				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
-
-		//Draws the sprite on top of the Body.
-		super.getSprite().setPosition(posX, posY);
-		super.getSprite().setRotation((float) super.getAngle());
-		super.getSprite().draw(sb);
-
-	}
-	
 	/**
 	 * Overridden from Entity. If any information about the Asteroid needs to change
 	 * with time, the required code will go here. Asteroids are pretty inert, so this
@@ -153,22 +129,30 @@ public class Asteroid extends Entity {
 	 */
 	@Override
 	public void destroy() {
-		
+
 		//If this is a small Asteroid, then skip the rest of this method.
 		if (this.type == SMALL) {
+			//Score logic, change limit of if conditional to change max multiplier
+			if(CoreLogic.getBonus() >= 5){
+				CoreLogic.setScore(20*5);
+			}
+			else{
+				CoreLogic.setBonus(0.2f);
+				CoreLogic.setScore(20*CoreLogic.getBonus());
+			}
 			return;
 		}
-		
+
 		Asteroid roid1;
 		Asteroid roid2;
-		
+
 		//These will have the coordinates for the new Asteroids
 		float x1;
 		float x2;
 		float y1;
 		float y2;
 		float dir;
-		
+
 		//Setting the physical properties of the new Asteroids, depending
 		//upon the size of this Asteroid.
 		if (this.type == LARGE) {
@@ -184,7 +168,7 @@ public class Asteroid extends Entity {
 					y1);
 
 			//Setting the initial force applied to roid1 to get it moving.
-			float initForce = (float) (4000 + (2000 * Math.random()));
+			float initForce = (float) (8000 + (4000 * Math.random()));
 			float x = (float) (initForce * Math.cos(dir));
 			float y = (float) (initForce * Math.sin(dir));
 
@@ -195,11 +179,11 @@ public class Asteroid extends Entity {
 			roid1.getBody().applyForce(f, p);
 
 			//Giving it some spin
-			float spin = (float) (300 + (250 * Math.random()));
+			float spin = (float) (4000 + (2000 * Math.random()));
 			if (Math.random() >= 0.5f)
 				spin *= -1;
 			roid1.getBody().applyTorque(spin);
-			
+
 			//Giving the new Body to the physics engine.
 			CoreLogic.getEntityMap().put(roid1.getId(), roid1);
 			//END DEFINITION
@@ -207,9 +191,8 @@ public class Asteroid extends Entity {
 			//BEGIN DEFINITION: the physical properties of roid2
 			roid2 = new Asteroid("medium", CoreLogic.getGame().gameColor, x2,
 					y2);
-
 			//Setting the initial force applied to roid2 to get it moving.
-			initForce = (float) (2000 + (1000 * Math.random()));
+			initForce = (float) (8000 + (2000 * Math.random()));
 			x = (float) (initForce * Math.cos(dir));
 			y = (float) (initForce * Math.sin(dir));
 
@@ -219,15 +202,24 @@ public class Asteroid extends Entity {
 			roid2.getBody().applyForce(f, p);
 
 			//Giving it some spin
-			spin = (float) (300 + (250 * Math.random()));
+			spin = (float) (4000 + (2000 * Math.random()));
 			if (Math.random() >= 0.5f)
 				spin *= -1;
 			roid2.getBody().applyTorque(spin);
-			
+
 			//Giving the new Body to the physics engine.
 			CoreLogic.getEntityMap().put(roid2.getId(), roid2);
 			//END DEFINITION
 			
+			//Score logic, change limit of if conditional to change max multiplier
+			if(CoreLogic.getBonus() >= 5){
+				CoreLogic.setScore(10*5);
+			}
+			else{
+				CoreLogic.setBonus(0.2f);
+				CoreLogic.setScore(10*CoreLogic.getBonus());
+			}
+
 		} else if (this.type == MEDIUM) {
 			//Setting the positions of the new Asteroids.
 			dir = (float) Math.toRadians(this.getAngle());
@@ -240,7 +232,7 @@ public class Asteroid extends Entity {
 			roid1 = new Asteroid("small", CoreLogic.getGame().gameColor, x1, y1);
 
 			//Setting the initial force applied to roid1 to get it moving.
-			float initForce = (float) (500 + (250 * Math.random()));
+			float initForce = (float) (1000 + (500 * Math.random()));
 			float x = (float) (initForce * Math.cos(Math.random()*2*Math.PI));
 			float y = (float) (initForce * Math.sin(Math.random()*2*Math.PI));
 
@@ -251,11 +243,11 @@ public class Asteroid extends Entity {
 			roid1.getBody().applyForce(f, p);
 
 			//Giving it some spin
-			float spin = (float) (300 + (250 * Math.random()));
+			float spin = (float) (100 + (50 * Math.random()));
 			if (Math.random() >= 0.5f)
 				spin *= -1;
 			roid1.getBody().applyTorque(spin);
-			
+
 			//Giving the new Body to the physics engine.
 			CoreLogic.getEntityMap().put(roid1.getId(), roid1);
 			//END DEFINITION
@@ -264,7 +256,7 @@ public class Asteroid extends Entity {
 			roid2 = new Asteroid("small", CoreLogic.getGame().gameColor, x2, y2);
 
 			//Setting the initial force applied to roid2 to get it moving.
-			initForce = (float) (500 + (250 * Math.random()));
+			initForce = (float) (1000 + (500 * Math.random()));
 			x = (float) (initForce * Math.cos(dir));
 			y = (float) (initForce * Math.sin(dir));
 
@@ -274,14 +266,24 @@ public class Asteroid extends Entity {
 			roid2.getBody().applyForce(f, p);
 
 			//Giving it some spin
-			spin = (float) (300 + (250 * Math.random()));
+			spin = (float) (100 + (50 * Math.random()));
 			if (Math.random() >= 0.5f)
 				spin *= -1;
 			roid2.getBody().applyTorque(spin);
-			
+
 			//Giving the new Body to the physics engine.
 			CoreLogic.getEntityMap().put(roid2.getId(), roid2);
 			//END DEFINITION
+			
+			//Score logic, change limit of if conditional to change max multiplier
+			if(CoreLogic.getBonus() >= 5){
+				CoreLogic.setScore(15*5);
+			}
+			else{
+				CoreLogic.setBonus(0.2f);
+				CoreLogic.setScore(15*CoreLogic.getBonus());
+			}
 		}
+		
 	}
 }

@@ -100,7 +100,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 
-		delta = (float) (1.0/30.0);
+		delta = (float) (1.0/60.0);
 		// handle Input and update Backend
 		// it is up to the backend team to decide if they want to handle input
 		// seperatly or not
@@ -167,20 +167,21 @@ public class GameScreen implements Screen {
 			font.draw(spriteBatch, "SHIELD", xx * .08f, yy * .975f);
 
 			String out;
-			out = String.format("Score: %d ", 100); // TODO ref score from
-			// player
+			out = String.format("Score: %d ", CoreLogic.getScore());
 			font.draw(spriteBatch, out, xx * .01f, yy * .87f);
 
 		} else {
 			// Single player hud
 			String out;
-			out = String.format("Score: %d ", 100); // TODO ref score from
-			// player
+			out = String.format("Score: %d", CoreLogic.getScore());
 			font.draw(spriteBatch, out, xx * .01f, yy * .98f);
+			String out2;
+			out2 = String.format("Bonus: x%d", CoreLogic.getBonus());
+			font.draw(spriteBatch, out2, xx * .01f, yy * .94f);
 
 			int heartcount = 3; // TODO ref Lives from player
 			for (int i = 0; i < heartcount; i++) {
-				lives.setPosition(xx * (.005f + (i * .02f)), yy * .89f);
+				lives.setPosition(xx * (.005f + (i * .02f)), yy * .85f);
 				lives.draw(spriteBatch);
 			}
 
@@ -502,12 +503,13 @@ public class GameScreen implements Screen {
 		this.white.dispose();
 
 		this.whitePixel.dispose();
-		this.font.dispose();
-		
+
+		CoreLogic.cleanEntities();
 		for (Entity E : CoreLogic.getEntities()) {
 			CoreLogic.removeEntity(E);
 		}
 		
-		CoreLogic.cleanEntities();
+		CoreLogic.dispose();
+		
 	}
 }

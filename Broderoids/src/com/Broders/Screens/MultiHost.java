@@ -181,7 +181,7 @@ public class MultiHost implements Screen{
 		this.spriteBatch.dispose();
 		this.white.dispose();
 		this.ship.dispose();
-		this.font.dispose();
+
 	}
 
 }

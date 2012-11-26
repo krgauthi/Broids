@@ -16,7 +16,7 @@ public enum InputDir {
 	LEFT ("left"),
 	RIGHT ("right"),
 	SHOOT ("shoot"),
-	NOSHOOT ("noshoot"),
+	NOSHOOT ("noshoot"), //Can be used to disable rapid-fire
 	NULL ("");
 
 	private String dir;

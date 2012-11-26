@@ -90,9 +90,9 @@ public class CoreLogic {
 		host = h;
 
 		int gcd = gcd(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		widthScreen = Gdx.graphics.getWidth() / gcd * 10;
-		heightScreen = Gdx.graphics.getHeight() / gcd * 10;
-
+		widthScreen = Gdx.graphics.getWidth() / gcd / Gdx.graphics.getDensity() * 5;
+		heightScreen = Gdx.graphics.getHeight() / gcd / Gdx.graphics.getDensity() * 5;
+		
 		bulletCooldown = 0;
 		round = -1;
 

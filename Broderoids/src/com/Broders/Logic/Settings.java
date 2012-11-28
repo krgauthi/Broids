@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import com.Broders.mygdxgame.BaseGame;
+import com.badlogic.gdx.graphics.Color;
 
 /* Settings Object class to be used as a modular way to
  * access/set/read settings.
@@ -74,13 +75,8 @@ public class Settings {
 	
 	public void loadShipColor(String value) {
 		value = value.replaceAll("#", "").trim();
-		int r = Integer.parseInt(value.substring(0, 2), 16);
-		int g = Integer.parseInt(value.substring(2, 4), 16);
-		int b = Integer.parseInt(value.substring(4), 16);
-		int a = 0xFF;
-		game.playerColor.set((float) r, (float) g, (float) b, (float) a);
-		System.out.printf("Loaded ship color [%02x%02x%02x] from config file%n",
-				r, g, b);
+		value = "FF" + value;
+		game.playerColor.set(colorFromHexString(value));
 	}
 	
 	// still need to figure out what we're doing for this, if anything
@@ -144,4 +140,46 @@ public class Settings {
 		System.out.printf("Loaded epileptic mode setting [%s] from config file%n",
 				Boolean.toString(game.epileptic));
 	}
+	
+	public static String swapHex(String hex) {
+		String bgr = hex.substring(2); // Why libgdx???
+		String red = bgr.substring(4);
+		String green = bgr.substring(2, 4);
+		String blue = bgr.substring(0, 2);
+		return red + green + blue;
+	}
+	
+	// Following 2 methods totally stolen from:
+	// http://code.google.com/p/libgdx-users/wiki/ColorHexConverter
+	// Author: Michael.Lowfyr (Michael.Lowfyr@gmail.com)
+	
+    // Expects a hex value as integer and returns the appropriate Color object.
+    // @param hex
+    //            Must be of the form 0xAARRGGBB
+    // @return the generated Color object
+   private Color colorFromHex(long hex)
+   {
+           float a = (hex & 0xFF000000L) >> 24;
+           float r = (hex & 0xFF0000L) >> 16;
+           float g = (hex & 0xFF00L) >> 8;
+           float b = (hex & 0xFFL);
+                           
+           return new Color(r/255f, g/255f, b/255f, a/255f);
+   }
+
+  
+    // Expects a hex value as String and returns the appropriate Color object
+    // @param s The hex string to create the Color object from
+    // @return
+   
+   private Color colorFromHexString(String s)
+   {               
+           if(s.startsWith("0x"))
+                   s = s.substring(2);
+           
+           if(s.length() != 8) // AARRGGBB
+                   throw new IllegalArgumentException("String must have the form AARRGGBB");
+                   
+           return colorFromHex(Long.parseLong(s, 16));
+   }
 }

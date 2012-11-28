@@ -268,7 +268,7 @@ public class SettingsScreen implements Screen {
 		}
 	}
 	
-	public String swapHex(String hex) {
+	public static String swapHex(String hex) {
 		String bgr = hex.substring(2); // Why libgdx???
 		String red = bgr.substring(4);
 		String green = bgr.substring(2, 4);

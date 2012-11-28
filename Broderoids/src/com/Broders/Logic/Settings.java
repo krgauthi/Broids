@@ -76,7 +76,7 @@ public class Settings {
 		value = value.replaceAll("#", "").trim();
 		int r = Integer.parseInt(value.substring(0, 2), 16);
 		int g = Integer.parseInt(value.substring(2, 4), 16);
-		int b = Integer.parseInt(value.substring(4, 6), 16);
+		int b = Integer.parseInt(value.substring(4), 16);
 		int a = 0xFF;
 		game.playerColor.set((float) r, (float) g, (float) b, (float) a);
 		System.out.printf("Loaded ship color [%02x%02x%02x] from config file%n",

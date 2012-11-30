@@ -15,7 +15,7 @@ import com.badlogic.gdx.graphics.Color;
  * have a corresponding boolean/enum/etc in the base game yet,
  * as we haven't quite figured out how to implement them, or
  * if we're even going to implement them. Maybe I shouldn't
- * have made them in the first place if we we'rent sure we were
+ * have made them in the first place if we we'r'en't sure we were
  * going to use them... whoops.
  * 
  * @TimeAnnotation("O(n)") lol just kidding

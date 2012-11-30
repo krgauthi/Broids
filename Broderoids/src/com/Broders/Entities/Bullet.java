@@ -1,6 +1,7 @@
 package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
+import com.Broders.Logic.Player;
 import com.Broders.Logic.Settings;
 import com.Broders.Logic.Pos;
 import com.badlogic.gdx.Gdx;
@@ -23,7 +24,7 @@ public class Bullet extends Entity {
 	private static float deathTime = 1.0f;
 
 
-	public Bullet(String type, float dir, float x, float y) {
+	public Bullet(String type, Player player, float dir, float x, float y) {
 
 		super(type);
 		super.setEnt("bullet");
@@ -62,6 +63,7 @@ public class Bullet extends Entity {
 		super.body.setLinearVelocity(vX, vY);
 
 		//Set type data
+		super.setPlayer(player);
 		super.getBody().setUserData(this);
 	}
 
@@ -73,6 +75,7 @@ public class Bullet extends Entity {
 
 		if (age >= deathTime) {
 			CoreLogic.removeEntity(this);
+			super.belongsTo().modBonus(1.0f);
 		}
 
 	}

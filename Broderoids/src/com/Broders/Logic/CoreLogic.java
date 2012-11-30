@@ -335,7 +335,7 @@ public class CoreLogic {
 				float y = (float) (local.getShip().getY() + (2.805 * Math.sin(Math
 						.toRadians(dir))));
 
-				Bullet shot = new Bullet("bullet", dir, x, y);
+				Bullet shot = new Bullet("bullet", local, dir, x, y);
 				local.getEntitiesMap().put(shot.getId(), shot);
 				bulletCooldown = 0;
 				local.getShip().setShooting(true);

@@ -30,6 +30,7 @@ public abstract class Entity {
 	// Extras
 	private float size;
 	private Color color;
+	private int points;
 
 	// save these for teleportation
 	private BodyDef bodDef;
@@ -251,4 +252,11 @@ public abstract class Entity {
 		playa = p;
 	}
 
+	public void setPoints(int v){
+		points = v;
+	}
+	
+	public int getPoints(){
+		return points;
+	}
 }

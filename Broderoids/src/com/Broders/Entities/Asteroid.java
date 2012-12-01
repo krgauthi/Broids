@@ -99,8 +99,8 @@ public class Asteroid extends Entity {
 			for(int i = 0; i < temp;i++){
 				temp = 360/temp;
 				
-				Dust D = new Dust("debris", this.owner.nextId(), this.owner, (float)(Math.random()%10)+(temp*i) , this.getX(), this.getY());
-				CoreLogic.getComp().getEntitiesMap().put(D.getId(), D);
+				Dust D = new Dust("debris", CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i), this.getX(), this.getY());
+				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 			}
 			
 			dir = (float) Math.toRadians(this.getAngle());
@@ -149,8 +149,8 @@ public class Asteroid extends Entity {
 			float temp = (float) (5+Math.random()%10);
 			for(int i = 0; i < temp;i++){
 				temp = 360/temp;
-				Dust D = new Dust("debris", this.owner.nextId(), this.owner, (float)(Math.random()%10)+(temp*i), this.getX(), this.getY());
-				CoreLogic.getComp().getEntitiesMap().put(D.getId(), D);
+				Dust D = new Dust("debris", CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i), this.getX(), this.getY());
+				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 			}
 			this.getX();
 			

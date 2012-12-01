@@ -1,13 +1,11 @@
 package com.Broders.Logic;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.Ship;
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.graphics.Color;
-import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
 public class Player {
 	private int id;
@@ -30,6 +28,10 @@ public class Player {
 		return Integer.toString(id) + "-" + Integer.toString(nextEntityId);
 	}
 
+	public int getId() {
+		return this.id;
+	}
+	
 	public Player(String type, int id) {
 		this.id = id;
 		nextEntityId = 0;
@@ -116,7 +118,7 @@ public class Player {
 		playerShip = s;
 	}
 
-	public HashMap getEntitiesMap() {
+	public HashMap<String, Entity> getEntitiesMap() {
 		return entities;
 	}
 

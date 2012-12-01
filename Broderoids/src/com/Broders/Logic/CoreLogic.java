@@ -125,13 +125,12 @@ public class CoreLogic {
 		// String instanceID = "0000"; // check map to see how many of this type
 		// of entity already exist
 		local = new Player("Player", 1);
-		players.put("local", local);
-		// if(host){
+		players.put(Integer.toString(local.getId()), local);
+
 		comp = new Player("Comp", 0);
 		players.put("0", comp);
-		// }
 
-		Player temp = new Player("temp", -1);
+		Player temp = new Player("-1", -1);
 		players.put("scratch", temp);
 
 		// localPlayer = new Ship("classic",
@@ -497,6 +496,7 @@ public class CoreLogic {
 
 	public static void cleanEntities() {
 		for (Entity i : rmEntities) {
+			System.out.println(i);
 			for (Player p : players.values()) {
 				if (p.getEntitiesMap().containsKey(i.getId())) {
 					if (i.equals("ship")) {
@@ -529,7 +529,7 @@ public class CoreLogic {
 	}
 
 	public static Player getSelf() {
-		return players.get("local");
+		return players.get(Integer.toString(clientId));
 	}
 
 	public static Player getLocal() {

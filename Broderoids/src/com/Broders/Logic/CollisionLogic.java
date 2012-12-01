@@ -1,7 +1,6 @@
 package com.Broders.Logic;
 
 import com.Broders.Entities.*;
-
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -28,7 +27,7 @@ public class CollisionLogic implements ContactListener {
 		if (bB.getUserData() != null) {
 			eB = (Entity) bB.getUserData();
 		}
-
+		
 		// Ship-Asteroid
 		if (eA instanceof Ship && eB instanceof Asteroid) {
 			CoreLogic.removeEntity(eA);

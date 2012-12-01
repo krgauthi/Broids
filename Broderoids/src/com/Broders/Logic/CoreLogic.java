@@ -81,7 +81,7 @@ public class CoreLogic {
 		myGame = game;
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, false);
-		// entities = new HashMap<String, Entity>();
+
 		collisions = new CollisionLogic();
 		world.setContactListener(collisions);
 		players = new HashMap<String, Player>();
@@ -135,9 +135,15 @@ public class CoreLogic {
 		// generation somehow?
 		// String instanceID = "0000"; // check map to see how many of this type
 		// of entity already exist
+<<<<<<< HEAD
+		local = new Player("Player", clientId);
+		players.put("local", local);
+		// if(host){
+=======
 		local = new Player("Player", 1);
 		players.put(Integer.toString(local.getId()), local);
 
+>>>>>>> 8314ac9e32563176fdb5876c001bfd0c92f180a2
 		comp = new Player("Comp", 0);
 		players.put("0", comp);
 
@@ -175,8 +181,7 @@ public class CoreLogic {
 						mod = 1;
 					round++;
 					for (int i = 0; i < myGame.difficulty * mod; i++) {
-						while (spawnBroid() == -1)
-							; // lols
+						while (spawnBroid() == -1); // lols
 					}
 				}
 				delay = 0;
@@ -266,6 +271,9 @@ public class CoreLogic {
 		local.getShip().setThrust(false);
 		local.getShip().setShooting(false);
 		world.step(delta, 1, 8);
+		
+		//System.out.println(local.getShip());
+		//System.out.println(local.getShip().getBody());
 	}
 
 	public static int spawnBroid() {
@@ -497,6 +505,7 @@ public class CoreLogic {
 	}
 
 	public static void removeEntity(Entity ent) {
+		System.out.println(ent);
 		if (!rmEntities.contains(ent))
 			rmEntities.add(ent);
 	}

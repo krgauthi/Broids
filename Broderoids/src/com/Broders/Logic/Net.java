@@ -91,7 +91,7 @@ public class Net extends Thread {
 				
 				e = obj.get("c"); // Type
 				int frameType = e.getAsInt();
-				if (frameType == FRAME_SYNC) {
+				/*if (frameType == FRAME_SYNC) {
 					System.out.println("Sync");
 					
 					e = obj.get("t"); // Type
@@ -128,7 +128,7 @@ public class Net extends Thread {
 						float vPos = inner.get("v").getAsFloat();
 						System.out.println("d.e.v vPos-v = " + vPos);
 					}
-				} 
+				}
 
 				else {
 					System.out.println("Delta");
@@ -173,7 +173,7 @@ public class Net extends Thread {
 						else {
 					//CoreLogic.removeEntity(id);
 					}
-				}
+				}*/
 			}
 		} catch (UnknownHostException e) {
 

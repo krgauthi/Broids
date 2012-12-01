@@ -55,6 +55,10 @@ public abstract class Entity {
 	public Body getBody() {
 		return this.body;
 	}
+	
+	public Player getOwner() {
+		return this.owner;
+	}
 
 	public void setEnt(String ent) {
 		this.ent = ent;

@@ -39,8 +39,8 @@ public class Player {
 		if (type.equals("Player")) {
 			playerColor = myGame.playerColor;
 
-			playerShip = new Ship("classic", this.nextId(), this, CoreLogic.getWidth() / 2,
-					CoreLogic.getHeight() / 2);
+			playerShip = new Ship("classic", this.nextId(), this,
+					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
 			entities.put(playerShip.getId(), playerShip);
 
 			score = 0;
@@ -54,7 +54,7 @@ public class Player {
 		} else {
 			playerColor = myGame.gameColor;
 		}
-		
+
 		bonus = 1.0f;
 		score = 0;
 
@@ -75,12 +75,12 @@ public class Player {
 	public int getScore() {
 		return score;
 	}
-	
-	public float getBonus(){
+
+	public float getBonus() {
 		return bonus;
 	}
-	
-	public Color getColor(){
+
+	public Color getColor() {
 		return playerColor;
 	}
 
@@ -95,15 +95,19 @@ public class Player {
 	public void modLives(int s) {
 		lives += s;
 	}
-	
-	public void modScore(int s){
+
+	public void modScore(int s) {
 		int modBonus = (int) Math.floor(bonus);
-		if(modBonus != 5){
+		if (modBonus != 5) {
 			bonus += 0.2f;
 		}
 		score += (modBonus * s);
 	}
-	
+
+	public void modBonus(float s) {
+		bonus = s;
+	}
+
 	public Ship getShip() {
 		return playerShip;
 	}

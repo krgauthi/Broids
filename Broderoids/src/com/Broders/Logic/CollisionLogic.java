@@ -49,7 +49,7 @@ public class CollisionLogic implements ContactListener {
 			CoreLogic.removeEntity(((Entity) bB.getUserData()));
 			
 			//Call score method for the player here
-			((Entity) bA.getUserData()).belongsTo().modScore(((Entity) bB.getUserData()).getPoints());
+			((Entity) bA.getUserData()).getOwner().modScore(((Entity) bB.getUserData()).getPoints());
 		}
 
 		// Asteroid-Bullet
@@ -58,7 +58,7 @@ public class CollisionLogic implements ContactListener {
 			CoreLogic.removeEntity(((Entity) bA.getUserData()));
 			
 			//Call score method for the player here
-			((Entity) bB.getUserData()).belongsTo().modScore(((Entity) bA.getUserData()).getPoints());
+			((Entity) bB.getUserData()).getOwner().modScore(((Entity) bA.getUserData()).getPoints());
 		}
 
 		// Ship-Bullet

@@ -62,7 +62,6 @@ public class Bullet extends Entity {
 		super.body.setLinearVelocity(vX, vY);
 
 		//Set type data
-		super.setPlayer(player);
 		super.getBody().setUserData(this);
 	}
 
@@ -74,7 +73,7 @@ public class Bullet extends Entity {
 
 		if (age >= deathTime) {
 			CoreLogic.removeEntity(this);
-			super.belongsTo().modBonus(1.0f);
+			super.owner.modBonus(1.0f);
 		}
 
 	}

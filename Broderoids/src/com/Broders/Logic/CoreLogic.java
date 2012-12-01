@@ -137,18 +137,12 @@ public class CoreLogic {
 
 		local = new Player("Player", clientId);
 		players.put(Integer.toString(local.getId()), local);
-		// if(host){
-		
-		comp = new Player("Comp", 0);
-		players.put("0", comp);
 
-		Player temp = new Player("-1", -1);
-		players.put("scratch", temp);
+		comp = new Player("Comp", 1);
+		players.put(Integer.toString(comp.getId()), comp);
 
-		// localPlayer = new Ship("classic",
-		// myGame.playerColor,width/2,height/2);
-
-		// entities.put(localPlayer.getId(), localPlayer);
+		Player temp = new Player("Temp", 0);
+		players.put(Integer.toString(temp.getId()), temp);
 	}
 
 	/**
@@ -500,7 +494,6 @@ public class CoreLogic {
 	}
 
 	public static void removeEntity(Entity ent) {
-		System.out.println(ent);
 		if (!rmEntities.contains(ent))
 			rmEntities.add(ent);
 	}
@@ -531,11 +524,11 @@ public class CoreLogic {
 	}
 
 	public static Player getComp() {
-		return players.get("0");
+		return players.get("1");
 	}
 
 	public static Player getScratch() {
-		return players.get("scratch");
+		return players.get("0");
 	}
 
 	public static Player getSelf() {

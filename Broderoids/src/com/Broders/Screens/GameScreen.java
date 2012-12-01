@@ -82,15 +82,15 @@ public class GameScreen implements Screen {
 		font.setScale(.25f);
 
 		myGame.multiplayer = m;
-
-		CoreLogic.initCore(game, h);
 		
 		if (this.multiplayer) {
 			// TODO: Get from json
 			CoreLogic.setClientId(10);
 		} else {
-			CoreLogic.setClientId(1);
+			CoreLogic.setClientId(2);
 		}
+		
+		CoreLogic.initCore(game, h);
 
 		if (myGame.debugMode) {
 			debug1 = new Tail(50, Color.MAGENTA);

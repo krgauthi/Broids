@@ -21,8 +21,6 @@ public class BaseGame extends Game {
 	SettingsScreen settingsScreen;
 	Settings settings;
 
-
-
 	public BitmapFont font;
 
 	public int screenHeight;		//TODO Ref in Settings
@@ -74,6 +72,7 @@ public class BaseGame extends Game {
 		this.setScreen(new SplashScreen(this));
 		
 		settings = new Settings(this);	
+		
 		try {
 			settings.loadSettings();
 		} catch (FileNotFoundException e) {

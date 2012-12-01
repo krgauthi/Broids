@@ -83,7 +83,14 @@ public class GameScreen implements Screen {
 
 		myGame.multiplayer = m;
 
-		CoreLogic.initCore(game,h);
+		CoreLogic.initCore(game, h);
+		
+		if (this.multiplayer) {
+			// TODO: Get from json
+			CoreLogic.setClientId(10);
+		} else {
+			CoreLogic.setClientId(1);
+		}
 
 		if (myGame.debugMode) {
 			debug1 = new Tail(50, Color.MAGENTA);
@@ -178,10 +185,13 @@ public class GameScreen implements Screen {
 			out = String.format("Score: %d ", CoreLogic.getLocal().getScore());
 			// player
 			font.draw(spriteBatch, out, xx * .01f, yy * .98f);
+			
+			String out2 = String.format("Bonus: x%d ", (int)Math.floor(CoreLogic.getLocal().getBonus()));
+			font.draw(spriteBatch, out2, xx * .01f, yy * .94f);
 
 			int heartcount = CoreLogic.getLocal().getLives();
 			for (int i = 0; i < heartcount; i++) {
-				lives.setPosition(xx * (.005f + (i * .02f)), yy * .89f);
+				lives.setPosition(xx * (.005f + (i * .02f)), yy * .85f);
 				lives.draw(spriteBatch);
 			}
 

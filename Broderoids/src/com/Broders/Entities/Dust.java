@@ -1,6 +1,7 @@
 package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
+import com.Broders.Logic.Player;
 import com.Broders.Logic.Settings;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -14,9 +15,9 @@ public class Dust extends Entity{
 	private float age;
 	private static float deathTime = 0.3f;
 	
-	public Dust(String type, float dir, float x, float y) {
+	public Dust(String type, String id, Player owner, float dir, float x, float y) {
 
-		super(type);
+		super(type, id, owner);
 		super.setEnt("Dust");
 
 		// sprite

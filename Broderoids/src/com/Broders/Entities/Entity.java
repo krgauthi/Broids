@@ -25,28 +25,22 @@ public abstract class Entity {
 	private String type;
 	protected Body body;
 	private Sprite sprite;
-	private Player playa;
 
 	// Extras
 	private float size;
 	private Color color;
+	private int points;
 
 	// save these for teleportation
 	private BodyDef bodDef;
 	private FixtureDef fixDef;
 
-	private String id;
-
-	/**
-	 * Initializes the Entity with an identity and a type
-	 * 
-	 * @param id
-	 *            Used to uniquely identify this entity
-	 * @param type
-	 *            The type of this entity
-	 */
-	public Entity(String type) {
-		id = CoreLogic.nextId();
+	protected String id;
+	protected Player owner;
+	
+	public Entity(String type, String id, Player owner) {
+		this.id = id;
+		this.owner = owner;
 	}
 
 	public String getId() {
@@ -60,6 +54,10 @@ public abstract class Entity {
 	 */
 	public Body getBody() {
 		return this.body;
+	}
+	
+	public Player getOwner() {
+		return this.owner;
 	}
 
 	public void setEnt(String ent) {
@@ -164,7 +162,7 @@ public abstract class Entity {
 	 * 
 	 * @param sb
 	 */
-	public void Draw(SpriteBatch sb){
+	public void Draw(SpriteBatch sb) {
 		float screenWidth = Gdx.graphics.getWidth();
 		float screenHeight = Gdx.graphics.getHeight();
 
@@ -179,8 +177,10 @@ public abstract class Entity {
 		posY = screenHeight
 				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
 
-		if(posX > -(this.getSize()*8) && posX < (screenWidth+(this.getSize()*8)) 
-				&& posY > -(this.getSize()*8) && posY < (screenHeight+(this.getSize()*8))){
+		if (posX > -(this.getSize() * 8)
+				&& posX < (screenWidth + (this.getSize() * 8))
+				&& posY > -(this.getSize() * 8)
+				&& posY < (screenHeight + (this.getSize() * 8))) {
 
 			this.getSprite().setPosition(posX, posY);
 			this.getSprite().setRotation(this.getBody().getAngle());
@@ -239,16 +239,48 @@ public abstract class Entity {
 		return this.body.getLinearVelocity();
 	}
 
+	/**
+	 * Advanced teleport for server use
+	 * 
+	 * @param x
+	 *            x-position of the entity
+	 * @param y
+	 *            y-position of the entity
+	 * @param angle
+	 *            angle of the entity
+	 * @param angleVel
+	 *            angular velocity of the entity's rotation
+	 * @param vX
+	 *            x-component of the entity's velocity
+	 * @param vY
+	 *            y-component of the entity's velocity
+	 */
+	public void teleport(float x, float y, float angle, float angleVel,
+			float vX, float vY) {
+
+		// Destroys the physical body of this Entity
+		CoreLogic.getWorld().destroyBody(this.body);
+
+		// Creates a new Body with the info in the given parameters
+		this.bodDef.position.set(x, y);
+		this.bodDef.angle = angle;
+		this.body = CoreLogic.getWorld().createBody(bodDef);
+		this.body.createFixture(this.fixDef);
+		this.body.setAngularVelocity(angleVel);
+		this.body.setLinearVelocity(new Vector2(vX, vY));
+
+		this.body.setUserData(this);
+	}
+
 	public abstract void update();
 
 	public abstract void destroy();
 
-	public Player belongsTo(){
-		return playa;
+	public void setPoints(int v){
+		points = v;
 	}
 	
-	public void setPlayer(Player p){
-		playa = p;
+	public int getPoints(){
+		return points;
 	}
-
 }

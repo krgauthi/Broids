@@ -200,21 +200,23 @@ public class GameScreen implements Screen {
 		if (myGame.debugMode) {
 			font.setScale(.25f);
 			String out;
-			out = String.format("Ship Pos in Meters: (%f,%f) ", CoreLogic
-					.getLocalShip().getX(), CoreLogic.getLocalShip().getY());
-			font.draw(spriteBatch, out, xx * .01f, yy - (yy * .21f));
-			out = String.format("ViewPort Pos in Meters: (%f,%f) ",
-					CoreLogic.getViewPortX(), CoreLogic.getViewPortY());
-			font.draw(spriteBatch, out, xx * .01f, yy - (yy * .25f));
-			out = String.format("Ship angle in Radians: %f", CoreLogic
-					.getLocalShip().getBody().getAngle());
-			font.draw(spriteBatch, out, xx * .01f, yy - (yy * .29f));
-			out = String.format("FPS: %d", Gdx.graphics.getFramesPerSecond());
-			font.draw(spriteBatch, out, xx * .01f, yy - (yy * .33f));
-			if (CoreLogic.getLocalShip().getThrust())
-				font.draw(spriteBatch, "Thruster", xx * .01f, yy - (yy * .37f));
-			if (CoreLogic.getLocalShip().getShooting())
-				font.draw(spriteBatch, "Pew Pew", xx * .01f, yy - (yy * .4f));
+			if (CoreLogic.getLocalShip() != null) {
+				out = String.format("Ship Pos in Meters: (%f,%f) ", CoreLogic
+						.getLocalShip().getX(), CoreLogic.getLocalShip().getY());
+				font.draw(spriteBatch, out, xx * .01f, yy - (yy * .21f));
+				out = String.format("ViewPort Pos in Meters: (%f,%f) ",
+						CoreLogic.getViewPortX(), CoreLogic.getViewPortY());
+				font.draw(spriteBatch, out, xx * .01f, yy - (yy * .25f));
+				out = String.format("Ship angle in Radians: %f", CoreLogic
+						.getLocalShip().getBody().getAngle());
+				font.draw(spriteBatch, out, xx * .01f, yy - (yy * .29f));
+				out = String.format("FPS: %d", Gdx.graphics.getFramesPerSecond());
+				font.draw(spriteBatch, out, xx * .01f, yy - (yy * .33f));
+				if (CoreLogic.getLocalShip().getThrust())
+					font.draw(spriteBatch, "Thruster", xx * .01f, yy - (yy * .37f));
+				if (CoreLogic.getLocalShip().getShooting())
+					font.draw(spriteBatch, "Pew Pew", xx * .01f, yy - (yy * .4f));
+			}
 
 			debug1.draw(spriteBatch);
 			debug2.draw(spriteBatch);

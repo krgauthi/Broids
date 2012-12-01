@@ -170,63 +170,65 @@ public class CoreLogic {
 
 		}
 
-		// viewport logic
-		if ((local.getShip().getX() - viewPortX) / widthScreen > (1 - myGame.bounds)) {
-			if (viewPortX < width - widthScreen) {
-				float target = (((local.getShip().getX() - viewPortX) / widthScreen) - (1 - myGame.bounds))
-						/ (myGame.bounds);
-				adjViewPortX(10 * target);
+		if(local.getShip() != null){
+			// viewport logic
+			if ((local.getShip().getX() - viewPortX) / widthScreen > (1 - myGame.bounds)) {
+				if (viewPortX < width - widthScreen) {
+					float target = (((local.getShip().getX() - viewPortX) / widthScreen) - (1 - myGame.bounds))
+							/ (myGame.bounds);
+					adjViewPortX(10 * target);
+				}
 			}
-		}
 
-		if ((local.getShip().getX() - viewPortX) / widthScreen < myGame.bounds) {
-			if (viewPortX > 0) {
-				float target = ((myGame.bounds - (local.getShip().getX() - viewPortX)
-						/ widthScreen))
-						/ (myGame.bounds);
-				adjViewPortX(-10 * target);
+			if ((local.getShip().getX() - viewPortX) / widthScreen < myGame.bounds) {
+				if (viewPortX > 0) {
+					float target = ((myGame.bounds - (local.getShip().getX() - viewPortX)
+							/ widthScreen))
+							/ (myGame.bounds);
+					adjViewPortX(-10 * target);
+				}
 			}
-		}
 
-		if ((local.getShip().getY() - viewPortY) / heightScreen > (1 - myGame.bounds)) {
-			if (viewPortY < height - heightScreen) {
-				float target = (((local.getShip().getY() - viewPortY) / heightScreen) - (1 - myGame.bounds))
-						/ (myGame.bounds);
-				adjViewPortY(10 * target);
+			if ((local.getShip().getY() - viewPortY) / heightScreen > (1 - myGame.bounds)) {
+				if (viewPortY < height - heightScreen) {
+					float target = (((local.getShip().getY() - viewPortY) / heightScreen) - (1 - myGame.bounds))
+							/ (myGame.bounds);
+					adjViewPortY(10 * target);
+				}
 			}
-		}
 
-		if ((local.getShip().getY() - viewPortY) / heightScreen < myGame.bounds) {
-			if (viewPortY > 0) {
-				float target = ((myGame.bounds - (local.getShip().getY() - viewPortY)
-						/ heightScreen))
-						/ (myGame.bounds);
-				adjViewPortY(-10 * target);
+			if ((local.getShip().getY() - viewPortY) / heightScreen < myGame.bounds) {
+				if (viewPortY > 0) {
+					float target = ((myGame.bounds - (local.getShip().getY() - viewPortY)
+							/ heightScreen))
+							/ (myGame.bounds);
+					adjViewPortY(-10 * target);
+				}
 			}
-		}
 
-		// viewport in relation to ship
-		if (local.getShip().getX() < -4) { // make it the size of the ship
-			viewPortX = width - widthScreen;
-		}
+			// viewport in relation to ship
+			if (local.getShip().getX() < -4) { // make it the size of the ship
+				viewPortX = width - widthScreen;
+			}
 
-		if (local.getShip().getX() > width + 4) {
-			viewPortX = 0;
-		}
+			if (local.getShip().getX() > width + 4) {
+				viewPortX = 0;
+			}
 
-		if (local.getShip().getY() < -4) {
-			viewPortY = height - heightScreen;
-		}
+			if (local.getShip().getY() < -4) {
+				viewPortY = height - heightScreen;
+			}
 
-		if (local.getShip().getY() > height + 4) {
-			viewPortY = 0;
+			if (local.getShip().getY() > height + 4) {
+				viewPortY = 0;
+			}
 		}
 
 		// Screen wrapping
 		for (Player p : players.values()) {
 			for (Entity E : getEntities(p)) {
 				if (E.getX() + (E.getSize() / 2f) < 0) { // make it the size of
-															// the ship
+					// the ship
 					E.teleport(width + (E.getSize() / 2f), E.getY());
 				}
 
@@ -242,16 +244,18 @@ public class CoreLogic {
 					E.teleport(E.getX(), -(E.getSize() / 2f));
 				}
 				E.update(); // THIS IS THE UPDATE! DO NOT PUT ELSEWHERE. Or at
-							// least make
+				// least make
 				// sure that there is only one.
 			}
 
 		}
 		cleanEntities();
-		local.getShip().setThrust(false);
-		local.getShip().setShooting(false);
+		if(local.getShip() != null){
+			local.getShip().setThrust(false);
+			local.getShip().setShooting(false);
+		}
 		world.step(delta, 1, 8);
-		
+
 		//System.out.println(local.getShip());
 		//System.out.println(local.getShip().getBody());
 	}
@@ -304,47 +308,49 @@ public class CoreLogic {
 	 *            The input direction
 	 */
 	public static void execute(float delta, InputDir in) {
-		if (in.equals("left")) {
-			local.getShip().getBody().applyTorque(500.0f);
-		} else if (in.equals("right")) {
-			local.getShip().getBody().applyTorque(-500.0f);
-		}
-
-		if (in.equals("backward")) {
-			Vector2 f = local.getShip().getBody()
-					.getWorldVector(new Vector2(0.0f, 30.0f));
-			Vector2 p = local.getShip().getBody().getWorldCenter();
-			local.getShip().getBody().applyForce(f, p);
-		}
-
-		if (in.equals("shoot")) {
-			if (bulletCooldown >= 0.2f) {
-				float dir = local.getShip().getAngle() - 90.0f;
-
-				float x = (float) (local.getShip().getX() + (2.805 * Math
-						.cos(Math.toRadians(dir))));
-				float y = (float) (local.getShip().getY() + (2.805 * Math
-						.sin(Math.toRadians(dir))));
-
-				Bullet shot = new Bullet("bullet", getSelf().nextId(),
-						getSelf(), dir, x, y);
-				local.getEntitiesMap().put(shot.getId(), shot);
-				bulletCooldown = 0;
-				local.getShip().setShooting(true);
+		if(local.getShip() != null){
+			if (in.equals("left")) {
+				local.getShip().getBody().applyTorque(500.0f);
+			} else if (in.equals("right")) {
+				local.getShip().getBody().applyTorque(-500.0f);
 			}
-		}
 
-		if (in.equals("forward")) {
-			Vector2 f = local.getShip().getBody()
-					.getWorldVector(new Vector2(0.0f, -100.0f));
-			Vector2 p = local
-					.getShip()
-					.getBody()
-					.getWorldPoint(
-							local.getShip().getBody().getLocalCenter()
-									.add(new Vector2(0.0f, 0.0f)));
-			local.getShip().getBody().applyForce(f, p);
-			local.getShip().setThrust(true);
+			if (in.equals("backward")) {
+				Vector2 f = local.getShip().getBody()
+						.getWorldVector(new Vector2(0.0f, 30.0f));
+				Vector2 p = local.getShip().getBody().getWorldCenter();
+				local.getShip().getBody().applyForce(f, p);
+			}
+
+			if (in.equals("shoot")) {
+				if (bulletCooldown >= 0.2f) {
+					float dir = local.getShip().getAngle() - 90.0f;
+
+					float x = (float) (local.getShip().getX() + (2.805 * Math
+							.cos(Math.toRadians(dir))));
+					float y = (float) (local.getShip().getY() + (2.805 * Math
+							.sin(Math.toRadians(dir))));
+
+					Bullet shot = new Bullet("bullet", getSelf().nextId(),
+							getSelf(), dir, x, y);
+					local.getEntitiesMap().put(shot.getId(), shot);
+					bulletCooldown = 0;
+					local.getShip().setShooting(true);
+				}
+			}
+
+			if (in.equals("forward")) {
+				Vector2 f = local.getShip().getBody()
+						.getWorldVector(new Vector2(0.0f, -100.0f));
+				Vector2 p = local
+						.getShip()
+						.getBody()
+						.getWorldPoint(
+								local.getShip().getBody().getLocalCenter()
+								.add(new Vector2(0.0f, 0.0f)));
+				local.getShip().getBody().applyForce(f, p);
+				local.getShip().setThrust(true);
+			}
 		}
 
 	}
@@ -498,6 +504,7 @@ public class CoreLogic {
 			if (i instanceof Ship) {
 				if (!myGame.multiplayer && i.getOwner().getId() == clientId) {
 					getSelf().modLives(-1);
+					local.setShip(null);
 				}
 			}
 			i.getOwner().getEntitiesMap().remove(i.getId());

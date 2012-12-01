@@ -61,156 +61,92 @@ public class Net extends Thread {
 	public void run() {
 		try {
 			Gson g = new Gson();
-			Socket s;
+			Socket s = new Socket("localhost", 9988);
 
-			// Create a socket and json readers and writers
-			s = new Socket("localhost", 9988);
-			out = new JsonWriter(new BufferedWriter(new OutputStreamWriter(
-					s.getOutputStream())));
-			in = new JsonStreamParser(new BufferedReader(new InputStreamReader(
-					s.getInputStream())));
-			
-			// Keep reading from the stream as long as we can
-			while (in.hasNext()) {
-				JsonElement element = in.next();
+			JsonObject o = new JsonObject();
+			o.addProperty("c", COMMAND_JOIN);
+
+			JsonObject od = new JsonObject();
+			od.addProperty("n", "broids");
+			o.add("d", od);
+
+			JsonWriter out = new JsonWriter(new BufferedWriter(new OutputStreamWriter(s.getOutputStream())));
+			g.toJson(o, out);
+			out.flush();
+
+			System.out.println("And now we listen");
+
+			JsonStreamParser parser = new JsonStreamParser(new BufferedReader(new InputStreamReader(s.getInputStream())));
+
+			JsonElement element;
+			while (parser.hasNext()) {
+				element = parser.next();
+
+				// Since we know we have an object, lets do what we need to with it
 				JsonObject obj = element.getAsJsonObject();
 
-				// So, we have a json object... now what?
-				JsonElement e = obj.get("c");
-				if (!e.isJsonPrimitive()) {
-					// Connection must be bad, lets get out of here.
-					// TODO: Be less draconian
-					break;
-				}
+				JsonElement e;
 
-				// Get which command is incoming
-				int c = e.getAsInt();
-				if (state == STATUS_LOBBY) {
-					if (c == FRAME_LIST_RESPONSE) {
-						
-					} else {
-						// TODO: Be less draconian
-						break;
-					}
+				System.out.println(obj);
+				
+				e = obj.get("c"); // Type
+				int frameType = e.getAsInt();
+				if (frameType == FRAME_SYNC) {
+					System.out.println("Sync");
+					continue;
 				} else {
-					if (c == FRAME_SYNC) {
-						HashMap<String, Entity> entities = new HashMap<String, Entity>();
-
-						// TODO: Don't edit current entity
-						e = obj.get("e");
-						JsonArray a = e.getAsJsonArray();
-						for (JsonElement entityElement : a) {
-							Entity toAdd;
-							JsonObject entity = entityElement.getAsJsonObject();
-							e = entity.get("id");
-							if (!e.isJsonPrimitive()) {
-								// TODO: Trouble... we should handle this
-							}
-							String id = e.getAsString();
-							
-							// If we own it, ignore it
-							/*if (id.startsWith(Integer.toString(CoreLogic.getClientId()) + "-")) {
-								continue;
-							}*/
-							
-							e = entity.get("t");
-							if (!e.isJsonPrimitive()) {
-								// TODO: Trouble... we should handle this
-							}
-							int type = e.getAsInt();
-							
-							e = entity.get("x");
-							if (!e.isJsonPrimitive()) {
-								// TODO: Trouble... we should handle this
-							}
-							float x = e.getAsFloat();
-							
-							e = entity.get("y");
-							if (!e.isJsonPrimitive()) {
-								// TODO: Trouble... we should handle this
-							}
-							float y = e.getAsFloat();
-							
-							e = entity.get("a");
-							if (!e.isJsonPrimitive()) {
-								// TODO: Trouble... we should handle this
-							}
-							float angle = e.getAsFloat();
-							
-							e = entity.get("av");
-							if (!e.isJsonPrimitive()) {
-								// TODO: Trouble... we should handle this
-							}
-							float angVelocity = e.getAsFloat();
-							
-							e = entity.get("xv");
-							if (!e.isJsonPrimitive()) {
-								// TODO: Trouble... we should handle this
-							}
-							float XVelocity = e.getAsFloat();
-							
-							e = entity.get("yv");
-							if (!e.isJsonPrimitive()) {
-								// TODO: Trouble... we should handle this
-							}
-							float YVelocity = e.getAsFloat();
-							
-							// This updates or creates a new entity based onthe incoming json
-							/*if (CoreLogic.entities.containsKey(id)) {
-								// Update
-								Entity ent = CoreLogic.entities.get(id);
-								ent.setPosition(x, y);
-								ent.setAngle(angle);
-								ent.finalizeBody();
-								ent.setAngularVelocity(angVelocity);
-								ent.setLinearVelocity(XVelocity, YVelocity);
-							} else {
-								Entity ent;
-								if (type == ENTITY_SHIP) {
-									ent = new Ship("ship", CoreLogic.myGame.playerColor);
-								} else if (type == ENTITY_ASTEROID) {
-									ent = new Asteroid("asteroid", 0, 0);
-								} else {
-									ent = new Bullet("bullet", 0, 0, 0);
-								}
-								ent.setPosition(x, y);
-								ent.setAngle(angle);
-								ent.finalizeBody();
-								ent.setAngularVelocity(angVelocity);
-								ent.setLinearVelocity(XVelocity, YVelocity);
-							}*/
-						}
-						
-						// TODO: Why do we need the unterruptable?
-						theGame.entitiesLock.acquireUninterruptibly();
-						//CoreLogic.entities = entities;
-						theGame.entitiesLock.release();
-					} else if (c == FRAME_DELTA_UPDATE) {
-						
-					} else if (c == FRAME_DELTA_CREATE) {
-
-					} else if (c == FRAME_DELTA_REMOVE) {
-						
-					} else {
-						// TODO: Be less draconian
-						break;
-					}
+					System.out.println("Delta");
 				}
-			}
-			
-			// Cave Johnson, we're done here.
-			out.close();
-			s.close();
-			
-			in = null;
-			out = null;
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
+				JsonObject eArray;
+				e = obj.get("e");
+
+				JsonObject inner = e.getAsJsonObject();
+			
+				String id = inner.get("id").getAsString();
+				System.out.println("d.e.id Id-id = " +id);
+
+				if (frameType == FRAME_DELTA_UPDATE || frameType == FRAME_DELTA_CREATE) {
+					int actionType = inner.get("t").getAsInt();
+					System.out.println("ActionType-t = " + actionType);
+
+					int entityType = inner.get("t").getAsInt();
+					System.out.println("d.e.t Type-t = " + entityType);
+
+					float xPos = inner.get("x").getAsFloat();
+					System.out.println("d.e.x xPos-x = " + xPos);
+
+					float yPos = inner.get("y").getAsFloat();
+					System.out.println("d.e.y yPos-y = " + yPos);
+
+					float xVel = inner.get("xv").getAsFloat();
+					System.out.println("d.e.x xVel-x = " + xVel);
+
+					float yVel = inner.get("yv").getAsFloat();
+					System.out.println("d.e.y yVel-y = " + yVel);
+
+					float dPos = inner.get("d").getAsFloat();
+					System.out.println("d.e.d dPos-d = " + dPos);
+
+					float vPos = inner.get("v").getAsFloat();
+					System.out.println("d.e.v vPos-v = " + vPos);
+
+					// Update here
+					//Entity temp = CoreLogic.findEntity(id);
+					//temp.teleport(null, null, xPos, yPos, dPos, vPos, xVel, yVel);
+				} else {
+					//CoreLogic.removeEntity(id);
+				}
+
+			}
+		} catch (UnknownHostException e) {
+
+		} catch (IOException e) {
+
+		}/* catch (Exception e) {
+			System.out.println(e);
+			e.printStackTrace();
+		}*/
+		// Cave Johnson, we're done here.
 	}
 }

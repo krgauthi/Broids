@@ -1,6 +1,7 @@
 package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
+import com.Broders.Logic.Player;
 import com.Broders.Logic.Settings;
 import com.Broders.Logic.Pos;
 import com.badlogic.gdx.Gdx;
@@ -23,9 +24,9 @@ public class Bullet extends Entity {
 	private static float deathTime = 1.0f;
 
 
-	public Bullet(String type, float dir, float x, float y) {
+	public Bullet(String type, String id, Player owner, float dir, float x, float y) {
 
-		super(type);
+		super(type, id, owner);
 		super.setEnt("bullet");
 
 		// sprite

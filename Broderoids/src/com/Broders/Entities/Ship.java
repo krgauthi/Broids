@@ -42,8 +42,8 @@ public class Ship extends Entity {
 	 *            The type of this entity
 	 * @param playerColor
 	 */
-	public Ship(String type, Player player, float x, float y) {
-		super(type);
+	public Ship(String type, String id, Player owner, float x, float y) {
+		super(type, id, owner);
 		super.setEnt("ship");
 		Vector2 vertices[] = new Vector2[3];
 		vertices[0] = new Vector2(-1.5f, 1.39f);
@@ -68,7 +68,7 @@ public class Ship extends Entity {
 		super.createBody(bodDef, fixDef);
 
 		super.setSize(6f);
-		super.setColor(player.getColor());
+		super.setColor(this.owner.getColor());
 
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
@@ -76,7 +76,7 @@ public class Ship extends Entity {
 		super.getSprite().flip(false, true);
 		super.getSprite().setOrigin((meter * this.getSize()) / 2,(meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
-		super.getSprite().setColor(player.getColor());
+		super.getSprite().setColor(this.owner.getColor());
 
 		this.thrust = false;
 		Texture tempTexture = new Texture(Gdx.files.internal(Settings.data_path	+ "ship2.png"));
@@ -88,7 +88,6 @@ public class Ship extends Entity {
 
 		//Set type data
 		super.getBody().setUserData(this);
-		super.setPlayer(player);
 	}
 
 
@@ -180,7 +179,7 @@ public class Ship extends Entity {
 		for(int i = 0; i < temp;i++){
 			temp = 360/temp;
 			
-			Dust D = new Dust("debris", (float)(Math.random()%10)+(temp*i) , this.getX(), this.getY());
+			Dust D = new Dust("debris", this.owner.nextId(), this.owner, (float)(Math.random()%10)+(temp*i) , this.getX(), this.getY());
 			CoreLogic.getComp().getEntitiesMap().put(D.getId(), D);
 		}
 	}

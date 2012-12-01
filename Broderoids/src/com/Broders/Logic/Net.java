@@ -93,51 +93,87 @@ public class Net extends Thread {
 				int frameType = e.getAsInt();
 				if (frameType == FRAME_SYNC) {
 					System.out.println("Sync");
-					continue;
-				} else {
+					
+					e = obj.get("t"); // Type
+					int gameType = e.getAsInt();
+					System.out.println("gametime =" + gametime)
+
+					JsonArray eArray = e.getAsJsonArray("e");
+
+					for(JsonElement inner : eArray){
+						String id = inner.get("id").getAsString();
+						System.out.println("d.e.id Id-id = " +id);
+
+						int actionType = inner.get("t").getAsInt();
+						System.out.println("ActionType-t = " + actionType);
+
+						int entityType = inner.get("t").getAsInt();
+						System.out.println("d.e.t Type-t = " + entityType);
+
+						float xPos = inner.get("x").getAsFloat();
+						System.out.println("d.e.x xPos-x = " + xPos);
+
+						float yPos = inner.get("y").getAsFloat();
+						System.out.println("d.e.y yPos-y = " + yPos);
+
+						float xVel = inner.get("xv").getAsFloat();
+						System.out.println("d.e.x xVel-x = " + xVel);
+
+						float yVel = inner.get("yv").getAsFloat();
+						System.out.println("d.e.y yVel-y = " + yVel);
+
+						float dPos = inner.get("d").getAsFloat();
+						System.out.println("d.e.d dPos-d = " + dPos);
+
+						float vPos = inner.get("v").getAsFloat();
+						System.out.println("d.e.v vPos-v = " + vPos);
+					}
+				} 
+
+				else {
 					System.out.println("Delta");
-				}
 
-				JsonObject eArray;
-				e = obj.get("e");
+					JsonObject eArray;
+					e = obj.get("e");
 
-				JsonObject inner = e.getAsJsonObject();
-			
-				String id = inner.get("id").getAsString();
-				System.out.println("d.e.id Id-id = " +id);
+					JsonObject inner = e.getAsJsonObject();
+				
+					String id = inner.get("id").getAsString();
+					System.out.println("d.e.id Id-id = " +id);
 
-				if (frameType == FRAME_DELTA_UPDATE || frameType == FRAME_DELTA_CREATE) {
-					int actionType = inner.get("t").getAsInt();
-					System.out.println("ActionType-t = " + actionType);
+						if (frameType == FRAME_DELTA_UPDATE || frameType == FRAME_DELTA_CREATE) {
+							int actionType = inner.get("t").getAsInt();
+							System.out.println("ActionType-t = " + actionType);
 
-					int entityType = inner.get("t").getAsInt();
-					System.out.println("d.e.t Type-t = " + entityType);
+							int entityType = inner.get("t").getAsInt();
+							System.out.println("d.e.t Type-t = " + entityType);
 
-					float xPos = inner.get("x").getAsFloat();
-					System.out.println("d.e.x xPos-x = " + xPos);
+							float xPos = inner.get("x").getAsFloat();
+							System.out.println("d.e.x xPos-x = " + xPos);
 
-					float yPos = inner.get("y").getAsFloat();
-					System.out.println("d.e.y yPos-y = " + yPos);
+							float yPos = inner.get("y").getAsFloat();
+							System.out.println("d.e.y yPos-y = " + yPos);
 
-					float xVel = inner.get("xv").getAsFloat();
-					System.out.println("d.e.x xVel-x = " + xVel);
+							float xVel = inner.get("xv").getAsFloat();
+							System.out.println("d.e.x xVel-x = " + xVel);
 
-					float yVel = inner.get("yv").getAsFloat();
-					System.out.println("d.e.y yVel-y = " + yVel);
+							float yVel = inner.get("yv").getAsFloat();
+							System.out.println("d.e.y yVel-y = " + yVel);
 
-					float dPos = inner.get("d").getAsFloat();
-					System.out.println("d.e.d dPos-d = " + dPos);
+							float dPos = inner.get("d").getAsFloat();
+							System.out.println("d.e.d dPos-d = " + dPos);
 
-					float vPos = inner.get("v").getAsFloat();
-					System.out.println("d.e.v vPos-v = " + vPos);
+							float vPos = inner.get("v").getAsFloat();
+							System.out.println("d.e.v vPos-v = " + vPos);
 
-					// Update here
-					//Entity temp = CoreLogic.findEntity(id);
-					//temp.teleport(null, null, xPos, yPos, dPos, vPos, xVel, yVel);
-				} else {
+						// Update here
+						//Entity temp = CoreLogic.findEntity(id);
+						//temp.teleport(null, null, xPos, yPos, dPos, vPos, xVel, yVel);
+						} 
+						else {
 					//CoreLogic.removeEntity(id);
+					}
 				}
-
 			}
 		} catch (UnknownHostException e) {
 

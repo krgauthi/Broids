@@ -126,34 +126,14 @@ public class CoreLogic {
 		viewPortX = (width / 2) - (widthScreen / 2f);
 		viewPortY = (height / 2) - (heightScreen / 2f);
 
-		/*
-		 * forget this Just putting these here as an example. entity IDs will be
-		 * of the following format: EntityID + TypeID + ClientID + InstanceID =
-		 * 00 00 000 0000
-		 */
-		// String clientID = "000"; // possibly let server handle clientID
-		// generation somehow?
-		// String instanceID = "0000"; // check map to see how many of this type
-		// of entity already exist
-<<<<<<< HEAD
 		local = new Player("Player", clientId);
-		players.put("local", local);
-		// if(host){
-=======
-		local = new Player("Player", 1);
 		players.put(Integer.toString(local.getId()), local);
 
->>>>>>> 8314ac9e32563176fdb5876c001bfd0c92f180a2
-		comp = new Player("Comp", 0);
-		players.put("0", comp);
+		comp = new Player("Comp", 1);
+		players.put(Integer.toString(comp.getId()), comp);
 
-		Player temp = new Player("-1", -1);
-		players.put("scratch", temp);
-
-		// localPlayer = new Ship("classic",
-		// myGame.playerColor,width/2,height/2);
-
-		// entities.put(localPlayer.getId(), localPlayer);
+		Player temp = new Player("Temp", 0);
+		players.put(Integer.toString(temp.getId()), temp);
 	}
 
 	/**
@@ -505,7 +485,6 @@ public class CoreLogic {
 	}
 
 	public static void removeEntity(Entity ent) {
-		System.out.println(ent);
 		if (!rmEntities.contains(ent))
 			rmEntities.add(ent);
 	}
@@ -536,11 +515,11 @@ public class CoreLogic {
 	}
 
 	public static Player getComp() {
-		return players.get("0");
+		return players.get("1");
 	}
 
 	public static Player getScratch() {
-		return players.get("scratch");
+		return players.get("0");
 	}
 
 	public static Player getSelf() {

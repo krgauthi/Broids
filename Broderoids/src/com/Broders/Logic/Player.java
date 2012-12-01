@@ -16,6 +16,7 @@ public class Player {
 	private HashMap<String, Entity> entities;
 	private Ship playerShip;
 	private int score;
+	private float bonus;
 	private int lives;
 	private int shield;
 	private int health;
@@ -53,6 +54,9 @@ public class Player {
 		} else {
 			playerColor = myGame.gameColor;
 		}
+		
+		bonus = 1.0f;
+		score = 0;
 
 	}
 
@@ -71,8 +75,12 @@ public class Player {
 	public int getScore() {
 		return score;
 	}
-
-	public Color getColor() {
+	
+	public float getBonus(){
+		return bonus;
+	}
+	
+	public Color getColor(){
 		return playerColor;
 	}
 
@@ -87,11 +95,15 @@ public class Player {
 	public void modLives(int s) {
 		lives += s;
 	}
-
-	public void modScore(int s) {
-		score += s;
+	
+	public void modScore(int s){
+		int modBonus = (int) Math.floor(bonus);
+		if(modBonus != 5){
+			bonus += 0.2f;
+		}
+		score += (modBonus * s);
 	}
-
+	
 	public Ship getShip() {
 		return playerShip;
 	}

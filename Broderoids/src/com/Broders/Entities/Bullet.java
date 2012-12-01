@@ -25,7 +25,6 @@ public class Bullet extends Entity {
 
 
 	public Bullet(String type, String id, Player owner, float dir, float x, float y) {
-
 		super(type, id, owner);
 		super.setEnt("bullet");
 
@@ -63,6 +62,7 @@ public class Bullet extends Entity {
 		super.body.setLinearVelocity(vX, vY);
 
 		//Set type data
+		super.setPlayer(player);
 		super.getBody().setUserData(this);
 	}
 
@@ -74,6 +74,7 @@ public class Bullet extends Entity {
 
 		if (age >= deathTime) {
 			CoreLogic.removeEntity(this);
+			super.belongsTo().modBonus(1.0f);
 		}
 
 	}

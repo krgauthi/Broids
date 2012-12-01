@@ -38,22 +38,27 @@ public class CollisionLogic implements ContactListener {
 			//CoreLogic.removeEntity(((Entity) bB.getUserData()));
 		}
 		// Asteroid-Ship
-		/*
 		if (sA.equals("asteroid") && sB.equals("ship")) {
-			CoreLogic.removeEntity(((Entity) bB.getUserData()));
+			//CoreLogic.removeEntity(((Entity) bB.getUserData()));
 			CoreLogic.removeEntity(((Entity) bA.getUserData()));
 		}
-		*/
+		
 		// Bullet-Asteroid
 		if (sA.equals("bullet") && sB.equals("asteroid")) {
 			CoreLogic.removeEntity(((Entity) bA.getUserData()));
 			CoreLogic.removeEntity(((Entity) bB.getUserData()));
+			
+			//Call score method for the player here
+			((Entity) bA.getUserData()).belongsTo().modScore(((Entity) bB.getUserData()).getPoints());
 		}
 
 		// Asteroid-Bullet
 		if (sA.equals("asteroid") && sB.equals("bullet")) {
 			CoreLogic.removeEntity(((Entity) bB.getUserData()));
 			CoreLogic.removeEntity(((Entity) bA.getUserData()));
+			
+			//Call score method for the player here
+			((Entity) bB.getUserData()).belongsTo().modScore(((Entity) bA.getUserData()).getPoints());
 		}
 
 		// Ship-Bullet

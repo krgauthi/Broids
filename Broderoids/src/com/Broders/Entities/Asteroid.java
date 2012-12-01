@@ -37,16 +37,19 @@ public class Asteroid extends Entity {
 			super.setSize(3.75f);
 			shape.setRadius(1.5f);
 			fixDef.density = 0.125f;
+			super.setPoints(100);
 		} else if (type.equals("medium")) {
 			this.type = MEDIUM;
 			super.setSize(7.5f);
 			shape.setRadius(3f);
 			fixDef.density = 0.5f;
+			super.setPoints(50);
 		} else {
 			this.type = LARGE;
 			super.setSize(15.0f);
 			shape.setRadius(6f);
 			fixDef.density = 2.0f;
+			super.setPoints(20);
 		}
 
 		fixDef.shape = shape;

@@ -48,6 +48,10 @@ public class CoreLogic {
 	private static boolean host;
 	private static float delay;
 	private static boolean display;
+	
+	private static float respawnTimer;
+	
+	private static String saveId;
 
 	public static BaseGame getGame() {
 		return myGame;
@@ -97,6 +101,8 @@ public class CoreLogic {
 		bulletCooldown = 0;
 		round = -1;
 
+		respawnTimer = -10f;
+		
 		if (game.multiplayer) {
 			switch (myGame.gameSize) {
 			case 0:
@@ -127,6 +133,7 @@ public class CoreLogic {
 		viewPortY = (height / 2) - (heightScreen / 2f);
 
 		local = new Player("Player", clientId);
+		saveId = local.getShip().getId();
 		players.put(Integer.toString(local.getId()), local);
 
 		comp = new Player("Comp", 1);
@@ -144,6 +151,15 @@ public class CoreLogic {
 	 */
 	public static void update(float delta) {
 		bulletCooldown += Gdx.graphics.getDeltaTime();
+		if(respawnTimer > 0)
+			respawnTimer -= Gdx.graphics.getDeltaTime();
+		else if(respawnTimer > -9f && local.getLives() > 0){
+			respawnTimer = -10f;
+			
+			local.setShip(new Ship("classic", saveId, local,
+					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2));
+			local.getEntitiesMap().put(saveId, local.getShip());
+		}
 
 		int mod = 0;
 
@@ -505,6 +521,7 @@ public class CoreLogic {
 				if (!myGame.multiplayer && i.getOwner().getId() == clientId) {
 					getSelf().modLives(-1);
 					local.setShip(null);
+					respawnTimer = 3.0f;
 				}
 			}
 			i.getOwner().getEntitiesMap().remove(i.getId());

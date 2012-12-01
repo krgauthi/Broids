@@ -1,7 +1,10 @@
 package com.Broders.Screens;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
+import com.Broders.Logic.Net;
 import com.Broders.Logic.Pos;
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
@@ -15,6 +18,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 public class MultiLobby implements Screen {
 
@@ -30,6 +36,8 @@ public class MultiLobby implements Screen {
 
 	private Sprite whiteSprite;
 	private Sprite arrowSprite;
+
+	private ArrayList<String[]> games;
 
 	float xx;
 	float yy;
@@ -55,8 +63,45 @@ public class MultiLobby implements Screen {
 		xx = Gdx.graphics.getWidth();
 		yy = Gdx.graphics.getHeight();
 
+		games = new ArrayList<String[]>();
+		JsonObject o = new JsonObject();
+		o.addProperty("c", Net.COMMAND_LIST);
+		this.myGame.g.toJson(o, this.myGame.out);
+		try {
+			this.myGame.out.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		JsonElement element = this.myGame.parser.next();
+		JsonObject ob = element.getAsJsonObject();
+		int command = ob.get("c").getAsInt();
+		if (command == Net.FRAME_ERROR) {
+			// Trouble
+		} else if (command != Net.FRAME_LIST_RESPONSE) {
+			// Trouble
+		}
+
+		JsonArray a = ob.getAsJsonArray("d");
+		if (a == null) {
+			// Trouble
+		}
+
+		for (JsonElement gameElem : a) {
+			o = gameElem.getAsJsonObject();
+			String[] temp = new String[4];
+			temp[0] = o.get("n").getAsString();
+			temp[1] = Boolean.toString(o.get("p").getAsInt() == 0);
+			temp[2] = Integer.toString(o.get("c").getAsInt());
+			temp[3] = Integer.toString(o.get("m").getAsInt());
+
+			this.games.add(temp);
+
+			System.out.println(temp[0]);
+		}
+
 		// temp
-		gameCount = 17;
+		gameCount = a.size();
 		page = gameCount / 5;
 		curPage = 0;
 
@@ -152,16 +197,27 @@ public class MultiLobby implements Screen {
 		whiteSprite.setSize(xx * .85f, yy * .01f);
 		whiteSprite.setColor(Color.WHITE);
 		// game list
-		for (int i = 0; i < (gameCount - (curPage * 5)) && i < 5; i++) {
+		// for (int i = 0; i < (gameCount - (curPage * 5)) && i < 5; i++) {
+
+		for (int i = 0; i < 5 && (i + curPage * 5) < this.games.size(); i++) {
+			String[] temp = this.games.get(i + curPage * 5);
 
 			whiteSprite.setPosition(xx * .15f, yy
 					* (.8f - (.16f * ((float) i + 1))));
 			whiteSprite.draw(spriteBatch);
 
-			out = String.format("Total Players: %d ", i); // TODO ref total players
+			out = String.format("Total Players: %s / %s ", temp[2], temp[3]); // TODO
+																				// ref
+																				// total
+																				// players
 			font.draw(spriteBatch, out, xx * .7f, yy * (.73f - (.16f * i)));
+			String priv = "";
+			if (temp[1].equals("false")) {
+				priv = " (p)";
+			}
 
-			font.draw(spriteBatch, "Name of Game", xx * .2f, yy	* (.73f - (.16f * i))); // TODO ref Name of Game
+			font.draw(spriteBatch, temp[0] + priv, xx * .2f, yy
+					* (.73f - (.16f * i))); // TODO ref Name of Game
 
 		}
 
@@ -187,7 +243,13 @@ public class MultiLobby implements Screen {
 
 				// join
 				if (x >= .24 && x <= .44) {
-					myGame.setScreen(new GameScreen(this.myGame, true,false));
+					Screen temp = myGame.joinGame("broids", "");
+					if (temp != null) {
+						myGame.setScreen(temp);
+						// TODO: Dispose of this screen
+					} else {
+						// Trouble - failed to join game
+					}
 				} else if (x >= .02 && x <= .22) {
 					myGame.setScreen(new MultiHost(this.myGame));
 				}

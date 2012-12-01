@@ -81,7 +81,7 @@ public class CoreLogic {
 	/**
 	 * Initializes the game core for use.
 	 */
-	public static void initCore(BaseGame game, Boolean h) {
+	public static void initCore(BaseGame game, float widthIn, float heightIn, Boolean h) {
 		myGame = game;
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, false);
@@ -104,29 +104,15 @@ public class CoreLogic {
 		respawnTimer = -10f;
 		invincibleTimer = -10f;
 
-		if (game.multiplayer) {
-			switch (myGame.gameSize) {
-			case 0:
-				width = widthScreen;
-				height = heightScreen;
-				System.out.println("small");
-				break;
-			case 1:
-				width = 500;
-				height = 500;
-				System.out.println("medium");
-				break;
-			case 2:
-				width = 1000;
-				height = 1000;
-				System.out.println("large");
-				break;
-			default:
-				width = widthScreen;
-				height = heightScreen;
-			}
+		if (widthIn != 0.0) {
+			width = widthIn;
 		} else {
 			width = widthScreen;
+		}
+		
+		if (heightIn != 0.0) {
+			height = heightIn;
+		} else {
 			height = heightScreen;
 		}
 

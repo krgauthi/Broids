@@ -165,7 +165,7 @@ public class CoreLogic {
 		else if(respawnTimer > -9f && local.getLives() > 0){
 			respawnTimer = -10f;
 			
-			local.setShip(new Ship("classic", saveId, local,
+			local.setShip(new Ship(saveId, local,
 					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2));
 			local.getEntitiesMap().put(saveId, local.getShip());
 		}

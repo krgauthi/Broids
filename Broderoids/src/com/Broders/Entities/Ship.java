@@ -27,7 +27,8 @@ public class Ship extends Entity {
 	private Boolean thrust;
 	private Boolean shooting;
 	private Sprite sprite;
-
+	private boolean invincible;
+	
 	// TODO implement method for sound shooting and death sound
 
 	/**
@@ -180,6 +181,14 @@ public class Ship extends Entity {
 			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i) , this.getX(), this.getY());
 			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 		}
+	}
+	
+	public void setInvincible(boolean b){
+		invincible = b;
+	}
+	
+	public boolean isInvincible(){
+		return invincible;
 	}
 
 }

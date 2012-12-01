@@ -29,13 +29,13 @@ public class CollisionLogic implements ContactListener {
 		}
 		
 		// Ship-Asteroid
-		if (eA instanceof Ship && eB instanceof Asteroid) {
+		if (eA instanceof Ship && eB instanceof Asteroid && !((Ship) eA).isInvincible()) {
 			CoreLogic.removeEntity(eA);
 			// Uncomment if we want the asteroid to get destroyed
 			// CoreLogic.removeEntity(((Entity) bB.getUserData()));
 		}
 		// Asteroid-Ship
-		if (eA instanceof Asteroid && eB instanceof Ship) {
+		if (eA instanceof Asteroid && eB instanceof Ship && !((Ship) eB).isInvincible()) {
 			// Uncomment if we want the asteroid to get destroyed
 			// CoreLogic.removeEntity(((Entity) bB.getUserData()));
 			CoreLogic.removeEntity(eB);
@@ -88,22 +88,8 @@ public class CollisionLogic implements ContactListener {
 			eB = (Entity) bB.getUserData();
 		}
 
-		// Ship-Asteroid
-		if (eA instanceof Ship && eB instanceof Asteroid) {
-			contact.setEnabled(false);
-		}
-		// Asteroid-Ship
-		if (eA instanceof Asteroid && eB instanceof Ship) {
-			contact.setEnabled(false);
-		}
-
-		// Bullet-Asteroid
-		if (eA instanceof Bullet && eB instanceof Asteroid) {
-			contact.setEnabled(false);
-		}
-
-		// Asteroid-Bullet
-		if (eA instanceof Asteroid && eB instanceof Bullet) {
+		// Collisions to ignore (a.k.a. only asteroid-asteroid should bounce
+		if (!(eA instanceof Asteroid && eB instanceof Asteroid)) {
 			contact.setEnabled(false);
 		}
 	}

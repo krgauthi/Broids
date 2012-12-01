@@ -47,9 +47,10 @@ public class CoreLogic {
 	private static boolean host;
 	private static float delay;
 	private static boolean display;
-	
+
 	private static float respawnTimer;
-	
+	private static float invincibleTimer;
+
 	private static String saveId;
 
 	public static BaseGame getGame() {
@@ -101,7 +102,8 @@ public class CoreLogic {
 		round = -1;
 
 		respawnTimer = -10f;
-		
+		invincibleTimer = -10f;
+
 		if (game.multiplayer) {
 			switch (myGame.gameSize) {
 			case 0:
@@ -142,8 +144,8 @@ public class CoreLogic {
 		// of entity already exist
 
 		local = new Player("Player", clientId);
-		saveId = local.getShip().getId();
 		players.put(Integer.toString(local.getId()), local);
+		saveId = local.getShip().getId();
 
 		comp = new Player("Comp", 1);
 		players.put(Integer.toString(comp.getId()), comp);
@@ -160,14 +162,28 @@ public class CoreLogic {
 	 */
 	public static void update(float delta) {
 		bulletCooldown += Gdx.graphics.getDeltaTime();
+
+		//Respawn
 		if(respawnTimer > 0)
 			respawnTimer -= Gdx.graphics.getDeltaTime();
 		else if(respawnTimer > -9f && local.getLives() > 0){
 			respawnTimer = -10f;
-			
+			invincibleTimer = 3f;
+
 			local.setShip(new Ship(saveId, local,
 					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2));
 			local.getEntitiesMap().put(saveId, local.getShip());
+			local.getShip().setInvincible(true);
+			local.modBonus(1.0f);
+		}
+
+		//Temp invincibility after respawn
+		if(invincibleTimer > 0)
+			invincibleTimer -= Gdx.graphics.getDeltaTime();
+		else if(invincibleTimer > -9f){
+			invincibleTimer = -10f;
+
+			local.getShip().setInvincible(false);
 		}
 
 		int mod = 0;
@@ -362,22 +378,22 @@ public class CoreLogic {
 					bulletCooldown = 0;
 					local.getShip().setShooting(true);
 				}
+			}
 
-				if (in.equals("forward")) {
-					Vector2 f = local.getShip().getBody()
-							.getWorldVector(new Vector2(0.0f, -100.0f));
-					Vector2 p = local
-							.getShip()
-							.getBody()
-							.getWorldPoint(
-									local.getShip().getBody().getLocalCenter()
-									.add(new Vector2(0.0f, 0.0f)));
-					local.getShip().getBody().applyForce(f, p);
-					local.getShip().setThrust(true);
-				}
+			if (in.equals("forward")) {
+				Vector2 f = local.getShip().getBody()
+						.getWorldVector(new Vector2(0.0f, -100.0f));
+				Vector2 p = local
+						.getShip()
+						.getBody()
+						.getWorldPoint(
+								local.getShip().getBody().getLocalCenter());
+				local.getShip().getBody().applyForce(f, p);
+				local.getShip().setThrust(true);
 			}
 		}
 	}
+
 
 	/**
 	 * Returns the map of all entities.

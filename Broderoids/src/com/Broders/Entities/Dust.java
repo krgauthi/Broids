@@ -15,10 +15,9 @@ public class Dust extends Entity{
 	private float age;
 	private static float deathTime = 0.3f;
 	
-	public Dust(String type, String id, Player owner, float dir, float x, float y) {
+	public Dust(String id, Player owner, float dir, float x, float y) {
 
-		super(type, id, owner);
-		super.setEnt("Dust");
+		super(id, owner);
 
 		// sprite
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();

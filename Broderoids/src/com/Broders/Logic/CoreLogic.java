@@ -40,7 +40,6 @@ public class CoreLogic {
 
 	private static float bulletCooldown;
 
-	private static int nextEntityId;
 	private static int clientId;
 
 	private static int round;
@@ -342,7 +341,7 @@ public class CoreLogic {
 				float y = (float) (local.getShip().getY() + (2.805 * Math
 						.sin(Math.toRadians(dir))));
 
-				Bullet shot = new Bullet("bullet", getSelf().nextId(),
+				Bullet shot = new Bullet(getSelf().nextId(),
 						getSelf(), dir, x, y);
 				local.getEntitiesMap().put(shot.getId(), shot);
 				bulletCooldown = 0;
@@ -383,7 +382,7 @@ public class CoreLogic {
 		LinkedList<Ship> ships = new LinkedList<Ship>();
 		for (Player p : players.values()) {
 			for (Entity entity : getEntities(p)) {
-				if (entity.getEnt().equals("ship")) {
+				if (entity instanceof Ship) {
 					ships.add((Ship) entity);
 				}
 			}
@@ -401,7 +400,7 @@ public class CoreLogic {
 		LinkedList<Asteroid> asteroids = new LinkedList<Asteroid>();
 		for (Player p : players.values()) {
 			for (Entity entity : getEntities(p)) {
-				if (entity.getEnt().equals("asteroid")) {
+				if (entity instanceof Asteroid) {
 					asteroids.add((Asteroid) entity);
 				}
 			}
@@ -419,7 +418,7 @@ public class CoreLogic {
 		LinkedList<Bullet> bullets = new LinkedList<Bullet>();
 		for (Player p : players.values()) {
 			for (Entity entity : getEntities(p)) {
-				if (entity.getEnt().equals("bullet")) {
+				if (entity instanceof Bullet) {
 					bullets.add((Bullet) entity);
 				}
 			}

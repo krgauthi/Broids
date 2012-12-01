@@ -41,7 +41,7 @@ public class Player {
 		if (type.equals("Player")) {
 			playerColor = myGame.playerColor;
 
-			playerShip = new Ship("classic", this.nextId(), this,
+			playerShip = new Ship(this.nextId(), this,
 					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
 			entities.put(playerShip.getId(), playerShip);
 

@@ -11,7 +11,7 @@ public class Player {
 	private int id;
 	private BaseGame myGame;
 	private Color playerColor;
-	private HashMap<String, Entity> entities;
+	protected HashMap<String, Entity> entities;
 	private Ship playerShip;
 	private int score;
 	private float bonus;

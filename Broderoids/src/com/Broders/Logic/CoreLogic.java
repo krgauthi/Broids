@@ -53,6 +53,17 @@ public class CoreLogic {
 		return myGame;
 	}
 
+	public static Entity findEntity(String id) {
+		String[] idParts = id.split("-");
+		if (players.containsKey(idParts[0])) {
+			Player p = players.get(idParts[0]);
+			if (p.entities.containsKey(idParts[1])) {
+				return p.entities.get(idParts[1]);
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * By the way, this is awful, but it calculates the GCD
 	 */
@@ -496,19 +507,14 @@ public class CoreLogic {
 
 	public static void cleanEntities() {
 		for (Entity i : rmEntities) {
-			System.out.println(i);
-			for (Player p : players.values()) {
-				if (p.getEntitiesMap().containsKey(i.getId())) {
-					if (i.equals("ship")) {
-						if (!myGame.multiplayer) {
-							getSelf().modLives(-1);
-						}
-					}
-					p.getEntitiesMap().remove(i.getId());
-					world.destroyBody(i.getBody());
-					i.destroy();
+			if (i instanceof Ship) {
+				if (!myGame.multiplayer && i.getOwner().getId() == clientId) {
+					getSelf().modLives(-1);
 				}
 			}
+			i.getOwner().getEntitiesMap().remove(i.getId());
+			i.destroy();
+			world.destroyBody(i.getBody());
 		}
 		rmEntities.clear();
 	}

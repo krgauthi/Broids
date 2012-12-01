@@ -135,15 +135,11 @@ public class CoreLogic {
 		// generation somehow?
 		// String instanceID = "0000"; // check map to see how many of this type
 		// of entity already exist
-<<<<<<< HEAD
-		local = new Player("Player", clientId);
-		players.put("local", local);
-		// if(host){
-=======
-		local = new Player("Player", 1);
-		players.put(Integer.toString(local.getId()), local);
 
->>>>>>> 8314ac9e32563176fdb5876c001bfd0c92f180a2
+		local = new Player("Player", clientId);
+		players.put(Integer.toString(local.getId()), local);
+		// if(host){
+		
 		comp = new Player("Comp", 0);
 		players.put("0", comp);
 

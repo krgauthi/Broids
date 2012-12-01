@@ -1,10 +1,7 @@
 package com.Broders.Logic;
 
 import java.util.HashMap;
-<<<<<<< HEAD
-=======
 
->>>>>>> 8314ac9e32563176fdb5876c001bfd0c92f180a2
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.Ship;
 import com.Broders.mygdxgame.BaseGame;

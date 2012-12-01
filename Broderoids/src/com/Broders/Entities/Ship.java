@@ -4,14 +4,12 @@ import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Player;
 import com.Broders.Logic.Settings;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -42,9 +40,9 @@ public class Ship extends Entity {
 	 *            The type of this entity
 	 * @param playerColor
 	 */
-	public Ship(String type, String id, Player owner, float x, float y) {
-		super(type, id, owner);
-		super.setEnt("ship");
+	public Ship(String id, Player owner, float x, float y) {
+		super(id, owner);
+
 		Vector2 vertices[] = new Vector2[3];
 		vertices[0] = new Vector2(-1.5f, 1.39f);
 		vertices[1] = new Vector2(-1.5f, -1.39f);
@@ -179,7 +177,7 @@ public class Ship extends Entity {
 		for(int i = 0; i < temp;i++){
 			temp = 360/temp;
 			
-			Dust D = new Dust("debris", CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i) , this.getX(), this.getY());
+			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i) , this.getX(), this.getY());
 			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 		}
 	}

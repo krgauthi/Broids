@@ -19,9 +19,7 @@ public class Asteroid extends Entity {
 	private int type;
 
 	public Asteroid(String type, String id, Player owner, Color c, float x, float y) {
-		super(type, id, owner);
-
-		this.setEnt("asteroid");
+		super(id, owner);
 
 		super.setColor(c);
 
@@ -99,7 +97,7 @@ public class Asteroid extends Entity {
 			for(int i = 0; i < temp;i++){
 				temp = 360/temp;
 				
-				Dust D = new Dust("debris", CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i), this.getX(), this.getY());
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i), this.getX(), this.getY());
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 			}
 			
@@ -149,7 +147,8 @@ public class Asteroid extends Entity {
 			float temp = (float) (5+Math.random()%10);
 			for(int i = 0; i < temp;i++){
 				temp = 360/temp;
-				Dust D = new Dust("debris", CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i), this.getX(), this.getY());
+
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i), this.getX(), this.getY());
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 			}
 			this.getX();
@@ -198,7 +197,8 @@ public class Asteroid extends Entity {
 			float temp = (float) (3+Math.random()%10);
 			for(int i = 0; i < temp;i++){
 				temp = 360/temp;
-				Dust D = new Dust("debris", CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i), this.getX(), this.getY());
+
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i), this.getX(), this.getY());
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 			}
 		}

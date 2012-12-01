@@ -17,9 +17,9 @@ public class Bullet extends Entity {
 	private static float deathTime = 1.0f;
 
 
-	public Bullet(String type, String id, Player owner, float dir, float x, float y) {
-		super(type, id, owner);
-		super.setEnt("bullet");
+	public Bullet(String id, Player owner, float dir, float x, float y) {
+		super(id, owner);
+		//super.setEnt("bullet");
 
 		// sprite
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();

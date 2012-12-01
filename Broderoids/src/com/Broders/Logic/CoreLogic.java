@@ -40,7 +40,6 @@ public class CoreLogic {
 
 	private static float bulletCooldown;
 
-	private static int nextEntityId;
 	private static int clientId;
 
 	private static int round;
@@ -131,6 +130,16 @@ public class CoreLogic {
 
 		viewPortX = (width / 2) - (widthScreen / 2f);
 		viewPortY = (height / 2) - (heightScreen / 2f);
+
+		/*
+		 * forget this Just putting these here as an example. entity IDs will be
+		 * of the following format: EntityID + TypeID + ClientID + InstanceID =
+		 * 00 00 000 0000
+		 */
+		// String clientID = "000"; // possibly let server handle clientID
+		// generation somehow?
+		// String instanceID = "0000"; // check map to see how many of this type
+		// of entity already exist
 
 		local = new Player("Player", clientId);
 		saveId = local.getShip().getId();
@@ -347,28 +356,27 @@ public class CoreLogic {
 					float y = (float) (local.getShip().getY() + (2.805 * Math
 							.sin(Math.toRadians(dir))));
 
-					Bullet shot = new Bullet("bullet", getSelf().nextId(),
+					Bullet shot = new Bullet(getSelf().nextId(),
 							getSelf(), dir, x, y);
 					local.getEntitiesMap().put(shot.getId(), shot);
 					bulletCooldown = 0;
 					local.getShip().setShooting(true);
 				}
-			}
 
-			if (in.equals("forward")) {
-				Vector2 f = local.getShip().getBody()
-						.getWorldVector(new Vector2(0.0f, -100.0f));
-				Vector2 p = local
-						.getShip()
-						.getBody()
-						.getWorldPoint(
-								local.getShip().getBody().getLocalCenter()
-								.add(new Vector2(0.0f, 0.0f)));
-				local.getShip().getBody().applyForce(f, p);
-				local.getShip().setThrust(true);
+				if (in.equals("forward")) {
+					Vector2 f = local.getShip().getBody()
+							.getWorldVector(new Vector2(0.0f, -100.0f));
+					Vector2 p = local
+							.getShip()
+							.getBody()
+							.getWorldPoint(
+									local.getShip().getBody().getLocalCenter()
+									.add(new Vector2(0.0f, 0.0f)));
+					local.getShip().getBody().applyForce(f, p);
+					local.getShip().setThrust(true);
+				}
 			}
 		}
-
 	}
 
 	/**
@@ -389,7 +397,7 @@ public class CoreLogic {
 		LinkedList<Ship> ships = new LinkedList<Ship>();
 		for (Player p : players.values()) {
 			for (Entity entity : getEntities(p)) {
-				if (entity.getEnt().equals("ship")) {
+				if (entity instanceof Ship) {
 					ships.add((Ship) entity);
 				}
 			}
@@ -407,7 +415,7 @@ public class CoreLogic {
 		LinkedList<Asteroid> asteroids = new LinkedList<Asteroid>();
 		for (Player p : players.values()) {
 			for (Entity entity : getEntities(p)) {
-				if (entity.getEnt().equals("asteroid")) {
+				if (entity instanceof Asteroid) {
 					asteroids.add((Asteroid) entity);
 				}
 			}
@@ -425,7 +433,7 @@ public class CoreLogic {
 		LinkedList<Bullet> bullets = new LinkedList<Bullet>();
 		for (Player p : players.values()) {
 			for (Entity entity : getEntities(p)) {
-				if (entity.getEnt().equals("bullet")) {
+				if (entity instanceof Bullet) {
 					bullets.add((Bullet) entity);
 				}
 			}

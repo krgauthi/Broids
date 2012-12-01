@@ -21,8 +21,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
  */
 public abstract class Entity {
 
-	private String ent;
-	private String type;
+	//private String ent;
+	//private String type;
 	protected Body body;
 	private Sprite sprite;
 
@@ -38,7 +38,7 @@ public abstract class Entity {
 	protected String id;
 	protected Player owner;
 	
-	public Entity(String type, String id, Player owner) {
+	public Entity(String id, Player owner) {
 		this.id = id;
 		this.owner = owner;
 	}
@@ -59,7 +59,7 @@ public abstract class Entity {
 	public Player getOwner() {
 		return this.owner;
 	}
-
+/*
 	public void setEnt(String ent) {
 		this.ent = ent;
 	}
@@ -67,7 +67,7 @@ public abstract class Entity {
 	public String getEnt() {
 		return ent;
 	}
-
+*/
 	/**
 	 * Gets the current X-Coordinate of the body (meters)
 	 * 
@@ -194,9 +194,9 @@ public abstract class Entity {
 	 * 
 	 * @see #getIdentity()
 	 */
-	public String toString() {
-		return this.type;
-	}
+	//public String toString() {
+	//	return this.type;
+	//}
 
 	/**
 	 * Determines the equality between this Entity and the given Entity
@@ -205,9 +205,9 @@ public abstract class Entity {
 	 *            Type to compare against
 	 * @return True if entities are the same, false otherwise
 	 */
-	public boolean equals(Entity entity) {
-		return entity.toString().equals(this.type);
-	}
+	//public boolean equals(Entity entity) {
+	//	return entity.toString().equals(this.type);
+	//}
 
 	/**
 	 * Teleports this entity to the specified coordinates on the screen. This is

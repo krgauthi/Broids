@@ -5,10 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 
-
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -44,12 +44,15 @@ public class SettingsScreen implements Screen {
 	private double perc_X;
 	private double perc_Y;	
 	
+	String message;
+	
 	public SettingsScreen(BaseGame g, MainMenu m) {
 		this.main = m;
 		this.game = g;
-
 		
-		// loadSettings();
+		message = "Touch screen for dialog";
+		spriteBatch = new SpriteBatch();
+		font = new BitmapFont();
 		
 	}
 	
@@ -65,6 +68,7 @@ public class SettingsScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		spriteBatch.begin();
+
 		
 		if (game.debugMode) {
 		// Debug Text
@@ -119,7 +123,14 @@ public class SettingsScreen implements Screen {
 		// User Name
 		font.setScale(.25f);
 		font.draw(spriteBatch, "Ship Color", (float) (game.screenWidth * .70),
-				(float) (game.screenHeight * .94));
+				(float) (game.screenHeight * .98));
+		
+		if (game.playerName == null) {
+			game.playerName = "";
+		}
+		
+		font.draw(spriteBatch, "Username " + game.playerName, (float) (game.screenWidth * .70),
+				(float) (game.screenHeight * .93));
 		
 		// ShipColor		
 		
@@ -136,7 +147,7 @@ public class SettingsScreen implements Screen {
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACK)){
 			game.setScreen(new MainMenu(game));
 		}
-		
+			
 		if(Gdx.input.justTouched()){
 			double x = ((float)Gdx.input.getX()/(float)game.screenWidth);
 			double y = (1.00 - (float)Gdx.input.getY()/(float)game.screenHeight);
@@ -145,6 +156,27 @@ public class SettingsScreen implements Screen {
 			
 			perc_X = Math.abs(Double.valueOf(twoDForm.format(x)));
 			perc_Y = Math.abs(Double.valueOf(twoDForm.format(y)));
+			
+			if ( x >= .7 && x <= .83 && y <= .93 && y >= .89 ) {
+				
+				String pretext = "";
+				
+				if (game.playerName.equals("")) {
+					pretext = "New Bro";
+				} else {
+					pretext = game.playerName;
+				}
+				
+				Gdx.input.getTextInput(new TextInputListener() {
+					@Override
+					public void input (String text) {
+						game.playerName = text;
+					}
+						
+					@Override
+					public void canceled () {}
+				}, "Enter new username", pretext);	
+			}
 			
 			if (x >= .08 && x <= .46 && y >= .12 && y <= .2) {
 				
@@ -226,7 +258,7 @@ public class SettingsScreen implements Screen {
 	private void saveSettings() throws FileNotFoundException {
 		PrintWriter pw = new PrintWriter(new File("config/broids.cfg"));
 				
-		pw.println("Username: " + "TestName");
+		pw.println("Username: " + game.playerName);
 		pw.printf("Ship Color: %s%n", swapHex(game.playerColor.toString()));
 		
 		pw.println("Background: " + this.backgroundBool);

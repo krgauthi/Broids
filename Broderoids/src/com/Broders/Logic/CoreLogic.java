@@ -53,6 +53,17 @@ public class CoreLogic {
 		return myGame;
 	}
 
+	public static Entity findEntity(String id) {
+		String[] idParts = id.split("-");
+		if (players.containsKey(idParts[0])) {
+			Player p = players.get(idParts[0]);
+			if (p.entities.containsKey(idParts[1])) {
+				return p.entities.get(idParts[1]);
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * By the way, this is awful, but it calculates the GCD
 	 */
@@ -124,14 +135,19 @@ public class CoreLogic {
 		// generation somehow?
 		// String instanceID = "0000"; // check map to see how many of this type
 		// of entity already exist
+<<<<<<< HEAD
 		local = new Player("Player", clientId);
 		players.put("local", local);
 		// if(host){
+=======
+		local = new Player("Player", 1);
+		players.put(Integer.toString(local.getId()), local);
+
+>>>>>>> 8314ac9e32563176fdb5876c001bfd0c92f180a2
 		comp = new Player("Comp", 0);
 		players.put("0", comp);
-		// }
 
-		Player temp = new Player("temp", -1);
+		Player temp = new Player("-1", -1);
 		players.put("scratch", temp);
 
 		// localPlayer = new Ship("classic",
@@ -500,18 +516,14 @@ public class CoreLogic {
 
 	public static void cleanEntities() {
 		for (Entity i : rmEntities) {
-			for (Player p : players.values()) {
-				if (p.getEntitiesMap().containsKey(i.getId())) {
-					if (i.equals("ship")) {
-						if (!myGame.multiplayer) {
-							getSelf().modLives(-1);
-						}
-					}
-					p.getEntitiesMap().remove(i.getId());
-					world.destroyBody(i.getBody());
-					i.destroy();
+			if (i instanceof Ship) {
+				if (!myGame.multiplayer && i.getOwner().getId() == clientId) {
+					getSelf().modLives(-1);
 				}
 			}
+			i.getOwner().getEntitiesMap().remove(i.getId());
+			i.destroy();
+			world.destroyBody(i.getBody());
 		}
 		rmEntities.clear();
 	}
@@ -532,7 +544,7 @@ public class CoreLogic {
 	}
 
 	public static Player getSelf() {
-		return players.get("local");
+		return players.get(Integer.toString(clientId));
 	}
 
 	public static Player getLocal() {

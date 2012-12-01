@@ -1,6 +1,10 @@
 package com.Broders.Logic;
 
 import java.util.HashMap;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8314ac9e32563176fdb5876c001bfd0c92f180a2
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.Ship;
 import com.Broders.mygdxgame.BaseGame;
@@ -10,7 +14,7 @@ public class Player {
 	private int id;
 	private BaseGame myGame;
 	private Color playerColor;
-	private HashMap<String, Entity> entities;
+	protected HashMap<String, Entity> entities;
 	private Ship playerShip;
 	private int score;
 	private float bonus;
@@ -27,6 +31,10 @@ public class Player {
 		return Integer.toString(id) + "-" + Integer.toString(nextEntityId);
 	}
 
+	public int getId() {
+		return this.id;
+	}
+	
 	public Player(String type, int id) {
 		this.id = id;
 		nextEntityId = 0;

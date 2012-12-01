@@ -1,7 +1,6 @@
 package com.Broders.Logic;
 
-import com.Broders.Entities.Entity;
-
+import com.Broders.Entities.*;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -18,44 +17,46 @@ public class CollisionLogic implements ContactListener {
 	 */
 	@Override
 	public void beginContact(Contact contact) {
-		String sA = "";
-		String sB = "";
+		Entity eA = null;
+		Entity eB = null;
 		Body bA = contact.getFixtureA().getBody();
 		if (bA.getUserData() != null) {
-			sA = ((Entity) bA.getUserData()).getEnt();
+			eA = (Entity) bA.getUserData();
 		}
 		Body bB = contact.getFixtureB().getBody();
 		if (bB.getUserData() != null) {
-			sB = ((Entity) bB.getUserData()).getEnt();
+			eB = (Entity) bB.getUserData();
 		}
 		
 		// Ship-Asteroid
-		if (sA.equals("ship") && sB.equals("asteroid")) {
-			CoreLogic.removeEntity(((Entity) bA.getUserData()));
-			//CoreLogic.removeEntity(((Entity) bB.getUserData()));
+		if (eA instanceof Ship && eB instanceof Asteroid) {
+			CoreLogic.removeEntity(eA);
+			// Uncomment if we want the asteroid to get destroyed
+			// CoreLogic.removeEntity(((Entity) bB.getUserData()));
 		}
 		// Asteroid-Ship
-		if (sA.equals("asteroid") && sB.equals("ship")) {
-			//CoreLogic.removeEntity(((Entity) bB.getUserData()));
-			CoreLogic.removeEntity(((Entity) bA.getUserData()));
+		if (eA instanceof Asteroid && eB instanceof Ship) {
+			// Uncomment if we want the asteroid to get destroyed
+			// CoreLogic.removeEntity(((Entity) bB.getUserData()));
+			CoreLogic.removeEntity(eB);
 		}
-		
+
 		// Bullet-Asteroid
-		if (sA.equals("bullet") && sB.equals("asteroid")) {
-			CoreLogic.removeEntity(((Entity) bA.getUserData()));
-			CoreLogic.removeEntity(((Entity) bB.getUserData()));
-			
-			//Call score method for the player here
-			((Entity) bA.getUserData()).getOwner().modScore(((Entity) bB.getUserData()).getPoints());
+		if (eA instanceof Bullet && eB instanceof Asteroid) {
+			CoreLogic.removeEntity(eA);
+			CoreLogic.removeEntity(eB);
+
+			// Call score method for the player here
+			eA.getOwner().modScore(eB.getPoints());
 		}
 
 		// Asteroid-Bullet
-		if (sA.equals("asteroid") && sB.equals("bullet")) {
-			CoreLogic.removeEntity(((Entity) bB.getUserData()));
-			CoreLogic.removeEntity(((Entity) bA.getUserData()));
-			
-			//Call score method for the player here
-			((Entity) bB.getUserData()).getOwner().modScore(((Entity) bA.getUserData()).getPoints());
+		if (eA instanceof Asteroid && eB instanceof Bullet) {
+			CoreLogic.removeEntity(eA);
+			CoreLogic.removeEntity(eB);
+
+			// Call score method for the player here
+			eB.getOwner().modScore(eA.getPoints());
 		}
 
 		// Ship-Bullet
@@ -68,25 +69,7 @@ public class CollisionLogic implements ContactListener {
 	 */
 	@Override
 	public void endContact(Contact contact) {
-		String sA = "";
-		String sB = "";
-		Body bA = contact.getFixtureA().getBody();
-		if (bA.getUserData() != null) {
-			sA = ((Entity) bA.getUserData()).getEnt();
-		}
-		Body bB = contact.getFixtureB().getBody();
-		if (bB.getUserData() != null) {
-			sB = ((Entity) bB.getUserData()).getEnt();
-		}
-		// Bullet-Asteroid
-		if (sA.equals("bullet") && sB.equals("asteroid")) {
-			contact.setEnabled(false);
-		}
 
-		// Asteroid-Bullet
-		if (sA.equals("asteroid") && sB.equals("bullet")) {
-			contact.setEnabled(false);
-		}
 	}
 
 	/**
@@ -94,7 +77,35 @@ public class CollisionLogic implements ContactListener {
 	 */
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
+		Entity eA = null;
+		Entity eB = null;
+		Body bA = contact.getFixtureA().getBody();
+		if (bA.getUserData() != null) {
+			eA = (Entity) bA.getUserData();
+		}
+		Body bB = contact.getFixtureB().getBody();
+		if (bB.getUserData() != null) {
+			eB = (Entity) bB.getUserData();
+		}
 
+		// Ship-Asteroid
+		if (eA instanceof Ship && eB instanceof Asteroid) {
+			contact.setEnabled(false);
+		}
+		// Asteroid-Ship
+		if (eA instanceof Asteroid && eB instanceof Ship) {
+			contact.setEnabled(false);
+		}
+
+		// Bullet-Asteroid
+		if (eA instanceof Bullet && eB instanceof Asteroid) {
+			contact.setEnabled(false);
+		}
+
+		// Asteroid-Bullet
+		if (eA instanceof Asteroid && eB instanceof Bullet) {
+			contact.setEnabled(false);
+		}
 	}
 
 	/**

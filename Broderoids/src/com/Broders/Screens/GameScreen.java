@@ -6,6 +6,7 @@ import java.util.Random;
 import com.Broders.Entities.*;
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.InputDir;
+import com.Broders.Logic.Net;
 import com.Broders.Logic.Pos;
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
@@ -19,6 +20,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.google.gson.JsonObject;
 
 public class GameScreen implements Screen {
 
@@ -67,30 +69,31 @@ public class GameScreen implements Screen {
 	float xx; // Clean reference for screen width
 	float yy; // Clean reference for screen height
 
-	public GameScreen(BaseGame game, boolean m, boolean h) {
+	public GameScreen(BaseGame game, int id, float width, float height, boolean h) {
 		this.myGame = game;
-		this.multiplayer = m;
+		this.multiplayer = id != 0;
 
-		if (m) {
+		if (this.multiplayer) {
 			System.out.println("Multi");
 		} else {
 			System.out.println("Single");
 		}
 
-
 		font = this.myGame.font;
 		font.setScale(.25f);
 
-		myGame.multiplayer = m;
+		myGame.multiplayer = this.multiplayer;
 		
 		if (this.multiplayer) {
-			// TODO: Get from json
-			CoreLogic.setClientId(10);
+			CoreLogic.setClientId(id);
+			
+			// This starts up the thread for async networking
+			Net.handleGame();
 		} else {
 			CoreLogic.setClientId(2);
 		}
 		
-		CoreLogic.initCore(game, h);
+		CoreLogic.initCore(game, width, height, h);
 
 		if (myGame.debugMode) {
 			debug1 = new Tail(50, Color.MAGENTA);
@@ -102,21 +105,18 @@ public class GameScreen implements Screen {
 
 		// this.myGame.epileptic = false;
 		rand = new Random();
-
 	}
 
 	@Override
 	public void render(float delta) {
 
 		delta = (float) (1.0/30.0);
-		// handle Input and update Backend
-		// it is up to the backend team to decide if they want to handle input
-		// seperatly or not
 
+		// Update stuff
 		update(delta);
+		
+		// Handle input
 		handleInput(delta);
-
-		// server interactions here?
 
 		// update the models on the screen
 		paint(delta);
@@ -342,6 +342,9 @@ public class GameScreen implements Screen {
 		// Backout to main menu
 		if (Gdx.input.isKeyPressed(Keys.ESCAPE)
 				|| Gdx.input.isKeyPressed(Keys.BACK)) {
+			if (multiplayer) {
+				Net.leaveGame();
+			}
 			myGame.setScreen(new MainMenu(myGame));
 		}
 

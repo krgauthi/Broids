@@ -1,18 +1,31 @@
 package com.Broders.mygdxgame;
 
 import com.Broders.Entities.Ship;
+import com.Broders.Logic.Net;
 import com.Broders.Logic.Settings;
 import com.Broders.Screens.*;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonStreamParser;
+import com.google.gson.stream.JsonWriter;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.concurrent.*;
 
 public class BaseGame extends Game {
@@ -42,8 +55,6 @@ public class BaseGame extends Game {
 	public float bounds;
 	public int gameSize; // multi only
 
-	public Semaphore entitiesLock;
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -61,13 +72,14 @@ public class BaseGame extends Game {
 		bounds = .25f; // max of .5
 		gameSize = 0;
 		godMode = false;
-		entitiesLock = new Semaphore(1);
 
 		font = new BitmapFont(Gdx.files.internal(Settings.data_path
 				+ "smallfonts.fnt"), Gdx.files.internal(Settings.data_path
 				+ "smallfonts_0.png"), false);
 
 		Gdx.input.setCatchBackKey(true);
+		
+		Net.init(this);
 
 		this.setScreen(new SplashScreen(this));
 		
@@ -80,11 +92,7 @@ public class BaseGame extends Game {
 					"named 'broids.cfg' is located in the config folder.");
 			e.printStackTrace();
 		}
-
 	}
-
-
-
 
 	@Override
 	public void render() {

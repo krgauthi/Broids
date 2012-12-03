@@ -115,7 +115,7 @@ public class MainMenu implements Screen{
 				// single player game X 650-850 Y 180 - 230
 				if(y >= .20 && y <= .28){
 					// Single Player
-					myGame.setScreen(new GameScreen(this.myGame,false,true));
+					myGame.setScreen(new GameScreen(this.myGame, 0, 0, 0 ,true));
 				}else if(y >= .32 && y <= .43){
 					// Multiplayer
 					myGame.setScreen(new MultiLobby(this.myGame));

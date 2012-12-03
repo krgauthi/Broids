@@ -61,7 +61,7 @@ public class Asteroid extends Entity {
 		bodDef.angle = (float) ((2 * MathUtils.PI) * Math.random());
 		bodDef.allowSleep = false;
 		super.createBody(bodDef, fixDef);
-
+		
 		// sprite
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 

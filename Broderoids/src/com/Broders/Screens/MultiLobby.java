@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.Broders.Logic.Net;
+import com.Broders.Logic.NetException;
 import com.Broders.Logic.Pos;
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
@@ -62,46 +63,16 @@ public class MultiLobby implements Screen {
 
 		xx = Gdx.graphics.getWidth();
 		yy = Gdx.graphics.getHeight();
-
-		games = new ArrayList<String[]>();
-		JsonObject o = new JsonObject();
-		o.addProperty("c", Net.COMMAND_LIST);
-		this.myGame.g.toJson(o, this.myGame.out);
+		
 		try {
-			this.myGame.out.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		JsonElement element = this.myGame.parser.next();
-		JsonObject ob = element.getAsJsonObject();
-		int command = ob.get("c").getAsInt();
-		if (command == Net.FRAME_ERROR) {
+			games = Net.listGames();
+		} catch (NetException e) {
 			// Trouble
-		} else if (command != Net.FRAME_LIST_RESPONSE) {
-			// Trouble
-		}
-
-		JsonArray a = ob.getAsJsonArray("d");
-		if (a == null) {
-			// Trouble
-		}
-
-		for (JsonElement gameElem : a) {
-			o = gameElem.getAsJsonObject();
-			String[] temp = new String[4];
-			temp[0] = o.get("n").getAsString();
-			temp[1] = Boolean.toString(o.get("p").getAsInt() == 0);
-			temp[2] = Integer.toString(o.get("c").getAsInt());
-			temp[3] = Integer.toString(o.get("m").getAsInt());
-
-			this.games.add(temp);
-
-			System.out.println(temp[0]);
+			System.out.println(e);
 		}
 
 		// temp
-		gameCount = a.size();
+		gameCount = games.size();
 		page = gameCount / 5;
 		curPage = 0;
 
@@ -243,7 +214,7 @@ public class MultiLobby implements Screen {
 
 				// join
 				if (x >= .24 && x <= .44) {
-					Screen temp = myGame.joinGame("broids", "");
+					Screen temp = Net.joinGame("broids", "");
 					if (temp != null) {
 						myGame.setScreen(temp);
 						// TODO: Dispose of this screen

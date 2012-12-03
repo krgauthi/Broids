@@ -18,7 +18,7 @@ public class Asteroid extends Entity {
 
 	private int type;
 
-	public Asteroid(String type, String id, Player owner, Color c, float x, float y) {
+	public Asteroid(int type, String id, Player owner, Color c, float x, float y) {
 		super(id, owner);
 
 		super.setColor(c);
@@ -29,20 +29,18 @@ public class Asteroid extends Entity {
 
 		FixtureDef fixDef = new FixtureDef();
 		CircleShape shape = new CircleShape();
-		if (type.equals("small")) {
-			this.type = SMALL;
+		this.type = type;
+		if (this.type == SMALL) {
 			super.setSize(3.75f);
 			shape.setRadius(1.5f);
 			fixDef.density = 0.10f;
 			super.setPoints(100);
-		} else if (type.equals("medium")) {
-			this.type = MEDIUM;
+		} else if (this.type == MEDIUM) {
 			super.setSize(7.5f);
 			shape.setRadius(3f);
 			fixDef.density = 0.5f;
 			super.setPoints(50);
 		} else {
-			this.type = LARGE;
 			super.setSize(15.0f);
 			shape.setRadius(6f);
 			fixDef.density = 1.0f;
@@ -107,7 +105,7 @@ public class Asteroid extends Entity {
 			y1 = (float) (this.getY() - 7.5 * Math.sin(dir));
 			y2 = (float) (this.getY() - 7.5 * Math.sin(dir));
 
-			roid1 = new Asteroid("medium", this.owner.nextId(), this.owner, CoreLogic.getGame().gameColor, x1,
+			roid1 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, CoreLogic.getGame().gameColor, x1,
 					y1);
 
 			float initForce = (float) (4000 + (2000 * Math.random()));
@@ -126,7 +124,7 @@ public class Asteroid extends Entity {
 			roid1.getBody().applyTorque(spin);
 			CoreLogic.getComp().getEntitiesMap().put(roid1.getId(), roid1);
 
-			roid2 = new Asteroid("medium", this.owner.nextId(), this.owner, CoreLogic.getGame().gameColor, x2,
+			roid2 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, CoreLogic.getGame().gameColor, x2,
 					y2);
 
 			initForce = (float) (2000 + (1000 * Math.random()));
@@ -159,7 +157,7 @@ public class Asteroid extends Entity {
 			y1 = (float) (this.getY() - 3.75 * Math.sin(dir));
 			y2 = (float) (this.getY() - 3.75 * Math.sin(dir));
 
-			roid1 = new Asteroid("small", this.owner.nextId(), this.owner, CoreLogic.getGame().gameColor, x1, y1);
+			roid1 = new Asteroid(SMALL, this.owner.nextId(), this.owner, CoreLogic.getGame().gameColor, x1, y1);
 
 			float initForce = (float) (500 + (250 * Math.random()));
 			float x = (float) (initForce * Math.cos(Math.random()*2*Math.PI));
@@ -177,7 +175,7 @@ public class Asteroid extends Entity {
 			roid1.getBody().applyTorque(spin);
 			CoreLogic.getComp().getEntitiesMap().put(roid1.getId(), roid1);
 
-			roid2 = new Asteroid("small", this.owner.nextId(), this.owner, CoreLogic.getGame().gameColor, x2, y2);
+			roid2 = new Asteroid(SMALL, this.owner.nextId(), this.owner, CoreLogic.getGame().gameColor, x2, y2);
 
 			initForce = (float) (400 + (200 * Math.random()));
 			x = (float) (initForce * Math.cos(dir));

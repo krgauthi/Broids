@@ -55,13 +55,6 @@ public class BaseGame extends Game {
 	public float bounds;
 	public int gameSize; // multi only
 
-	public Semaphore entitiesLock;
-	
-	public Socket s;
-	public JsonWriter out;
-	public JsonStreamParser parser;
-	public Gson g;
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -79,25 +72,14 @@ public class BaseGame extends Game {
 		bounds = .25f; // max of .5
 		gameSize = 0;
 		godMode = false;
-		entitiesLock = new Semaphore(1);
-		
-		// Open the network connection 
-		try {
-			g = new Gson();
-			s = new Socket("sekhmet.lug.mtu.edu", 9988);
-			out = new JsonWriter(new BufferedWriter(new OutputStreamWriter(s.getOutputStream())));
-			parser = new JsonStreamParser(new BufferedReader(new InputStreamReader(s.getInputStream())));
-		} catch (UnknownHostException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
 
 		font = new BitmapFont(Gdx.files.internal(Settings.data_path
 				+ "smallfonts.fnt"), Gdx.files.internal(Settings.data_path
 				+ "smallfonts_0.png"), false);
 
 		Gdx.input.setCatchBackKey(true);
+		
+		Net.init(this);
 
 		this.setScreen(new SplashScreen(this));
 		
@@ -110,42 +92,7 @@ public class BaseGame extends Game {
 					"named 'broids.cfg' is located in the config folder.");
 			e.printStackTrace();
 		}
-
 	}
-
-	public Screen joinGame(String game, String password) {
-		JsonObject o = new JsonObject();
-		o.addProperty("c", Net.COMMAND_JOIN);
-		
-		JsonObject d = new JsonObject();
-		d.addProperty("n", game);
-		d.addProperty("p", password);
-		this.g.toJson(o, this.out);
-		try {
-			this.out.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		o = this.parser.next().getAsJsonObject();
-		int ret = o.get("c").getAsInt();
-		if (ret == Net.FRAME_ERROR) {
-			// Trouble
-			return null;
-		} else if (ret != Net.FRAME_JOIN_RESPONSE) {
-			// Trouble
-			return null;
-		}
-		
-		d = o.get("d").getAsJsonObject();
-		
-		int id = d.get("id").getAsInt();
-		float width = d.get("w").getAsFloat();
-		float height = d.get("h").getAsFloat();
-		
-		return new GameScreen(this, id, width, height, false);
-	}
-
 
 	@Override
 	public void render() {

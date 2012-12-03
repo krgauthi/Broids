@@ -571,8 +571,7 @@ public class CoreLogic {
 	}
 	
 	public static Player getLocal() {
-		Player local = getLocal();
-		return local;
+		return getSelf();
 	}
 
 	public static boolean getRoundBool() {

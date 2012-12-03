@@ -23,8 +23,6 @@ public class CoreLogic {
 	private static HashMap<String, Player> players;
 
 	private static LinkedList<Entity> rmEntities;
-	private static Player local;
-	private static Player comp;
 
 	private static BaseGame myGame;
 	private static ContactListener collisions;
@@ -129,11 +127,11 @@ public class CoreLogic {
 		// String instanceID = "0000"; // check map to see how many of this type
 		// of entity already exist
 
-		local = new Player("Player", clientId);
+		Player local = new Player("Player", clientId);
 		players.put(Integer.toString(local.getId()), local);
 		saveId = local.getShip().getId();
 
-		comp = new Player("Comp", 1);
+		Player comp = new Player("Comp", 1);
 		players.put(Integer.toString(comp.getId()), comp);
 
 		Player temp = new Player("Temp", 0);
@@ -148,6 +146,8 @@ public class CoreLogic {
 	 */
 	public static void update(float delta) {
 		bulletCooldown += Gdx.graphics.getDeltaTime();
+		
+		Player local = getLocal();
 
 		//Respawn
 		if(respawnTimer > 0)
@@ -291,8 +291,11 @@ public class CoreLogic {
 		float x = (float) (CoreLogic.getWidth() * Math.random());
 		float y = (float) (CoreLogic.getHeight() * Math.random());
 		float dir = (float) (Math.PI * Math.random());
+		
+		Player local = getLocal();
 
 		// Prevent spawning on the player(s)
+		// TODO/NOTE: Should this use S or local.getShip()?
 		for (Ship S : getShips()) {
 			if (local.getShip().getX() - 16 <= x
 					&& x <= local.getShip().getX() + 16) {
@@ -304,7 +307,7 @@ public class CoreLogic {
 			}
 		}
 
-		Asteroid roid = new Asteroid("large", getComp().nextId(), getComp(),
+		Asteroid roid = new Asteroid(Asteroid.LARGE, getComp().nextId(), getComp(),
 				myGame.gameColor, x, y);
 
 		float initForce = (float) (4000 + (2000 * Math.random()));
@@ -322,7 +325,7 @@ public class CoreLogic {
 
 		roid.getBody().applyTorque(spin);
 
-		comp.getEntitiesMap().put(roid.getId(), roid);
+		getComp().getEntitiesMap().put(roid.getId(), roid);
 		return 0;
 	}
 
@@ -335,6 +338,7 @@ public class CoreLogic {
 	 *            The input direction
 	 */
 	public static void execute(float delta, InputDir in) {
+		Player local = getLocal();
 		if(local.getShip() != null){
 			if (in.equals("left")) {
 				local.getShip().getBody().applyTorque(500.0f);
@@ -462,6 +466,7 @@ public class CoreLogic {
 	 * @return Local player ship
 	 */
 	public static Ship getLocalShip() {
+		Player local = getLocal();
 		return local.getShip();
 	}
 
@@ -526,6 +531,7 @@ public class CoreLogic {
 	}
 
 	public static void cleanEntities() {
+		Player local = getLocal();
 		for (Entity i : rmEntities) {
 			if (i instanceof Ship) {
 				if (!myGame.multiplayer && i.getOwner().getId() == clientId) {
@@ -560,7 +566,12 @@ public class CoreLogic {
 		return players.get(Integer.toString(clientId));
 	}
 
+	public static HashMap<String, Player> getPlayersMap() {
+		return players;
+	}
+	
 	public static Player getLocal() {
+		Player local = getLocal();
 		return local;
 	}
 

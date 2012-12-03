@@ -6,6 +6,7 @@ import java.util.Random;
 import com.Broders.Entities.*;
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.InputDir;
+import com.Broders.Logic.Net;
 import com.Broders.Logic.Pos;
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
@@ -85,6 +86,9 @@ public class GameScreen implements Screen {
 		
 		if (this.multiplayer) {
 			CoreLogic.setClientId(id);
+			
+			// This starts up the thread for async networking
+			Net.handleGame();
 		} else {
 			CoreLogic.setClientId(2);
 		}
@@ -107,14 +111,12 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 
 		delta = (float) (1.0/30.0);
-		// handle Input and update Backend
-		// it is up to the backend team to decide if they want to handle input
-		// seperatly or not
 
+		// Update stuff
 		update(delta);
+		
+		// Handle input
 		handleInput(delta);
-
-		// server interactions here?
 
 		// update the models on the screen
 		paint(delta);
@@ -340,6 +342,9 @@ public class GameScreen implements Screen {
 		// Backout to main menu
 		if (Gdx.input.isKeyPressed(Keys.ESCAPE)
 				|| Gdx.input.isKeyPressed(Keys.BACK)) {
+			if (multiplayer) {
+				Net.leaveGame();
+			}
 			myGame.setScreen(new MainMenu(myGame));
 		}
 

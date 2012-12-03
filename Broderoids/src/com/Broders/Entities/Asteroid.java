@@ -33,7 +33,7 @@ public class Asteroid extends Entity {
 			this.type = SMALL;
 			super.setSize(3.75f);
 			shape.setRadius(1.5f);
-			fixDef.density = 0.125f;
+			fixDef.density = 0.10f;
 			super.setPoints(100);
 		} else if (type.equals("medium")) {
 			this.type = MEDIUM;
@@ -45,7 +45,7 @@ public class Asteroid extends Entity {
 			this.type = LARGE;
 			super.setSize(15.0f);
 			shape.setRadius(6f);
-			fixDef.density = 2.0f;
+			fixDef.density = 1.0f;
 			super.setPoints(20);
 		}
 
@@ -58,7 +58,7 @@ public class Asteroid extends Entity {
 		bodDef.linearDamping = 0.0f;
 
 		bodDef.position.set(x, y);
-		bodDef.angle = (float) (MathUtils.PI * Math.random());
+		bodDef.angle = (float) ((2 * MathUtils.PI) * Math.random());
 		bodDef.allowSleep = false;
 		super.createBody(bodDef, fixDef);
 
@@ -179,7 +179,7 @@ public class Asteroid extends Entity {
 
 			roid2 = new Asteroid("small", this.owner.nextId(), this.owner, CoreLogic.getGame().gameColor, x2, y2);
 
-			initForce = (float) (500 + (250 * Math.random()));
+			initForce = (float) (400 + (200 * Math.random()));
 			x = (float) (initForce * Math.cos(dir));
 			y = (float) (initForce * Math.sin(dir));
 

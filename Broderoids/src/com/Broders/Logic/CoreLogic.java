@@ -307,7 +307,7 @@ public class CoreLogic {
 		Asteroid roid = new Asteroid("large", getComp().nextId(), getComp(),
 				myGame.gameColor, x, y);
 
-		float initForce = (float) (4000 + (2000 * Math.random()));
+		float initForce = (float) (6000 + (3000 * Math.random()));
 		x = (float) (initForce * Math.cos(dir) * ((round / 10) + 1f));
 		y = (float) (initForce * Math.sin(dir) * ((round / 10) + 1f));
 
@@ -316,7 +316,7 @@ public class CoreLogic {
 				roid.getBody().getLocalCenter());
 		roid.getBody().applyForce(f, p);
 
-		float spin = (float) (300 + (250 * Math.random()));
+		float spin = (float) (27000 + (2000 * Math.random()));
 		if (Math.random() >= 0.5f)
 			spin *= -1;
 

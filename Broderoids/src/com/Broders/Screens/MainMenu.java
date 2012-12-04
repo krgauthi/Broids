@@ -115,13 +115,13 @@ public class MainMenu implements Screen{
 				// single player game X 650-850 Y 180 - 230
 				if(y >= .20 && y <= .28){
 					// Single Player
-					myGame.setScreen(new GameScreen(this.myGame, 0, 0, 0 ,true));
+					myGame.setScreen(BaseGame.screens.get("single"));
 				}else if(y >= .32 && y <= .43){
 					// Multiplayer
-					myGame.setScreen(new MultiLobby(this.myGame));
+					myGame.setScreen(BaseGame.screens.get("lobby"));
 				}else if(y >= .48 && y <= .60){
 					// Settings
-					myGame.setScreen(new SettingsScreen(this.myGame, this));
+					myGame.setScreen(BaseGame.screens.get("settings"));
 				}
 			}
 			
@@ -196,7 +196,7 @@ public class MainMenu implements Screen{
 
 	@Override
 	public void hide() {
-		this.dispose();
+		//this.dispose();
 	}
 
 	@Override

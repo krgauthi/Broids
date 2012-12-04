@@ -12,7 +12,6 @@ import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
@@ -25,7 +24,6 @@ import com.google.gson.JsonObject;
 public class GameScreen implements Screen {
 
 	private BaseGame myGame;
-	AssetManager assetManager;
 
 	private boolean multiplayer;
 
@@ -68,10 +66,22 @@ public class GameScreen implements Screen {
 
 	float xx; // Clean reference for screen width
 	float yy; // Clean reference for screen height
+	
+	float width2;
+	float height2;
+	boolean h2;
+	int id2;
+	
+	boolean first;
 
 	public GameScreen(BaseGame game, int id, float width, float height, boolean h) {
+		this.first = true;
 		this.myGame = game;
 		this.multiplayer = id != 0;
+		this.width2 = width;
+		this.height2 = height;
+		this.h2 = h;
+		this.id2 = id;
 
 		if (this.multiplayer) {
 			System.out.println("Multi");
@@ -83,17 +93,6 @@ public class GameScreen implements Screen {
 		font.setScale(.25f);
 
 		myGame.multiplayer = this.multiplayer;
-		
-		if (this.multiplayer) {
-			CoreLogic.setClientId(id);
-			
-			// This starts up the thread for async networking
-			Net.handleGame();
-		} else {
-			CoreLogic.setClientId(2);
-		}
-		
-		CoreLogic.initCore(game, width, height, h);
 
 		if (myGame.debugMode) {
 			debug1 = new Tail(50, Color.MAGENTA);
@@ -109,6 +108,19 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
+		if(first){
+			
+			if (this.multiplayer) {
+				CoreLogic.setClientId(id2);
+				
+				// This starts up the thread for async networking
+				Net.handleGame();
+			} else {
+				CoreLogic.setClientId(2);
+			}
+			first = false;
+			CoreLogic.initCore(myGame, width2, height2, h2);
+		}
 
 		delta = (float) (1.0/30.0);
 
@@ -345,7 +357,8 @@ public class GameScreen implements Screen {
 			if (multiplayer) {
 				Net.leaveGame();
 			}
-			myGame.setScreen(new MainMenu(myGame));
+			this.first = true;
+			myGame.setScreen(BaseGame.screens.get("main"));
 		}
 
 		// if Android
@@ -428,16 +441,6 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 1, 1);
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		spriteBatch.end();
-
-		assetManager = new AssetManager();
-
-		
-		/*
-		assetManager.load("data/healthbracket.png",Texture.class);
-		assetManager.load("data/healthbar.png",Texture.class);
-		assetManager.load("data/sheildbracket.png",Texture.class);
-		assetManager.load("data/shieldbar.png",Texture.class);
-*/
 		
 		healthBarTexture = new Texture(Gdx.files.internal("data/healthbracket.png"));
 		healthBlockTexture = new Texture(
@@ -500,7 +503,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void hide() {
 		myGame.multiplayer = false;
-		this.dispose();
+		//this.dispose();
 	}
 
 	@Override
@@ -532,13 +535,7 @@ public class GameScreen implements Screen {
 		this.white.dispose();
 
 		this.whitePixel.dispose();
-
-		CoreLogic.cleanEntities();
-		for (Entity E : CoreLogic.getAllEntities()) {
-			CoreLogic.removeEntity(E);
-		}
-
+		
 		CoreLogic.dispose();
-
 	}
 }

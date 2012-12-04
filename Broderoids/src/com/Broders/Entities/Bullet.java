@@ -4,6 +4,7 @@ import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Player;
 import com.Broders.Logic.Settings;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -14,7 +15,7 @@ public class Bullet extends Entity {
 	// private Pos pos;
 	// private float dir;
 	private float age;
-	private static float deathTime = 1.0f;
+	private static float deathTime = 0.5f;
 
 
 	public Bullet(String id, Player owner, float dir, float x, float y) {
@@ -25,13 +26,14 @@ public class Bullet extends Entity {
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
 		super.setSize(6f);
+		super.setColor();
 
 		super.setSprite(Settings.data_path + "bullet.png");
 		super.getSprite().setOrigin((meter * this.getSize()) / 2,
 				(meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(),
 				meter * this.getSize());
-		super.getSprite().setColor(CoreLogic.getGame().playerColor);
+		super.getSprite().setColor(super.getColor());
 
 		//BodyDef
 		BodyDef bodDef = new BodyDef();
@@ -50,8 +52,10 @@ public class Bullet extends Entity {
 		super.createBody(bodDef, fixDef);
 
 		// Set the velocity
-		float vX = (float) (37.5 * Math.cos(Math.toRadians(dir)));
-		float vY = (float) (37.5 * Math.sin(Math.toRadians(dir)));
+		float vX = (float) (70 * Math.cos(Math.toRadians(dir)) +
+				super.getOwner().getShip().getLinearVelocity().x);
+		float vY = (float) (70 * Math.sin(Math.toRadians(dir)) +
+				super.getOwner().getShip().getLinearVelocity().y);
 		super.body.setLinearVelocity(vX, vY);
 
 		//Set type data

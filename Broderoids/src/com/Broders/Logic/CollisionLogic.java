@@ -30,33 +30,21 @@ public class CollisionLogic implements ContactListener {
 		
 		// Ship-Asteroid
 		if (eA instanceof Ship && eB instanceof Asteroid && !((Ship) eA).isInvincible()) {
-			CoreLogic.removeEntity(eA);
-			// Uncomment if we want the asteroid to get destroyed
-			// CoreLogic.removeEntity(((Entity) bB.getUserData()));
+			CollisionLogic.shipAsteroid(eA, eB);
 		}
 		// Asteroid-Ship
 		if (eA instanceof Asteroid && eB instanceof Ship && !((Ship) eB).isInvincible()) {
-			// Uncomment if we want the asteroid to get destroyed
-			// CoreLogic.removeEntity(((Entity) bB.getUserData()));
-			CoreLogic.removeEntity(eB);
+			CollisionLogic.shipAsteroid(eB, eA);
 		}
 
 		// Bullet-Asteroid
 		if (eA instanceof Bullet && eB instanceof Asteroid) {
-			CoreLogic.removeEntity(eA);
-			CoreLogic.removeEntity(eB);
-
-			// Call score method for the player here
-			eA.getOwner().modScore(eB.getPoints());
+			CollisionLogic.bulletAsteroid(eA, eB);
 		}
 
 		// Asteroid-Bullet
 		if (eA instanceof Asteroid && eB instanceof Bullet) {
-			CoreLogic.removeEntity(eA);
-			CoreLogic.removeEntity(eB);
-
-			// Call score method for the player here
-			eB.getOwner().modScore(eA.getPoints());
+			CollisionLogic.bulletAsteroid(eB, eA);
 		}
 
 		// Ship-Bullet
@@ -102,5 +90,24 @@ public class CollisionLogic implements ContactListener {
 		// TODO Auto-generated method stub
 
 	}
+	
+	public static void shipAsteroid(Entity ship, Entity asteroid){
+		CoreLogic.removeEntity(ship);
+		// Uncomment if we want the asteroid to get destroyed
+		// CoreLogic.removeEntity(asteroid);
+		
+	}
+	
+	public static void bulletAsteroid(Entity bullet, Entity asteroid){
+		CoreLogic.removeEntity(bullet);
+		CoreLogic.removeEntity(asteroid);
 
+		// Call score method for the player here
+		bullet.getOwner().modScore(asteroid.getPoints());
+		
+	}
+	
+	public static void shipBullet(Entity ship, Entity bullet){
+		
+	}
 }

@@ -309,7 +309,7 @@ public class CoreLogic {
 
 		Asteroid roid = new Asteroid(Asteroid.LARGE, getComp().nextId(), getComp(), x, y);
 
-		float initForce = (float) (4000 + (2000 * Math.random()));
+		float initForce = (float) (6000 + (3000 * Math.random()));
 		x = (float) (initForce * Math.cos(dir) * ((round / 10) + 1f));
 		y = (float) (initForce * Math.sin(dir) * ((round / 10) + 1f));
 
@@ -318,11 +318,13 @@ public class CoreLogic {
 				roid.getBody().getLocalCenter());
 		roid.getBody().applyForce(f, p);
 
-		float spin = (float) (300 + (250 * Math.random()));
-		if (Math.random() >= 0.5f)
-			spin *= -1;
+		//float spin = (float) (27000 + (2000 * Math.random()));
+		roid.getBody().setAngularVelocity(500);
 
-		roid.getBody().applyTorque(spin);
+		//if (Math.random() >= 0.5f)
+		//	spin *= -1;
+
+		//roid.getBody().applyTorque(spin);
 
 		getComp().getEntitiesMap().put(roid.getId(), roid);
 		return 0;

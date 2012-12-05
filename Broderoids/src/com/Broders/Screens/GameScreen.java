@@ -1,8 +1,6 @@
 package com.Broders.Screens;
 
-import java.util.LinkedList;
 import java.util.Random;
-
 import com.Broders.Entities.*;
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.InputDir;
@@ -19,7 +17,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.google.gson.JsonObject;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class GameScreen implements Screen {
 
@@ -55,10 +54,13 @@ public class GameScreen implements Screen {
 	private Sprite whiteSprite;
 
 	private Sprite lives;
+	
+	private boolean paused;
+	private float pauseWait;
+	private ShapeRenderer overlay;
 
 	private SpriteBatch spriteBatch;
-
-
+	
 	private Tail debug1;
 	private Tail debug2;
 
@@ -66,12 +68,12 @@ public class GameScreen implements Screen {
 
 	float xx; // Clean reference for screen width
 	float yy; // Clean reference for screen height
-	
+
 	float width2;
 	float height2;
 	boolean h2;
 	int id2;
-	
+
 	boolean first;
 
 	public GameScreen(BaseGame game, int id, float width, float height, boolean h) {
@@ -82,6 +84,9 @@ public class GameScreen implements Screen {
 		this.height2 = height;
 		this.h2 = h;
 		this.id2 = id;
+		this.paused = false;
+		this.pauseWait = 0;
+		this.overlay = new ShapeRenderer();
 
 		if (this.multiplayer) {
 			System.out.println("Multi");
@@ -109,10 +114,10 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		if(first){
-			
+
 			if (this.multiplayer) {
 				CoreLogic.setClientId(id2);
-				
+
 				// This starts up the thread for async networking
 				Net.handleGame();
 			} else {
@@ -126,7 +131,7 @@ public class GameScreen implements Screen {
 
 		// Update stuff
 		update(delta);
-		
+
 		// Handle input
 		handleInput(delta);
 
@@ -150,8 +155,7 @@ public class GameScreen implements Screen {
 
 		// Start Drawing
 		spriteBatch.begin();
-
-
+		spriteBatch.enableBlending();
 
 		// loop through all Entities
 		for (Entity E : CoreLogic.getAllEntities()) {
@@ -197,7 +201,7 @@ public class GameScreen implements Screen {
 			out = String.format("Score: %d ", CoreLogic.getLocal().getScore());
 			// player
 			font.draw(spriteBatch, out, xx * .01f, yy * .98f);
-			
+
 			String out2 = String.format("Bonus: x%d ", (int)Math.floor(CoreLogic.getLocal().getBonus()));
 			font.draw(spriteBatch, out2, xx * .01f, yy * .94f);
 
@@ -250,7 +254,7 @@ public class GameScreen implements Screen {
 			}
 
 		}
-		
+
 		if(CoreLogic.getRoundBool()){
 			font .setScale(2f);
 			String out;
@@ -258,9 +262,16 @@ public class GameScreen implements Screen {
 			font.draw(spriteBatch, out, xx*.25f, yy*.65f);
 			font.setScale(.25f);
 		}
-
 		spriteBatch.end();
 
+		if (paused) {
+			//this.overlay = new ShapeRenderer();
+			overlay.begin(ShapeType.FilledRectangle);
+			Color temp = new Color(0.1f,0.1f,0.1f,0.1f);
+			overlay.setColor(temp);
+			overlay.filledRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			overlay.end();
+		}
 	}
 
 	/*
@@ -268,14 +279,14 @@ public class GameScreen implements Screen {
 	 */
 	private void update(float delta) {
 
-		CoreLogic.update(delta);
+		if (!paused || multiplayer) {
+			CoreLogic.update(delta);
 
-
-		if (myGame.debugMode) {
-			debug1.update();
-			debug2.update();
+			if (myGame.debugMode) {
+				debug1.update();
+				debug2.update();
+			}
 		}
-
 	}
 
 	private void handleInput(float delta) {
@@ -331,34 +342,45 @@ public class GameScreen implements Screen {
 
 		}
 
-		// arrow keys
-		if (Gdx.input.isKeyPressed(Keys.LEFT)
-				&& !Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			CoreLogic.execute(delta, InputDir.LEFT);
-		}
+		if (!paused) {
+			// arrow keys
+			if (Gdx.input.isKeyPressed(Keys.LEFT)
+					&& !Gdx.input.isKeyPressed(Keys.RIGHT)) {
+				CoreLogic.execute(delta, InputDir.LEFT);
+			}
 
-		if (Gdx.input.isKeyPressed(Keys.RIGHT)
-				&& !Gdx.input.isKeyPressed(Keys.LEFT)) {
-			CoreLogic.execute(delta, InputDir.RIGHT);
-		}
+			if (Gdx.input.isKeyPressed(Keys.RIGHT)
+					&& !Gdx.input.isKeyPressed(Keys.LEFT)) {
+				CoreLogic.execute(delta, InputDir.RIGHT);
+			}
 
-		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
-			CoreLogic.execute(delta, InputDir.SHOOT);
-			
-		}
+			if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+				CoreLogic.execute(delta, InputDir.SHOOT);
 
-		if (Gdx.input.isKeyPressed(Keys.UP)) {
-			CoreLogic.execute(delta, InputDir.FORWARD);
+			}
+
+			if (Gdx.input.isKeyPressed(Keys.UP)) {
+				CoreLogic.execute(delta, InputDir.FORWARD);
+			}
 		}
 
 		// Backout to main menu
-		if (Gdx.input.isKeyPressed(Keys.ESCAPE)
-				|| Gdx.input.isKeyPressed(Keys.BACK)) {
+		if (Gdx.input.isKeyPressed(Keys.BACKSPACE)) {
+
 			if (multiplayer) {
 				Net.leaveGame();
 			}
+
 			this.first = true;
 			myGame.setScreen(BaseGame.screens.get("main"));
+		}
+		
+		pauseWait += Gdx.graphics.getDeltaTime();
+		if (Gdx.input.isKeyPressed(Keys.ESCAPE) && pauseWait >= 0.2f) {
+			if (paused)
+				resume();
+			else pause();
+			pauseWait = 0;
 		}
 
 		// if Android
@@ -420,9 +442,7 @@ public class GameScreen implements Screen {
 					// pew pew
 					CoreLogic.execute(delta, InputDir.SHOOT);
 				}
-
 			}
-
 		}
 	}
 
@@ -441,7 +461,7 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 1, 1);
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		spriteBatch.end();
-		
+
 		healthBarTexture = new Texture(Gdx.files.internal("data/healthbracket.png"));
 		healthBlockTexture = new Texture(
 				Gdx.files.internal("data/healthbar.png"));
@@ -493,11 +513,8 @@ public class GameScreen implements Screen {
 			thrusterButton = new Sprite(thrusterButtonTexture, 512, 512);
 			thrusterButton.setPosition(xx * (.69f), yy * 0);
 			thrusterButton.setSize(yy * .32f, yy * .32f);
-
 		}
 		font.setScale(.25f);
-
-
 	}
 
 	@Override
@@ -508,12 +525,12 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void pause() {
-
+		paused = true;
 	}
 
 	@Override
 	public void resume() {
-
+		paused = false;
 	}
 
 	@Override
@@ -535,6 +552,7 @@ public class GameScreen implements Screen {
 		this.white.dispose();
 
 		this.whitePixel.dispose();
+		this.overlay.dispose();
 		
 		CoreLogic.dispose();
 	}

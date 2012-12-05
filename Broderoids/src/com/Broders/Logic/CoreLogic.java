@@ -319,13 +319,12 @@ public class CoreLogic {
 				roid.getBody().getLocalCenter());
 		roid.getBody().applyForce(f, p);
 
-		//float spin = (float) (27000 + (2000 * Math.random()));
-		roid.getBody().setAngularVelocity(500);
+		float spin = (float) (15 * Math.random());
 
-		//if (Math.random() >= 0.5f)
-		//	spin *= -1;
+		if (Math.random() >= 0.5f)
+			spin *= -1;
 
-		//roid.getBody().applyTorque(spin);
+		roid.getBody().setAngularVelocity(spin);
 
 		getComp().getEntitiesMap().put(roid.getId(), roid);
 		return 0;

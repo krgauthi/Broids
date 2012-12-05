@@ -279,7 +279,7 @@ public class GameScreen implements Screen {
 	 */
 	private void update(float delta) {
 
-		if (!paused) {
+		if (!paused || multiplayer) {
 			CoreLogic.update(delta);
 
 			if (myGame.debugMode) {
@@ -365,7 +365,7 @@ public class GameScreen implements Screen {
 		}
 
 		// Backout to main menu
-		if (Gdx.input.isKeyPressed(Keys.BACK)) {
+		if (Gdx.input.isKeyPressed(Keys.BACKSPACE)) {
 
 			if (multiplayer) {
 				Net.leaveGame();

@@ -1,9 +1,6 @@
 package com.Broders.Screens;
 
 import java.util.Random;
-
-import javax.swing.JOptionPane;
-
 import com.Broders.Entities.*;
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.InputDir;
@@ -20,6 +17,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class GameScreen implements Screen {
 
@@ -55,11 +54,13 @@ public class GameScreen implements Screen {
 	private Sprite whiteSprite;
 
 	private Sprite lives;
+	
 	private boolean paused;
 	private float pauseWait;
+	private ShapeRenderer overlay;
 
 	private SpriteBatch spriteBatch;
-
+	
 	private Tail debug1;
 	private Tail debug2;
 
@@ -85,6 +86,7 @@ public class GameScreen implements Screen {
 		this.id2 = id;
 		this.paused = false;
 		this.pauseWait = 0;
+		this.overlay = new ShapeRenderer();
 
 		if (this.multiplayer) {
 			System.out.println("Multi");
@@ -153,8 +155,7 @@ public class GameScreen implements Screen {
 
 		// Start Drawing
 		spriteBatch.begin();
-
-
+		spriteBatch.enableBlending();
 
 		// loop through all Entities
 		for (Entity E : CoreLogic.getAllEntities()) {
@@ -261,9 +262,16 @@ public class GameScreen implements Screen {
 			font.draw(spriteBatch, out, xx*.25f, yy*.65f);
 			font.setScale(.25f);
 		}
-
 		spriteBatch.end();
 
+		if (paused) {
+			//this.overlay = new ShapeRenderer();
+			overlay.begin(ShapeType.FilledRectangle);
+			Color temp = new Color(0.1f,0.1f,0.1f,0.1f);
+			overlay.setColor(temp);
+			overlay.filledRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+			overlay.end();
+		}
 	}
 
 	/*
@@ -544,7 +552,8 @@ public class GameScreen implements Screen {
 		this.white.dispose();
 
 		this.whitePixel.dispose();
-
+		this.overlay.dispose();
+		
 		CoreLogic.dispose();
 	}
 }

@@ -41,6 +41,7 @@ public class CoreLogic {
 	private static int clientId;
 
 	private static int round;
+	//private static boolean paused;
 
 	private static boolean host;
 	private static float delay;
@@ -98,6 +99,7 @@ public class CoreLogic {
 
 		bulletCooldown = 0;
 		round = -1;
+		//paused = false;
 
 		respawnTimer = -10f;
 		invincibleTimer = -10f;
@@ -145,6 +147,7 @@ public class CoreLogic {
 	 * @param delta
 	 */
 	public static void update(float delta) {
+		
 		bulletCooldown += Gdx.graphics.getDeltaTime();
 		
 		Player local = getLocal();
@@ -296,13 +299,14 @@ public class CoreLogic {
 
 		// Prevent spawning on the player(s)
 		// TODO/NOTE: Should this use S or local.getShip()?
+		//Depends upon local or host player I think.
 		for (Ship S : getShips()) {
-			if (local.getShip().getX() - 16 <= x
-					&& x <= local.getShip().getX() + 16) {
+			if (local.getShip().getX() - 8 <= x
+					&& x <= local.getShip().getX() + 8) {
 				return -1; // lols Lazy logic TODO make better lazy logic
 			}
-			if (local.getShip().getY() - 16 <= x
-					&& x <= local.getShip().getY() + 16) {
+			if (local.getShip().getY() - 8 <= x
+					&& x <= local.getShip().getY() + 8) {
 				return -1;
 			}
 		}
@@ -584,4 +588,8 @@ public class CoreLogic {
 	public static int getRound() {
 		return round;
 	}
+	
+	//public static void pause() {
+	//	paused = !paused;
+	//}
 }

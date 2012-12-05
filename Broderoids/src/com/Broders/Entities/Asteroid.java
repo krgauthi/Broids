@@ -22,9 +22,6 @@ public class Asteroid extends Entity {
 		super(id, owner);
 
 		super.setColor();
-
-		// if we implement separate files just uncomment the lines above and
-		// comment this line out
 		super.setSprite(Settings.data_path + "broid.png");
 
 		FixtureDef fixDef = new FixtureDef();
@@ -77,8 +74,6 @@ public class Asteroid extends Entity {
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

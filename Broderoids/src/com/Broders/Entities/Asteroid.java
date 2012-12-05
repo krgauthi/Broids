@@ -18,10 +18,10 @@ public class Asteroid extends Entity {
 
 	private int type;
 
-	public Asteroid(int type, String id, Player owner, Color c, float x, float y) {
+	public Asteroid(int type, String id, Player owner, float x, float y) {
 		super(id, owner);
 
-		super.setColor(c);
+		super.setColor();
 
 		// if we implement separate files just uncomment the lines above and
 		// comment this line out
@@ -104,8 +104,9 @@ public class Asteroid extends Entity {
 			x2 = (float) (this.getX() + 7.5 * Math.cos(dir));
 			y1 = (float) (this.getY() - 7.5 * Math.sin(dir));
 			y2 = (float) (this.getY() - 7.5 * Math.sin(dir));
+
 //Medium Roid1
-			roid1 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, CoreLogic.getGame().gameColor, x1,
+			roid1 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, x1,
 					y1);
 
 			float initForce = (float) (3000 + (3000 * Math.random()));
@@ -123,9 +124,9 @@ public class Asteroid extends Entity {
 			roid1.getBody().setAngularVelocity(spin);
 			
 			CoreLogic.getComp().getEntitiesMap().put(roid1.getId(), roid1);
+
 //Medium Roid2
-			roid2 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, CoreLogic.getGame().gameColor, x2,
-					y2);
+			roid2 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, x2, y2);
 
 			initForce = (float) (3000 + (3000 * Math.random()));
 			x = (float) (initForce * Math.cos(dir));
@@ -156,8 +157,9 @@ public class Asteroid extends Entity {
 			x2 = (float) (this.getX() + 3.75 * Math.cos(dir));
 			y1 = (float) (this.getY() - 3.75 * Math.sin(dir));
 			y2 = (float) (this.getY() - 3.75 * Math.sin(dir));
+
 //Small roid1
-			roid1 = new Asteroid(SMALL, this.owner.nextId(), this.owner, CoreLogic.getGame().gameColor, x1, y1);
+			roid1 = new Asteroid(SMALL, this.owner.nextId(), this.owner, x1, y1);
 
 			float initForce = (float) (400 + (200 * Math.random()));
 			float x = (float) (initForce * Math.cos(Math.random()*2*Math.PI));
@@ -174,8 +176,9 @@ public class Asteroid extends Entity {
 			roid1.getBody().setAngularVelocity(spin);
 			
 			CoreLogic.getComp().getEntitiesMap().put(roid1.getId(), roid1);
-//Small Roid2
-			roid2 = new Asteroid(SMALL, this.owner.nextId(), this.owner, CoreLogic.getGame().gameColor, x2, y2);
+
+//Small Roid2	
+			roid2 = new Asteroid(SMALL, this.owner.nextId(), this.owner, x2, y2);
 
 			initForce = (float) (400 + (200 * Math.random()));
 			x = (float) (initForce * Math.cos(dir));

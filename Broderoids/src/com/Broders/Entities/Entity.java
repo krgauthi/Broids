@@ -153,8 +153,8 @@ public abstract class Entity {
 		return this.color;
 	}
 
-	public void setColor(Color c) {
-		this.color = c;
+	public void setColor() {
+		this.color = this.owner.getColor();
 	}
 
 	/**

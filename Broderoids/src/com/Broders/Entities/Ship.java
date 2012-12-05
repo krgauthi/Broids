@@ -58,6 +58,7 @@ public class Ship extends Entity {
 
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;
+
 		bodDef.angularDamping = 14.0f;
 		bodDef.linearDamping = 0.2f;
 
@@ -67,7 +68,7 @@ public class Ship extends Entity {
 		super.createBody(bodDef, fixDef);
 
 		super.setSize(6f);
-		super.setColor(this.owner.getColor());
+		super.setColor();
 
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
@@ -75,7 +76,7 @@ public class Ship extends Entity {
 		super.getSprite().flip(false, true);
 		super.getSprite().setOrigin((meter * this.getSize()) / 2,(meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
-		super.getSprite().setColor(this.owner.getColor());
+		super.getSprite().setColor(super.getColor());
 
 		this.thrust = false;
 		Texture tempTexture = new Texture(Gdx.files.internal(Settings.data_path	+ "ship2.png"));

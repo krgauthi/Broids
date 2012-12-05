@@ -26,13 +26,15 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.HashMap;
 import java.util.concurrent.*;
 
 public class BaseGame extends Game {
 
 
-	SettingsScreen settingsScreen;
 	Settings settings;
+	
+	public static HashMap<String,Screen> screens;
 
 	public BitmapFont font;
 
@@ -62,6 +64,7 @@ public class BaseGame extends Game {
 	 */
 	@Override
 	public void create() {
+		
 		screenHeight = Gdx.graphics.getHeight();
 		screenWidth = Gdx.graphics.getWidth();
 		exitBuffer = 1;
@@ -80,8 +83,6 @@ public class BaseGame extends Game {
 		Gdx.input.setCatchBackKey(true);
 		
 		Net.init(this);
-
-		this.setScreen(new SplashScreen(this));
 		
 		settings = new Settings(this);	
 		
@@ -92,6 +93,17 @@ public class BaseGame extends Game {
 					"named 'broids.cfg' is located in the config folder.");
 			e.printStackTrace();
 		}
+		
+		screens = new HashMap<String,Screen>();
+		screens.put("splash", new SplashScreen(this));
+		screens.put("main", new MainMenu(this));
+		screens.put("settings", new SettingsScreen(this));
+		screens.put("host", new MultiHost(this));
+		screens.put("lobby", new MultiLobby(this));
+		screens.put("single", new GameScreen(this, 0, 0, 0, true));
+		screens.put("multi", new GameScreen(this, 0, 0, 0, true));
+
+		this.setScreen(BaseGame.screens.get("splash"));
 	}
 
 	@Override

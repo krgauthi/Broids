@@ -307,8 +307,7 @@ public class CoreLogic {
 			}
 		}
 
-		Asteroid roid = new Asteroid(Asteroid.LARGE, getComp().nextId(), getComp(),
-				myGame.gameColor, x, y);
+		Asteroid roid = new Asteroid(Asteroid.LARGE, getComp().nextId(), getComp(), x, y);
 
 		float initForce = (float) (6000 + (3000 * Math.random()));
 		x = (float) (initForce * Math.cos(dir) * ((round / 10) + 1f));
@@ -549,10 +548,13 @@ public class CoreLogic {
 	}
 
 	public static void dispose() {
-		// world.dispose();
-		// entities.clear();
-		// rmEntities.clear();
-		// local.getShip().destroy();
+		for(Player p: players.values()){
+			for(Entity e: p.getEntities()){
+				rmEntities.add(e);
+			}
+		}
+		cleanEntities();
+		world.dispose();
 	}
 
 	public static Player getComp() {

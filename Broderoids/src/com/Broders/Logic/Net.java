@@ -126,8 +126,7 @@ public class Net extends Thread {
 		// TODO: entity extra
 		Entity ret;
 		if (entityType == Net.ENTITY_ASTEROID) {
-			ret = new Asteroid(Asteroid.LARGE, id, owner,
-					CoreLogic.getGame().gameColor, xPos, yPos);
+			ret = new Asteroid(Asteroid.LARGE, id, owner, xPos, yPos);
 		} else if (entityType == Net.ENTITY_BULLET) {
 			ret = new Bullet(id, owner, dPos, xPos, yPos);
 		} else /* if (entityType == Net.ENTITY_SHIP) */{

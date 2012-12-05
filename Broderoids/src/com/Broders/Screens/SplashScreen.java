@@ -24,14 +24,14 @@ public class SplashScreen implements Screen {
 	public SplashScreen(BaseGame g) {
 
 		this.myGame = g;
-
+		
 	}
 
 	@Override
 	public void render(float delta) {
 		timeout -= delta;
 		if (timeout <= 0 || this.handleInput(delta)) {
-			myGame.setScreen(new MainMenu(this.myGame));
+			myGame.setScreen(BaseGame.screens.get("main"));
 			return;
 		}
 

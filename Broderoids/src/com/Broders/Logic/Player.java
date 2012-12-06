@@ -132,4 +132,12 @@ public class Player {
 		return entities.values();
 	}
 
+	public void setScore(int score) {
+			this.score = score;
+	}
+
+	public void createEntity(Entity ent, String id) {
+		this.entities.put(id, ent);
+	}
+
 }

@@ -1,6 +1,7 @@
 package com.Broders.Screens;
 
 import com.Broders.Logic.CoreLogic;
+import com.Broders.Logic.Net;
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -84,8 +85,6 @@ public class MultiHost implements Screen {
 	}
 
 	private void update(float delta) {
-		// TODO Auto-generated method stub
-
 	}
 
 	private void handleInput(float delta) {
@@ -123,12 +122,29 @@ public class MultiHost implements Screen {
 					worldSize = 2;
 				}
 			}
-
+			
 			if (inputy > .09 && inputy < .173) {
 				if (inputx > .795 && inputx < .863) {
 					myGame.gameSize = worldSize;
-					// TODO: Make this work
-					myGame.setScreen(new GameScreen(myGame, 0, 0, 0, true));
+					int x;
+					int y;
+					if (worldSize == 0) {
+						x = Gdx.graphics.getWidth();
+						y = Gdx.graphics.getHeight();
+					} else if (worldSize == 1) {
+						x = 500;
+						y = 500;
+					} else {
+						x = 1000;
+						y = 1000;
+					}
+					// TODO: Pass the right values
+					Screen s = Net.newGame("broids-temp", 5, x, y, "");
+					if (s != null) {
+						myGame.setScreen(s);
+					} else {
+						// Error
+					}
 				}
 			}
 		}
@@ -137,8 +153,6 @@ public class MultiHost implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -151,7 +165,6 @@ public class MultiHost implements Screen {
 		ship = new Texture(Gdx.files.internal("data/ship1.png"));
 		shipSprite = new Sprite(ship, 1024, 1024);
 		shipSprite.setSize(yy * .05f, yy * .05f);
-
 	}
 
 	@Override
@@ -167,8 +180,6 @@ public class MultiHost implements Screen {
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -176,7 +187,6 @@ public class MultiHost implements Screen {
 		this.spriteBatch.dispose();
 		this.white.dispose();
 		this.ship.dispose();
-
 	}
 
 }

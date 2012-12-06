@@ -9,7 +9,6 @@ import com.Broders.Entities.Bullet;
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.Ship;
 import com.Broders.mygdxgame.BaseGame;
-import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -56,6 +55,10 @@ public class CoreLogic {
 	public static BaseGame getGame() {
 		return myGame;
 	}
+	
+	public static void setGame(BaseGame game) {
+		myGame = game;
+	}
 
 	public static Entity findEntity(String id) {
 		String[] idParts = id.split("-");
@@ -90,7 +93,7 @@ public class CoreLogic {
 		world.setContactListener(collisions);
 		players = new HashMap<String, Player>();
 		rmEntities = new LinkedList<Entity>();
-		host = h;
+		setHost(h);
 
 		int gcd = gcd(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		widthScreen = Gdx.graphics.getWidth() / gcd / Gdx.graphics.getDensity()
@@ -578,6 +581,10 @@ public class CoreLogic {
 		return players;
 	}
 	
+	public static Player getPlayer(String id) {
+		return players.get(id);
+	}
+	
 	public static Player getLocal() {
 		return getSelf();
 	}
@@ -585,8 +592,34 @@ public class CoreLogic {
 	public static boolean getRoundBool() {
 		return display;
 	}
+	
+	public static void setRoundOver() {
+		display = true;
+	}
 
 	public static int getRound() {
 		return round;
 	}
+
+	public static void setHost(boolean host) {
+		CoreLogic.host = host;
+	}
+
+	public static void createPlayer(int id, String name, int score) {
+		Player playr = new Player(name, id);
+		playr.setScore(score);
+		players.put(Integer.toString(id), playr);
+	}
+	
+	public static void removePlayer(String id) {
+		players.remove(id);
+	}
+
+	public static Player findPlayer(String id) {
+		return players.get(id);
+	}
+	
+	//public static void pause() {
+	//	paused = !paused;
+	//}
 }

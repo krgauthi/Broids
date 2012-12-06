@@ -29,6 +29,14 @@ public class CollisionLogic implements ContactListener {
 			eB = (Entity) bB.getUserData();
 		}
 		
+		CollisionLogic.entityContact(eA, eB);
+	}
+	
+	public static void entityContact(Entity eA, Entity eB) {
+		if (eA == null || eB == null) {
+			return;
+		}
+
 		// Ship-Asteroid
 		if (eA instanceof Ship && eB instanceof Asteroid && !((Ship) eA).isInvincible()) {
 			CollisionLogic.shipAsteroid(eA, eB);

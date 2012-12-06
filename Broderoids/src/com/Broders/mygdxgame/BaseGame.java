@@ -83,6 +83,7 @@ public class BaseGame extends Game {
 		Gdx.input.setCatchBackKey(true);
 		
 		Net.init(this);
+		SoundManager.init();
 		
 		settings = new Settings(this);	
 		

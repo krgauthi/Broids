@@ -9,6 +9,7 @@ import com.Broders.Entities.Bullet;
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.Ship;
 import com.Broders.mygdxgame.BaseGame;
+import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -588,8 +589,4 @@ public class CoreLogic {
 	public static int getRound() {
 		return round;
 	}
-	
-	//public static void pause() {
-	//	paused = !paused;
-	//}
 }

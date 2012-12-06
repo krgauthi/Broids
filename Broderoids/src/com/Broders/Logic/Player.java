@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.Ship;
 import com.Broders.mygdxgame.BaseGame;
+import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.graphics.Color;
 
 public class Player {
@@ -96,6 +97,7 @@ public class Player {
 
 	public void modLives(int s) {
 		lives += s;
+		//SoundManager.get("muzak").setPitch(SoundManager.get("muzak"), 1f + ((s-3) *2));
 	}
 
 	public void modScore(int s) {

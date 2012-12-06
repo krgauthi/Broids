@@ -1,6 +1,7 @@
 package com.Broders.Logic;
 
 import com.Broders.Entities.*;
+import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -95,6 +96,7 @@ public class CollisionLogic implements ContactListener {
 		CoreLogic.removeEntity(ship);
 		// Uncomment if we want the asteroid to get destroyed
 		// CoreLogic.removeEntity(asteroid);
+		
 		
 	}
 	

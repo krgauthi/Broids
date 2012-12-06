@@ -3,8 +3,8 @@ package com.Broders.Entities;
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Player;
 import com.Broders.Logic.Settings;
+import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -59,6 +59,9 @@ public class Bullet extends Entity {
 
 		//Set type data
 		super.getBody().setUserData(this);
+		
+		
+		SoundManager.get("pew").play(0.8f, (float) (0.9f + Math.random() * 0.2), 1);
 	}
 
 	

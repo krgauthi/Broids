@@ -265,12 +265,14 @@ public class GameScreen implements Screen {
 		spriteBatch.end();
 
 		if (paused) {
+			
 			//this.overlay = new ShapeRenderer();
 			overlay.begin(ShapeType.FilledRectangle);
 			Color temp = new Color(0.1f,0.1f,0.1f,0.1f);
 			overlay.setColor(temp);
 			overlay.filledRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			overlay.end();
+			
 		}
 	}
 
@@ -279,7 +281,7 @@ public class GameScreen implements Screen {
 	 */
 	private void update(float delta) {
 
-		if (!paused) {
+		if (!paused || multiplayer) {
 			CoreLogic.update(delta);
 
 			if (myGame.debugMode) {
@@ -365,7 +367,7 @@ public class GameScreen implements Screen {
 		}
 
 		// Backout to main menu
-		if (Gdx.input.isKeyPressed(Keys.BACK)) {
+		if (Gdx.input.isKeyPressed(Keys.BACKSPACE)) {
 
 			if (multiplayer) {
 				Net.leaveGame();

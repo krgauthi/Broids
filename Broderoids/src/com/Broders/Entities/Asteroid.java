@@ -3,8 +3,8 @@ package com.Broders.Entities;
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Player;
 import com.Broders.Logic.Settings;
+import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -92,7 +92,10 @@ public class Asteroid extends Entity {
 				
 				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i), this.getX(), this.getY());
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
+				
 			}
+			
+			sound(0.8f);
 			
 			dir = (float) Math.toRadians(this.getAngle());
 			x1 = (float) (this.getX() + 7.5 * Math.cos(dir));
@@ -138,6 +141,9 @@ public class Asteroid extends Entity {
 
 			CoreLogic.getComp().getEntitiesMap().put(roid2.getId(), roid2);
 		} else if (this.type == MEDIUM) {
+			
+			sound(1.2f);
+			
 			float temp = (float) (5+Math.random()%10);
 			for(int i = 0; i < temp;i++){
 				temp = 360/temp;
@@ -190,6 +196,9 @@ public class Asteroid extends Entity {
 			
 			CoreLogic.getComp().getEntitiesMap().put(roid2.getId(), roid2);
 		} else {
+			
+			sound(1.6f);
+			
 			float temp = (float) (3+Math.random()%10);
 			for(int i = 0; i < temp;i++){
 				temp = 360/temp;
@@ -198,5 +207,11 @@ public class Asteroid extends Entity {
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 			}
 		}
+	}
+	
+	private void sound(float pitch) {
+		int pick = (int) Math.floor(Math.random() * 3);
+		SoundManager.get("roidBreak" + Integer.toString(pick + 1)).play(0.7f, pitch, 0);
+		
 	}
 }

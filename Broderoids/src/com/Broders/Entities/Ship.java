@@ -3,6 +3,7 @@ package com.Broders.Entities;
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Player;
 import com.Broders.Logic.Settings;
+import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -108,6 +109,13 @@ public class Ship extends Entity {
 	 *            True to enable, false to disable
 	 */
 	public void setThrust(boolean bool) {
+		/*
+		if (!thrust && bool) {
+			SoundManager.get("zoom").loop();
+		} else if (thrust && !bool) {
+			SoundManager.get("zoom").stop();
+		}
+		*/
 		this.thrust = bool;
 	}
 
@@ -181,6 +189,8 @@ public class Ship extends Entity {
 			
 			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i) , this.getX(), this.getY());
 			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
+			
+			SoundManager.get("death").play(0.6f);
 		}
 	}
 	

@@ -97,7 +97,11 @@ public class Player {
 
 	public void modLives(int s) {
 		lives += s;
-		//SoundManager.get("muzak").setPitch(SoundManager.get("muzak"), 1f + ((s-3) *2));
+		switch (lives) {
+		case 2:	SoundManager.get("muzak").setPitch(SoundManager.getMuzakId(), 1.1f); break;
+		case 1: SoundManager.get("muzak").setPitch(SoundManager.getMuzakId(), 1.5f); break;
+		default: SoundManager.get("muzak").setPitch(SoundManager.getMuzakId(), 1f);
+		}
 	}
 
 	public void modScore(int s) {

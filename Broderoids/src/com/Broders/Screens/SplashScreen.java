@@ -25,7 +25,7 @@ public class SplashScreen implements Screen {
 	public SplashScreen(BaseGame g) {
 
 		this.myGame = g;
-		SoundManager.get("muzak").loop(0.5f);
+		SoundManager.setMuzakId(SoundManager.get("muzak").loop(0.5f));
 	}
 
 	@Override

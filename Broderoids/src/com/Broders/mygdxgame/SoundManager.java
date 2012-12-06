@@ -7,8 +7,12 @@ import com.badlogic.gdx.audio.Sound;
 public class SoundManager {
 	
 	private static HashMap<String, Sound> sounds;
+	private static long muzakId;
 	
 	public static void init() {
+		
+		setMuzakId(0);
+		
 		sounds = new HashMap<String, Sound>();
 		String[][] defaultSounds = {
 				{"death","data/ShipBoom.mp3"},
@@ -35,5 +39,13 @@ public class SoundManager {
 			noise.dispose();
 		}
 		sounds = null;
+	}
+
+	public static long getMuzakId() {
+		return muzakId;
+	}
+
+	public static void setMuzakId(long muzakId) {
+		SoundManager.muzakId = muzakId;
 	}
 }

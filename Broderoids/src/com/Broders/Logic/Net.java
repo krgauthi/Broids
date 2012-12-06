@@ -68,8 +68,8 @@ public class Net extends Thread {
 		// Open the network connection
 		try {
 			g = new Gson();
-			// s = new Socket("sekhmet.lug.mtu.edu", 9988);
-			s = new Socket("localhost", 9988);
+			s = new Socket("sekhmet.lug.mtu.edu", 9988);
+			//s = new Socket("localhost", 9988);
 			out = new JsonWriter(new BufferedWriter(new OutputStreamWriter(
 					s.getOutputStream())));
 			parser = new JsonStreamParser(new BufferedReader(

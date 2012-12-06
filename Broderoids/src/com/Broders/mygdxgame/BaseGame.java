@@ -1,6 +1,6 @@
 package com.Broders.mygdxgame;
 
-import com.Broders.Entities.Ship;
+import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Net;
 import com.Broders.Logic.Settings;
 import com.Broders.Screens.*;
@@ -8,26 +8,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonStreamParser;
-import com.google.gson.stream.JsonWriter;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.HashMap;
-import java.util.concurrent.*;
 
 public class BaseGame extends Game {
 
@@ -64,6 +48,9 @@ public class BaseGame extends Game {
 	 */
 	@Override
 	public void create() {
+		
+		// TODO: Put this in a better place, remove the method
+		CoreLogic.setGame(this);
 		
 		screenHeight = Gdx.graphics.getHeight();
 		screenWidth = Gdx.graphics.getWidth();

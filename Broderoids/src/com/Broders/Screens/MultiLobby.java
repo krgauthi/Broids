@@ -63,13 +63,8 @@ public class MultiLobby implements Screen {
 
 		xx = Gdx.graphics.getWidth();
 		yy = Gdx.graphics.getHeight();
-		
-		try {
-			games = Net.listGames();
-		} catch (NetException e) {
-			// Trouble
-			System.out.println(e);
-		}
+
+		games = Net.listGames();
 
 		// temp
 		gameCount = games.size();

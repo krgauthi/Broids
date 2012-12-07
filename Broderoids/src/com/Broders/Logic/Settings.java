@@ -53,6 +53,8 @@ public class Settings {
 			loadUsername(value);
 		} else if (option.equals("ship color")) {
 			loadShipColor(value);
+		} else if (option.equals("world color")) {
+			loadWorldColor(value);		
 		} else if (option.equals("background")) {
 			loadBackgroundSetting(value);
 		} else if (option.equals("volume")) {
@@ -84,6 +86,12 @@ public class Settings {
 		value = value.replaceAll("#", "").trim();
 		value = "FF" + value;
 		game.playerColor.set(colorFromHexString(value));
+	}
+	
+	public void loadWorldColor(String value) {
+		value = value.replaceAll("#", "").trim();
+		value = "FF" + value;
+		game.gameColor.set(colorFromHexString(value));
 	}
 	
 	// still need to figure out what we're doing for this, if anything
@@ -179,7 +187,7 @@ public class Settings {
     // @param s The hex string to create the Color object from
     // @return
    
-   private Color colorFromHexString(String s)
+   public Color colorFromHexString(String s)
    {               
            if(s.startsWith("0x"))
                    s = s.substring(2);

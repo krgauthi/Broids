@@ -30,9 +30,8 @@ import java.util.concurrent.*;
 
 public class BaseGame extends Game {
 
-
 	SettingsScreen settingsScreen;
-	Settings settings;
+	public Settings settings;
 
 	public BitmapFont font;
 
@@ -68,7 +67,7 @@ public class BaseGame extends Game {
 		difficulty = 5;
 		multiplayer = false;
 		gameColor = Color.GREEN;
-		playerColor = Color.GREEN;
+		playerColor = Color.MAGENTA;
 		bounds = .25f; // max of .5
 		gameSize = 0;
 		godMode = false;
@@ -89,7 +88,7 @@ public class BaseGame extends Game {
 			settings.loadSettings();
 		} catch (FileNotFoundException e) {
 			System.out.println("Unable to find settings file, make sure a file " +
-					"named 'broids.cfg' is located in the config folder.");
+					"named 'broids.cfg' is located in the assets/data folder.");
 			e.printStackTrace();
 		}
 	}

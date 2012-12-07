@@ -8,6 +8,7 @@ import com.Broders.Logic.Net;
 import com.Broders.Logic.Pos;
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
+import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -374,6 +375,7 @@ public class GameScreen implements Screen {
 			}
 
 			this.first = true;
+			SoundManager.get("muzak").setPitch(SoundManager.getMuzakId(), 1f);
 			myGame.setScreen(BaseGame.screens.get("main"));
 		}
 		

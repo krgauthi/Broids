@@ -1,7 +1,6 @@
 package com.Broders.Logic;
 
 import com.Broders.Entities.*;
-import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -37,28 +36,34 @@ public class CollisionLogic implements ContactListener {
 			return;
 		}
 
-		// Ship-Asteroid
-		if (eA instanceof Ship && eB instanceof Asteroid && !((Ship) eA).isInvincible()) {
-			CollisionLogic.shipAsteroid(eA, eB);
+		if (CoreLogic.getGame().multiplayer && CoreLogic.getHost()) {
+			// TODO: Send frame
 		}
-		// Asteroid-Ship
-		if (eA instanceof Asteroid && eB instanceof Ship && !((Ship) eB).isInvincible()) {
-			CollisionLogic.shipAsteroid(eB, eA);
+		
+		if (!CoreLogic.getGame().multiplayer || CoreLogic.getHost()) {
+			// Ship-Asteroid
+			if (eA instanceof Ship && eB instanceof Asteroid && !((Ship) eA).isInvincible()) {
+				CollisionLogic.shipAsteroid(eA, eB);
+			}
+			// Asteroid-Ship
+			if (eA instanceof Asteroid && eB instanceof Ship && !((Ship) eB).isInvincible()) {
+				CollisionLogic.shipAsteroid(eB, eA);
+			}
+	
+			// Bullet-Asteroid
+			if (eA instanceof Bullet && eB instanceof Asteroid) {
+				CollisionLogic.bulletAsteroid(eA, eB);
+			}
+	
+			// Asteroid-Bullet
+			if (eA instanceof Asteroid && eB instanceof Bullet) {
+				CollisionLogic.bulletAsteroid(eB, eA);
+			}
+	
+			// Ship-Bullet
+	
+			// Bullet-Ship
 		}
-
-		// Bullet-Asteroid
-		if (eA instanceof Bullet && eB instanceof Asteroid) {
-			CollisionLogic.bulletAsteroid(eA, eB);
-		}
-
-		// Asteroid-Bullet
-		if (eA instanceof Asteroid && eB instanceof Bullet) {
-			CollisionLogic.bulletAsteroid(eB, eA);
-		}
-
-		// Ship-Bullet
-
-		// Bullet-Ship
 	}
 
 	/**

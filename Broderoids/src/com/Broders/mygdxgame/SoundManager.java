@@ -19,7 +19,7 @@ public class SoundManager {
 				{"roidBreak1", "data/AsteroidBoom1.wav"},
 				{"roidBreak2", "data/AsteroidBoom2.wav"},
 				{"roidBreak3", "data/AsteroidBoom3.wav"},
-				{"pew","data/shot.mp3"},
+				{"pew","data/Shot.mp3"},
 				{"muzak", "data/Broderoids.mp3"},
 				{"zoom", "data/Thrust.mp3"}
 		};

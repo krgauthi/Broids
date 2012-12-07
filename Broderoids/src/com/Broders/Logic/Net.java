@@ -4,6 +4,7 @@ import com.Broders.Entities.*;
 import com.Broders.Screens.GameScreen;
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.math.Vector2;
 import com.google.gson.*;
 import com.google.gson.stream.*;
 
@@ -68,8 +69,8 @@ public class Net extends Thread {
 		// Open the network connection
 		try {
 			g = new Gson();
-			s = new Socket("sekhmet.lug.mtu.edu", 9988);
-			//s = new Socket("localhost", 9988);
+			// s = new Socket("sekhmet.lug.mtu.edu", 9988);
+			s = new Socket("localhost", 9988);
 			out = new JsonWriter(new BufferedWriter(new OutputStreamWriter(
 					s.getOutputStream())));
 			parser = new JsonStreamParser(new BufferedReader(
@@ -82,47 +83,94 @@ public class Net extends Thread {
 
 		l = new ReentrantLock();
 	}
-	
+
 	public static void leaveGame() {
 		JsonObject o = new JsonObject();
 		o.addProperty("c", COMMAND_GAME_LEAVE);
 		Net.send(o);
 	}
-	
+
+	public static void createEntity(Entity e) {
+		JsonObject o = new JsonObject();
+		o.addProperty("c", COMMAND_GAME_ENTITY_CREATE);
+		Net.entitySend(o, e);
+	}
+
+	public static void modifyEntity(Entity e) {
+		JsonObject o = new JsonObject();
+		o.addProperty("c", COMMAND_GAME_ENTITY_MODIFY);
+		Net.entitySend(o, e);
+	}
+
+	public static void removeEntity(Entity e) {
+		JsonObject o = new JsonObject();
+		o.addProperty("c", COMMAND_GAME_ENTITY_REMOVE);
+		o.addProperty("d", e.getId());
+		System.out.println(e.getId());
+		Net.send(o);
+	}
+
+	private static int entityType(Entity e) {
+		if (e instanceof Ship) {
+			return ENTITY_SHIP;
+		} else if (e instanceof Bullet) {
+			return ENTITY_BULLET;
+		} else {
+			return ENTITY_ASTEROID;
+		}
+	}
+
+	private static void entitySend(JsonObject o, Entity e) {
+		JsonObject d = new JsonObject();
+		d.addProperty("t", Net.entityType(e));
+		d.addProperty("id", e.getId());
+		d.addProperty("x", e.getX());
+		d.addProperty("y", e.getY());
+		Vector2 linVel = e.getLinearVelocity();
+		d.addProperty("xv", linVel.x);
+		d.addProperty("yv", linVel.y);
+		d.addProperty("a", e.getAngle());
+		d.addProperty("av", e.getAngularVelocity());
+
+		o.add("d", d);
+		Net.send(o);
+	}
+
 	public static Screen joinGame(String name, String pass) {
 		JsonObject o = new JsonObject();
 		o.addProperty("c", COMMAND_LOBBY_JOIN);
-		
+
 		JsonObject d = new JsonObject();
 		d.addProperty("n", name);
 		d.addProperty("p", pass);
 		o.add("d", d);
-		
+
 		Net.send(o);
-		
+
 		JsonElement e = parser.next();
 		JsonObject inner = e.getAsJsonObject();
 		int c = inner.get("c").getAsInt();
-		
+
 		// TODO: Useful errors
 		if (c == FRAME_ERROR) {
 			return null;
 		} else if (c != FRAME_LOBBY_JOIN) {
 			return null;
 		}
-		
+
 		float x = inner.get("x").getAsFloat();
 		float y = inner.get("y").getAsFloat();
 		boolean hosting = inner.get("h").getAsBoolean();
 		int id = inner.get("i").getAsInt();
-		
+
 		return new GameScreen(CoreLogic.getGame(), id, x, y, hosting);
 	}
-	
-	public static Screen newGame(String name, int limit, float x, float y, String pass) {
+
+	public static Screen newGame(String name, int limit, float x, float y,
+			String pass) {
 		JsonObject o = new JsonObject();
 		o.addProperty("c", COMMAND_LOBBY_CREATE);
-		
+
 		JsonObject d = new JsonObject();
 		d.addProperty("n", name);
 		d.addProperty("p", pass);
@@ -130,47 +178,47 @@ public class Net extends Thread {
 		d.addProperty("x", x);
 		d.addProperty("y", y);
 		o.add("d", d);
-		
+
 		Net.send(o);
-		
+
 		JsonElement e = parser.next();
 		JsonObject outer = e.getAsJsonObject();
 		int c = outer.get("c").getAsInt();
-		
+
 		// TODO: Useful errors
 		if (c == FRAME_ERROR) {
 			return null;
 		} else if (c != FRAME_LOBBY_JOIN) {
 			return null;
 		}
-		
+
 		JsonObject inner = outer.get("d").getAsJsonObject();
-		
-		//float x = inner.get("x").getAsFloat();
-		//float y = inner.get("y").getAsFloat();
+
+		// float x = inner.get("x").getAsFloat();
+		// float y = inner.get("y").getAsFloat();
 		boolean hosting = inner.get("h").getAsBoolean();
 		int id = inner.get("i").getAsInt();
-		
+
 		System.out.println(inner);
-		
+
 		return new GameScreen(CoreLogic.getGame(), id, x, y, hosting);
 	}
-	
+
 	public static ArrayList<String[]> listGames() {
 		JsonObject o = new JsonObject();
 		o.addProperty("c", COMMAND_LOBBY_LIST);
 		Net.send(o);
-		
+
 		o = parser.next().getAsJsonObject();
 		ArrayList<String[]> ret = new ArrayList<String[]>();
-		
+
 		int command = o.get("c").getAsInt();
 		if (command == Net.FRAME_ERROR) {
 			return ret;
 		} else if (command != Net.FRAME_LOBBY_LIST) {
 			return ret;
 		}
-		
+
 		JsonArray a = o.get("d").getAsJsonArray();
 		for (JsonElement e : a) {
 			JsonObject inner = e.getAsJsonObject();
@@ -181,7 +229,7 @@ public class Net extends Thread {
 			s[3] = Integer.toString(inner.get("l").getAsInt());
 			ret.add(s);
 		}
-		
+
 		return ret;
 	}
 
@@ -254,13 +302,13 @@ public class Net extends Thread {
 				int id = o.get("i").getAsInt();
 				String name = o.get("n").getAsString();
 				int score = o.get("s").getAsInt();
-				
+
 				CoreLogic.createPlayer(id, name, score);
 			} else if (frameType == FRAME_GAME_PLAYER_MODIFY) {
 				JsonObject o = obj.get("d").getAsJsonObject();
 				int id = o.get("i").getAsInt();
 				int score = o.get("s").getAsInt();
-				
+
 				Player p = CoreLogic.getPlayer(Integer.toString(id));
 				p.setScore(score);
 			} else if (frameType == FRAME_GAME_PLAYER_REMOVE) {
@@ -280,7 +328,7 @@ public class Net extends Thread {
 				float x = o.get("x").getAsFloat();
 				float y = o.get("y").getAsFloat();
 				float xv = o.get("xv").getAsFloat();
-				float yv= o.get("yv").getAsFloat();
+				float yv = o.get("yv").getAsFloat();
 				float a = o.get("a").getAsFloat();
 				float av = o.get("av").getAsFloat();
 
@@ -308,16 +356,19 @@ public class Net extends Thread {
 				float x = o.get("x").getAsFloat();
 				float y = o.get("y").getAsFloat();
 				float xv = o.get("xv").getAsFloat();
-				float yv= o.get("yv").getAsFloat();
+				float yv = o.get("yv").getAsFloat();
 				float a = o.get("a").getAsFloat();
 				float av = o.get("av").getAsFloat();
 
 				Entity ent = CoreLogic.findEntity(id);
 				ent.teleport(x, y, a, av, xv, yv);
 			} else if (frameType == FRAME_GAME_ENTITY_REMOVE) {
-				String data = obj.get("d").getAsString();
-				Entity ent = CoreLogic.findEntity(data);
-				CoreLogic.removeEntity(ent);
+				if (!CoreLogic.getHost()) {
+					String data = obj.get("d").getAsString();
+
+					Entity ent = CoreLogic.findEntity(data);
+					CoreLogic.removeEntity(ent);
+				}
 			} else if (frameType == FRAME_GAME_ROUND_OVER) {
 				CoreLogic.setRoundOver();
 			} else if (frameType == FRAME_GAME_HOST_CHANGE) {
@@ -327,7 +378,7 @@ public class Net extends Thread {
 				Net.unlock();
 				break;
 			} else {
-				
+
 			}
 			Net.unlock();
 		}

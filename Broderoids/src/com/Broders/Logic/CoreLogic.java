@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.Broders.Entities.Asteroid;
 import com.Broders.Entities.Bullet;
+import com.Broders.Entities.Dust;
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.Ship;
 import com.Broders.mygdxgame.BaseGame;
@@ -79,6 +80,10 @@ public class CoreLogic {
 			return p;
 		}
 		return gcd(q, p % q);
+	}
+	
+	public static boolean getHost() {
+		return host;
 	}
 
 	/**
@@ -334,6 +339,8 @@ public class CoreLogic {
 		roid.getBody().setAngularVelocity(spin);
 
 		getComp().getEntitiesMap().put(roid.getId(), roid);
+		
+		Net.createEntity(roid);
 		return 0;
 	}
 
@@ -348,10 +355,13 @@ public class CoreLogic {
 	public static void execute(float delta, InputDir in) {
 		Player local = getLocal();
 		if(local.getShip() != null){
+			boolean mod = false;
 			if (in.equals("left")) {
 				local.getShip().getBody().applyTorque(500.0f);
+				mod = true;
 			} else if (in.equals("right")) {
 				local.getShip().getBody().applyTorque(-500.0f);
+				mod = true;
 			}
 
 			if (in.equals("backward")) {
@@ -359,6 +369,7 @@ public class CoreLogic {
 						.getWorldVector(new Vector2(0.0f, 30.0f));
 				Vector2 p = local.getShip().getBody().getWorldCenter();
 				local.getShip().getBody().applyForce(f, p);
+				mod = true;
 			}
 
 			if (in.equals("shoot")) {
@@ -375,6 +386,7 @@ public class CoreLogic {
 					local.getEntitiesMap().put(shot.getId(), shot);
 					bulletCooldown = 0;
 					local.getShip().setShooting(true);
+					Net.createEntity(shot);
 				}
 			}
 
@@ -388,6 +400,11 @@ public class CoreLogic {
 								local.getShip().getBody().getLocalCenter());
 				local.getShip().getBody().applyForce(f, p);
 				local.getShip().setThrust(true);
+				mod = true;
+			}
+			
+			if (mod) {
+				Net.modifyEntity(local.getShip());
 			}
 		}
 	}
@@ -548,6 +565,11 @@ public class CoreLogic {
 					respawnTimer = 3.0f;
 				}
 			}
+
+			if (myGame.multiplayer && host && !(i instanceof Dust)) {
+				Net.removeEntity(i);
+			}
+
 			i.getOwner().getEntitiesMap().remove(i.getId());
 			i.destroy();
 			world.destroyBody(i.getBody());

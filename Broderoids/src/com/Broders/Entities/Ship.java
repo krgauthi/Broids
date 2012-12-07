@@ -29,6 +29,7 @@ public class Ship extends Entity {
 	private Boolean shooting;
 	private Sprite sprite;
 	private boolean invincible;
+	private boolean thrustLast;
 	
 	// TODO implement method for sound shooting and death sound
 
@@ -80,6 +81,8 @@ public class Ship extends Entity {
 		super.getSprite().setColor(super.getColor());
 
 		this.thrust = false;
+		this.thrustLast = false;
+		
 		Texture tempTexture = new Texture(Gdx.files.internal(Settings.data_path	+ "ship2.png"));
 		this.sprite = new Sprite(tempTexture, 1024, 1024);
 		this.sprite.flip(false, true);
@@ -109,13 +112,14 @@ public class Ship extends Entity {
 	 *            True to enable, false to disable
 	 */
 	public void setThrust(boolean bool) {
-		/*
-		if (!thrust && bool) {
-			SoundManager.get("zoom").loop();
-		} else if (thrust && !bool) {
+		
+		if (!thrustLast && bool) {
+			SoundManager.get("zoom").loop(0.7f, (float) (0.8f + Math.random() * 0.4f), 0);
+		} else if (thrustLast && !bool) {
 			SoundManager.get("zoom").stop();
 		}
-		*/
+		
+		this.thrustLast = this.thrust;
 		this.thrust = bool;
 	}
 
@@ -190,7 +194,8 @@ public class Ship extends Entity {
 			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i) , this.getX(), this.getY());
 			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 			
-			SoundManager.get("death").play(0.6f);
+			setThrust(false);
+			SoundManager.get("death").play(0.65f, 0.85f, 0);
 		}
 	}
 	

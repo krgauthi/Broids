@@ -1,6 +1,6 @@
 package com.Broders.mygdxgame;
 
-import com.Broders.Entities.Ship;
+import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Net;
 import com.Broders.Logic.Settings;
 import com.Broders.Screens.*;
@@ -8,30 +8,18 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonStreamParser;
-import com.google.gson.stream.JsonWriter;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.concurrent.*;
+import java.util.HashMap;
 
 public class BaseGame extends Game {
 
 	SettingsScreen settingsScreen;
 	public Settings settings;
+
+	public static HashMap<String,Screen> screens;
+>>>>>>> afe5139216d4b7e421043f2aa46dee524584b05d
 
 	public BitmapFont font;
 
@@ -53,6 +41,7 @@ public class BaseGame extends Game {
 	
 	public float bounds;
 	public int gameSize; // multi only
+	public boolean connected;
 
 	/*
 	 * (non-Javadoc)
@@ -61,6 +50,10 @@ public class BaseGame extends Game {
 	 */
 	@Override
 	public void create() {
+		
+		// TODO: Put this in a better place, remove the method
+		CoreLogic.setGame(this);
+		
 		screenHeight = Gdx.graphics.getHeight();
 		screenWidth = Gdx.graphics.getWidth();
 		exitBuffer = 1;
@@ -79,8 +72,8 @@ public class BaseGame extends Game {
 		Gdx.input.setCatchBackKey(true);
 		
 		Net.init(this);
-
-		this.setScreen(new SplashScreen(this));
+		
+		SoundManager.init();
 		
 		settings = new Settings(this);	
 		
@@ -91,6 +84,19 @@ public class BaseGame extends Game {
 					"named 'broids.cfg' is located in the assets/data folder.");
 			e.printStackTrace();
 		}
+		
+		screens = new HashMap<String,Screen>();
+		screens.put("splash", new SplashScreen(this));
+		screens.put("main", new MainMenu(this));
+		screens.put("settings", new SettingsScreen(this));
+		if (connected) {
+			screens.put("host", new MultiHost(this));
+			screens.put("lobby", new MultiLobby(this));
+		}
+		screens.put("single", new GameScreen(this, 0, 0, 0, true));
+		screens.put("multi", new GameScreen(this, 0, 0, 0, true));
+
+		this.setScreen(BaseGame.screens.get("splash"));
 	}
 
 	@Override
@@ -113,5 +119,13 @@ public class BaseGame extends Game {
 
 	@Override
 	public void resume() {
+	}
+	
+	public void setConnected(boolean c) {
+		connected = c;
+	}
+
+	public boolean isConnected() {
+		return connected;
 	}
 }

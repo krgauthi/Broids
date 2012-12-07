@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.Broders.Entities.Asteroid;
 import com.Broders.Entities.Bullet;
+import com.Broders.Entities.Dust;
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.Ship;
 import com.Broders.mygdxgame.BaseGame;
@@ -41,6 +42,7 @@ public class CoreLogic {
 	private static int clientId;
 
 	private static int round;
+	//private static boolean paused;
 
 	private static boolean host;
 	private static float delay;
@@ -53,6 +55,10 @@ public class CoreLogic {
 
 	public static BaseGame getGame() {
 		return myGame;
+	}
+	
+	public static void setGame(BaseGame game) {
+		myGame = game;
 	}
 
 	public static Entity findEntity(String id) {
@@ -75,6 +81,10 @@ public class CoreLogic {
 		}
 		return gcd(q, p % q);
 	}
+	
+	public static boolean getHost() {
+		return host;
+	}
 
 	/**
 	 * Initializes the game core for use.
@@ -88,7 +98,7 @@ public class CoreLogic {
 		world.setContactListener(collisions);
 		players = new HashMap<String, Player>();
 		rmEntities = new LinkedList<Entity>();
-		host = h;
+		setHost(h);
 
 		int gcd = gcd(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		widthScreen = Gdx.graphics.getWidth() / gcd / Gdx.graphics.getDensity()
@@ -98,6 +108,7 @@ public class CoreLogic {
 
 		bulletCooldown = 0;
 		round = -1;
+		//paused = false;
 
 		respawnTimer = -10f;
 		invincibleTimer = -10f;
@@ -145,6 +156,7 @@ public class CoreLogic {
 	 * @param delta
 	 */
 	public static void update(float delta) {
+		
 		bulletCooldown += Gdx.graphics.getDeltaTime();
 		
 		Player local = getLocal();
@@ -296,21 +308,21 @@ public class CoreLogic {
 
 		// Prevent spawning on the player(s)
 		// TODO/NOTE: Should this use S or local.getShip()?
+		//Depends upon local or host player I think.
 		for (Ship S : getShips()) {
-			if (local.getShip().getX() - 16 <= x
-					&& x <= local.getShip().getX() + 16) {
+			if (local.getShip().getX() - 8 <= x
+					&& x <= local.getShip().getX() + 8) {
 				return -1; // lols Lazy logic TODO make better lazy logic
 			}
-			if (local.getShip().getY() - 16 <= x
-					&& x <= local.getShip().getY() + 16) {
+			if (local.getShip().getY() - 8 <= x
+					&& x <= local.getShip().getY() + 8) {
 				return -1;
 			}
 		}
 
-		Asteroid roid = new Asteroid(Asteroid.LARGE, getComp().nextId(), getComp(),
-				myGame.gameColor, x, y);
+		Asteroid roid = new Asteroid(Asteroid.LARGE, getComp().nextId(), getComp(), x, y);
 
-		float initForce = (float) (4000 + (2000 * Math.random()));
+		float initForce = (float) (6000 + (3000 * Math.random()));
 		x = (float) (initForce * Math.cos(dir) * ((round / 10) + 1f));
 		y = (float) (initForce * Math.sin(dir) * ((round / 10) + 1f));
 
@@ -319,13 +331,16 @@ public class CoreLogic {
 				roid.getBody().getLocalCenter());
 		roid.getBody().applyForce(f, p);
 
-		float spin = (float) (300 + (250 * Math.random()));
+		float spin = (float) (15 * Math.random());
+
 		if (Math.random() >= 0.5f)
 			spin *= -1;
 
-		roid.getBody().applyTorque(spin);
+		roid.getBody().setAngularVelocity(spin);
 
 		getComp().getEntitiesMap().put(roid.getId(), roid);
+		
+		Net.createEntity(roid);
 		return 0;
 	}
 
@@ -340,10 +355,13 @@ public class CoreLogic {
 	public static void execute(float delta, InputDir in) {
 		Player local = getLocal();
 		if(local.getShip() != null){
+			boolean mod = false;
 			if (in.equals("left")) {
 				local.getShip().getBody().applyTorque(500.0f);
+				mod = true;
 			} else if (in.equals("right")) {
 				local.getShip().getBody().applyTorque(-500.0f);
+				mod = true;
 			}
 
 			if (in.equals("backward")) {
@@ -351,6 +369,7 @@ public class CoreLogic {
 						.getWorldVector(new Vector2(0.0f, 30.0f));
 				Vector2 p = local.getShip().getBody().getWorldCenter();
 				local.getShip().getBody().applyForce(f, p);
+				mod = true;
 			}
 
 			if (in.equals("shoot")) {
@@ -367,6 +386,7 @@ public class CoreLogic {
 					local.getEntitiesMap().put(shot.getId(), shot);
 					bulletCooldown = 0;
 					local.getShip().setShooting(true);
+					Net.createEntity(shot);
 				}
 			}
 
@@ -380,6 +400,11 @@ public class CoreLogic {
 								local.getShip().getBody().getLocalCenter());
 				local.getShip().getBody().applyForce(f, p);
 				local.getShip().setThrust(true);
+				mod = true;
+			}
+			
+			if (mod) {
+				Net.modifyEntity(local.getShip());
 			}
 		}
 	}
@@ -540,6 +565,11 @@ public class CoreLogic {
 					respawnTimer = 3.0f;
 				}
 			}
+
+			if (myGame.multiplayer && host && !(i instanceof Dust)) {
+				Net.removeEntity(i);
+			}
+
 			i.getOwner().getEntitiesMap().remove(i.getId());
 			i.destroy();
 			world.destroyBody(i.getBody());
@@ -548,10 +578,13 @@ public class CoreLogic {
 	}
 
 	public static void dispose() {
-		// world.dispose();
-		// entities.clear();
-		// rmEntities.clear();
-		// local.getShip().destroy();
+		for(Player p: players.values()){
+			for(Entity e: p.getEntities()){
+				rmEntities.add(e);
+			}
+		}
+		cleanEntities();
+		world.dispose();
 	}
 
 	public static Player getComp() {
@@ -570,6 +603,10 @@ public class CoreLogic {
 		return players;
 	}
 	
+	public static Player getPlayer(String id) {
+		return players.get(id);
+	}
+	
 	public static Player getLocal() {
 		return getSelf();
 	}
@@ -577,8 +614,34 @@ public class CoreLogic {
 	public static boolean getRoundBool() {
 		return display;
 	}
+	
+	public static void setRoundOver() {
+		display = true;
+	}
 
 	public static int getRound() {
 		return round;
 	}
+
+	public static void setHost(boolean host) {
+		CoreLogic.host = host;
+	}
+
+	public static void createPlayer(int id, String name, int score) {
+		Player playr = new Player(name, id);
+		playr.setScore(score);
+		players.put(Integer.toString(id), playr);
+	}
+	
+	public static void removePlayer(String id) {
+		players.remove(id);
+	}
+
+	public static Player findPlayer(String id) {
+		return players.get(id);
+	}
+	
+	//public static void pause() {
+	//	paused = !paused;
+	//}
 }

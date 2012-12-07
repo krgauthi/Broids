@@ -41,6 +41,7 @@ public abstract class Entity {
 	public Entity(String id, Player owner) {
 		this.id = id;
 		this.owner = owner;
+		System.out.println(id);
 	}
 
 	public String getId() {
@@ -153,8 +154,8 @@ public abstract class Entity {
 		return this.color;
 	}
 
-	public void setColor(Color c) {
-		this.color = c;
+	public void setColor() {
+		this.color = this.owner.getColor();
 	}
 
 	/**
@@ -233,6 +234,10 @@ public abstract class Entity {
 		this.body.setLinearVelocity(linV);
 
 		this.body.setUserData(this);
+	}
+	
+	public float getAngularVelocity() {
+		return this.body.getAngularVelocity();
 	}
 
 	public Vector2 getLinearVelocity() {

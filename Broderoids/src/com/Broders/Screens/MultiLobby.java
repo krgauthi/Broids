@@ -63,13 +63,8 @@ public class MultiLobby implements Screen {
 
 		xx = Gdx.graphics.getWidth();
 		yy = Gdx.graphics.getHeight();
-		
-		try {
-			games = Net.listGames();
-		} catch (NetException e) {
-			// Trouble
-			System.out.println(e);
-		}
+
+		games = Net.listGames();
 
 		// temp
 		gameCount = games.size();
@@ -222,7 +217,7 @@ public class MultiLobby implements Screen {
 						// Trouble - failed to join game
 					}
 				} else if (x >= .02 && x <= .22) {
-					myGame.setScreen(new MultiHost(this.myGame));
+					myGame.setScreen(BaseGame.screens.get("host"));
 				}
 			} else if (y >= .55 && y <= .77) {
 				if (x >= .037 && x <= .116) {
@@ -270,7 +265,7 @@ public class MultiLobby implements Screen {
 		// Backout to main menu
 		if ((Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input
 				.isKeyPressed(Keys.BACK)) && buff > myGame.exitBuffer) {
-			myGame.setScreen(new MainMenu(myGame));
+			myGame.setScreen(BaseGame.screens.get("main"));
 		} else {
 			if (buff < myGame.exitBuffer) {
 				buff = buff + delta;
@@ -304,7 +299,7 @@ public class MultiLobby implements Screen {
 
 	@Override
 	public void hide() {
-		this.dispose();
+		//this.dispose();
 	}
 
 	@Override

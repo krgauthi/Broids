@@ -1,23 +1,16 @@
 package com.Broders.Screens;
 
-
-import com.Broders.Logic.Pos;
-import com.Broders.Logic.Tail;
+import com.Broders.Logic.CoreLogic;
 import com.Broders.mygdxgame.BaseGame;
-import com.badlogic.gdx.Game;
+import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.GdxBuild;
-
-
-
 
 public class MainMenu implements Screen{
 
@@ -34,8 +27,6 @@ public class MainMenu implements Screen{
 	private Sprite multiSprite;
 	private Sprite settingsSprite;
 	
-
-	
 	private float buff;
 
 	private float xx;
@@ -46,14 +37,10 @@ public class MainMenu implements Screen{
 	public MainMenu(BaseGame g){
 
 		this.myGame = g;
-
 		
 		xx = myGame.screenWidth;
 		yy = myGame.screenHeight;
-
 	}
-
-
 
 	@Override
 	public void render(float delta) {
@@ -67,9 +54,6 @@ public class MainMenu implements Screen{
 
 		//update the models on the screen
 		paint(delta);
-
-
-
 	}
 
 
@@ -84,7 +68,9 @@ public class MainMenu implements Screen{
 		spriteBatch.begin();
 		titleSprite.draw(spriteBatch);
 		singleSprite.draw(spriteBatch);
-		multiSprite.draw(spriteBatch);
+		if (myGame.isConnected()) {
+			multiSprite.draw(spriteBatch);
+		}
 		settingsSprite.draw(spriteBatch);
 		spriteBatch.end();
 
@@ -95,16 +81,10 @@ public class MainMenu implements Screen{
 	 */
 	private void update(float delta) {
 
-	
-
 	}
-
-
 
 	public void handleInput(float delta){
 
-		
-		
 		if(Gdx.input.justTouched()){
 			double x = ((float)Gdx.input.getX()/xx);
 			double y = ((float)Gdx.input.getY()/yy);
@@ -115,19 +95,15 @@ public class MainMenu implements Screen{
 				// single player game X 650-850 Y 180 - 230
 				if(y >= .20 && y <= .28){
 					// Single Player
-					myGame.setScreen(new GameScreen(this.myGame, 0, 0, 0 ,true));
-				}else if(y >= .32 && y <= .43){
+					myGame.setScreen(BaseGame.screens.get("single"));
+				}else if(myGame.isConnected() && y >= .32 && y <= .43){
 					// Multiplayer
-					myGame.setScreen(new MultiLobby(this.myGame));
+					myGame.setScreen(BaseGame.screens.get("lobby"));
 				}else if(y >= .48 && y <= .60){
 					// Settings
-					myGame.setScreen(new SettingsScreen(this.myGame, this));
+					myGame.setScreen(BaseGame.screens.get("settings"));
 				}
-			}
-			
-			
-			
-			
+			}	
 		}
 
 		if(Gdx.input.isKeyPressed(Keys.F1)){
@@ -136,12 +112,8 @@ public class MainMenu implements Screen{
 			System.out.println("Mouse Pos: "+x+" "+y);
 		}
 
-
-		
-		
-		
 		//backout Fix the quick exit from gamescreen
-		if((Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACK)) && buff > myGame.exitBuffer){
+		if((Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACKSPACE)) && buff > myGame.exitBuffer){
 			Gdx.app.exit();
 		}else{
 			if(buff < myGame.exitBuffer){
@@ -155,7 +127,6 @@ public class MainMenu implements Screen{
 	@Override
 	public void resize(int width, int height) {
 
-
 	}
 
 	/*
@@ -166,9 +137,6 @@ public class MainMenu implements Screen{
 	@Override
 	public void show() {
 		buff = 0;
-		
-	
-		
 		
 		titleTex = new Texture(Gdx.files.internal("data/Broderoids.png"));
 		titleSprite = new Sprite(titleTex,512,512);
@@ -191,12 +159,11 @@ public class MainMenu implements Screen{
 		settingsSprite.setSize(yy*.5f,yy*.5f);
 		
 		spriteBatch = new SpriteBatch();
-
 	}
 
 	@Override
 	public void hide() {
-		this.dispose();
+		//this.dispose();
 	}
 
 	@Override
@@ -206,7 +173,6 @@ public class MainMenu implements Screen{
 
 	@Override
 	public void resume() {
-
 
 	}
 

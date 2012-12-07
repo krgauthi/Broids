@@ -4,7 +4,6 @@ import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Player;
 import com.Broders.Logic.Settings;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -23,13 +22,14 @@ public class Dust extends Entity{
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
 		super.setSize(10f);
+		super.setColor();
 
 		super.setSprite(Settings.data_path + "bullet.png");
 		super.getSprite().setOrigin((meter * this.getSize()) / 2,
 				(meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(),
 				meter * this.getSize());
-		super.getSprite().setColor(CoreLogic.getGame().playerColor);
+		super.getSprite().setColor(super.getColor());
 
 		//BodyDef
 		BodyDef bodDef = new BodyDef();

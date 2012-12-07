@@ -3,6 +3,7 @@ package com.Broders.Entities;
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Player;
 import com.Broders.Logic.Settings;
+import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -54,11 +55,12 @@ public class Ship extends Entity {
 
 		FixtureDef fixDef = new FixtureDef();
 		fixDef.shape = shape;
-		fixDef.density = 0.75f;
+		fixDef.density = 1.0f;
 
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;
-		bodDef.angularDamping = 15.0f;
+
+		bodDef.angularDamping = 14.0f;
 		bodDef.linearDamping = 0.2f;
 
 		bodDef.position.set(x, y);
@@ -67,7 +69,7 @@ public class Ship extends Entity {
 		super.createBody(bodDef, fixDef);
 
 		super.setSize(6f);
-		super.setColor(this.owner.getColor());
+		super.setColor();
 
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
@@ -75,7 +77,7 @@ public class Ship extends Entity {
 		super.getSprite().flip(false, true);
 		super.getSprite().setOrigin((meter * this.getSize()) / 2,(meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
-		super.getSprite().setColor(this.owner.getColor());
+		super.getSprite().setColor(super.getColor());
 
 		this.thrust = false;
 		Texture tempTexture = new Texture(Gdx.files.internal(Settings.data_path	+ "ship2.png"));
@@ -107,6 +109,13 @@ public class Ship extends Entity {
 	 *            True to enable, false to disable
 	 */
 	public void setThrust(boolean bool) {
+		/*
+		if (!thrust && bool) {
+			SoundManager.get("zoom").loop();
+		} else if (thrust && !bool) {
+			SoundManager.get("zoom").stop();
+		}
+		*/
 		this.thrust = bool;
 	}
 
@@ -180,6 +189,8 @@ public class Ship extends Entity {
 			
 			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i) , this.getX(), this.getY());
 			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
+			
+			SoundManager.get("death").play(0.6f);
 		}
 	}
 	

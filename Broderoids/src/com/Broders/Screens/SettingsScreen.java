@@ -26,7 +26,6 @@ public class SettingsScreen implements Screen {
 	private static final String[] settings = { "Music", "Sounds", "Background",
 		"Screen Resolution", "Single Player Difficulty" };
 	
-	private MainMenu main;
 	private BaseGame game;
 
 	
@@ -49,8 +48,7 @@ public class SettingsScreen implements Screen {
 	
 	String message;
 	
-	public SettingsScreen(BaseGame g, MainMenu m) {
-		this.main = m;
+	public SettingsScreen(BaseGame g) {
 		this.game = g;
 		
 		message = "Touch screen for dialog";
@@ -172,7 +170,7 @@ public class SettingsScreen implements Screen {
 
 	private void handleInput(float delta) {
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACK)){
-			game.setScreen(new MainMenu(game));
+			game.setScreen(BaseGame.screens.get("main"));
 		}
 			
 		if(Gdx.input.justTouched()){

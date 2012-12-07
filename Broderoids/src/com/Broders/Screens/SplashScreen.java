@@ -1,6 +1,7 @@
 package com.Broders.Screens;
 
 import com.Broders.mygdxgame.BaseGame;
+import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -24,14 +25,14 @@ public class SplashScreen implements Screen {
 	public SplashScreen(BaseGame g) {
 
 		this.myGame = g;
-
+		SoundManager.setMuzakId(SoundManager.get("muzak").loop(0.5f));
 	}
 
 	@Override
 	public void render(float delta) {
 		timeout -= delta;
 		if (timeout <= 0 || this.handleInput(delta)) {
-			myGame.setScreen(new MainMenu(this.myGame));
+			myGame.setScreen(BaseGame.screens.get("main"));
 			return;
 		}
 

@@ -1,5 +1,6 @@
 package com.Broders.Screens;
 
+import com.Broders.Logic.CoreLogic;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.Gdx;
@@ -67,7 +68,9 @@ public class MainMenu implements Screen{
 		spriteBatch.begin();
 		titleSprite.draw(spriteBatch);
 		singleSprite.draw(spriteBatch);
-		multiSprite.draw(spriteBatch);
+		if (myGame.isConnected()) {
+			multiSprite.draw(spriteBatch);
+		}
 		settingsSprite.draw(spriteBatch);
 		spriteBatch.end();
 
@@ -93,7 +96,7 @@ public class MainMenu implements Screen{
 				if(y >= .20 && y <= .28){
 					// Single Player
 					myGame.setScreen(BaseGame.screens.get("single"));
-				}else if(y >= .32 && y <= .43){
+				}else if(myGame.isConnected() && y >= .32 && y <= .43){
 					// Multiplayer
 					myGame.setScreen(BaseGame.screens.get("lobby"));
 				}else if(y >= .48 && y <= .60){

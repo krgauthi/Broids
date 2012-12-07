@@ -71,14 +71,14 @@ public class Net extends Thread {
 			g = new Gson();
 			// s = new Socket("sekhmet.lug.mtu.edu", 9988);
 			s = new Socket("localhost", 9988);
+			main.setConnected(true);
 			out = new JsonWriter(new BufferedWriter(new OutputStreamWriter(
 					s.getOutputStream())));
 			parser = new JsonStreamParser(new BufferedReader(
 					new InputStreamReader(s.getInputStream())));
-		} catch (UnknownHostException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+			main.setConnected(false);
 		}
 
 		l = new ReentrantLock();
@@ -118,6 +118,15 @@ public class Net extends Thread {
 		} else {
 			return ENTITY_ASTEROID;
 		}
+	}
+
+	public static void collision(Entity eA, Entity eB) {
+		JsonObject o = new JsonObject();
+		o.addProperty("c", COMMAND_GAME_ENTITY_REMOVE);
+		JsonObject d = new JsonObject();
+		d.addProperty("a", eA.getId());
+		d.addProperty("b", eB.getId());
+		o.add("d", d);
 	}
 
 	private static void entitySend(JsonObject o, Entity e) {
@@ -294,10 +303,24 @@ public class Net extends Thread {
 
 			e = obj.get("c");
 			int frameType = e.getAsInt();
-			if (frameType == FRAME_GAME_SYNC) {
-				JsonObject o = obj.get("d").getAsJsonObject();
-				// TODO: This will NOT be fun
-			} else if (frameType == FRAME_GAME_PLAYER_CREATE) {
+			if (!CoreLogic.getHost()) {
+				if (frameType == FRAME_GAME_SYNC) {
+					JsonObject o = obj.get("d").getAsJsonObject();
+					// TODO: This will NOT be fun
+					
+				} else if (frameType == FRAME_GAME_COLLISION) {
+					JsonObject o = obj.get("d").getAsJsonObject();
+					String A = o.get("a").getAsString();
+					Entity eA = CoreLogic.findEntity(A);
+					String B = o.get("b").getAsString();
+					Entity eB = CoreLogic.findEntity(B);
+					CollisionLogic.entityContact(eA, eB);
+				} else if (frameType == FRAME_GAME_ROUND_OVER) {
+					CoreLogic.setRoundOver();
+				}
+			}
+			
+			if (frameType == FRAME_GAME_PLAYER_CREATE) {
 				JsonObject o = obj.get("d").getAsJsonObject();
 				int id = o.get("i").getAsInt();
 				String name = o.get("n").getAsString();
@@ -314,13 +337,6 @@ public class Net extends Thread {
 			} else if (frameType == FRAME_GAME_PLAYER_REMOVE) {
 				int id = obj.get("d").getAsInt();
 				CoreLogic.removePlayer(Integer.toString(id));
-			} else if (frameType == FRAME_GAME_COLLISION) {
-				JsonObject o = obj.get("d").getAsJsonObject();
-				String A = o.get("a").getAsString();
-				Entity eA = CoreLogic.findEntity(A);
-				String B = o.get("b").getAsString();
-				Entity eB = CoreLogic.findEntity(B);
-				CollisionLogic.entityContact(eA, eB);
 			} else if (frameType == FRAME_GAME_ENTITY_CREATE) {
 				JsonObject o = obj.get("d").getAsJsonObject();
 				int type = o.get("t").getAsInt();
@@ -369,8 +385,6 @@ public class Net extends Thread {
 					Entity ent = CoreLogic.findEntity(data);
 					CoreLogic.removeEntity(ent);
 				}
-			} else if (frameType == FRAME_GAME_ROUND_OVER) {
-				CoreLogic.setRoundOver();
 			} else if (frameType == FRAME_GAME_HOST_CHANGE) {
 				CoreLogic.setHost(true);
 			} else if (frameType == FRAME_GAME_LEAVE) {

@@ -40,6 +40,7 @@ public class BaseGame extends Game {
 	
 	public float bounds;
 	public int gameSize; // multi only
+	public boolean connected;
 
 	/*
 	 * (non-Javadoc)
@@ -70,6 +71,7 @@ public class BaseGame extends Game {
 		Gdx.input.setCatchBackKey(true);
 		
 		Net.init(this);
+		
 		SoundManager.init();
 		
 		settings = new Settings(this);	
@@ -86,8 +88,10 @@ public class BaseGame extends Game {
 		screens.put("splash", new SplashScreen(this));
 		screens.put("main", new MainMenu(this));
 		screens.put("settings", new SettingsScreen(this));
-		screens.put("host", new MultiHost(this));
-		screens.put("lobby", new MultiLobby(this));
+		if (connected) {
+			screens.put("host", new MultiHost(this));
+			screens.put("lobby", new MultiLobby(this));
+		}
 		screens.put("single", new GameScreen(this, 0, 0, 0, true));
 		screens.put("multi", new GameScreen(this, 0, 0, 0, true));
 
@@ -114,5 +118,13 @@ public class BaseGame extends Game {
 
 	@Override
 	public void resume() {
+	}
+	
+	public void setConnected(boolean c) {
+		connected = c;
+	}
+
+	public boolean isConnected() {
+		return connected;
 	}
 }

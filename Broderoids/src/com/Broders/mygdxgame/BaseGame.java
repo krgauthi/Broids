@@ -19,7 +19,6 @@ public class BaseGame extends Game {
 	public Settings settings;
 
 	public static HashMap<String,Screen> screens;
->>>>>>> afe5139216d4b7e421043f2aa46dee524584b05d
 
 	public BitmapFont font;
 

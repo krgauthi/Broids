@@ -21,7 +21,8 @@ public class SoundManager {
 				{"roidBreak3", "data/AsteroidBoom3.wav"},
 				{"pew","data/Shot.mp3"},
 				{"muzak", "data/Broderoids.mp3"},
-				{"zoom", "data/Thrust.mp3"}
+				{"zoom", "data/Thrust.mp3"},
+				{"click", "data/menuShift.mp3"}
 		};
 		
 		for (String[] noise : defaultSounds) {

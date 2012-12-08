@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 
+import com.Broders.Logic.Settings;
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -13,6 +14,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -120,17 +123,41 @@ public class SettingsScreen implements Screen {
 		
 		// User Name
 		font.setScale(.25f);
-		font.draw(spriteBatch, "Ship Color", (float) (game.screenWidth * .70),
+		font.draw(spriteBatch, "Ship Color:", (float) (game.screenWidth * .70),
 				(float) (game.screenHeight * .98));
+		
+		font.setScale(.25f);
+		font.draw(spriteBatch, "World Color:", game.screenWidth * .845f,
+				game.screenHeight * .98f);
 		
 		if (game.playerName == null) {
 			game.playerName = "";
 		}
 		
-		font.draw(spriteBatch, "Username " + game.playerName, (float) (game.screenWidth * .70),
+		font.draw(spriteBatch, "Username: " + game.playerName, (float) (game.screenWidth * .70),
 				(float) (game.screenHeight * .93));
 		
 		// ShipColor		
+		
+		Pixmap p = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+		p.setColor(game.playerColor);
+		p.fillRectangle(0,  0, 1, 1);
+		Texture tex = new Texture(p, true);
+		p.dispose();
+				
+		spriteBatch.draw(tex, game.screenWidth * .775f, game.screenHeight * .94f,
+				0, 0, 60, 26);
+		
+		// WorldColor
+		
+		p = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+		p.setColor(game.gameColor);
+		p.fillRectangle(0,  0, 1, 1);
+		tex = new Texture(p, true);
+		p.dispose();
+		
+		spriteBatch.draw(tex, game.screenWidth * .93f, game.screenHeight * .94f,
+			0, 0, 60, 26);
 		
 		spriteBatch.end();		
 	}
@@ -223,6 +250,61 @@ public class SettingsScreen implements Screen {
 				game.epileptic = game.epileptic ? false : true;
 				System.out.println("Epileptic Mode set to " + game.epileptic);
 				
+			} else if (x >= .70 && x<= .84 && y >= .94 && y <= .98) {
+				
+				String pretext = "";
+				
+				System.out.println(game.playerColor.toString());
+				
+				if (game.playerColor.equals("")) {
+					pretext = "#OOFF33";
+				} else {
+					pretext = swapHex(game.playerColor.toString());
+				}
+				
+				Gdx.input.getTextInput(new TextInputListener() {
+					@Override
+					public void input (String text) {
+						if (!text.matches("#[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]") &&
+								!text.matches("[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]")) {
+							text = "FFFFFF";
+						}
+						text = text.replaceAll("#", "").trim();
+						text = "FF" + text;
+						game.playerColor.set(game.settings.colorFromHexString(text));
+					}
+						
+					@Override
+					public void canceled () {}
+				}, "Enter new player color", pretext);	
+				
+			} else if (x >= .85 && x<= .99 && y >= .94 && y <= .98) {
+				System.out.println("you did it ");
+				
+				String pretext = "";
+				
+				if (game.playerColor.equals("")) {
+					pretext = "#BFBFBF";
+				} else {
+					pretext = swapHex(game.gameColor.toString());
+				}
+				
+				Gdx.input.getTextInput(new TextInputListener() {
+					@Override
+					public void input (String text) {
+						if (!text.matches("#[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]") &&
+								!text.matches("[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]")) {
+							text = "FFFFFF";
+						}
+						text = text.replaceAll("#", "").trim();
+						text = "FF" + text;
+						game.gameColor.set(game.settings.colorFromHexString(text));
+					}
+						
+					@Override
+					public void canceled () {}
+				}, "Enter new game color", pretext);
+				
 			}
 		}
 		
@@ -258,7 +340,7 @@ public class SettingsScreen implements Screen {
 				
 		pw.println("Username: " + game.playerName);
 		pw.printf("Ship Color: %s%n", swapHex(game.playerColor.toString()));
-		
+		pw.printf("World Color: %s%n", swapHex(game.gameColor.toString()));
 		pw.println("Background: " + this.backgroundBool);
 		pw.println("Volume: " + this.volBool);
 		pw.println("Sounds: " + this.soundBool);

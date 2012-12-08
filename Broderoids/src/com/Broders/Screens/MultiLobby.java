@@ -264,7 +264,7 @@ public class MultiLobby implements Screen {
 
 		// Backout to main menu
 		if ((Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input
-				.isKeyPressed(Keys.BACK)) && buff > myGame.exitBuffer) {
+				.isKeyPressed(Keys.BACKSPACE)) && buff > myGame.exitBuffer) {
 			myGame.setScreen(BaseGame.screens.get("main"));
 		} else {
 			if (buff < myGame.exitBuffer) {

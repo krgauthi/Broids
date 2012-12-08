@@ -30,7 +30,7 @@ public class Asteroid extends Entity {
 		if (this.type == SMALL) {
 			super.setSize(3.75f);
 			shape.setRadius(1.5f);
-			fixDef.density = 0.10f;
+			fixDef.density = 0.2f;
 			super.setPoints(100);
 		} else if (this.type == MEDIUM) {
 			super.setSize(7.5f);
@@ -45,7 +45,7 @@ public class Asteroid extends Entity {
 		}
 
 		fixDef.shape = shape;
-		fixDef.restitution = 0.0f;
+		fixDef.restitution = 0.1f;
 
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;
@@ -213,5 +213,15 @@ public class Asteroid extends Entity {
 		int pick = (int) Math.floor(Math.random() * 3);
 		SoundManager.get("roidBreak" + Integer.toString(pick + 1)).play(0.7f, pitch, 0);
 		
+	}
+	
+	/**
+	 * 0 = Large
+	 * 1 = Medium
+	 * 2 = Small
+	 * @return
+	 */
+	public int getType() {
+		return type;
 	}
 }

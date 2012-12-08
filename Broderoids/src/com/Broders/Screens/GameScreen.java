@@ -179,16 +179,19 @@ public class GameScreen implements Screen {
 			shieldBar.draw(spriteBatch);
 			// shieldBlock.draw(spriteBatch);
 
-			float health = 1f;
+			float health = (float) CoreLogic.getLocal().getHealth() / 100;
+			float shield = 1f;
 
 			spriteBatch.draw(healthBlockTexture, xx * .01f, yy * .5f,
 					((yy * .5f) * .88f) * health, yy * .5f, 0, 0,
 					(int) ((512f * .88f) * health), 512, false, false);
 			spriteBatch.draw(shieldBlockTexture, xx * .01f, yy * .5f,
-					(yy * .5f) * health, yy * .5f, 0, 0, (int) (512f * health),
+					(yy * .5f) * shield, yy * .5f, 0, 0, (int) (512f * shield),
 					512, false, false);
 
-			font.draw(spriteBatch, "HEALTH", xx * .05f, yy * .92f);
+			String healthText = "HEALTH: " + CoreLogic.getLocal().getHealth() + " / 100";
+			
+			font.draw(spriteBatch, healthText, xx * .05f, yy * .92f);
 			font.draw(spriteBatch, "SHIELD", xx * .08f, yy * .975f);
 
 			String out;

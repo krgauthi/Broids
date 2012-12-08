@@ -93,6 +93,14 @@ public class Player {
 
 	public void modHealth(int s) {
 		health += s;
+		
+		if (health > 100)
+			health = 100;
+		if (health <= 0) {
+			CoreLogic.removeEntity(playerShip);
+			health = 0;
+		}
+		System.out.println(health + "/100");
 	}
 
 	public void modLives(int s) {
@@ -139,5 +147,4 @@ public class Player {
 	public void createEntity(Entity ent, String id) {
 		this.entities.put(id, ent);
 	}
-
 }

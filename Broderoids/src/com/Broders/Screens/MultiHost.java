@@ -94,7 +94,7 @@ public class MultiHost implements Screen {
 
 		// TODO go back to multilobby
 		if ((Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input
-				.isKeyPressed(Keys.BACK))) {
+				.isKeyPressed(Keys.BACKSPACE))) {
 			myGame.setScreen(BaseGame.screens.get("lobby"));
 		}
 

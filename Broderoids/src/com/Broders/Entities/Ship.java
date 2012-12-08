@@ -30,7 +30,8 @@ public class Ship extends Entity {
 	private Sprite sprite;
 	private boolean invincible;
 	private boolean thrustLast;
-	
+	private float smokeInterval;
+
 	// TODO implement method for sound shooting and death sound
 
 	/**
@@ -57,6 +58,7 @@ public class Ship extends Entity {
 		FixtureDef fixDef = new FixtureDef();
 		fixDef.shape = shape;
 		fixDef.density = 1.0f;
+		fixDef.restitution = 0f;
 
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;
@@ -82,7 +84,8 @@ public class Ship extends Entity {
 
 		this.thrust = false;
 		this.thrustLast = false;
-		
+		this.smokeInterval = 0;
+
 		Texture tempTexture = new Texture(Gdx.files.internal(Settings.data_path	+ "ship2.png"));
 		this.sprite = new Sprite(tempTexture, 1024, 1024);
 		this.sprite.flip(false, true);
@@ -112,13 +115,13 @@ public class Ship extends Entity {
 	 *            True to enable, false to disable
 	 */
 	public void setThrust(boolean bool) {
-		
+
 		if (!thrustLast && bool) {
 			SoundManager.get("zoom").loop(0.7f, (float) (0.8f + Math.random() * 0.4f), 0);
 		} else if (thrustLast && !bool) {
 			SoundManager.get("zoom").stop();
 		}
-		
+
 		this.thrustLast = this.thrust;
 		this.thrust = bool;
 	}
@@ -181,8 +184,34 @@ public class Ship extends Entity {
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
+		if (!CoreLogic.getGame().multiplayer)
+			return;
+		
+		float smoke;
+		int health = getOwner().getHealth();
 
+		if (health <= 50) {
+			smoke = 1;
+			if (health <= 25)
+				smoke = 0.5f;
+			if (health <= 15)
+				smoke = 0.25f;
+			if (health <= 5)
+				smoke = 0.1f;
+
+			smokeInterval +=  Gdx.graphics.getDeltaTime();
+			System.out.println("SmokeInterval " + smokeInterval);
+			
+			if (smokeInterval >= smoke) {
+				System.out.println("Smoke " + smoke);
+				
+				float dir = (float) ((super.getAngle() + 90) + (Math.random() * 30 - 15));
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), dir , this.getX(), this.getY());
+				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
+				
+				smokeInterval = 0;
+			}
+		}
 	}
 
 	@Override
@@ -190,19 +219,19 @@ public class Ship extends Entity {
 		float temp = (float) (10+Math.random()%10);
 		for(int i = 0; i < temp;i++){
 			temp = 360/temp;
-			
+
 			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i) , this.getX(), this.getY());
 			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
-			
+
 			setThrust(false);
 			SoundManager.get("death").play(0.65f, 0.85f, 0);
 		}
 	}
-	
+
 	public void setInvincible(boolean b){
 		invincible = b;
 	}
-	
+
 	public boolean isInvincible(){
 		return invincible;
 	}

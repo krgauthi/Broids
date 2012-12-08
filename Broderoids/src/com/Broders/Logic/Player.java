@@ -100,7 +100,6 @@ public class Player {
 			CoreLogic.removeEntity(playerShip);
 			health = 0;
 		}
-		System.out.println(health + "/100");
 	}
 
 	public void modLives(int s) {

@@ -145,8 +145,9 @@ public class CollisionLogic implements ContactListener {
 		bullet.getOwner().modScore(asteroid.getPoints());
 	}
 
-	public static void shipBullet(Entity ship, Entity bullet){
-		ship.getOwner().modHealth(-10);
+	public static void shipBullet(Entity ship, Entity bullet) {
+		if (CoreLogic.getGame().multiplayer && !(ship.getOwner().equals(bullet.getOwner())))
+			ship.getOwner().modHealth(-10);
 	}
 	
 	public static void shipShip(Entity shipA, Entity shipB) {

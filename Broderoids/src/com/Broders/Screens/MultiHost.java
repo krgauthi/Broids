@@ -6,6 +6,7 @@ import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
@@ -26,6 +27,9 @@ public class MultiHost implements Screen {
 	private Texture ship;
 	private Sprite shipSprite;
 
+	private String gameName;
+	private String password;
+	
 	int worldSize = 0;
 
 	private float xx;
@@ -36,7 +40,10 @@ public class MultiHost implements Screen {
 
 		font = this.myGame.font;
 		font.setScale(.5f);
-
+		
+		gameName = "";
+		password = "";
+		
 		xx = Gdx.graphics.getWidth();
 		yy = Gdx.graphics.getHeight();
 	}
@@ -72,7 +79,8 @@ public class MultiHost implements Screen {
 		}
 
 		// text
-		font.draw(spriteBatch, "Muliplayer Options", xx * .4f, yy * .9f);
+		font.draw(spriteBatch, "Game Name: " + this.gameName, xx * .4f, yy * .9f);
+		font.draw(spriteBatch, "Password: " + this.password.replaceAll(".", "*"), xx * .4f, yy *.86f);
 		font.draw(spriteBatch, "World Size", xx * .17f, yy * .8f);
 		font.draw(spriteBatch, "Small", xx * .1f, yy * .7f);
 		font.draw(spriteBatch, "Medium", xx * .19f, yy * .7f);
@@ -123,6 +131,53 @@ public class MultiHost implements Screen {
 				}
 			}
 			
+			// Game name text
+			
+			if (inputx >= .39 && inputx <= .52 && inputy >= .092 && inputy <= .135) {
+				
+				String pretext = "";
+				
+				if (this.gameName == null || this.gameName.equals("") ||
+						this.gameName.length() > 28) {
+					pretext = myGame.playerName + "'s Game";
+				} else {
+					pretext = this.gameName;
+				}
+				
+				Gdx.input.getTextInput(new TextInputListener() {
+					@Override
+					public void input (String text) {
+						if (text.equals("") || text.length() > 28) {
+							gameName = myGame.playerName + "'s Game";
+						} else {
+							gameName = text;
+						}
+					}
+					@Override
+					public void canceled () {}
+				}, "Enter Game Name", pretext);	
+			}
+			
+			// Game password text
+			
+			if (inputx >= .39 && inputx <= .52 && inputy >= .141 && inputy <= .177) {
+				
+				String pretext = "";
+
+				Gdx.input.getTextInput(new TextInputListener() {
+					@Override
+					public void input (String text) {
+						if (text.equals("") || text.length() > 28) {
+							password = "";
+						} else {
+							password = text;
+						}
+					}
+					@Override
+					public void canceled () {}
+				}, "Enter Game Password", pretext);	
+			}
+			
 			if (inputy > .09 && inputy < .173) {
 				if (inputx > .795 && inputx < .863) {
 					myGame.gameSize = worldSize;
@@ -139,7 +194,7 @@ public class MultiHost implements Screen {
 						y = 1000;
 					}
 					// TODO: Pass the right values
-					Screen s = Net.newGame("broids-temp", 5, x, y, "");
+					Screen s = Net.newGame(this.gameName, 5, x, y, this.password);
 					if (s != null) {
 						myGame.setScreen(s);
 					} else {

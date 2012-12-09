@@ -15,7 +15,7 @@ public class Dust extends Entity{
 	private float age;
 	private static float deathTime = 0.3f;
 	
-	public Dust(String id, Player owner, float dir, float x, float y) {
+	public Dust(String id, Player owner, float dir, float x, float y, float vel) {
 
 		super(id, owner);
 
@@ -50,11 +50,11 @@ public class Dust extends Entity{
 
 		super.createBody(bodDef, fixDef);
 
-		float speed = (float) (Math.random()*8 + 22);
+		vel = (float) ((vel*0.85f) + Math.random()*(vel*0.3f));
 		
 		// Set the velocity
-		float vX = (float) (speed * Math.cos(Math.toRadians(dir)));
-		float vY = (float) (speed * Math.sin(Math.toRadians(dir)));
+		float vX = (float) (vel * Math.cos(Math.toRadians(dir)));
+		float vY = (float) (vel * Math.sin(Math.toRadians(dir)));
 		super.body.setLinearVelocity(vX, vY);
 
 		//Set type data

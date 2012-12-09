@@ -310,8 +310,8 @@ public class CoreLogic {
 		// TODO/NOTE: Should this use S or local.getShip()?
 		//Depends upon local or host player I think.
 		for (Ship S : getShips()) {
-			if (local.getShip().getX() - 8 <= x
-					&& x <= local.getShip().getX() + 8) {
+			if (local.getShip().getX() - 10 <= x
+					&& x <= local.getShip().getX() + 10) {
 				return -1; // lols Lazy logic TODO make better lazy logic
 			}
 			if (local.getShip().getY() - 8 <= x

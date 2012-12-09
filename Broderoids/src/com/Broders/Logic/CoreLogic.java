@@ -170,8 +170,14 @@ public class CoreLogic {
 			respawnTimer = -10f;
 			invincibleTimer = 3f;
 
-			local.setShip(new Ship(saveId, local,
-					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2));
+			Ship ship = new Ship(saveId, local,
+					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
+			
+			local.setShip(ship);
+			if (multiplayer) {
+				Net.createEntity(ship);
+			}
+
 			local.getEntitiesMap().put(saveId, local.getShip());
 			local.getShip().setInvincible(true);
 			local.modBonus(1.0f);

@@ -15,6 +15,10 @@ Broderoids-desktop/*.log
 # Eclipse overhead
 .metadata/
 
+# Broids config file
+Broderoids-android/config/broids.cfg
+Broderoids-desktop/config/broids.cfg
+
 # Ant crap
 Broderoids-android/libs/gson-2.2.2.jar
 Broderoids-android/libs/gdx.jar

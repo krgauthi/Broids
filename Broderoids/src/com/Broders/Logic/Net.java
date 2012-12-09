@@ -168,10 +168,13 @@ public class Net extends Thread {
 			return null;
 		}
 
-		float x = inner.get("x").getAsFloat();
-		float y = inner.get("y").getAsFloat();
-		boolean hosting = inner.get("h").getAsBoolean();
-		int id = inner.get("i").getAsInt();
+		System.out.println(inner);
+		
+		JsonObject innerInner = inner.get("d").getAsJsonObject();
+		float x = innerInner.get("x").getAsFloat();
+		float y = innerInner.get("y").getAsFloat();
+		boolean hosting = innerInner.get("h").getAsBoolean();
+		int id = innerInner.get("i").getAsInt();
 
 		return new GameScreen(CoreLogic.getGame(), id, x, y, hosting);
 	}

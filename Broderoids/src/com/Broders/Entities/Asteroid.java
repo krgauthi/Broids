@@ -17,6 +17,10 @@ public class Asteroid extends Entity {
 	public static final int SMALL = 2;
 
 	private int type;
+	
+	public int extra() {
+		return type;
+	}
 
 	public Asteroid(int type, String id, Player owner, float x, float y) {
 		super(id, owner);

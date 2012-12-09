@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public class CoreLogic {
 
+	private static Boolean multiplayer;
 	private static World world;
 	private static HashMap<String, Player> players;
 
@@ -89,7 +90,8 @@ public class CoreLogic {
 	/**
 	 * Initializes the game core for use.
 	 */
-	public static void initCore(BaseGame game, float widthIn, float heightIn, Boolean h) {
+	public static void initCore(BaseGame game, float widthIn, float heightIn, Boolean h, Boolean multi) {
+		multiplayer = multi;
 		myGame = game;
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, false);
@@ -168,8 +170,14 @@ public class CoreLogic {
 			respawnTimer = -10f;
 			invincibleTimer = 3f;
 
-			local.setShip(new Ship(saveId, local,
-					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2));
+			Ship ship = new Ship(saveId, local,
+					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
+			
+			local.setShip(ship);
+			if (multiplayer) {
+				Net.createEntity(ship);
+			}
+
 			local.getEntitiesMap().put(saveId, local.getShip());
 			local.getShip().setInvincible(true);
 			local.modBonus(1.0f);
@@ -310,8 +318,8 @@ public class CoreLogic {
 		// TODO/NOTE: Should this use S or local.getShip()?
 		//Depends upon local or host player I think.
 		for (Ship S : getShips()) {
-			if (local.getShip().getX() - 8 <= x
-					&& x <= local.getShip().getX() + 8) {
+			if (local.getShip().getX() - 10 <= x
+					&& x <= local.getShip().getX() + 10) {
 				return -1; // lols Lazy logic TODO make better lazy logic
 			}
 			if (local.getShip().getY() - 8 <= x
@@ -340,7 +348,10 @@ public class CoreLogic {
 
 		getComp().getEntitiesMap().put(roid.getId(), roid);
 		
-		Net.createEntity(roid);
+		if(multiplayer){
+			Net.createEntity(roid);
+		}
+		
 		return 0;
 	}
 
@@ -386,7 +397,10 @@ public class CoreLogic {
 					local.getEntitiesMap().put(shot.getId(), shot);
 					bulletCooldown = 0;
 					local.getShip().setShooting(true);
-					Net.createEntity(shot);
+					
+					if(multiplayer){					
+						Net.createEntity(shot);
+					}
 				}
 			}
 
@@ -403,7 +417,7 @@ public class CoreLogic {
 				mod = true;
 			}
 			
-			if (mod) {
+			if (mod && multiplayer) {
 				Net.modifyEntity(local.getShip());
 			}
 		}

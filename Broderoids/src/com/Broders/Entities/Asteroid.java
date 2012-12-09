@@ -90,7 +90,7 @@ public class Asteroid extends Entity {
 			for(int i = 0; i < temp;i++){
 				temp = 360/temp;
 				
-				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i), this.getX(), this.getY());
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 25);
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 				
 			}
@@ -148,7 +148,7 @@ public class Asteroid extends Entity {
 			for(int i = 0; i < temp;i++){
 				temp = 360/temp;
 
-				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i), this.getX(), this.getY());
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 20);
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 			}
 			this.getX();
@@ -203,7 +203,7 @@ public class Asteroid extends Entity {
 			for(int i = 0; i < temp;i++){
 				temp = 360/temp;
 
-				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i), this.getX(), this.getY());
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 15);
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 			}
 		}

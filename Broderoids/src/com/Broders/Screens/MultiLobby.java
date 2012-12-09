@@ -71,7 +71,7 @@ public class MultiLobby implements Screen {
 		page = gameCount / 5;
 		curPage = 0;
 
-		selectedGame = 0;
+		selectedGame = -1;
 
 	}
 

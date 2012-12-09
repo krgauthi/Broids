@@ -125,7 +125,7 @@ public class GameScreen implements Screen {
 				CoreLogic.setClientId(2);
 			}
 			first = false;
-			CoreLogic.initCore(myGame, width2, height2, h2);
+			CoreLogic.initCore(myGame, width2, height2, h2, multiplayer);
 		}
 
 		delta = (float) (1.0/30.0);

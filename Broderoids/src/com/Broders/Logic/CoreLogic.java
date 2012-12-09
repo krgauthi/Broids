@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public class CoreLogic {
 
+	private static Boolean multiplayer;
 	private static World world;
 	private static HashMap<String, Player> players;
 
@@ -89,7 +90,8 @@ public class CoreLogic {
 	/**
 	 * Initializes the game core for use.
 	 */
-	public static void initCore(BaseGame game, float widthIn, float heightIn, Boolean h) {
+	public static void initCore(BaseGame game, float widthIn, float heightIn, Boolean h, Boolean multi) {
+		multiplayer = multi;
 		myGame = game;
 		Vector2 gravity = new Vector2(0.0f, 0.0f);
 		world = new World(gravity, false);
@@ -340,7 +342,10 @@ public class CoreLogic {
 
 		getComp().getEntitiesMap().put(roid.getId(), roid);
 		
-		Net.createEntity(roid);
+		if(multiplayer){
+			Net.createEntity(roid);
+		}
+		
 		return 0;
 	}
 
@@ -386,7 +391,10 @@ public class CoreLogic {
 					local.getEntitiesMap().put(shot.getId(), shot);
 					bulletCooldown = 0;
 					local.getShip().setShooting(true);
-					Net.createEntity(shot);
+					
+					if(multiplayer){					
+						Net.createEntity(shot);
+					}
 				}
 			}
 
@@ -403,7 +411,7 @@ public class CoreLogic {
 				mod = true;
 			}
 			
-			if (mod) {
+			if (mod && multiplayer) {
 				Net.modifyEntity(local.getShip());
 			}
 		}

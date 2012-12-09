@@ -236,6 +236,20 @@ public class MultiLobby implements Screen {
 
 				}
 			}
+			//Game boxes
+			if(x >= .155 && x <= .996){
+				if(y >= .199 && y <=.343){
+					selectedGame = 0;
+				} else if(y > .343 && y <= .519){
+					selectedGame = 1;
+				} else if(y > .519 && y <= .680){
+					selectedGame = 2;
+				} else if(y > .680 && y <= .838){
+					selectedGame = 3;
+				} else if(y > .838 && y <= .986){
+					selectedGame = 4;
+				}
+			}
 		}
 
 		if (Gdx.input.isTouched()) {

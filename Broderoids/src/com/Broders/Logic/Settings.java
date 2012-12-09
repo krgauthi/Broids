@@ -76,10 +76,11 @@ public class Settings {
 
 	public void loadUsername(String value) {
 		System.out.printf("Loaded username [%s] from config file%n", value);
-		if (value == "null") {
-			game.playerName = "";
+		if (value == "null" || value.length() > 28){
+			game.playerName = "New Bro";
+		} else {
+			game.playerName = value;
 		}
-		game.playerName = value;
 	}
 	
 	public void loadShipColor(String value) {

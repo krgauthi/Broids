@@ -71,7 +71,7 @@ public class MultiLobby implements Screen {
 		page = gameCount / 5;
 		curPage = 0;
 
-		selectedGame = -1;
+		selectedGame = 0;
 
 	}
 
@@ -209,7 +209,8 @@ public class MultiLobby implements Screen {
 
 				// join
 				if (x >= .24 && x <= .44) {
-					Screen temp = Net.joinGame("broids", "");
+					String[] name = this.games.get(selectedGame + curPage * 5);
+					Screen temp = Net.joinGame(name[0], name[1]);
 					if (temp != null) {
 						myGame.setScreen(temp);
 						// TODO: Dispose of this screen

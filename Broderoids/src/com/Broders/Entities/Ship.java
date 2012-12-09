@@ -191,22 +191,21 @@ public class Ship extends Entity {
 		int health = getOwner().getHealth();
 
 		if (health <= 50) {
-			smoke = 1;
+			smoke = 0.6f;
 			if (health <= 25)
-				smoke = 0.5f;
+				smoke = 0.3f;
 			if (health <= 15)
-				smoke = 0.25f;
-			if (health <= 5)
 				smoke = 0.1f;
+			if (health <= 5)
+				smoke = 0.05f;
 
 			smokeInterval +=  Gdx.graphics.getDeltaTime();
-			System.out.println("SmokeInterval " + smokeInterval);
 			
 			if (smokeInterval >= smoke) {
 				System.out.println("Smoke " + smoke);
 				
 				float dir = (float) ((super.getAngle() + 90) + (Math.random() * 30 - 15));
-				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), dir , this.getX(), this.getY());
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), dir , this.getX(), this.getY(), 7);
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 				
 				smokeInterval = 0;
@@ -220,7 +219,7 @@ public class Ship extends Entity {
 		for(int i = 0; i < temp;i++){
 			temp = 360/temp;
 
-			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i) , this.getX(), this.getY());
+			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i) , this.getX(), this.getY(), 30);
 			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 
 			setThrust(false);

@@ -24,8 +24,6 @@ public class SettingsScreen implements Screen {
 
 	
 	// Array of basic settings, implemented to draw on even intervals
-	private static final String[] settings = { "Music", "Sounds", "Background",
-		"Screen Resolution", "Single Player Difficulty" };
 	private static final String hexColorPattern = "[A-Fa-f0-9]{6}";
 	private BaseGame game;
 
@@ -187,7 +185,7 @@ public class SettingsScreen implements Screen {
 						if (text.equals("") || text.length() > 28) {
 							game.playerName = "New Bro";
 						} else {
-							game.playerName = game.playerName;
+							game.playerName = text;
 						}
 					}
 						
@@ -215,12 +213,13 @@ public class SettingsScreen implements Screen {
 				
 				backgroundBool = backgroundBool ? false : true;
 				System.out.println("Background Option set to " + backgroundBool);
-				System.out.println("CYAN " + Color.CYAN.toString());
-				System.out.println("RED " + Color.RED.toString());
-				System.out.println("GREEN " + Color.GREEN.toString());
-				System.out.println("BLUE " + Color.BLUE.toString());
-				System.out.println("WHITE " + Color.WHITE.toString());
-				System.out.println("BLACK " + Color.BLACK.toString());
+				
+//				System.out.println("CYAN " + Color.CYAN.toString());
+//				System.out.println("RED " + Color.RED.toString());
+//				System.out.println("GREEN " + Color.GREEN.toString());
+//				System.out.println("BLUE " + Color.BLUE.toString());
+//				System.out.println("WHITE " + Color.WHITE.toString());
+//				System.out.println("BLACK " + Color.BLACK.toString());
 				
 				
 			} else if (x >= .51 && x <= .96 && y >= .72 && y <= .8) {

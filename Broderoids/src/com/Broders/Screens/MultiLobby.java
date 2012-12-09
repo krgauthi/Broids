@@ -184,6 +184,12 @@ public class MultiLobby implements Screen {
 
 			font.draw(spriteBatch, temp[0] + priv, xx * .2f, yy
 					* (.73f - (.16f * i))); // TODO ref Name of Game
+			
+			if(i == selectedGame){
+				arrowSprite.setSize(xx * .05f, xx * .05f);
+				arrowSprite.setPosition( xx * .936f, yy* (.68f - (.16f * i)));
+				arrowSprite.draw(spriteBatch);
+			}
 
 		}
 
@@ -302,8 +308,9 @@ public class MultiLobby implements Screen {
 		white = new Texture(Gdx.files.internal("data/whitebox.png"));
 		whiteSprite = new Sprite(white, 32, 32);
 		whiteSprite.setColor(Color.WHITE);
+		
 
-		arrow = new Texture(Gdx.files.internal("data/Arrow.png"));
+		arrow = new Texture(Gdx.files.internal("data/ship1.png"));
 		arrowSprite = new Sprite(arrow, 1024, 1024);
 		arrowSprite.setOrigin((yy * .25f) / 2f, (yy * .25f) / 2f);
 		arrowSprite.setSize(yy * .25f, yy * .25f);

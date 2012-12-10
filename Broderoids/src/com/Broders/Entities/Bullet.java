@@ -68,7 +68,9 @@ public class Bullet extends Entity {
 		age += Gdx.graphics.getDeltaTime();
 
 		if (age >= deathTime) {
-			CoreLogic.removeEntity(this);
+			if (!CoreLogic.multiplayer || this.getOwner() == CoreLogic.getLocal()) {
+				CoreLogic.removeEntity(this);
+			}
 			super.owner.modBonus(1.0f);
 		}
 

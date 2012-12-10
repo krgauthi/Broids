@@ -163,8 +163,6 @@ public class CoreLogic {
 		players.put(Integer.toString(local.getId()), local);
 
 		//saveId = local.getShip().getId();
-		//Net.createEntity(local.getShip());
-
 
 		Player comp = new Player("Comp", 1);
 		players.put(Integer.toString(comp.getId()), comp);
@@ -173,6 +171,7 @@ public class CoreLogic {
 		players.put(Integer.toString(temp.getId()), temp);
 
 		if (multiplayer) {
+			Net.createEntity(local.getShip());
 			// This starts up the thread for async networking
 			Net.handleGame();
 		}
@@ -203,7 +202,7 @@ public class CoreLogic {
 			respawnTimer = -10f;
 			invincibleTimer = 3f;
 
-			Ship ship = new Ship(Integer.toString(clientId), local,
+			Ship ship = new Ship(local.nextId(), local,
 					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
 
 			local.setShip(ship);

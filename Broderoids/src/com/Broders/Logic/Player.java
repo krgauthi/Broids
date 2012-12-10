@@ -106,7 +106,9 @@ public class Player {
 		if (health > 100)
 			health = 100;
 		if (health <= 0) {
-			CoreLogic.removeEntity(playerShip);
+			if (this.playerShip != null) {
+				CoreLogic.removeEntity(playerShip);
+			}
 			health = 0;
 		}
 	}

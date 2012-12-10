@@ -633,8 +633,6 @@ public class CoreLogic {
 
 			if (myGame.multiplayer && host && !(i instanceof Dust)) {
 				Net.removeEntity(i);
-				local.setShip(null);
-				respawnTimer = 3.0f;
 			}
 
 			i.getOwner().getEntitiesMap().remove(i.getId());
@@ -736,7 +734,8 @@ public class CoreLogic {
 			String[] idParts = entData.id.split("-");
 			if (entData.type == Net.ENTITY_SHIP) {
 				Player p = CoreLogic.findPlayer(idParts[0]);
-				Entity ent = new Ship(entData.id, p, entData.x, entData.y);
+				Ship ent = new Ship(entData.id, p, entData.x, entData.y);
+				p.setShip(ent);
 				ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
 				p.createEntity(ent, idParts[1]);
 			} else if (entData.type == Net.ENTITY_ASTEROID) {

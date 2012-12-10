@@ -209,11 +209,12 @@ public class CoreLogic {
 			invincibleTimer -= Gdx.graphics.getDeltaTime();
 			invulnFlash += Gdx.graphics.getDeltaTime();
 			
-			if (invulnFlash >= 0.3f) {
-				if (!flashing)
-					getLocal().getShip().setColor(Color.WHITE);
-				else
+			if (invulnFlash >= 0.07f) {
+				if (!flashing) {
+					getLocal().getShip().setColor(Color.CLEAR);
+				} else {
 					getLocal().getShip().setColor();
+				}
 				
 				flashing = !flashing;
 				invulnFlash = 0;
@@ -222,6 +223,7 @@ public class CoreLogic {
 		else if(invincibleTimer > -9f){
 			invincibleTimer = -10f;
 			local.getShip().setInvincible(false);
+			local.getShip().setColor();
 		}
 
 		int mod = 0;

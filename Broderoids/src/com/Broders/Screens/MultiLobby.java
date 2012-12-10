@@ -1,10 +1,6 @@
 package com.Broders.Screens;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.regex.Pattern;
-
-import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Net;
 import com.Broders.Logic.Pos;
 import com.Broders.Logic.Tail;
@@ -15,7 +11,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.TextInputListener;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
@@ -37,8 +32,6 @@ public class MultiLobby implements Screen {
 	private Texture arrow;
 
 	private Sprite whiteSprite;
-	private Sprite arrowSprite;
-
 	private String gamePassword;
 
 	private ArrayList<String[]> games;
@@ -360,17 +353,11 @@ public class MultiLobby implements Screen {
 	public void show() {
 		buff = 0;
 
-		double x = ((float) Gdx.input.getX() / (float) myGame.screenWidth);
-		double y = ((float) Gdx.input.getY() / (float) myGame.screenHeight);
-
 		myGame.multiplayer = true;
 
 		white = new Texture(Gdx.files.internal("data/whitebox.png"));
 		whiteSprite = new Sprite(white, 32, 32);
 		whiteSprite.setColor(Color.WHITE);
-
-
-		
 
 		TextureManager.getSprites("hostGame").setSize(yy * .5f, yy * .5f);
 		TextureManager.getSprites("hostGame").setPosition(xx * .15f, yy * .6f);

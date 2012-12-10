@@ -22,14 +22,14 @@ public class BaseGame extends Game {
 
 	public BitmapFont font;
 
-	public int screenHeight;		//TODO Ref in Settings
-	public int screenWidth;			//TODO Ref in Settings
+	public int screenHeight;
+	public int screenWidth;	
 	
 		
 	public double exitBuffer;		//TODO Ref in Settings
 	public boolean epileptic;
 	public boolean debugMode;
-	public int difficulty;			//TODO Ref in Settings
+	public int difficulty;
 	public String playerName;
 	public boolean godMode;			//TODO Ref in Settings
 	
@@ -92,7 +92,6 @@ public class BaseGame extends Game {
 			TextureManager.init(this);
 			ScoresManager.init(this);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

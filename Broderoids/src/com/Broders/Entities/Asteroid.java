@@ -2,12 +2,8 @@ package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Player;
-import com.Broders.Logic.Settings;
-import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
-import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -16,8 +12,6 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class Asteroid extends Entity {
-	
-	private BaseGame game;
 	
 	public static final int LARGE = 0;
 	public static final int MEDIUM = 1;
@@ -37,7 +31,7 @@ public class Asteroid extends Entity {
 		super.setSprite("Broid");
 
 
-		this.game = owner.getGame();
+		owner.getGame();
 		FixtureDef fixDef = new FixtureDef();
 		CircleShape shape = new CircleShape();
 		this.type = type;

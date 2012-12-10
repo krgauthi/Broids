@@ -366,7 +366,7 @@ public class CoreLogic {
 		float y = (float) (CoreLogic.getHeight() * Math.random());
 		float dir = (float) (Math.PI * Math.random());
 
-		Player local = getLocal();
+		getLocal();
 
 		// Prevent spawning on the player(s)
 		// TODO/NOTE: Should this use S or local.getShip()?
@@ -636,7 +636,6 @@ public class CoreLogic {
 						try {
 							ScoresManager.writeScores();
 						} catch (FileNotFoundException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}

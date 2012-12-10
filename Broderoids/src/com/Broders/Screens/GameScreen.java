@@ -8,7 +8,6 @@ import com.Broders.Logic.Net;
 import com.Broders.Logic.Pos;
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
-import com.Broders.mygdxgame.ScoresManager;
 import com.Broders.mygdxgame.SoundManager;
 import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.*;
@@ -325,7 +324,6 @@ public class GameScreen implements Screen {
 			gameOver += Gdx.graphics.getDeltaTime();
 			if (gameOver >= 4f) {
 				myGame.setScreen(BaseGame.screens.get("scores"));
-				//TODO Change to High-scores screen.
 			}
 		}
 	}

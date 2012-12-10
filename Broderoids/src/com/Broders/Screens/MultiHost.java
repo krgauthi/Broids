@@ -21,8 +21,6 @@ public class MultiHost implements Screen {
 	private BitmapFont font;
 
 	private Texture white;
-	private Sprite whiteSprite;
-
 	private Texture ship;
 	private Sprite shipSprite;
 
@@ -105,7 +103,6 @@ public class MultiHost implements Screen {
 		float inputx = Gdx.input.getX() / xx;
 		float inputy = Gdx.input.getY() / yy;
 
-		// TODO go back to multilobby
 		if ((Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input
 				.isKeyPressed(Keys.BACKSPACE))) {
 			myGame.setScreen(BaseGame.screens.get("lobby"));
@@ -221,7 +218,7 @@ public class MultiHost implements Screen {
 		spriteBatch = new SpriteBatch();
 
 		white = new Texture(Gdx.files.internal("data/whitebox.png"));
-		whiteSprite = new Sprite(white, 32, 32);
+		new Sprite(white, 32, 32);
 
 		ship = new Texture(Gdx.files.internal("data/ship1.png"));
 		shipSprite = new Sprite(ship, 1024, 1024);
@@ -235,8 +232,7 @@ public class MultiHost implements Screen {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
-
+	
 	}
 
 	@Override

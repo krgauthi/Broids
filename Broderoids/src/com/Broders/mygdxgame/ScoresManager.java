@@ -5,7 +5,6 @@ import java.util.*;
 
 public class ScoresManager {
 
-	private static BaseGame myGame;
 	private static String path;
 	private static File file;
 	private static Scanner fileReader;
@@ -14,7 +13,6 @@ public class ScoresManager {
 	private static String decrypted [][];
 
 	public static void init(BaseGame g) throws FileNotFoundException{
-		myGame = g;
 		path = "config/HS.bro";
 		file = new File(path);
 		encrypted = new String[10][3];

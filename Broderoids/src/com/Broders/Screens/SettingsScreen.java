@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.regex.Pattern;
 
-import com.Broders.Logic.Settings;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
 import com.Broders.mygdxgame.TextureManager;
@@ -316,7 +315,6 @@ public class SettingsScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -356,19 +354,16 @@ public class SettingsScreen implements Screen {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 
 	}
 

@@ -186,7 +186,7 @@ public abstract class Entity {
 			this.getSprite().setColor(this.getColor());
 			this.getSprite().setPosition(posX, posY);
 			this.getSprite().setRotation(this.getBody().getAngle());
-			//this.getSprite().setColor(getColor());
+			this.getSprite().setColor(getColor());
 			this.getSprite().draw(sb);
 		}
 	}

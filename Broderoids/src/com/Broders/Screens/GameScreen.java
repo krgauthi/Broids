@@ -281,7 +281,7 @@ public class GameScreen implements Screen {
 		}
 		spriteBatch.end();
 
-		if (paused) {
+		if (paused && !multiplayer) {
 			
 			//this.overlay = new ShapeRenderer();
 			overlay.begin(ShapeType.FilledRectangle);

@@ -8,6 +8,7 @@ import com.Broders.mygdxgame.SoundManager;
 import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -224,7 +225,15 @@ public class Ship extends Entity {
 
 			if (smokeInterval >= smoke) {
 				float dir = (float) ((super.getAngle() + 90) + (Math.random() * 30 - 15));
-				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), dir , this.getX(), this.getY(), 5);
+				double fire = Math.random();
+				Color color = new Color(Color.GRAY);
+				if (fire <= 0.2)
+					color.set(Color.YELLOW);
+				if (fire > 0.15 && fire < 0.3)
+					color.set(Color.RED);
+				
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), dir ,
+						this.getX(), this.getY(), 5, color);
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 
 				smokeInterval = 0;
@@ -242,7 +251,8 @@ public class Ship extends Entity {
 		for(int i = 0; i < temp;i++){
 			temp = 360/temp;
 			
-			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i) , this.getX(), this.getY(), 30);
+			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), 
+					(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 30, super.getColor());
 			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 
 			setThrust(false);

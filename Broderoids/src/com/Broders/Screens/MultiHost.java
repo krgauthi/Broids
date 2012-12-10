@@ -3,6 +3,7 @@ package com.Broders.Screens;
 import com.Broders.Logic.Net;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
+import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
@@ -18,11 +19,9 @@ public class MultiHost implements Screen {
 
 	private BaseGame myGame;
 	private SpriteBatch spriteBatch;
-	private BitmapFont font;
 
-	private Texture white;
-	private Texture ship;
-	private Sprite shipSprite;
+
+	
 
 	private String gameName;
 	private String password;
@@ -35,8 +34,7 @@ public class MultiHost implements Screen {
 	public MultiHost(BaseGame game) {
 		this.myGame = game;
 
-		font = this.myGame.font;
-		font.setScale(.5f);
+
 
 		gameName = "";
 		password = "";
@@ -67,29 +65,32 @@ public class MultiHost implements Screen {
 
 		// Box Selections
 		if (worldSize == 0) {
-			shipSprite.setPosition(xx * .12f, yy * .58f);
-			shipSprite.draw(spriteBatch);
+			TextureManager.getSprites("Ship1").setPosition(xx * .12f, yy * .58f);
+			TextureManager.getSprites("Ship1").draw(spriteBatch);
 		}
 
 		if (worldSize == 1) {
-			shipSprite.setPosition(xx * .23f, yy * .58f);
-			shipSprite.draw(spriteBatch);
+			TextureManager.getSprites("Ship1").setPosition(xx * .23f, yy * .58f);
+			TextureManager.getSprites("Ship1").draw(spriteBatch);
 		}
 
 		if (worldSize == 2) {
-			shipSprite.setPosition(xx * .33f, yy * .58f);
-			shipSprite.draw(spriteBatch);
+			TextureManager.getSprites("Ship1").setPosition(xx * .33f, yy * .58f);
+			TextureManager.getSprites("Ship1").draw(spriteBatch);
 		}
 
 		// text
-		font.draw(spriteBatch, "Game Name: " + this.gameName, xx * .4f, yy * .9f);
-		font.draw(spriteBatch, "Password: " + this.password.replaceAll(".", "*"), xx * .4f, yy *.86f);
-		font.draw(spriteBatch, "World Size", xx * .17f, yy * .8f);
-		font.draw(spriteBatch, "Small", xx * .1f, yy * .7f);
-		font.draw(spriteBatch, "Medium", xx * .19f, yy * .7f);
-		font.draw(spriteBatch, "Large", xx * .31f, yy * .7f);
+		
+		myGame.font.setScale(.3f);
+		myGame.font.draw(spriteBatch, "Game Name: " + this.gameName, xx * .4f, yy * .9f);
+		myGame.font.draw(spriteBatch, "Password: " + this.password.replaceAll(".", "*"), xx * .4f, yy *.84f);
+		myGame.font.setScale(.5f);
+		myGame.font.draw(spriteBatch, "World Size", xx * .17f, yy * .8f);
+		myGame.font.draw(spriteBatch, "Small", xx * .1f, yy * .7f);
+		myGame.font.draw(spriteBatch, "Medium", xx * .19f, yy * .7f);
+		myGame.font.draw(spriteBatch, "Large", xx * .31f, yy * .7f);
 
-		font.draw(spriteBatch, "Play!", xx * .8f, yy * .9f);
+		myGame.font.draw(spriteBatch, "Play!", xx * .8f, yy * .9f);
 
 		spriteBatch.end();
 
@@ -217,12 +218,7 @@ public class MultiHost implements Screen {
 	public void show() {
 		spriteBatch = new SpriteBatch();
 
-		white = new Texture(Gdx.files.internal("data/whitebox.png"));
-		new Sprite(white, 32, 32);
-
-		ship = new Texture(Gdx.files.internal("data/ship1.png"));
-		shipSprite = new Sprite(ship, 1024, 1024);
-		shipSprite.setSize(yy * .05f, yy * .05f);
+		TextureManager.getSprites("Ship1").setSize(yy * .05f, yy * .05f);
 	}
 
 	@Override
@@ -242,8 +238,7 @@ public class MultiHost implements Screen {
 	@Override
 	public void dispose() {
 		this.spriteBatch.dispose();
-		this.white.dispose();
-		this.ship.dispose();
+
 	}
 
 }

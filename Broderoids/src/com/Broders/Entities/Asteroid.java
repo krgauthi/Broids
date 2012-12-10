@@ -105,50 +105,51 @@ public class Asteroid extends Entity {
 			}
 			
 			sound(0.8f);
-			
-			dir = (float) Math.toRadians(this.getAngle());
-			x1 = (float) (this.getX() + 7.5 * Math.cos(dir));
-			x2 = (float) (this.getX() + 7.5 * Math.cos(dir));
-			y1 = (float) (this.getY() - 7.5 * Math.sin(dir));
-			y2 = (float) (this.getY() - 7.5 * Math.sin(dir));
-
-//Medium Roid1
-			roid1 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, x1,
-					y1);
-
-			float initForce = (float) (3000 + (3000 * Math.random()));
-			float x = (float) (initForce * Math.cos(dir));
-			float y = (float) (initForce * Math.sin(dir));
-
-			Vector2 f = roid1.getBody().getWorldVector(new Vector2(x, y));
-			Vector2 p = roid1.getBody().getWorldPoint(
-					roid1.getBody().getLocalCenter());
-			roid1.getBody().applyForce(f, p);
-
-			float spin = (float) (25 * Math.random());
-			if (Math.random() >= 0.5f)
-				spin *= -1;
-			roid1.getBody().setAngularVelocity(spin);
-			
-			CoreLogic.getComp().getEntitiesMap().put(roid1.getId(), roid1);
-
-//Medium Roid2
-			roid2 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, x2, y2);
-
-			initForce = (float) (3000 + (3000 * Math.random()));
-			x = (float) (initForce * Math.cos(dir));
-			y = (float) (initForce * Math.sin(dir));
-
-			f = roid2.getBody().getWorldVector(new Vector2(x, y));
-			p = roid2.getBody().getWorldPoint(roid2.getBody().getLocalCenter());
-			roid2.getBody().applyForce(f, p);
-
-			spin = (float) (25 * Math.random());
-			if (Math.random() >= 0.5f)
-				spin *= -1;
-			roid1.getBody().setAngularVelocity(spin);
-
-			CoreLogic.getComp().getEntitiesMap().put(roid2.getId(), roid2);
+			if (!CoreLogic.multiplayer || CoreLogic.getHost()) {
+				dir = (float) Math.toRadians(this.getAngle());
+				x1 = (float) (this.getX() + 7.5 * Math.cos(dir));
+				x2 = (float) (this.getX() + 7.5 * Math.cos(dir));
+				y1 = (float) (this.getY() - 7.5 * Math.sin(dir));
+				y2 = (float) (this.getY() - 7.5 * Math.sin(dir));
+	
+	//Medium Roid1
+				roid1 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, x1,
+						y1);
+	
+				float initForce = (float) (3000 + (3000 * Math.random()));
+				float x = (float) (initForce * Math.cos(dir));
+				float y = (float) (initForce * Math.sin(dir));
+	
+				Vector2 f = roid1.getBody().getWorldVector(new Vector2(x, y));
+				Vector2 p = roid1.getBody().getWorldPoint(
+						roid1.getBody().getLocalCenter());
+				roid1.getBody().applyForce(f, p);
+	
+				float spin = (float) (25 * Math.random());
+				if (Math.random() >= 0.5f)
+					spin *= -1;
+				roid1.getBody().setAngularVelocity(spin);
+				
+				CoreLogic.getComp().getEntitiesMap().put(roid1.getId(), roid1);
+	
+	//Medium Roid2
+				roid2 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, x2, y2);
+	
+				initForce = (float) (3000 + (3000 * Math.random()));
+				x = (float) (initForce * Math.cos(dir));
+				y = (float) (initForce * Math.sin(dir));
+	
+				f = roid2.getBody().getWorldVector(new Vector2(x, y));
+				p = roid2.getBody().getWorldPoint(roid2.getBody().getLocalCenter());
+				roid2.getBody().applyForce(f, p);
+	
+				spin = (float) (25 * Math.random());
+				if (Math.random() >= 0.5f)
+					spin *= -1;
+				roid1.getBody().setAngularVelocity(spin);
+	
+				CoreLogic.getComp().getEntitiesMap().put(roid2.getId(), roid2);
+			}
 		} else if (this.type == MEDIUM) {
 			
 			sound(1.2f);
@@ -163,48 +164,50 @@ public class Asteroid extends Entity {
 			}
 			this.getX();
 			
-			dir = (float) Math.toRadians(this.getAngle());
-			x1 = (float) (this.getX() + 3.75 * Math.cos(dir));
-			x2 = (float) (this.getX() + 3.75 * Math.cos(dir));
-			y1 = (float) (this.getY() - 3.75 * Math.sin(dir));
-			y2 = (float) (this.getY() - 3.75 * Math.sin(dir));
-
-//Small roid1
-			roid1 = new Asteroid(SMALL, this.owner.nextId(), this.owner, x1, y1);
-
-			float initForce = (float) (400 + (200 * Math.random()));
-			float x = (float) (initForce * Math.cos(Math.random()*2*Math.PI));
-			float y = (float) (initForce * Math.sin(Math.random()*2*Math.PI));
-
-			Vector2 f = roid1.getBody().getWorldVector(new Vector2(x, y));
-			Vector2 p = roid1.getBody().getWorldPoint(
-					roid1.getBody().getLocalCenter());
-			roid1.getBody().applyForce(f, p);
-
-			float spin = (float) (20 * Math.random());
-			if (Math.random() >= 0.5f)
-				spin *= -1;
-			roid1.getBody().setAngularVelocity(spin);
-			
-			CoreLogic.getComp().getEntitiesMap().put(roid1.getId(), roid1);
-
-//Small Roid2	
-			roid2 = new Asteroid(SMALL, this.owner.nextId(), this.owner, x2, y2);
-
-			initForce = (float) (400 + (200 * Math.random()));
-			x = (float) (initForce * Math.cos(dir));
-			y = (float) (initForce * Math.sin(dir));
-
-			f = roid2.getBody().getWorldVector(new Vector2(x, y));
-			p = roid2.getBody().getWorldPoint(roid2.getBody().getLocalCenter());
-			roid2.getBody().applyForce(f, p);
-
-			spin = (float) (300 + (250 * Math.random()));
-			if (Math.random() >= 0.5f)
-				spin *= -1;
-			roid2.getBody().applyTorque(spin);
-			
-			CoreLogic.getComp().getEntitiesMap().put(roid2.getId(), roid2);
+			if (!CoreLogic.multiplayer || CoreLogic.getHost()) {
+				dir = (float) Math.toRadians(this.getAngle());
+				x1 = (float) (this.getX() + 3.75 * Math.cos(dir));
+				x2 = (float) (this.getX() + 3.75 * Math.cos(dir));
+				y1 = (float) (this.getY() - 3.75 * Math.sin(dir));
+				y2 = (float) (this.getY() - 3.75 * Math.sin(dir));
+	
+	//Small roid1
+				roid1 = new Asteroid(SMALL, this.owner.nextId(), this.owner, x1, y1);
+	
+				float initForce = (float) (400 + (200 * Math.random()));
+				float x = (float) (initForce * Math.cos(Math.random()*2*Math.PI));
+				float y = (float) (initForce * Math.sin(Math.random()*2*Math.PI));
+	
+				Vector2 f = roid1.getBody().getWorldVector(new Vector2(x, y));
+				Vector2 p = roid1.getBody().getWorldPoint(
+						roid1.getBody().getLocalCenter());
+				roid1.getBody().applyForce(f, p);
+	
+				float spin = (float) (20 * Math.random());
+				if (Math.random() >= 0.5f)
+					spin *= -1;
+				roid1.getBody().setAngularVelocity(spin);
+				
+				CoreLogic.getComp().getEntitiesMap().put(roid1.getId(), roid1);
+	
+	//Small Roid2	
+				roid2 = new Asteroid(SMALL, this.owner.nextId(), this.owner, x2, y2);
+	
+				initForce = (float) (400 + (200 * Math.random()));
+				x = (float) (initForce * Math.cos(dir));
+				y = (float) (initForce * Math.sin(dir));
+	
+				f = roid2.getBody().getWorldVector(new Vector2(x, y));
+				p = roid2.getBody().getWorldPoint(roid2.getBody().getLocalCenter());
+				roid2.getBody().applyForce(f, p);
+	
+				spin = (float) (300 + (250 * Math.random()));
+				if (Math.random() >= 0.5f)
+					spin *= -1;
+				roid2.getBody().applyTorque(spin);
+				
+				CoreLogic.getComp().getEntitiesMap().put(roid2.getId(), roid2);
+			}
 		} else {
 			
 			sound(1.6f);

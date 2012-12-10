@@ -128,15 +128,25 @@ public class CollisionLogic implements ContactListener {
 			int damages = calculateDamage(ship.getBody(), asteroid.getBody());
 			damages = (int) Math.round(Math.pow(damages, 0.48) * Math.log10(asteroid.getBody().getMass()*10)/2);
 			craft.getOwner().takeDamage(damages);
-
+			if (craft.getOwner() == CoreLogic.getLocal()) {
+				Net.modifyPlayer(craft.getOwner());
+			}
 		} else {
 			CoreLogic.removeEntity(ship);
 		}
 	}
 
 	public static void bulletAsteroid(Entity bullet, Entity asteroid){
-		CoreLogic.removeEntity(bullet);
-		CoreLogic.removeEntity(asteroid);
+		if (!CoreLogic.multiplayer) {
+			CoreLogic.removeEntity(bullet);
+			CoreLogic.removeEntity(asteroid);
+		} else if (CoreLogic.getHost()) {
+			Net.collision(bullet, asteroid);
+			
+			// TODO: Put this in the right place
+			CoreLogic.removeEntity(bullet);
+			CoreLogic.removeEntity(asteroid);
+		}
 
 		// Call score method for the player here
 		bullet.getOwner().modScore(asteroid.getPoints());

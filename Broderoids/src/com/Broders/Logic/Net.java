@@ -90,6 +90,18 @@ public class Net extends Thread {
 		o.addProperty("c", COMMAND_GAME_LEAVE);
 		Net.send(o);
 	}
+	
+	public static void modifyPlayer(Player p) {
+		JsonObject o = new JsonObject();
+		o.addProperty("c", COMMAND_GAME_PLAYER_MODIFY);
+		JsonObject d = new JsonObject();
+		d.addProperty("i", p.getId());
+		//d.addProperty("n", ) // Name
+		d.addProperty("s", p.getScore());
+		d.addProperty("c", p.getColor().toString());
+		//d.addProperty("h", ) // Host
+		o.add("d", d);
+	}
 
 	public static void createEntity(Entity e) {
 		JsonObject o = new JsonObject();

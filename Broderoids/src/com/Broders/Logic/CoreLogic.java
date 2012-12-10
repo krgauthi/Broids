@@ -11,6 +11,7 @@ import com.Broders.Entities.Entity;
 import com.Broders.Entities.Ship;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -53,6 +54,8 @@ public class CoreLogic {
 	private static float respawnTimer;
 	private static float invincibleTimer;
 	private static boolean respawnSound;
+	private static float invulnFlash;
+	private static boolean flashing;
 
 	private static String saveId;
 
@@ -116,6 +119,9 @@ public class CoreLogic {
 
 		respawnTimer = -10f;
 		invincibleTimer = -10f;
+		respawnSound = false;
+		invulnFlash = 0;
+		flashing = false;
 
 		if (widthIn != 0.0) {
 			width = widthIn;
@@ -131,16 +137,6 @@ public class CoreLogic {
 
 		viewPortX = (width / 2) - (widthScreen / 2f);
 		viewPortY = (height / 2) - (heightScreen / 2f);
-
-		/*
-		 * forget this Just putting these here as an example. entity IDs will be
-		 * of the following format: EntityID + TypeID + ClientID + InstanceID =
-		 * 00 00 000 0000
-		 */
-		// String clientID = "000"; // possibly let server handle clientID
-		// generation somehow?
-		// String instanceID = "0000"; // check map to see how many of this type
-		// of entity already exist
 
 		Player local = new Player("Player", clientId);
 		players.put(Integer.toString(local.getId()), local);
@@ -196,11 +192,22 @@ public class CoreLogic {
 		}
 
 		//Temp invincibility after respawn
-		if(invincibleTimer > 0)
+		if(invincibleTimer > 0) {
 			invincibleTimer -= Gdx.graphics.getDeltaTime();
+			invulnFlash += Gdx.graphics.getDeltaTime();
+			
+			if (invulnFlash >= 0.3f) {
+				if (!flashing)
+					getLocal().getShip().setColor(Color.WHITE);
+				else
+					getLocal().getShip().setColor();
+				
+				flashing = !flashing;
+				invulnFlash = 0;
+			}	
+		}
 		else if(invincibleTimer > -9f){
 			invincibleTimer = -10f;
-
 			local.getShip().setInvincible(false);
 		}
 

@@ -158,6 +158,10 @@ public abstract class Entity {
 	public void setColor() {
 		this.color = this.owner.getColor();
 	}
+	
+	public void setColor(Color color) {
+		this.color = color;
+	}
 
 	/**
 	 * Draws this Entity on the screen

@@ -101,12 +101,10 @@ public class CollisionLogic implements ContactListener {
 			eB = (Entity) bB.getUserData();
 		}
 
-		// Collisions to ignore. Only Asteroid-Asteroid and Ship-Asteroid
-		// matter for singleplayer, Ship-Ship also relevant for multiplayer.
-		if (!(	eA instanceof Asteroid && eB instanceof Asteroid ||
-				eA instanceof Asteroid && eB instanceof Ship ||
-				eA instanceof Ship && eB instanceof Asteroid) ||
-				eA instanceof Ship && eB instanceof Ship) {
+		//Collisions to ignore: invincible ships and bullets
+		if (eA instanceof Ship && ((Ship)eA).isInvincible() ||
+			eB instanceof Ship && ((Ship)eB).isInvincible() ||
+			eA instanceof Bullet || eB instanceof Bullet) {
 
 			contact.setEnabled(false);
 		}
@@ -150,10 +148,10 @@ public class CollisionLogic implements ContactListener {
 	}
 	
 	public static void shipShip(Entity shipA, Entity shipB) {
-		int damages = calculateDamage(shipA.getBody(), shipB.getBody());
+		/*int damages = calculateDamage(shipA.getBody(), shipB.getBody());
 		damages = 0 - (int) Math.round(Math.pow(damages, 0.55));
 		shipA.getOwner().modHealth(damages);
-		shipB.getOwner().modHealth(damages);
+		shipB.getOwner().modHealth(damages);*/
 	}
 
 	/**

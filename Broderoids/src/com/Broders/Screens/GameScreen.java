@@ -285,7 +285,7 @@ public class GameScreen implements Screen {
 			font.setScale(.25f);
 		}
 		
-		if (CoreLogic.getLocal().getLives() == 0) {
+		if (!CoreLogic.multiplayer && CoreLogic.getLocal().getLives() == 0) {
 			font .setScale(2f);
 			String out;
 			out = String.format("Game Over!"); 
@@ -333,7 +333,7 @@ public class GameScreen implements Screen {
 		if (!multiplayer && CoreLogic.getLocal().getLives() == 0) {
 			gameOver += Gdx.graphics.getDeltaTime();
 			if (gameOver >= 4f) {
-				myGame.setScreen(BaseGame.screens.get("main"));
+				myGame.setScreen(BaseGame.screens.get("scores"));
 				//TODO Change to High-scores screen.
 			}
 		}

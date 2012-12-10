@@ -91,6 +91,13 @@ public class BaseGame extends Game {
 		
 		TextureManager.init();
 		
+		try {
+			ScoresManager.init(this);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		screens = new HashMap<String,Screen>();
 		screens.put("splash", new SplashScreen(this));
 		screens.put("main", new MainMenu(this));
@@ -101,6 +108,7 @@ public class BaseGame extends Game {
 		}
 		screens.put("single", new GameScreen(this, 0, 0, 0, true));
 		screens.put("multi", new GameScreen(this, 0, 0, 0, true));
+		screens.put("scores", new ScoresScreen(this));
 
 		this.setScreen(BaseGame.screens.get("splash"));
 		

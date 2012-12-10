@@ -63,7 +63,6 @@ public class SettingsScreen implements Screen {
 			GL10 gl = Gdx.graphics.getGL10();
 			Gdx.gl.glClearColor(0, 0, 0, 1);
 			gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-			spriteBatch.begin();
 		}else{
 			GL10 g1 = Gdx.graphics.getGL10();
 			Gdx.gl.glClearColor(.19f, .19f, .19f, 1f);	 

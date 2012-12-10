@@ -1,5 +1,6 @@
 package com.Broders.Logic;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 
 import com.badlogic.gdx.Gdx;
@@ -10,6 +11,7 @@ import com.Broders.Entities.Dust;
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.Ship;
 import com.Broders.mygdxgame.BaseGame;
+import com.Broders.mygdxgame.ScoresManager;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -589,6 +591,15 @@ public class CoreLogic {
 					getSelf().modLives(-1);
 					local.setShip(null);
 					respawnTimer = 3.0f;
+					if(getSelf().getLives() == 0){
+						ScoresManager.addScore(myGame.playerName, CoreLogic.getLocal().getScore());
+						try {
+							ScoresManager.writeScores();
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
 				}
 			}
 

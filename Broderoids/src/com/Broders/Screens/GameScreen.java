@@ -58,6 +58,8 @@ public class GameScreen implements Screen {
 	private boolean paused;
 	private float pauseWait;
 	private ShapeRenderer overlay;
+	
+	private float gameOver;
 
 	private SpriteBatch spriteBatch;
 	
@@ -84,6 +86,7 @@ public class GameScreen implements Screen {
 		this.paused = false;
 		this.pauseWait = 0;
 		this.overlay = new ShapeRenderer();
+		this.gameOver = 0;
 
 		if (this.multiplayer) {
 			System.out.println("Multi");
@@ -98,10 +101,6 @@ public class GameScreen implements Screen {
 		}
 		
 		CoreLogic.initCore(myGame, width2, height2, h2, multiplayer);
-		if (this.multiplayer) {
-			// This starts up the thread for async networking
-			Net.handleGame();
-		}
 
 		font = this.myGame.font;
 		font.setScale(.25f);
@@ -152,8 +151,8 @@ public class GameScreen implements Screen {
 			Gdx.gl.glClearColor(0, 0, 0, 1);
 		}else{
 
-			//Gdx.gl.glClearColor(.19f, .19f, .19f, 1f);
-			Gdx.gl.glClearColor(0, 0, 0, 1f);
+			Gdx.gl.glClearColor(.19f, .19f, .19f, 19f);
+			//Gdx.gl.glClearColor(0, 0, 0, 1f);
 		}
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -182,12 +181,12 @@ public class GameScreen implements Screen {
 			shieldBar.draw(spriteBatch);
 			// shieldBlock.draw(spriteBatch);
 
-			float health = 0;
-			float shield = 0;
+			int health = 0;
+			int shield = 0;
 			int score = 0;
 			if (CoreLogic.getLocal() != null) {
-				health = (float) CoreLogic.getLocal().getHealth();
-				shield = (float) CoreLogic.getLocal().getShield();
+				health = CoreLogic.getLocal().getHealth();
+				shield = CoreLogic.getLocal().getShield();
 				score = CoreLogic.getLocal().getScore();
 			}
 
@@ -279,6 +278,14 @@ public class GameScreen implements Screen {
 			font.draw(spriteBatch, out, xx*.25f, yy*.65f);
 			font.setScale(.25f);
 		}
+		
+		if (CoreLogic.getLocal().getLives() == 0) {
+			font .setScale(2f);
+			String out;
+			out = String.format("Game Over!"); 
+			font.draw(spriteBatch, out, xx*.20f, yy*.65f);
+			font.setScale(.25f);
+		}
 		spriteBatch.end();
 
 		if (paused && !multiplayer) {
@@ -304,6 +311,14 @@ public class GameScreen implements Screen {
 			if (myGame.debugMode) {
 				debug1.update();
 				debug2.update();
+			}
+		}
+		
+		if (!multiplayer && CoreLogic.getLocal().getLives() == 0) {
+			gameOver += Gdx.graphics.getDeltaTime();
+			if (gameOver >= 4f) {
+				myGame.setScreen(BaseGame.screens.get("main"));
+				//TODO Change to High-scores screen.
 			}
 		}
 	}

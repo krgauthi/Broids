@@ -109,10 +109,10 @@ public class MultiLobby implements Screen {
 
 		// tabs
 		if (page > 0) {
-
+			
 			TextureManager.getSprites("Ship1").setSize(yy * .25f, yy * .25f);
-			TextureManager.getSprites("Ship1").setOrigin((yy * .25f) / 2f, (yy * .25f) / 2f);
-			TextureManager.getSprites("Ship1").setRotation(0);
+			
+			
 
 			if (curPage < page) { // display both tabs
 				TextureManager.getSprites("Ship1").setColor(Color.WHITE);
@@ -122,7 +122,7 @@ public class MultiLobby implements Screen {
 
 				out = String.format("%d ", curPage + 1);
 
-				myGame.font.setColor(Color.WHITE);
+				myGame.font.setColor(Color.BLACK);
 				myGame.font.setScale(.5f);
 				myGame.font.draw(spriteBatch, out, xx * .078f, yy * .32f);
 				
@@ -137,7 +137,7 @@ public class MultiLobby implements Screen {
 
 				out = String.format("%d ", curPage);
 
-				myGame.font.setColor(Color.WHITE);
+				myGame.font.setColor(Color.BLACK);
 				myGame.font.setScale(.5f);
 				myGame.font.draw(spriteBatch, out, xx * .078f, yy * .64f);
 				
@@ -163,6 +163,7 @@ public class MultiLobby implements Screen {
 			// ref
 			// total
 			// players
+			myGame.font.setColor(Color.BLACK);
 			myGame.font.setScale(.4f);
 			myGame.font.draw(spriteBatch, out, xx * .7f, yy * (.73f - (.16f * i)));
 			String priv = "";

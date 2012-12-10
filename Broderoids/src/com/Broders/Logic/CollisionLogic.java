@@ -102,9 +102,11 @@ public class CollisionLogic implements ContactListener {
 		}
 
 		//Collisions to ignore: invincible ships and bullets
-		if (eA instanceof Ship && ((Ship)eA).isInvincible() ||
-			eB instanceof Ship && ((Ship)eB).isInvincible() ||
-			eA instanceof Bullet || eB instanceof Bullet) {
+		if ((eA instanceof Ship && ((Ship)eA).isInvincible()) ||
+			(eB instanceof Ship && ((Ship)eB).isInvincible()) ||
+			eA instanceof Bullet || eB instanceof Bullet	||
+			eA instanceof Dust 	 || eB instanceof Dust)
+			{
 
 			contact.setEnabled(false);
 		}

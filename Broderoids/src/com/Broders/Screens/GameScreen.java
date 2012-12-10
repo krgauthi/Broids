@@ -152,7 +152,8 @@ public class GameScreen implements Screen {
 			Gdx.gl.glClearColor(0, 0, 0, 1);
 		}else{
 
-			Gdx.gl.glClearColor(.19f, .19f, .19f, 1f);	 
+			//Gdx.gl.glClearColor(.19f, .19f, .19f, 1f);
+			Gdx.gl.glClearColor(0, 0, 0, 1f);
 		}
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -280,7 +281,7 @@ public class GameScreen implements Screen {
 		}
 		spriteBatch.end();
 
-		if (paused) {
+		if (paused && !multiplayer) {
 			
 			//this.overlay = new ShapeRenderer();
 			overlay.begin(ShapeType.FilledRectangle);

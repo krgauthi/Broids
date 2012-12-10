@@ -30,18 +30,14 @@ public class SettingsScreen implements Screen {
 
 	private SpriteBatch spriteBatch;
 
-	private boolean volBool; // not currently implemented
 	private int screenResSelection;
-	private int[][] screenResOptions = {{1920, 1200},
-			{640, 480}, {1600, 900}}; // will be two separate integers
-	private int sPDiff;  // 1: easy 2: med 3: hard
+	private int[][] screenResOptions = {{1024, 768}, {1024, 576},
+			{640, 480}, {600, 800}}; // will be two separate integers
 
 	private BitmapFont font;
 
 	private double perc_X;
 	private double perc_Y;	
-
-	String message;
 
 	public SettingsScreen(BaseGame g) {
 		this.game = g;
@@ -73,8 +69,10 @@ public class SettingsScreen implements Screen {
 		// Debug Text
 
 		if (game.debugMode) {
-			font.draw(spriteBatch, perc_X + " " + perc_Y, (float) (game.screenWidth * .01),
-					(float) (game.screenHeight * .99));
+			font.draw(spriteBatch, game.screenWidth + " x " + game.screenHeight, game.screenWidth * .01f,
+					game.screenHeight * .94f);
+			font.draw(spriteBatch, perc_X + " " + perc_Y, game.screenWidth * .01f,
+					game.screenHeight * .99f);
 		}
 
 		// Option Texts
@@ -94,11 +92,11 @@ public class SettingsScreen implements Screen {
 				(float) (game.screenHeight * .4));
 
 		// Volume
-		font.draw(spriteBatch, "Volume: " + volBool, (float) (game.screenWidth * .08),
-				(float) (game.screenHeight * .6));
+//		font.draw(spriteBatch, "Volume: " + volBool, (float) (game.screenWidth * .08),
+//				(float) (game.screenHeight * .6));
 
 		// Background Image
-		font.draw(spriteBatch, "Retro Mode: " + game.retroGraphics,
+		font.draw(spriteBatch, "Retro Mode: " + (game.retroGraphics ? "On" : "Off"),
 				(float) (game.screenWidth * .08), (float) (game.screenHeight * .8));
 
 		// Screen Resolution
@@ -111,7 +109,7 @@ public class SettingsScreen implements Screen {
 				(float) (game.screenWidth * .52), (float) (game.screenHeight * .6));
 
 		// Single Player Difficulty
-		font.draw(spriteBatch, "Single Player Difficulty: " + sPDiffString(sPDiff),
+		font.draw(spriteBatch, "Single Player Difficulty: " + sPDiffString(game.difficulty),
 				(float) (game.screenWidth * .52), (float) (game.screenHeight * .4));
 
 		// Epileptic Mode
@@ -210,17 +208,17 @@ public class SettingsScreen implements Screen {
 				
 				game.soundVolume = game.soundVolume == 10 ? 0 : game.soundVolume + 1;
 				System.out.println("Sound Option set to " + game.soundVolume);
+				SoundManager.get("click").play(game.soundVolume * .1f);
 				
 			} else if (x >= .08 && x <= .46 && y >= .52 && y <= .6) {
 
-				volBool = volBool ? false : true;
-				System.out.println("Volume Option set to " + volBool);
+//				volBool = volBool ? false : true;
+//				System.out.println("Volume Option set to " + volBool);
 
 			} else if (x >= .08 && x <= .46 && y >= .72 && y <= .8) {
 
-				
 				game.retroGraphics = game.retroGraphics ? false : true;
-				System.out.println("Retro Mode Option set to " + game.retroGraphics);	
+				System.out.println("Retro Mode Option set to " + (game.retroGraphics ? "On" : "Off"));	
 				TextureManager.init(game);
 
 			} else if (x >= .51 && x <= .96 && y >= .72 && y <= .8) {
@@ -231,8 +229,16 @@ public class SettingsScreen implements Screen {
 					screenResSelection++;
 				}
 
-				System.out.println("Screen Resolution Option set to " + screenResOptions[screenResSelection][0] +
-						" x " + screenResOptions[screenResSelection][1]);
+				// We need to set the BaseGame screen width + height to the new res so clicks will work correctly,
+				// as they are based off of a percentage of screen height + width, which are set statically.
+		
+				game.screenWidth = screenResOptions[screenResSelection][0];
+				game.screenHeight = screenResOptions[screenResSelection][1];
+				
+				Gdx.graphics.setDisplayMode(screenResOptions[screenResSelection][0],
+						screenResOptions[screenResSelection][1], false);
+				System.out.println("Screen Resolution Option set to " + game.screenWidth +
+						" x " + game.screenHeight);
 
 			} else if (x >= .51 && x <= .96 && y >= .52 && y <= .6) {
 
@@ -241,8 +247,8 @@ public class SettingsScreen implements Screen {
 
 			} else if (x >= .51 && x <= .96 && y >= .32 && y <= .4) {
 
-				sPDiff = sPDiff == 2 ? 0 : ++sPDiff;
-				System.out.println("SP Difficulty Option");
+				game.difficulty = game.difficulty >= 2 ? 0 : ++game.difficulty;
+				System.out.println("SP Difficulty Option set to " + game.difficulty);
 
 			} else if (x >= .51 && x <= .96 && y >= .12 && y <= .2) {
 
@@ -341,7 +347,7 @@ public class SettingsScreen implements Screen {
 		pw.println("MusicVolume: " + this.game.musicVolume);
 		pw.println("Resolution: " + game.screenWidth + " x " + game.screenHeight);
 		pw.println("Debug: " + game.debugMode);
-		pw.println("SPDifficulty: " + this.sPDiff);
+		pw.println("SPDifficulty: " + game.difficulty);
 		pw.println("Epileptic: " + game.epileptic);
 
 		pw.close();
@@ -370,7 +376,7 @@ public class SettingsScreen implements Screen {
 		case 0: return "Easy";
 		case 1: return "Medium"; 
 		case 2: return "Hard";
-		default: return null;
+		default: return Integer.toString(sPDiff);
 		}
 	}
 

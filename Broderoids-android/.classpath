@@ -10,5 +10,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/gdx-backend-android.jar" sourcepath="libs/gdx-backend-android-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="/Broderoids/libs/bodyeditor-loader.jar" sourcepath="/Broderoids/libs/bodyeditor-loader-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="/Broderoids/libs/tween-engine-api.jar" sourcepath="/Broderoids/libs/tween-engine-api-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Broderoids/libs/gson-2.2.2.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

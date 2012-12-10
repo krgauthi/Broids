@@ -177,8 +177,8 @@ public class CoreLogic {
 		Player local = getLocal();
 
 		//Respawn
-		if (respawnTimer < 1f && !respawnSound && getLocal().getLives() < 3
-				&& getLocal().getLives() > 0) {
+		if (respawnTimer < 1f && !respawnSound && local.getLives() < 3
+				&& local.getLives() > 0) {
 			SoundManager.get("respawn").play();
 			respawnSound = true;
 		}

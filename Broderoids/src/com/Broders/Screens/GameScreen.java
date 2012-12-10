@@ -98,10 +98,6 @@ public class GameScreen implements Screen {
 		}
 		
 		CoreLogic.initCore(myGame, width2, height2, h2, multiplayer);
-		if (this.multiplayer) {
-			// This starts up the thread for async networking
-			Net.handleGame();
-		}
 
 		font = this.myGame.font;
 		font.setScale(.25f);

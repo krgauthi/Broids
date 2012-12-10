@@ -57,8 +57,6 @@ public class CoreLogic {
 	private static float invulnFlash;
 	private static boolean flashing;
 
-	private static String saveId;
-
 	public static BaseGame getGame() {
 		return myGame;
 	}
@@ -151,14 +149,20 @@ public class CoreLogic {
 		viewPortY = (height / 2) - (heightScreen / 2f);
 		
 		Player local = new Player("Player", clientId);
+		local.modHealth(100);
+		local.modShield(100);
 		players.put(Integer.toString(local.getId()), local);
-		saveId = local.getShip().getId();
 
 		Player comp = new Player("Comp", 1);
 		players.put(Integer.toString(comp.getId()), comp);
 
 		Player temp = new Player("Temp", 0);
 		players.put(Integer.toString(temp.getId()), temp);
+		
+		if (multiplayer) {
+			// This starts up the thread for async networking
+			Net.handleGame();
+		}
 		
 		SoundManager.get("start").play();
 	}
@@ -188,7 +192,7 @@ public class CoreLogic {
 			respawnTimer = -10f;
 			invincibleTimer = 3f;
 
-			Ship ship = new Ship(saveId, local,
+			Ship ship = new Ship(Integer.toString(clientId), local,
 					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
 
 			local.setShip(ship);
@@ -198,7 +202,7 @@ public class CoreLogic {
 				local.modHealth(100);
 			}
 
-			local.getEntitiesMap().put(saveId, local.getShip());
+			local.getEntitiesMap().put(Integer.toString(clientId), local.getShip());
 			local.getShip().setInvincible(true);
 			local.modBonus(1.0f);
 		}

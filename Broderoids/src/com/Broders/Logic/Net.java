@@ -176,6 +176,7 @@ public class Net extends Thread {
 		boolean hosting = innerInner.get("h").getAsBoolean();
 		int id = innerInner.get("i").getAsInt();
 
+
 		return new GameScreen(CoreLogic.getGame(), id, x, y, hosting);
 	}
 
@@ -214,6 +215,8 @@ public class Net extends Thread {
 
 		System.out.println(inner);
 
+ 			
+		
 		return new GameScreen(CoreLogic.getGame(), id, x, y, hosting);
 	}
 

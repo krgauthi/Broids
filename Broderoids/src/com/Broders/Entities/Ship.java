@@ -188,13 +188,14 @@ public class Ship extends Entity {
 				&& posY > -this.getSize()*8 && posY < (screenHeight+this.getSize()*8)){
 
 			if (this.getThrust()) {
-
+				
 				TextureManager.getSprites("Ship2").setColor(this.getColor());
 				TextureManager.getSprites("Ship2").setPosition(posX, posY);
 				TextureManager.getSprites("Ship2").setRotation((float) super.getAngle());
 				TextureManager.getSprites("Ship2").draw(sb);
 
 			} else {
+				
 				super.getSprite().setColor(super.getColor());
 				super.getSprite().setPosition(posX, posY);
 				super.getSprite().setRotation((float) super.getAngle() + (float) (Math.PI / 2));

@@ -153,6 +153,7 @@ public class CoreLogic {
 		Player local = new Player("Player", clientId);
 		players.put(Integer.toString(local.getId()), local);
 		saveId = local.getShip().getId();
+		Net.createEntity(local.getShip());
 
 		Player comp = new Player("Comp", 1);
 		players.put(Integer.toString(comp.getId()), comp);
@@ -614,12 +615,16 @@ public class CoreLogic {
 					respawnTimer = 3.0f;
 					respawnSound = false;
 				}
+				
+				else{
+					local.setShip(null);
+					respawnTimer = 3.0f;
+					respawnSound = false;
+				}
 			}
 
-			if (myGame.multiplayer && host && !(i instanceof Dust)) {
+			else if (myGame.multiplayer && host && !(i instanceof Dust)) {
 				Net.removeEntity(i);
-				local.setShip(null);
-				respawnTimer = 3.0f;
 			}
 
 			i.getOwner().getEntitiesMap().remove(i.getId());

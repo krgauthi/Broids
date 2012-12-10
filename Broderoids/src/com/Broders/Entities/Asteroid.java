@@ -26,7 +26,7 @@ public class Asteroid extends Entity {
 		super(id, owner);
 
 		super.setColor();
-		super.setSprite(Settings.data_path + "broid.png");
+		super.setSprite("Broid");
 
 		FixtureDef fixDef = new FixtureDef();
 		CircleShape shape = new CircleShape();

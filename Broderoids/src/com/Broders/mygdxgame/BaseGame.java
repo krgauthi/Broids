@@ -89,7 +89,7 @@ public class BaseGame extends Game {
 			e.printStackTrace();
 		}
 		
-		TextureManager.init();
+		TextureManager.init(this);
 		
 		screens = new HashMap<String,Screen>();
 		screens.put("splash", new SplashScreen(this));

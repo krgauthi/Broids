@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import com.Broders.Logic.Settings;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
+import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.TextInputListener;
@@ -63,7 +64,6 @@ public class SettingsScreen implements Screen {
 			GL10 gl = Gdx.graphics.getGL10();
 			Gdx.gl.glClearColor(0, 0, 0, 1);
 			gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-			spriteBatch.begin();
 		}else{
 			GL10 g1 = Gdx.graphics.getGL10();
 			Gdx.gl.glClearColor(.19f, .19f, .19f, 1f);	 
@@ -220,7 +220,8 @@ public class SettingsScreen implements Screen {
 
 				
 				game.retroGraphics = game.retroGraphics ? false : true;
-				System.out.println("Retro Mode Option set to " + game.retroGraphics);		
+				System.out.println("Retro Mode Option set to " + game.retroGraphics);	
+				TextureManager.init(game);
 
 			} else if (x >= .51 && x <= .96 && y >= .72 && y <= .8) {
 

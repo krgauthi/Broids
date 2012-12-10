@@ -37,6 +37,7 @@ public abstract class Entity {
 
 	protected String id;
 	protected Player owner;
+
 	
 	public Entity(String id, Player owner) {
 		this.id = id;
@@ -278,6 +279,10 @@ public abstract class Entity {
 	}
 
 	public abstract void update();
+	
+	public int extra() {
+		return 0;
+	}
 
 	public abstract void destroy();
 

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
+import java.util.regex.Pattern;
 
 import com.Broders.Logic.Settings;
 import com.Broders.mygdxgame.BaseGame;
@@ -23,26 +24,22 @@ public class SettingsScreen implements Screen {
 
 	
 	// Array of basic settings, implemented to draw on even intervals
-	private static final String[] settings = { "Music", "Sounds", "Background",
-		"Screen Resolution", "Single Player Difficulty" };
-	
+	private static final String hexColorPattern = "[A-Fa-f0-9]{6}";
 	private BaseGame game;
 
-	
 	private SpriteBatch spriteBatch;
 
 	private boolean musicBool; // not currently implemented
 	private boolean soundBool; // not currently implemented
 	private boolean volBool; // not currently implemented
-	private boolean screenResBool; // will be two seperate integers
+	private int screenResSelection;
+	private int[][] screenResOptions = {{1920, 1200},
+			{640, 480}, {1600, 900}}; // will be two separate integers
 	private boolean backgroundBool; // currently unused
 	private int sPDiff;  // 1: easy 2: med 3: hard
-	private boolean usernameBool; // need to implement the textfield
 	
 	private BitmapFont font;
-	
-	private float buff;
-	
+		
 	private double perc_X;
 	private double perc_Y;	
 	
@@ -50,11 +47,8 @@ public class SettingsScreen implements Screen {
 	
 	public SettingsScreen(BaseGame g) {
 		this.game = g;
-		
-		message = "Touch screen for dialog";
 		spriteBatch = new SpriteBatch();
-		font = new BitmapFont();
-		
+		font = new BitmapFont();	
 	}
 	
 	@Override
@@ -70,9 +64,9 @@ public class SettingsScreen implements Screen {
 		gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		spriteBatch.begin();
 
+		// Debug Text
 		
 		if (game.debugMode) {
-		// Debug Text
 		font.draw(spriteBatch, perc_X + " " + perc_Y, (float) (game.screenWidth * .01),
 				(float) (game.screenHeight * .99));
 		}
@@ -83,8 +77,6 @@ public class SettingsScreen implements Screen {
 		font.setScale(.75f);
 		font.draw(spriteBatch, "Settings", (float) (game.screenWidth * .4), (float) (game.screenHeight * .95));
 		font.setScale(.5f);
-		
-		// Left Column Options
 		
 		// Music
 		font.draw(spriteBatch, "Music: " + musicBool, (float) (game.screenWidth * .08),
@@ -103,10 +95,9 @@ public class SettingsScreen implements Screen {
 		font.draw(spriteBatch, "Background: " + backgroundBool,
 				(float) (game.screenWidth * .08), (float) (game.screenHeight * .8));
 		
-		// Right Column Options
-		
 		// Screen Resolution
-		font.draw(spriteBatch, "Screen Resolution: " + game.screenWidth + " x " + game.screenHeight,
+		font.draw(spriteBatch, "Screen Resolution: " + screenResOptions[screenResSelection][0] + 
+				" x " + screenResOptions[screenResSelection][1],
 				(float) (game.screenWidth * .52), (float) (game.screenHeight * .8));
 		
 		// Debug Text Option
@@ -129,11 +120,7 @@ public class SettingsScreen implements Screen {
 		font.setScale(.25f);
 		font.draw(spriteBatch, "World Color:", game.screenWidth * .845f,
 				game.screenHeight * .98f);
-		
-		if (game.playerName == null) {
-			game.playerName = "";
-		}
-		
+				
 		font.draw(spriteBatch, "Username: " + game.playerName, (float) (game.screenWidth * .70),
 				(float) (game.screenHeight * .93));
 		
@@ -186,7 +173,7 @@ public class SettingsScreen implements Screen {
 				
 				String pretext = "";
 				
-				if (game.playerName.equals("")) {
+				if (game.playerName.equals("") || game.playerName.length() > 28) {
 					pretext = "New Bro";
 				} else {
 					pretext = game.playerName;
@@ -195,7 +182,11 @@ public class SettingsScreen implements Screen {
 				Gdx.input.getTextInput(new TextInputListener() {
 					@Override
 					public void input (String text) {
-						game.playerName = text;
+						if (text.equals("") || text.length() > 28) {
+							game.playerName = "New Bro";
+						} else {
+							game.playerName = text;
+						}
 					}
 						
 					@Override
@@ -206,7 +197,7 @@ public class SettingsScreen implements Screen {
 			if (x >= .08 && x <= .46 && y >= .12 && y <= .2) {
 				
 				musicBool = musicBool ? false : true;
-				System.out.println("Music Option set to " + musicBool );
+				System.out.println("Music Option set to " + musicBool);
 				
 			} else if (x >= .08 && x <= .46 && y >= .32 && y <= .4) {
 				
@@ -222,18 +213,25 @@ public class SettingsScreen implements Screen {
 				
 				backgroundBool = backgroundBool ? false : true;
 				System.out.println("Background Option set to " + backgroundBool);
-				System.out.println("CYAN " + Color.CYAN.toString());
-				System.out.println("RED " + Color.RED.toString());
-				System.out.println("GREEN " + Color.GREEN.toString());
-				System.out.println("BLUE " + Color.BLUE.toString());
-				System.out.println("WHITE " + Color.WHITE.toString());
-				System.out.println("BLACK " + Color.BLACK.toString());
+				
+//				System.out.println("CYAN " + Color.CYAN.toString());
+//				System.out.println("RED " + Color.RED.toString());
+//				System.out.println("GREEN " + Color.GREEN.toString());
+//				System.out.println("BLUE " + Color.BLUE.toString());
+//				System.out.println("WHITE " + Color.WHITE.toString());
+//				System.out.println("BLACK " + Color.BLACK.toString());
 				
 				
 			} else if (x >= .51 && x <= .96 && y >= .72 && y <= .8) {
 			
-				screenResBool = screenResBool ? false : true;
-				System.out.println("Screen Resolution Optio set to " + screenResBool);
+				if (screenResSelection == (screenResOptions.length - 1)) {
+					screenResSelection = 0;
+				} else {
+					screenResSelection++;
+				}
+				
+				System.out.println("Screen Resolution Option set to " + screenResOptions[screenResSelection][0] +
+						" x " + screenResOptions[screenResSelection][1]);
 			
 			} else if (x >= .51 && x <= .96 && y >= .52 && y <= .6) {
 				
@@ -265,8 +263,8 @@ public class SettingsScreen implements Screen {
 				Gdx.input.getTextInput(new TextInputListener() {
 					@Override
 					public void input (String text) {
-						if (!text.matches("#[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]") &&
-								!text.matches("[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]")) {
+						if (!Pattern.matches(hexColorPattern, text) &&
+								!Pattern.matches("#" + hexColorPattern, text)) {
 							text = "FFFFFF";
 						}
 						text = text.replaceAll("#", "").trim();
@@ -279,8 +277,6 @@ public class SettingsScreen implements Screen {
 				}, "Enter new player color", pretext);	
 				
 			} else if (x >= .85 && x<= .99 && y >= .94 && y <= .98) {
-				System.out.println("you did it ");
-				
 				String pretext = "";
 				
 				if (game.playerColor.equals("")) {
@@ -292,8 +288,8 @@ public class SettingsScreen implements Screen {
 				Gdx.input.getTextInput(new TextInputListener() {
 					@Override
 					public void input (String text) {
-						if (!text.matches("#[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]") &&
-								!text.matches("[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]")) {
+						if (!Pattern.matches(hexColorPattern, text) &&
+								!Pattern.matches("#" + hexColorPattern, text)) {
 							text = "FFFFFF";
 						}
 						text = text.replaceAll("#", "").trim();
@@ -317,9 +313,7 @@ public class SettingsScreen implements Screen {
 	}
 
 	@Override
-	public void show() {
-		buff = 0;
-		
+	public void show() {		
 		spriteBatch = new SpriteBatch();
 		
 		font = game.font;

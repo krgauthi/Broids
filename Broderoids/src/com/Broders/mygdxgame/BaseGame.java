@@ -27,21 +27,26 @@ public class BaseGame extends Game {
 	
 		
 	public double exitBuffer;		//TODO Ref in Settings
-	public boolean epileptic;		//is Ref'd in Settings
-	public boolean debugMode;		//TODO Ref in Settings
+	public boolean epileptic;
+	public boolean debugMode;
 	public int difficulty;			//TODO Ref in Settings
-	public String playerName;		//TODO Ref in Settings
+	public String playerName;
 	public boolean godMode;			//TODO Ref in Settings
 	
 	public boolean multiplayer;
 	
-	public Color gameColor;			//TODO Ref in Settings
-	public Color playerColor; 		//TODO Ref in Settings
+	public Color gameColor;	
+	public Color playerColor; 	
+	
+	public Integer musicVolume;
+	public Integer soundVolume;
 	
 	public float bounds;
 	public int gameSize; // multi only
 	public boolean connected;
 
+	public boolean retroGraphics; 	//TODO Ref in Settings
+	
 	/*
 	 * (non-Javadoc)
 	 * 

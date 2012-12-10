@@ -20,7 +20,7 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public class CoreLogic {
 
-	private static Boolean multiplayer;
+	public static Boolean multiplayer;
 	private static World world;
 	private static HashMap<String, Player> players;
 
@@ -166,12 +166,20 @@ public class CoreLogic {
 		//Respawn
 		if(respawnTimer > 0)
 			respawnTimer -= Gdx.graphics.getDeltaTime();
-		else if(respawnTimer > -9f && local.getLives() > 0){
+		else if(respawnTimer > -9f && (local.getLives() > 0 || multiplayer)){
 			respawnTimer = -10f;
 			invincibleTimer = 3f;
 
-			local.setShip(new Ship(saveId, local,
-					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2));
+			Ship ship = new Ship(saveId, local,
+					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
+			
+			local.setShip(ship);
+			if (multiplayer) {
+				Net.createEntity(ship);
+				local.modHealth(100);
+				
+			}
+
 			local.getEntitiesMap().put(saveId, local.getShip());
 			local.getShip().setInvincible(true);
 			local.modBonus(1.0f);
@@ -576,6 +584,8 @@ public class CoreLogic {
 
 			if (myGame.multiplayer && host && !(i instanceof Dust)) {
 				Net.removeEntity(i);
+				local.setShip(null);
+				respawnTimer = 3.0f;
 			}
 
 			i.getOwner().getEntitiesMap().remove(i.getId());

@@ -3,6 +3,7 @@ package com.Broders.Screens;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Net;
@@ -13,6 +14,7 @@ import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Input.TextInputListener;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
@@ -38,6 +40,8 @@ public class MultiLobby implements Screen {
 
 	private Sprite whiteSprite;
 	private Sprite arrowSprite;
+	
+	private String gamePassword;
 
 	private ArrayList<String[]> games;
 
@@ -193,7 +197,7 @@ public class MultiLobby implements Screen {
 																				// players
 			font.draw(spriteBatch, out, xx * .7f, yy * (.73f - (.16f * i)));
 			String priv = "";
-			if (temp[1].equals("false")) {
+			if (temp[1].equals("true")) {
 				priv = " (p)";
 			}
 
@@ -234,12 +238,27 @@ public class MultiLobby implements Screen {
 				// join
 				if (x >= .24 && x <= .44) {
 					String[] name = this.games.get(selectedGame + curPage * 5);
-					Screen temp = Net.joinGame(name[0], name[1]);
+							
+					if (Boolean.parseBoolean(name[1])) {
+						// Enter password					
+						Gdx.input.getTextInput(new TextInputListener() {
+							@Override
+							public void input (String text) {
+								gamePassword = text;
+							}
+							@Override
+							public void canceled () {}
+						}, "Password for game:", "");	
+					}
+					
+					System.out.println("Joining Game with password " + gamePassword);
+					Screen temp = Net.joinGame(name[0], gamePassword);
+						
 					if (temp != null) {
 						myGame.setScreen(temp);
 						// TODO: Dispose of this screen
 					} else {
-						// Trouble - failed to join game
+						System.out.println("Shit broke yo");
 					}
 				} else if (x >= .02 && x <= .22) {
 					myGame.setScreen(BaseGame.screens.get("host"));

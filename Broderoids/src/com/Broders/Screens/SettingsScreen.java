@@ -81,7 +81,7 @@ public class SettingsScreen implements Screen {
 
 		// Title
 		font.setScale(.75f);
-		font.draw(spriteBatch, "Settings", (float) (game.screenWidth * .4), (float) (game.screenHeight * .95));
+		//font.draw(spriteBatch, "Settings", (float) (game.screenWidth * .4), (float) (game.screenHeight * .95));
 		font.setScale(.5f);
 
 		// Music

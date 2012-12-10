@@ -259,7 +259,7 @@ public class CoreLogic {
 						mod = 1;
 					System.out.println("your made it level next");
 					round++;
-					for (int i = 0; i < (myGame.difficulty + 1) * mod; i++) {
+					for (int i = 0; i < (myGame.difficulty*4 + 1) * mod; i++) {
 						while (spawnBroid() == -1); // lols    wtf? -mike
 					}
 				}

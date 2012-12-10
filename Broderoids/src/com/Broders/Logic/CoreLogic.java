@@ -161,7 +161,7 @@ public class CoreLogic {
 		Player temp = new Player("Temp", 0);
 		players.put(Integer.toString(temp.getId()), temp);
 		
-		SoundManager.get("start").play();
+		SoundManager.get("start").play(myGame.soundVolume * .1f);
 	}
 
 	/**
@@ -179,8 +179,7 @@ public class CoreLogic {
 		//Respawn
 		if (respawnTimer < 1f && !respawnSound && local != null && getLocal().getLives() < 3
 				&& getLocal().getLives() > 0) {
-
-			SoundManager.get("respawn").play();
+			SoundManager.get("respawn").play(myGame.soundVolume * .1f);
 			respawnSound = true;
 		}
 		
@@ -244,7 +243,7 @@ public class CoreLogic {
 						mod = 1;
 					System.out.println("your made it level next");
 					round++;
-					for (int i = 0; i < myGame.difficulty * mod; i++) {
+					for (int i = 0; i < (myGame.difficulty + 1) * mod; i++) {
 						while (spawnBroid() == -1); // lols    wtf? -mike
 					}
 				}

@@ -104,8 +104,6 @@ public class BaseGame extends Game {
 		//screens.put("multi", new GameScreen(this, 0, 0, 0, true));
 
 		this.setScreen(BaseGame.screens.get("splash"));
-		
-		retroGraphics = false;
 	}
 
 	@Override

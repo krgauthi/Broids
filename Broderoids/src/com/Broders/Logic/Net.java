@@ -256,11 +256,11 @@ public class Net extends Thread {
 		throw new NetException(0, "Invalid frame recieved");
 	}
 
-	private static void lock() {
+	public static void lock() {
 		Net.l.lock();
 	}
 
-	private static void unlock() {
+	public static void unlock() {
 		Net.l.unlock();
 	}
 

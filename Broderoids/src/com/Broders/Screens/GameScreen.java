@@ -128,15 +128,20 @@ public class GameScreen implements Screen {
 
 		delta = (float) (1.0/30.0);
 
+		Net.lock();
 		// Update stuff
 		update(delta);
+		Net.unlock();
 
+		Net.lock();
 		// Handle input
 		handleInput(delta);
+		Net.unlock();
 
+		Net.lock();
 		// update the models on the screen
 		paint(delta);
-
+		Net.unlock();
 	}
 
 	/*

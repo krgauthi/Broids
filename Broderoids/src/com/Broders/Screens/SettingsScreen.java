@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import com.Broders.Logic.Settings;
 import com.Broders.mygdxgame.BaseGame;
+import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.TextInputListener;
@@ -21,7 +22,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SettingsScreen implements Screen {
-
 	
 	// Array of basic settings, implemented to draw on even intervals
 	private static final String hexColorPattern = "[A-Fa-f0-9]{6}";
@@ -29,8 +29,6 @@ public class SettingsScreen implements Screen {
 
 	private SpriteBatch spriteBatch;
 
-	private boolean musicBool; // not currently implemented
-	private boolean soundBool; // not currently implemented
 	private boolean volBool; // not currently implemented
 	private int screenResSelection;
 	private int[][] screenResOptions = {{1920, 1200},
@@ -78,12 +76,12 @@ public class SettingsScreen implements Screen {
 		font.setScale(.5f);
 		
 		// Music
-		font.draw(spriteBatch, "Music: " + musicBool, (float) (game.screenWidth * .08),
+		font.draw(spriteBatch, "Music: " + game.musicVolume, (float) (game.screenWidth * .08),
 				(float) (game.screenHeight * .2));
 		
 		font.setColor(Color.WHITE);
 		// Sounds
-		font.draw(spriteBatch, "Sounds: " + soundBool, (float) (game.screenWidth * .08),
+		font.draw(spriteBatch, "Sounds: " + game.soundVolume, (float) (game.screenWidth * .08),
 				(float) (game.screenHeight * .4));
 
 		// Volume
@@ -195,13 +193,14 @@ public class SettingsScreen implements Screen {
 			
 			if (x >= .08 && x <= .46 && y >= .12 && y <= .2) {
 				
-				musicBool = musicBool ? false : true;
-				System.out.println("Music Option set to " + musicBool);
+				game.musicVolume = game.musicVolume == 10 ? 0 : game.musicVolume + 1;
+				SoundManager.get("muzak").setVolume(SoundManager.getMuzakId(), game.musicVolume * .1f);
+				System.out.println("Music Option set to " + game.musicVolume);
 				
 			} else if (x >= .08 && x <= .46 && y >= .32 && y <= .4) {
 				
-				soundBool = soundBool ? false : true;
-				System.out.println("Sound Option set to " + soundBool);
+				game.soundVolume = game.soundVolume == 10 ? 0 : game.soundVolume + 1;
+				System.out.println("Sound Option set to " + game.soundVolume);
 				
 			} else if (x >= .08 && x <= .46 && y >= .52 && y <= .6) {
 				
@@ -324,15 +323,14 @@ public class SettingsScreen implements Screen {
 		PrintWriter pw = new PrintWriter(new File("config/broids.cfg"));
 				
 		pw.println("Username: " + game.playerName);
-		pw.printf("Ship Color: %s%n", swapHex(game.playerColor.toString()));
-		pw.printf("World Color: %s%n", swapHex(game.gameColor.toString()));
+		pw.printf("ShipColor: %s%n", swapHex(game.playerColor.toString()));
+		pw.printf("WorldColor: %s%n", swapHex(game.gameColor.toString()));
 		pw.println("Retro: " + game.retroGraphics);
-		pw.println("Volume: " + this.volBool);
-		pw.println("Sounds: " + this.soundBool);
-		pw.println("Music: " + this.musicBool);
+		pw.println("SoundVolume: " + this.game.soundVolume);
+		pw.println("MusicVolume: " + this.game.musicVolume);
 		pw.println("Resolution: " + game.screenWidth + " x " + game.screenHeight);
 		pw.println("Debug: " + game.debugMode);
-		pw.println("SP Difficulty: " + this.sPDiff);
+		pw.println("SPDifficulty: " + this.sPDiff);
 		pw.println("Epileptic: " + game.epileptic);
 	
 		pw.close();

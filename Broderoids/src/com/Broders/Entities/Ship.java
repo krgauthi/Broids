@@ -30,7 +30,7 @@ public class Ship extends Entity {
 	private Boolean shooting;
 	private Sprite sprite;
 	private boolean invincible;
-	
+
 	private boolean thrustLast;
 	private float smokeInterval;
 	private float shieldRegen;
@@ -122,15 +122,14 @@ public class Ship extends Entity {
 		} else if (thrustLast && !bool) {
 			SoundManager.get("zoom").stop();
 		}
-		
+
 		this.thrustLast = this.thrust;
 		this.thrust = bool;
-		
+
 		if (thrust) {
 			shieldRegen += Gdx.graphics.getDeltaTime();
-			//System.out.println(shieldRegen + "    " + Gdx.graphics.getDeltaTime());
 		}
-		
+
 		if (shieldRegen >= 1.0f) {
 			getOwner().modShield(1);
 			shieldRegen = 0;
@@ -181,10 +180,12 @@ public class Ship extends Entity {
 				&& posY > -this.getSize()*8 && posY < (screenHeight+this.getSize()*8)){
 
 			if (this.getThrust()) {
+
 				TextureManager.getSprites("Ship2").setColor(this.getColor());
 				TextureManager.getSprites("Ship2").setPosition(posX, posY);
 				TextureManager.getSprites("Ship2").setRotation((float) super.getAngle());
 				TextureManager.getSprites("Ship2").draw(sb);
+
 			} else {
 				super.getSprite().setColor(super.getColor());
 				super.getSprite().setPosition(posX, posY);
@@ -198,7 +199,7 @@ public class Ship extends Entity {
 	public void update() {
 		if (!CoreLogic.getGame().multiplayer)
 			return;
-		
+
 		float smoke;
 		int health = getOwner().getHealth();
 
@@ -212,12 +213,12 @@ public class Ship extends Entity {
 				smoke = 0.05f;
 
 			smokeInterval +=  Gdx.graphics.getDeltaTime();
-			
+
 			if (smokeInterval >= smoke) {
 				float dir = (float) ((super.getAngle() + 90) + (Math.random() * 30 - 15));
 				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), dir , this.getX(), this.getY(), 5);
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
-				
+
 				smokeInterval = 0;
 			}
 		}
@@ -232,7 +233,7 @@ public class Ship extends Entity {
 		float temp = (float) (10+Math.random()%10);
 		for(int i = 0; i < temp;i++){
 			temp = 360/temp;
-
+			
 			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i) , this.getX(), this.getY(), 30);
 			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 

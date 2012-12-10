@@ -539,7 +539,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void hide() {
 		myGame.multiplayer = false;
-		//this.dispose();
+		paused = false;
 	}
 
 	@Override

@@ -3,17 +3,19 @@ package com.Broders.Entities;
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Player;
 import com.Broders.Logic.Settings;
+import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 /**
  * Creates a Ship Entity.
@@ -33,6 +35,8 @@ public class Ship extends Entity {
 	private boolean thrustLast;
 	private float smokeInterval;
 	private float shieldRegen;
+	
+	private BaseGame game;
 
 	/**
 	 * Just pass in "classic" Initializes a Ship by creating the appropriate
@@ -47,6 +51,8 @@ public class Ship extends Entity {
 	public Ship(String id, Player owner, float x, float y) {
 		super(id, owner);
 
+		this.game = owner.getGame();
+		
 		Vector2 vertices[] = new Vector2[3];
 		vertices[0] = new Vector2(-1.5f, 1.39f);
 		vertices[1] = new Vector2(-1.5f, -1.39f);
@@ -117,10 +123,12 @@ public class Ship extends Entity {
 	 */
 	public void setThrust(boolean bool) {
 
+		Sound zoom = SoundManager.get("zoom");
 		if (!thrustLast && bool) {
-			SoundManager.get("zoom").loop(0.7f, (float) (0.8f + Math.random() * 0.4f), 0);
+			long soundId = zoom.loop(game.soundVolume * 0.1f);
+			zoom.setPitch(soundId, (float) (0.8f + Math.random() * 0.4f));
 		} else if (thrustLast && !bool) {
-			SoundManager.get("zoom").stop();
+			zoom.stop();
 		}
 		
 		this.thrustLast = this.thrust;
@@ -236,7 +244,9 @@ public class Ship extends Entity {
 			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 
 			setThrust(false);
-			SoundManager.get("death").play(0.65f, 0.85f, 0);
+			Sound death = SoundManager.get("death");
+			long soundId = death.play(game.soundVolume * .1f);
+			death.setPitch(soundId, 0.85f);
 		}
 	}
 

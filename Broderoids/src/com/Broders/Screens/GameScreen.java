@@ -52,8 +52,6 @@ public class GameScreen implements Screen {
 	private Sprite healthBlock;
 	private Sprite shieldBar;
 	private Sprite shieldBlock;
-	private Sprite whiteSprite;
-
 	private Sprite lives;
 	
 	private boolean paused;
@@ -130,15 +128,20 @@ public class GameScreen implements Screen {
 
 		delta = (float) (1.0/30.0);
 
+		Net.lock();
 		// Update stuff
 		update(delta);
+		Net.unlock();
 
+		Net.lock();
 		// Handle input
 		handleInput(delta);
+		Net.unlock();
 
+		Net.lock();
 		// update the models on the screen
 		paint(delta);
-
+		Net.unlock();
 	}
 
 	/*
@@ -180,7 +183,7 @@ public class GameScreen implements Screen {
 			// shieldBlock.draw(spriteBatch);
 
 			float health = (float) CoreLogic.getLocal().getHealth() / 100;
-			float shield = 1f;
+			float shield = (float) CoreLogic.getLocal().getShield() / 100;
 
 			spriteBatch.draw(healthBlockTexture, xx * .01f, yy * .5f,
 					((yy * .5f) * .88f) * health, yy * .5f, 0, 0,
@@ -190,9 +193,10 @@ public class GameScreen implements Screen {
 					512, false, false);
 
 			String healthText = "HEALTH: " + CoreLogic.getLocal().getHealth() + " / 100";
+			String shieldText = "SHIELD: " + CoreLogic.getLocal().getShield() + " / 100";
 			
 			font.draw(spriteBatch, healthText, xx * .05f, yy * .92f);
-			font.draw(spriteBatch, "SHIELD", xx * .08f, yy * .975f);
+			font.draw(spriteBatch, shieldText, xx * .08f, yy * .975f);
 
 			String out;
 			out = String.format("Score: %d ", CoreLogic.getLocal().getScore()); 
@@ -497,7 +501,7 @@ public class GameScreen implements Screen {
 		lives.setSize(yy * .05f, yy * .05f);
 
 		white = new Texture(Gdx.files.internal("data/whitebox.png"));
-		whiteSprite = new Sprite(white, 32, 32);
+		new Sprite(white, 32, 32);
 
 		whitePixel = new Texture(Gdx.files.internal("data/whitepixel.png"));
 		whitePixelSprite = new Sprite(whitePixel, 1, 1);

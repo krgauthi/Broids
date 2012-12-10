@@ -80,6 +80,7 @@ public class CoreLogic {
 
 	/**
 	 * By the way, this is awful, but it calculates the GCD
+	 * YAY EUCLIDS ALGO
 	 */
 	public static int gcd(int p, int q) {
 		if (q == 0) {
@@ -146,11 +147,9 @@ public class CoreLogic {
 			height = heightScreen;
 		}
 
-
-
 		viewPortX = (width / 2) - (widthScreen / 2f);
 		viewPortY = (height / 2) - (heightScreen / 2f);
-
+		
 		Player local = new Player("Player", clientId);
 		players.put(Integer.toString(local.getId()), local);
 		saveId = local.getShip().getId();
@@ -177,8 +176,9 @@ public class CoreLogic {
 		Player local = getLocal();
 
 		//Respawn
-		if (respawnTimer < 1f && !respawnSound && local.getLives() < 3
-				&& local.getLives() > 0) {
+		if (respawnTimer < 1f && !respawnSound && local != null && getLocal().getLives() < 3
+				&& getLocal().getLives() > 0) {
+
 			SoundManager.get("respawn").play();
 			respawnSound = true;
 		}
@@ -229,6 +229,7 @@ public class CoreLogic {
 		int mod = 0;
 
 		// asteroids
+		
 		if (getAsteroids().size() <= 0) {
 			if (delay < 5) {
 				display = true;
@@ -240,9 +241,10 @@ public class CoreLogic {
 					}
 					if (mod == 0)
 						mod = 1;
+					System.out.println("your made it level next");
 					round++;
 					for (int i = 0; i < myGame.difficulty * mod; i++) {
-						while (spawnBroid() == -1); // lols
+						while (spawnBroid() == -1); // lols    wtf? -mike
 					}
 				}
 				delay = 0;
@@ -399,7 +401,7 @@ public class CoreLogic {
 	 */
 	public static void execute(float delta, InputDir in) {
 		Player local = getLocal();
-		if(local.getShip() != null){
+		if(local != null && local.getShip() != null){
 			boolean mod = false;
 			if (in.equals("left")) {
 				local.getShip().getBody().applyTorque(500.0f);

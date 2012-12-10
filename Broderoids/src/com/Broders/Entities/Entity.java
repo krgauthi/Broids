@@ -2,6 +2,7 @@ package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Player;
+import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,7 +25,8 @@ public abstract class Entity {
 	//private String ent;
 	//private String type;
 	protected Body body;
-	private Sprite sprite;
+	private String spriteID;
+
 
 	// Extras
 	private float size;
@@ -61,15 +63,7 @@ public abstract class Entity {
 	public Player getOwner() {
 		return this.owner;
 	}
-/*
-	public void setEnt(String ent) {
-		this.ent = ent;
-	}
 
-	public String getEnt() {
-		return ent;
-	}
-*/
 	/**
 	 * Gets the current X-Coordinate of the body (meters)
 	 * 
@@ -118,7 +112,7 @@ public abstract class Entity {
 	 * @return This Entity's sprite
 	 */
 	public Sprite getSprite() {
-		return this.sprite;
+		return TextureManager.getSprites(this.spriteID);
 	}
 
 	/**
@@ -128,8 +122,7 @@ public abstract class Entity {
 	 *            The file path to the sprite
 	 */
 	protected void setSprite(String sp) {
-		Texture texture = new Texture(Gdx.files.internal(sp));
-		this.sprite = new Sprite(texture);
+		this.spriteID = sp;
 	}
 
 	/**
@@ -182,12 +175,15 @@ public abstract class Entity {
 				* ((x - CoreLogic.getViewPortX()) / CoreLogic.getWidthScreen());
 		posY = screenHeight
 				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
+		
+		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
 		if (posX > -(this.getSize() * 8)
 				&& posX < (screenWidth + (this.getSize() * 8))
 				&& posY > -(this.getSize() * 8)
 				&& posY < (screenHeight + (this.getSize() * 8))) {
-
+			this.getSprite().setSize(meter * this.getSize(),meter * this.getSize());
+			this.getSprite().setColor(this.getColor());
 			this.getSprite().setPosition(posX, posY);
 			this.getSprite().setRotation(this.getBody().getAngle());
 			//this.getSprite().setColor(getColor());

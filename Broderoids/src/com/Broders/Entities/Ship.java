@@ -3,17 +3,20 @@ package com.Broders.Entities;
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Player;
 import com.Broders.Logic.Settings;
+import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
+import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 /**
  * Creates a Ship Entity.
@@ -33,6 +36,8 @@ public class Ship extends Entity {
 	private boolean thrustLast;
 	private float smokeInterval;
 	private float shieldRegen;
+	
+	private BaseGame game;
 
 	/**
 	 * Just pass in "classic" Initializes a Ship by creating the appropriate
@@ -47,6 +52,8 @@ public class Ship extends Entity {
 	public Ship(String id, Player owner, float x, float y) {
 		super(id, owner);
 
+		this.game = owner.getGame();
+		
 		Vector2 vertices[] = new Vector2[3];
 		vertices[0] = new Vector2(-1.5f, 1.39f);
 		vertices[1] = new Vector2(-1.5f, -1.39f);
@@ -76,7 +83,7 @@ public class Ship extends Entity {
 
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
-		super.setSprite(Settings.data_path + "ship1.png");
+		super.setSprite("Ship1");
 		super.getSprite().flip(false, true);
 		super.getSprite().setOrigin((meter * this.getSize()) / 2,(meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
@@ -87,12 +94,11 @@ public class Ship extends Entity {
 		this.smokeInterval = 0;
 		this.shieldRegen = 0;
 
-		Texture tempTexture = new Texture(Gdx.files.internal(Settings.data_path	+ "ship2.png"));
-		this.sprite = new Sprite(tempTexture, 1024, 1024);
-		this.sprite.flip(false, true);
-		this.sprite.setOrigin((meter * this.getSize()) / 2,	(meter * this.getSize()) / 2);
-		this.sprite.setSize(meter * this.getSize(), meter * this.getSize());
-		this.sprite.setColor(this.getColor());
+		
+		
+		TextureManager.getSprites("Ship2").flip(false, true);
+		TextureManager.getSprites("Ship2").setOrigin((meter * this.getSize()) / 2,	(meter * this.getSize()) / 2);
+		TextureManager.getSprites("Ship2").setSize(meter * this.getSize(), meter * this.getSize());
 
 		//Set type data
 		super.getBody().setUserData(this);
@@ -117,10 +123,12 @@ public class Ship extends Entity {
 	 */
 	public void setThrust(boolean bool) {
 
+		Sound zoom = SoundManager.get("zoom");
 		if (!thrustLast && bool) {
-			SoundManager.get("zoom").loop(0.7f, (float) (0.8f + Math.random() * 0.4f), 0);
+			long soundId = zoom.loop(game.soundVolume * 0.1f);
+			zoom.setPitch(soundId, (float) (0.8f + Math.random() * 0.4f));
 		} else if (thrustLast && !bool) {
-			SoundManager.get("zoom").stop();
+			zoom.stop();
 		}
 
 		this.thrustLast = this.thrust;
@@ -180,15 +188,16 @@ public class Ship extends Entity {
 				&& posY > -this.getSize()*8 && posY < (screenHeight+this.getSize()*8)){
 
 			if (this.getThrust()) {
-				this.sprite.setPosition(posX, posY);
-				this.sprite.setRotation((float) super.getAngle());
-				this.sprite.setColor(super.getColor());
-				this.sprite.draw(sb);
+
+				TextureManager.getSprites("Ship2").setColor(this.getColor());
+				TextureManager.getSprites("Ship2").setPosition(posX, posY);
+				TextureManager.getSprites("Ship2").setRotation((float) super.getAngle());
+				TextureManager.getSprites("Ship2").draw(sb);
+
 			} else {
-				super.getSprite().setPosition(posX, posY);
-				super.getSprite().setRotation(
-						(float) super.getAngle() + (float) (Math.PI / 2));
 				super.getSprite().setColor(super.getColor());
+				super.getSprite().setPosition(posX, posY);
+				super.getSprite().setRotation((float) super.getAngle() + (float) (Math.PI / 2));
 				super.getSprite().draw(sb);
 			}
 		}
@@ -237,7 +246,9 @@ public class Ship extends Entity {
 			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 
 			setThrust(false);
-			SoundManager.get("death").play(0.65f, 0.85f, 0);
+			Sound death = SoundManager.get("death");
+			long soundId = death.play(game.soundVolume * .1f);
+			death.setPitch(soundId, 0.85f);
 		}
 	}
 

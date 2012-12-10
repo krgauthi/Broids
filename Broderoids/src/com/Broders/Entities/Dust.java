@@ -25,7 +25,7 @@ public class Dust extends Entity{
 		super.setSize((float) Math.random() * 6 + 7f);
 		super.setColor();
 
-		super.setSprite(Settings.data_path + "bullet.png");
+		super.setSprite("bullet");
 		super.getSprite().setOrigin((meter * this.getSize()) / 2,
 				(meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(),

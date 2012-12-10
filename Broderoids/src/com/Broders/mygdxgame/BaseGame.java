@@ -46,6 +46,7 @@ public class BaseGame extends Game {
 	public boolean connected;
 
 	public boolean retroGraphics;
+	public int asteroidsCount;
 	
 	/*
 	 * (non-Javadoc)
@@ -89,7 +90,7 @@ public class BaseGame extends Game {
 			e.printStackTrace();
 		}
 		
-		TextureManager.init();
+		TextureManager.init(this);
 		
 		screens = new HashMap<String,Screen>();
 		screens.put("splash", new SplashScreen(this));
@@ -99,8 +100,8 @@ public class BaseGame extends Game {
 			screens.put("host", new MultiHost(this));
 			screens.put("lobby", new MultiLobby(this));
 		}
-		screens.put("single", new GameScreen(this, 0, 0, 0, true));
-		screens.put("multi", new GameScreen(this, 0, 0, 0, true));
+		//screens.put("single", new GameScreen(this, 0, 0, 0, true));
+		//screens.put("multi", new GameScreen(this, 0, 0, 0, true));
 
 		this.setScreen(BaseGame.screens.get("splash"));
 		

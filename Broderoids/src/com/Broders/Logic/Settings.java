@@ -44,7 +44,6 @@ public class Settings {
 			
 			// checks option to see which option is being read
 			// and then sets that option to the value.
-			System.out.println(option + " : " + value);
 			checkSettings(option, value);
 		}
 	}
@@ -53,7 +52,6 @@ public class Settings {
 		if ( option.equals("username")) {
 			loadUsername(value);
 		} else if (option.equals("shipcolor")) {
-			System.out.println("shipcolor got");
 			loadShipColor(value);
 		} else if (option.equals("worldcolor")) {
 			loadWorldColor(value);		
@@ -94,7 +92,6 @@ public class Settings {
 	}
 		
 	public void loadSoundVolume(String value) {
-		System.out.println("load sound volume please");
 		int vol = 0;
 		try {
 			vol = Integer.parseInt(value);
@@ -111,7 +108,6 @@ public class Settings {
 	}
 		
 	public void loadMusicSetting(String value) {
-		System.out.println("load music volume please");
 
 		int vol = 0;
 		try {
@@ -136,8 +132,6 @@ public class Settings {
 		};
 		if (!(game.screenWidth == res[0] && game.screenHeight == res[1])) {
 			game.getScreen().resize(res[0], res[1]);
-			System.out.println(res[0]);
-			System.out.println(res[1]);
 			System.out.printf("Set Screen size to %d x %d%n", res[0], res[1]);
 		} else {
 			System.out.printf("Screen size is already set to [%d x %d]," +

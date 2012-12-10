@@ -117,7 +117,6 @@ public class CollisionLogic implements ContactListener {
 	 */
 	@Override
 	public void postSolve(Contact contact, ContactImpulse impulse) {
-		// TODO Auto-generated method stub
 
 	}
 

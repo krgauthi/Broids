@@ -34,8 +34,6 @@ public class Ship extends Entity {
 	private float smokeInterval;
 	private float shieldRegen;
 
-	// TODO implement method for sound shooting and death sound
-
 	/**
 	 * Just pass in "classic" Initializes a Ship by creating the appropriate
 	 * physical body and sprite set.
@@ -133,8 +131,9 @@ public class Ship extends Entity {
 			System.out.println(shieldRegen + "    " + Gdx.graphics.getDeltaTime());
 		}
 		
-		if (shieldRegen >= 1.5f) {
+		if (shieldRegen >= 1.0f) {
 			getOwner().modShield(1);
+			shieldRegen = 0;
 		}
 	}
 

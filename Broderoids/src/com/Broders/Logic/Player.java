@@ -36,11 +36,11 @@ public class Player {
 	public Player(String type, int id) {
 		this.id = id;
 		nextEntityId = 0;
-		myGame = CoreLogic.getGame();
+		setGame(CoreLogic.getGame());
 		entities = new HashMap<String, Entity>();
 
 		if (type.equals("Player")) {
-			playerColor = myGame.playerColor;
+			playerColor = getGame().playerColor;
 
 			playerShip = new Ship(this.nextId(), this,
 					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
@@ -48,14 +48,14 @@ public class Player {
 
 			score = 0;
 
-			if (myGame.multiplayer) {
+			if (getGame().multiplayer) {
 				shield = 100;
 				health = 100;
 			} else {
 				lives = 3;
 			}
 		} else {
-			playerColor = myGame.gameColor;
+			playerColor = getGame().gameColor;
 		}
 
 		bonus = 1.0f;
@@ -159,5 +159,13 @@ public class Player {
 			modHealth(hit);
 		}
 		modShield(0 - damage);
+	}
+
+	public BaseGame getGame() {
+		return myGame;
+	}
+
+	public void setGame(BaseGame myGame) {
+		this.myGame = myGame;
 	}
 }

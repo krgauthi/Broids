@@ -80,6 +80,7 @@ public class CoreLogic {
 
 	/**
 	 * By the way, this is awful, but it calculates the GCD
+	 * YAY EUCLIDS ALGO
 	 */
 	public static int gcd(int p, int q) {
 		if (q == 0) {
@@ -229,6 +230,7 @@ public class CoreLogic {
 		int mod = 0;
 
 		// asteroids
+		
 		if (getAsteroids().size() <= 0) {
 			if (delay < 5) {
 				display = true;
@@ -240,9 +242,10 @@ public class CoreLogic {
 					}
 					if (mod == 0)
 						mod = 1;
+					System.out.println("your made it level next");
 					round++;
 					for (int i = 0; i < myGame.difficulty * mod; i++) {
-						while (spawnBroid() == -1); // lols
+						while (spawnBroid() == -1); // lols    wtf? -mike
 					}
 				}
 				delay = 0;

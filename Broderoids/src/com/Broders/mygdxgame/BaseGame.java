@@ -104,8 +104,6 @@ public class BaseGame extends Game {
 			screens.put("lobby", new MultiLobby(this));
 		}
 
-		screens.put("single", new GameScreen(this, 0, 0, 0, true));
-		screens.put("multi", new GameScreen(this, 0, 0, 0, true));
 		screens.put("scores", new ScoresScreen(this));
 
 

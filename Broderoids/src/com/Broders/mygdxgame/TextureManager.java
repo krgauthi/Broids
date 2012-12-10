@@ -43,9 +43,9 @@ public class TextureManager {
 				{"retroBroid","data/retroShip1.png"},
 				
 				//Game Textures
-				{"Ship1","data/Ship1.png"},
-				{"Ship2","data/Ship2.png"},
-				{"Broid","data/Ship1.png"},
+				{"Ship1","data/ship1.png"},
+				{"Ship2","data/ship2.png"},
+				{"Broid","data/ship1.png"},
 				
 		};
 		

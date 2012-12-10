@@ -113,7 +113,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		if(first){
-
+			CoreLogic.initCore(myGame, width2, height2, h2, multiplayer);
 			if (this.multiplayer) {
 				CoreLogic.setClientId(id2);
 
@@ -123,7 +123,6 @@ public class GameScreen implements Screen {
 				CoreLogic.setClientId(2);
 			}
 			first = false;
-			CoreLogic.initCore(myGame, width2, height2, h2, multiplayer);
 		}
 
 		delta = (float) (1.0/30.0);
@@ -152,8 +151,11 @@ public class GameScreen implements Screen {
 		if (myGame.epileptic) {
 			Gdx.gl.glClearColor((rand.nextInt() % 200), rand.nextInt() % 200,
 					rand.nextInt() % 200, 1);
-		} else {
+		} else if(myGame.retroGraphics){
 			Gdx.gl.glClearColor(0, 0, 0, 1);
+		}else{
+
+			Gdx.gl.glClearColor(.19f, .19f, .19f, 1f);	 
 		}
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -182,24 +184,30 @@ public class GameScreen implements Screen {
 			shieldBar.draw(spriteBatch);
 			// shieldBlock.draw(spriteBatch);
 
-			float health = (float) CoreLogic.getLocal().getHealth() / 100;
-			float shield = (float) CoreLogic.getLocal().getShield() / 100;
+			float health = 0;
+			float shield = 0;
+			int score = 0;
+			if (CoreLogic.getLocal() != null) {
+				health = (float) CoreLogic.getLocal().getHealth();
+				shield = (float) CoreLogic.getLocal().getShield();
+				score = CoreLogic.getLocal().getScore();
+			}
 
 			spriteBatch.draw(healthBlockTexture, xx * .01f, yy * .5f,
-					((yy * .5f) * .88f) * health, yy * .5f, 0, 0,
-					(int) ((512f * .88f) * health), 512, false, false);
+					((yy * .5f) * .88f) * health / 100, yy * .5f, 0, 0,
+					(int) ((512f * .88f) * health / 100), 512, false, false);
 			spriteBatch.draw(shieldBlockTexture, xx * .01f, yy * .5f,
-					(yy * .5f) * shield, yy * .5f, 0, 0, (int) (512f * shield),
+					(yy * .5f) * shield / 100, yy * .5f, 0, 0, (int) (512f * shield / 100),
 					512, false, false);
 
-			String healthText = "HEALTH: " + CoreLogic.getLocal().getHealth() + " / 100";
-			String shieldText = "SHIELD: " + CoreLogic.getLocal().getShield() + " / 100";
+			String healthText = "HEALTH: " + health + " / 100";
+			String shieldText = "SHIELD: " + shield + " / 100";
 			
 			font.draw(spriteBatch, healthText, xx * .05f, yy * .92f);
 			font.draw(spriteBatch, shieldText, xx * .08f, yy * .975f);
 
 			String out;
-			out = String.format("Score: %d ", CoreLogic.getLocal().getScore()); 
+			out = String.format("Score: %d ", score); 
 			// player
 			font.draw(spriteBatch, out, xx * .01f, yy * .87f);
 
@@ -276,7 +284,7 @@ public class GameScreen implements Screen {
 			
 			//this.overlay = new ShapeRenderer();
 			overlay.begin(ShapeType.FilledRectangle);
-			Color temp = new Color(0.1f,0.1f,0.1f,0.1f);
+			Color temp = new Color(51f,51f,51f,0.1f);
 			overlay.setColor(temp);
 			overlay.filledRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			overlay.end();
@@ -531,7 +539,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void hide() {
 		myGame.multiplayer = false;
-		//this.dispose();
+		paused = false;
 	}
 
 	@Override

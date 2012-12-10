@@ -9,6 +9,7 @@ import com.Broders.Logic.Net;
 import com.Broders.Logic.Pos;
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
+import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
@@ -35,7 +36,7 @@ public class MultiLobby implements Screen {
 
 	private Sprite whiteSprite;
 	private Sprite arrowSprite;
-	
+
 	private String gamePassword;
 
 	private ArrayList<String[]> games;
@@ -43,7 +44,7 @@ public class MultiLobby implements Screen {
 	float xx;
 	float yy;
 	float buff;
-	
+
 	float rotation;
 
 	// Test Variables?
@@ -90,10 +91,15 @@ public class MultiLobby implements Screen {
 
 	private void paint(float delta) {
 		// Make a black background
-		GL10 g1 = Gdx.graphics.getGL10();
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+		if(myGame.retroGraphics){
+			GL10 g1 = Gdx.graphics.getGL10();
+			Gdx.gl.glClearColor(0, 0, 0, 1);
+			g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		}else{
+			GL10 g1 = Gdx.graphics.getGL10();
+			Gdx.gl.glClearColor(.19f, .19f, .19f, 1f);	 
+			g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		}
 		spriteBatch.begin();
 		// Boxes
 
@@ -108,48 +114,32 @@ public class MultiLobby implements Screen {
 		whiteSprite.setPosition(xx * .15f, 0);
 		whiteSprite.draw(spriteBatch);
 
-		// host and Join game button white
-		whiteSprite.setSize(xx * .2f, yy * .1f);
-		whiteSprite.setPosition(xx * .02f, yy * .85f);
-		whiteSprite.draw(spriteBatch);
-
-		whiteSprite.setSize(xx * .2f, yy * .1f);
-		whiteSprite.setPosition(xx * .24f, yy * .85f);
-		whiteSprite.draw(spriteBatch);
-
-		// host and join game button negative
-		whiteSprite.setColor(Color.BLACK);
-		whiteSprite.setSize(xx * .18f, yy * .08f);
-		whiteSprite.setPosition(xx * .03f, yy * .86f);
-		whiteSprite.draw(spriteBatch);
-
-		whiteSprite.setSize(xx * .18f, yy * .08f);
-		whiteSprite.setPosition(xx * .25f, yy * .86f);
-		whiteSprite.draw(spriteBatch);
 
 		// tabs
 		if (page > 0) {
 
 			arrowSprite.setSize(yy * .25f, yy * .25f);
 			arrowSprite.setOrigin((yy * .25f) / 2f, (yy * .25f) / 2f);
-			
-			if (curPage < page) { // display both tabs
 
+			if (curPage < page) { // display both tabs
+				arrowSprite.setColor(Color.WHITE);
+				arrowSprite.setRotation(180);
 				arrowSprite.setPosition(xx * .01f, yy * .19f);
 				arrowSprite.draw(spriteBatch);
 
 				out = String.format("%d ", curPage + 1);
-				
+
 				font.draw(spriteBatch, out, xx * .078f, yy * .32f);
 				font.setColor(Color.WHITE);
 			}
 
 			if (curPage > 0) {
 				// you are on the last tab display the top
-				arrowSprite.setRotation(180);
+				arrowSprite.setColor(Color.WHITE);
+				arrowSprite.setRotation(0);
 				arrowSprite.setPosition(xx * .01f, yy * .5f);
 				arrowSprite.draw(spriteBatch);
-				arrowSprite.setRotation(0);
+
 
 				out = String.format("%d ", curPage);
 
@@ -158,17 +148,14 @@ public class MultiLobby implements Screen {
 			}
 		}
 
-		// text
-		// join
-		font.draw(spriteBatch, "Join", xx * .31f, yy * .93f);
 
-		font.draw(spriteBatch, "Host", xx * .09f, yy * .93f);
 
-		whiteSprite.setSize(xx * .85f, yy * .01f);
-		whiteSprite.setColor(Color.WHITE);
+		TextureManager.getSprites("hostGame").draw(spriteBatch);
+		TextureManager.getSprites("joinGame").draw(spriteBatch);
+		TextureManager.getSprites("refresh").draw(spriteBatch);
+
+
 		// game list
-		// for (int i = 0; i < (gameCount - (curPage * 5)) && i < 5; i++) {
-
 		for (int i = 0; i < 5 && (i + curPage * 5) < this.games.size(); i++) {
 			String[] temp = this.games.get(i + curPage * 5);
 
@@ -177,9 +164,9 @@ public class MultiLobby implements Screen {
 			whiteSprite.draw(spriteBatch);
 
 			out = String.format("Total Players: %s / %s ", temp[2], temp[3]); // TODO
-																				// ref
-																				// total
-																				// players
+			// ref
+			// total
+			// players
 			font.draw(spriteBatch, out, xx * .7f, yy * (.73f - (.16f * i)));
 			String priv = "";
 			if (temp[1].equals("true")) {
@@ -188,10 +175,12 @@ public class MultiLobby implements Screen {
 
 			font.draw(spriteBatch, temp[0] + priv, xx * .2f, yy
 					* (.73f - (.16f * i))); // TODO ref Name of Game
-	
+
 			if(i == selectedGame){
+				arrowSprite.setRotation(0);
 				arrowSprite.setSize(xx * .05f, xx * .05f);
 				arrowSprite.setPosition( xx * .936f, yy* (.68f - (.16f * i)));
+				arrowSprite.setColor(myGame.playerColor);
 				arrowSprite.draw(spriteBatch);
 			}
 
@@ -216,12 +205,12 @@ public class MultiLobby implements Screen {
 			double y = ((float) Gdx.input.getY() / (float) myGame.screenHeight);
 
 			// make hit boxes
-			if (y >= .05 && y <= .15) {
+			if (y >= .118 && y <= .177) {
 
 				// join
-				if (x >= .24 && x <= .44) {
+				if (x >= .425 && x <= .655) {
 					String[] name = this.games.get(selectedGame + curPage * 5);
-							
+
 					if (Boolean.parseBoolean(name[1])) {
 						// Enter password					
 						Gdx.input.getTextInput(new TextInputListener() {
@@ -232,19 +221,25 @@ public class MultiLobby implements Screen {
 							@Override
 							public void canceled () {}
 						}, "Password for game:", "");	
+					} else {
+						gamePassword = "";
 					}
-					
+
 					System.out.println("Joining Game with password " + gamePassword);
 					Screen temp = Net.joinGame(name[0], gamePassword);
-						
+
 					if (temp != null) {
 						myGame.setScreen(temp);
 						// TODO: Dispose of this screen
 					} else {
 						System.out.println("Shit broke yo");
 					}
-				} else if (x >= .02 && x <= .22) {
+					//host
+				} else if (x >= .174 && x <= .404) {
 					myGame.setScreen(BaseGame.screens.get("host"));
+					//refresh
+				}else if(x >= .174 && x <= .404){
+					games = Net.listGames();
 				}
 			} else if (y >= .55 && y <= .77) {
 				if (x >= .037 && x <= .116) {
@@ -293,10 +288,32 @@ public class MultiLobby implements Screen {
 				curPage++;
 			}
 		}
-		
-		//if (Gdx.input.isKeyPressed(Keys.ENTER)) {
-			//TODO  This should start the game
-		//}
+
+		if (Gdx.input.isKeyPressed(Keys.ENTER)) {
+			String[] name = this.games.get(selectedGame + curPage * 5);
+
+			if (Boolean.parseBoolean(name[1])) {
+				// Enter password					
+				Gdx.input.getTextInput(new TextInputListener() {
+					@Override
+					public void input (String text) {
+						gamePassword = text;
+					}
+					@Override
+					public void canceled () {}
+				}, "Password for game:", "");	
+			}
+
+			System.out.println("Joining Game with password " + gamePassword);
+			Screen temp = Net.joinGame(name[0], gamePassword);
+
+			if (temp != null) {
+				myGame.setScreen(temp);
+				// TODO: Dispose of this screen
+			} else {
+				System.out.println("Shit broke yo");
+			}
+		}
 
 		if (Gdx.input.isKeyPressed(Keys.F1)) {
 			double x = ((float) Gdx.input.getX() / (float) Gdx.graphics
@@ -326,20 +343,28 @@ public class MultiLobby implements Screen {
 	@Override
 	public void show() {
 		buff = 0;
-		
+
+		double x = ((float) Gdx.input.getX() / (float) myGame.screenWidth);
+		double y = ((float) Gdx.input.getY() / (float) myGame.screenHeight);
 
 		myGame.multiplayer = true;
 
 		white = new Texture(Gdx.files.internal("data/whitebox.png"));
 		whiteSprite = new Sprite(white, 32, 32);
 		whiteSprite.setColor(Color.WHITE);
-		
+
 
 		arrow = new Texture(Gdx.files.internal("data/ship1.png"));
 		arrowSprite = new Sprite(arrow, 1024, 1024);
 
-		
-		
+		TextureManager.getSprites("hostGame").setSize(yy * .5f, yy * .5f);
+		TextureManager.getSprites("hostGame").setPosition(xx * .15f, yy * .6f);
+
+		TextureManager.getSprites("joinGame").setSize(yy * .5f, yy * .5f);
+		TextureManager.getSprites("joinGame").setPosition(xx * .4f, yy * .6f);
+
+		TextureManager.getSprites("refresh").setSize(yy * .5f, yy * .5f);
+		TextureManager.getSprites("refresh").setPosition(xx * .73f, yy * .6f);
 
 		spriteBatch = new SpriteBatch();
 	}
@@ -351,12 +376,12 @@ public class MultiLobby implements Screen {
 
 	@Override
 	public void pause() {
-		
+
 	}
 
 	@Override
 	public void resume() {
-		
+
 	}
 
 	@Override
@@ -365,5 +390,5 @@ public class MultiLobby implements Screen {
 		this.arrow.dispose();
 		this.white.dispose();
 	}
-	
+
 }

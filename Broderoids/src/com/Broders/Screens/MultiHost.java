@@ -27,7 +27,7 @@ public class MultiHost implements Screen {
 
 	private String gameName;
 	private String password;
-	
+
 	int worldSize = 0;
 
 	private float xx;
@@ -38,10 +38,10 @@ public class MultiHost implements Screen {
 
 		font = this.myGame.font;
 		font.setScale(.5f);
-		
+
 		gameName = "";
 		password = "";
-		
+
 		xx = Gdx.graphics.getWidth();
 		yy = Gdx.graphics.getHeight();
 	}
@@ -54,9 +54,15 @@ public class MultiHost implements Screen {
 	}
 
 	private void paint(float delta) {
-		GL10 g1 = Gdx.graphics.getGL10();
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		if(myGame.retroGraphics){
+			GL10 g1 = Gdx.graphics.getGL10();
+			Gdx.gl.glClearColor(0, 0, 0, 1);
+			g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		}else{
+			GL10 g1 = Gdx.graphics.getGL10();
+			Gdx.gl.glClearColor(.19f, .19f, .19f, 1f);	 
+			g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		}
 
 		spriteBatch.begin();
 
@@ -128,20 +134,20 @@ public class MultiHost implements Screen {
 					worldSize = 2;
 				}
 			}
-			
+
 			// Game name text
-			
+
 			if (inputx >= .39 && inputx <= .52 && inputy >= .092 && inputy <= .135) {
-				
+
 				String pretext = "";
-				
+
 				if (this.gameName == null || this.gameName.equals("") ||
 						this.gameName.length() > 28) {
 					pretext = myGame.playerName + "'s Game";
 				} else {
 					pretext = this.gameName;
 				}
-				
+
 				Gdx.input.getTextInput(new TextInputListener() {
 					@Override
 					public void input (String text) {
@@ -155,11 +161,11 @@ public class MultiHost implements Screen {
 					public void canceled () {}
 				}, "Enter Game Name", pretext);	
 			}
-			
+
 			// Game password text
-			
+
 			if (inputx >= .39 && inputx <= .52 && inputy >= .141 && inputy <= .177) {
-				
+
 				String pretext = "";
 
 				Gdx.input.getTextInput(new TextInputListener() {
@@ -175,7 +181,7 @@ public class MultiHost implements Screen {
 					public void canceled () {}
 				}, "Enter Game Password", pretext);	
 			}
-			
+
 			if (inputy > .09 && inputy < .173) {
 				if (inputx > .795 && inputx < .863) {
 					myGame.gameSize = worldSize;

@@ -10,21 +10,24 @@ public class ScoresManager {
 	private static File file;
 	private static Scanner fileReader;
 	private static PrintWriter fileWriter;
-	private static String scores [][];
+	private static String encrypted [][];
 	private static String decrypted [][];
 	
 	public static void init(BaseGame g) throws FileNotFoundException{
 		myGame = g;
 		path = "config/HS.bro";
 		file = new File(path);
-		scores = new String[10][3];
+		encrypted = new String[10][3];
+		decrypted = new String[10][3];
 		if(file.exists()){
 			fileReader = new Scanner(file);
 			for(int i = 0; i < 10; i++){
 				for(int j = 0; j < 3; j++){
-					scores[i][j] = fileReader.next();
+					encrypted[i][j] = fileReader.next();
 				}
 			}
+			fileReader.close();
+			decrypt();
 		}
 		else{
 			addScore("UberBro", 10000);
@@ -38,49 +41,70 @@ public class ScoresManager {
 			addScore("UnBro", 2000);
 			addScore("BroKe", 1000);
 		}
-		encrypt();
 	}
 	
 	public static void addScore(String player, int s){
-		for(String [] a : scores){
-			
+		int temp;
+		String tempName;
+		for(int i = 0; i < 10; i++){
+			if(s > Integer.parseInt(decrypted[i][2])){
+				temp = s;
+				s = Integer.parseInt(decrypted[i][2]);
+				decrypted[i][2] = String.valueOf(temp);
+				tempName = player;
+				player = decrypted[i][1];
+				decrypted[i][1] = tempName;
+			}
 		}
+		encrypt();
 	}
 	
 	public static String[][] getScore(){
 		
-		return scores;
+		return decrypted;
+	}
+	
+	public static void writeScores() throws FileNotFoundException{
+		fileWriter = new PrintWriter(file);
+		for(int i = 0; i < 10; i++){
+			for(int j = 0; j < 3; j++){
+				fileWriter.println(encrypted[i][0] + " " + encrypted[i][1] + " " + encrypted[i][2]);
+			}
+		}
 	}
 	
 	private static void encrypt(){
-		for(String[] a : scores){
-			for(String s : a){
-				char c [] = s.toCharArray();
-				for(int i = 0; i < c.length; i++){
-					int temp = Character.getNumericValue(c[i]) + 231;
-					if(temp > 255){
-						temp = temp - 255;
+		for(int i = 0; i < 10; i++){
+			for(int j = 0; j < 3; j++){
+				String s = "";
+				char word [] = decrypted[i][j].toCharArray();
+				for(int k = 0; k < word.length; k++){
+					int val = (((int) word[k]) + 231);
+					if(val > 255){
+						val -= 255;
 					}
-					c[i] = (char) temp;
+					char c = (char) val;
+					s = s.concat(String.valueOf(c));
 				}
-				s = String.copyValueOf(c);
+				encrypted[i][j] = s;
 			}
 		}
 	}
 	
 	private static void decrypt(){
-		
-		for(String[] a : scores){
-			for(String s : a){
-				char c [] = s.toCharArray();
-				for(int i = 0; i < c.length; i++){
-					int temp = Character.getNumericValue(c[i]) - 231;
-					if(temp < 255){
-						temp = temp + 255;
+		for(int i = 0; i < 10; i++){
+			for(int j = 0; j < 3; j++){
+				String s = "";
+				char word [] = encrypted[i][j].toCharArray();
+				for(int k = 0; k < word.length; k++){
+					int val = (((int) word[k]) - 231);
+					if(val < 1){
+						val += 255;
 					}
-					c[i] = (char) temp;
+					char c = (char) val;
+					s = s.concat(String.valueOf(c));
 				}
-				s = String.copyValueOf(c);
+				decrypted[i][j] = s;
 			}
 		}
 	}

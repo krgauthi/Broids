@@ -10,6 +10,8 @@ import com.Broders.Entities.Dust;
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.Ship;
 import com.Broders.mygdxgame.BaseGame;
+import com.Broders.mygdxgame.SoundManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -51,13 +53,16 @@ public class CoreLogic {
 
 	private static float respawnTimer;
 	private static float invincibleTimer;
+	private static boolean respawnSound;
+	private static float invulnFlash;
+	private static boolean flashing;
 
 	private static String saveId;
 
 	public static BaseGame getGame() {
 		return myGame;
 	}
-	
+
 	public static void setGame(BaseGame game) {
 		myGame = game;
 	}
@@ -83,7 +88,7 @@ public class CoreLogic {
 		}
 		return gcd(q, p % q);
 	}
-	
+
 	public static boolean getHost() {
 		return host;
 	}
@@ -103,43 +108,49 @@ public class CoreLogic {
 		rmEntities = new LinkedList<Entity>();
 		setHost(h);
 
-		int gcd = gcd(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		widthScreen = Gdx.graphics.getWidth() / gcd / Gdx.graphics.getDensity()
-				* 5;
-		heightScreen = Gdx.graphics.getHeight() / gcd
-				/ Gdx.graphics.getDensity() * 5;
+		respawnTimer = -10f;
+		invincibleTimer = -10f;
 
 		bulletCooldown = 0;
 		round = -1;
-		//paused = false;
 
 		respawnTimer = -10f;
 		invincibleTimer = -10f;
+		respawnSound = false;
+		invulnFlash = 0;
+		flashing = false;
+
+		/*int gcd = gcd(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		widthScreen = Gdx.graphics.getWidth() / gcd / Gdx.graphics.getDensity()
+		 * 5;
+		heightScreen = Gdx.graphics.getHeight() / gcd
+				/ Gdx.graphics.getDensity() * 5;
+		//paused = false;*/
+
+		widthScreen = 160;
+		if(Gdx.app.getVersion() > 0){
+			heightScreen = (Gdx.graphics.getHeight()/Gdx.graphics.getHeight())*160;
+		}
+		else{
+			heightScreen = 90;
+		}
 
 		if (widthIn != 0.0) {
 			width = widthIn;
 		} else {
 			width = widthScreen;
 		}
-		
+
 		if (heightIn != 0.0) {
 			height = heightIn;
 		} else {
 			height = heightScreen;
 		}
 
+
+
 		viewPortX = (width / 2) - (widthScreen / 2f);
 		viewPortY = (height / 2) - (heightScreen / 2f);
-
-		/*
-		 * forget this Just putting these here as an example. entity IDs will be
-		 * of the following format: EntityID + TypeID + ClientID + InstanceID =
-		 * 00 00 000 0000
-		 */
-		// String clientID = "000"; // possibly let server handle clientID
-		// generation somehow?
-		// String instanceID = "0000"; // check map to see how many of this type
-		// of entity already exist
 
 		Player local = new Player("Player", clientId);
 		players.put(Integer.toString(local.getId()), local);
@@ -150,6 +161,8 @@ public class CoreLogic {
 
 		Player temp = new Player("Temp", 0);
 		players.put(Integer.toString(temp.getId()), temp);
+		
+		SoundManager.get("start").play();
 	}
 
 	/**
@@ -159,12 +172,18 @@ public class CoreLogic {
 	 * @param delta
 	 */
 	public static void update(float delta) {
-		
+
 		bulletCooldown += Gdx.graphics.getDeltaTime();
-		
+
 		Player local = getLocal();
 
 		//Respawn
+		if (respawnTimer < 1f && !respawnSound && getLocal().getLives() < 3
+				&& getLocal().getLives() > 0) {
+			SoundManager.get("respawn").play();
+			respawnSound = true;
+		}
+		
 		if(respawnTimer > 0)
 			respawnTimer -= Gdx.graphics.getDeltaTime();
 		else if(respawnTimer > -9f && (local.getLives() > 0 || multiplayer)){
@@ -173,7 +192,7 @@ public class CoreLogic {
 
 			Ship ship = new Ship(saveId, local,
 					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
-			
+
 			local.setShip(ship);
 			if (multiplayer) {
 				Net.createEntity(ship);
@@ -187,12 +206,25 @@ public class CoreLogic {
 		}
 
 		//Temp invincibility after respawn
-		if(invincibleTimer > 0)
+		if(invincibleTimer > 0) {
 			invincibleTimer -= Gdx.graphics.getDeltaTime();
+			invulnFlash += Gdx.graphics.getDeltaTime();
+			
+			if (invulnFlash >= 0.07f) {
+				if (!flashing) {
+					getLocal().getShip().setColor(Color.CLEAR);
+				} else {
+					getLocal().getShip().setColor();
+				}
+				
+				flashing = !flashing;
+				invulnFlash = 0;
+			}	
+		}
 		else if(invincibleTimer > -9f){
 			invincibleTimer = -10f;
-
 			local.getShip().setInvincible(false);
+			local.getShip().setColor();
 		}
 
 		int mod = 0;
@@ -222,7 +254,7 @@ public class CoreLogic {
 
 		}
 
-		if(local.getShip() != null){
+		if(local != null && local.getShip() != null){
 			// viewport logic
 			if ((local.getShip().getX() - viewPortX) / widthScreen > (1 - myGame.bounds)) {
 				if (viewPortX < width - widthScreen) {
@@ -302,7 +334,7 @@ public class CoreLogic {
 
 		}
 		cleanEntities();
-		if(local.getShip() != null){
+		if(local != null && local.getShip() != null){
 			local.getShip().setThrust(false);
 			local.getShip().setShooting(false);
 		}
@@ -316,7 +348,7 @@ public class CoreLogic {
 		float x = (float) (CoreLogic.getWidth() * Math.random());
 		float y = (float) (CoreLogic.getHeight() * Math.random());
 		float dir = (float) (Math.PI * Math.random());
-		
+
 		Player local = getLocal();
 
 		// Prevent spawning on the player(s)
@@ -352,11 +384,11 @@ public class CoreLogic {
 		roid.getBody().setAngularVelocity(spin);
 
 		getComp().getEntitiesMap().put(roid.getId(), roid);
-		
+
 		if(multiplayer){
 			Net.createEntity(roid);
 		}
-		
+
 		return 0;
 	}
 
@@ -402,7 +434,7 @@ public class CoreLogic {
 					local.getEntitiesMap().put(shot.getId(), shot);
 					bulletCooldown = 0;
 					local.getShip().setShooting(true);
-					
+
 					if(multiplayer){					
 						Net.createEntity(shot);
 					}
@@ -421,7 +453,7 @@ public class CoreLogic {
 				local.getShip().setThrust(true);
 				mod = true;
 			}
-			
+
 			if (mod && multiplayer) {
 				Net.modifyEntity(local.getShip());
 			}
@@ -582,6 +614,7 @@ public class CoreLogic {
 					getSelf().modLives(-1);
 					local.setShip(null);
 					respawnTimer = 3.0f;
+					respawnSound = false;
 				}
 			}
 
@@ -623,11 +656,11 @@ public class CoreLogic {
 	public static HashMap<String, Player> getPlayersMap() {
 		return players;
 	}
-	
+
 	public static Player getPlayer(String id) {
 		return players.get(id);
 	}
-	
+
 	public static Player getLocal() {
 		return getSelf();
 	}
@@ -635,7 +668,7 @@ public class CoreLogic {
 	public static boolean getRoundBool() {
 		return display;
 	}
-	
+
 	public static void setRoundOver() {
 		display = true;
 	}
@@ -653,7 +686,7 @@ public class CoreLogic {
 		playr.setScore(score);
 		players.put(Integer.toString(id), playr);
 	}
-	
+
 	public static void removePlayer(String id) {
 		players.remove(id);
 	}
@@ -661,7 +694,7 @@ public class CoreLogic {
 	public static Player findPlayer(String id) {
 		return players.get(id);
 	}
-	
+
 	//public static void pause() {
 	//	paused = !paused;
 	//}

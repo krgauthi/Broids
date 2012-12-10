@@ -42,7 +42,7 @@ public abstract class Entity {
 	public Entity(String id, Player owner) {
 		this.id = id;
 		this.owner = owner;
-		System.out.println(id);
+		//System.out.println(id);
 	}
 
 	public String getId() {
@@ -158,6 +158,10 @@ public abstract class Entity {
 	public void setColor() {
 		this.color = this.owner.getColor();
 	}
+	
+	public void setColor(Color color) {
+		this.color = color;
+	}
 
 	/**
 	 * Draws this Entity on the screen
@@ -186,6 +190,7 @@ public abstract class Entity {
 
 			this.getSprite().setPosition(posX, posY);
 			this.getSprite().setRotation(this.getBody().getAngle());
+			//this.getSprite().setColor(getColor());
 			this.getSprite().draw(sb);
 		}
 	}

@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.regex.Pattern;
 
+import com.Broders.Logic.Settings;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
 import com.Broders.mygdxgame.TextureManager;
@@ -55,7 +56,7 @@ public class SettingsScreen implements Screen {
 		
 		spriteBatch.begin();
 		
-		if(game.retroGraphics){
+		if(Settings.getRetro()){
 			GL10 gl = Gdx.graphics.getGL10();
 			Gdx.gl.glClearColor(0, 0, 0, 1);
 			gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -67,86 +68,86 @@ public class SettingsScreen implements Screen {
 
 		// Debug Text
 
-		if (game.debugMode) {
-			font.draw(spriteBatch, game.screenWidth + " x " + game.screenHeight, game.screenWidth * .01f,
-					game.screenHeight * .94f);
-			font.draw(spriteBatch, perc_X + " " + perc_Y, game.screenWidth * .01f,
-					game.screenHeight * .99f);
+		if (Settings.getDebug()) {
+			font.draw(spriteBatch, Settings.getWidth() + " x " + Settings.getHeight(), Settings.getWidth() * .01f,
+					Settings.getHeight() * .94f);
+			font.draw(spriteBatch, perc_X + " " + perc_Y, Settings.getWidth() * .01f,
+					Settings.getHeight() * .99f);
 		}
 
 		// Option Texts
 
 		// Title
 		font.setScale(.75f);
-		font.draw(spriteBatch, "Settings", (float) (game.screenWidth * .4), (float) (game.screenHeight * .95));
+		font.draw(spriteBatch, "Settings", (float) (Settings.getWidth() * .4), (float) (Settings.getHeight() * .95));
 		font.setScale(.5f);
 
 		// Music
-		font.draw(spriteBatch, "Music: " + game.musicVolume, (float) (game.screenWidth * .08),
-				(float) (game.screenHeight * .2));
+		font.draw(spriteBatch, "Music: " + Settings.getMusicVol(), (float) (Settings.getWidth() * .08),
+				(float) (Settings.getHeight() * .2));
 
 		font.setColor(Color.WHITE);
 		// Sounds
-		font.draw(spriteBatch, "Sounds: " + game.soundVolume, (float) (game.screenWidth * .08),
-				(float) (game.screenHeight * .4));
+		font.draw(spriteBatch, "Sounds: " + Settings.getSoundVol(), (float) (Settings.getWidth() * .08),
+				(float) (Settings.getHeight() * .4));
 
 		// Volume
-//		font.draw(spriteBatch, "Volume: " + volBool, (float) (game.screenWidth * .08),
-//				(float) (game.screenHeight * .6));
+//		font.draw(spriteBatch, "Volume: " + volBool, (float) (Settings.getWidth() * .08),
+//				(float) (Settings.getHeight() * .6));
 
 		// Background Image
-		font.draw(spriteBatch, "Retro Mode: " + (game.retroGraphics ? "On" : "Off"),
-				(float) (game.screenWidth * .08), (float) (game.screenHeight * .8));
+		font.draw(spriteBatch, "Retro Mode: " + (Settings.getRetro() ? "On" : "Off"),
+				(float) (Settings.getWidth() * .08), (float) (Settings.getHeight() * .8));
 
 		// Screen Resolution
 		font.draw(spriteBatch, "Screen Resolution: " + screenResOptions[screenResSelection][0] + 
 				" x " + screenResOptions[screenResSelection][1],
-				(float) (game.screenWidth * .52), (float) (game.screenHeight * .8));
+				(float) (Settings.getWidth() * .52), (float) (Settings.getHeight() * .8));
 
 		// Debug Text Option
-		font.draw(spriteBatch, "Debug Text: " + (game.debugMode ? "On" : "Off"),
-				(float) (game.screenWidth * .52), (float) (game.screenHeight * .6));
+		font.draw(spriteBatch, "Debug Text: " + (Settings.getDebug() ? "On" : "Off"),
+				(float) (Settings.getWidth() * .52), (float) (Settings.getHeight() * .6));
 
 		// Single Player Difficulty
-		font.draw(spriteBatch, "Single Player Difficulty: " + sPDiffString(game.difficulty),
-				(float) (game.screenWidth * .52), (float) (game.screenHeight * .4));
+		font.draw(spriteBatch, "Single Player Difficulty: " + sPDiffString(Settings.getDifficulty()),
+				(float) (Settings.getWidth() * .52), (float) (Settings.getHeight() * .4));
 
 		// Epileptic Mode
-		font.draw(spriteBatch, "Epileptic Mode: " + (game.epileptic ? "On" : "Off"), 
-				(float) (game.screenWidth * .52), (float) (game.screenHeight * .2));
+		font.draw(spriteBatch, "Epileptic Mode: " + (Settings.getEpileptic() ? "On" : "Off"), 
+				(float) (Settings.getWidth() * .52), (float) (Settings.getHeight() * .2));
 
 		// User Name
 		font.setScale(.25f);
-		font.draw(spriteBatch, "Ship Color:", (float) (game.screenWidth * .70),
-				(float) (game.screenHeight * .98));
+		font.draw(spriteBatch, "Ship Color:", (float) (Settings.getWidth() * .70),
+				(float) (Settings.getHeight() * .98));
 
 		font.setScale(.25f);
-		font.draw(spriteBatch, "World Color:", game.screenWidth * .845f,
-				game.screenHeight * .98f);
+		font.draw(spriteBatch, "World Color:", Settings.getWidth() * .845f,
+				Settings.getHeight() * .98f);
 
-		font.draw(spriteBatch, "Username: " + game.playerName, (float) (game.screenWidth * .70),
-				(float) (game.screenHeight * .93));
+		font.draw(spriteBatch, "Username: " + Settings.getUsername(), (float) (Settings.getWidth() * .70),
+				(float) (Settings.getHeight() * .93));
 
 		// ShipColor		
 
 		Pixmap p = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-		p.setColor(game.playerColor);
+		p.setColor(Settings.getShipColor());
 		p.fillRectangle(0,  0, 1, 1);
 		Texture tex = new Texture(p, true);
 		p.dispose();
 
-		spriteBatch.draw(tex, game.screenWidth * .775f, game.screenHeight * .94f,
+		spriteBatch.draw(tex, Settings.getWidth() * .775f, Settings.getHeight() * .94f,
 				0, 0, 60, 26);
 
 		// WorldColor
 
 		p = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-		p.setColor(game.gameColor);
+		p.setColor(Settings.getWorldColor());
 		p.fillRectangle(0,  0, 1, 1);
 		tex = new Texture(p, true);
 		p.dispose();
 
-		spriteBatch.draw(tex, game.screenWidth * .93f, game.screenHeight * .94f,
+		spriteBatch.draw(tex, Settings.getWidth() * .93f, Settings.getHeight() * .94f,
 				0, 0, 60, 26);
 
 		spriteBatch.end();		
@@ -164,8 +165,8 @@ public class SettingsScreen implements Screen {
 		}
 
 		if(Gdx.input.justTouched()){
-			double x = ((float)Gdx.input.getX()/(float)game.screenWidth);
-			double y = (1.00 - (float)Gdx.input.getY()/(float)game.screenHeight);
+			double x = ((float)Gdx.input.getX()/(float)Settings.getWidth());
+			double y = (1.00 - (float)Gdx.input.getY()/(float)Settings.getHeight());
 
 			DecimalFormat twoDForm = new DecimalFormat("##.##");
 
@@ -176,19 +177,19 @@ public class SettingsScreen implements Screen {
 
 				String pretext = "";
 
-				if (game.playerName.equals("") || game.playerName.length() > 28) {
+				if (Settings.getUsername().equals("") || Settings.getUsername().length() > 28) {
 					pretext = "New Bro";
 				} else {
-					pretext = game.playerName;
+					pretext = Settings.getUsername();
 				}
 
 				Gdx.input.getTextInput(new TextInputListener() {
 					@Override
 					public void input (String text) {
 						if (text.equals("") || text.length() > 28) {
-							game.playerName = "New Bro";
+							Settings.setUsername("New Bro");
 						} else {
-							game.playerName = text;
+							Settings.setUsername(text);
 						}
 					}
 
@@ -199,15 +200,23 @@ public class SettingsScreen implements Screen {
 
 			if (x >= .08 && x <= .46 && y >= .12 && y <= .2) {
 				
-				game.musicVolume = game.musicVolume == 10 ? 0 : game.musicVolume + 1;
+				if (Settings.getMusicVol() == 10) {
+					Settings.setMusicVol(0);
+				} else {
+					Settings.setMusicVol(Settings.getMusicVol() + 1);
+				}
 				SoundManager.setVolume("muzak", SoundManager.getMuzakId(), 1f);
-				System.out.println("Music Option set to " + game.musicVolume);
+				System.out.println("Music Option set to " + Settings.getMusicVol());
 				SoundManager.play("click", 0.7f);
 				
 			} else if (x >= .08 && x <= .46 && y >= .32 && y <= .4) {
 				
-				game.soundVolume = game.soundVolume == 10 ? 0 : game.soundVolume + 1;
-				System.out.println("Sound Option set to " + game.soundVolume);
+				if (Settings.getSoundVol() == 10) {
+					Settings.setSoundVol(0);
+				} else {
+					Settings.setSoundVol(Settings.getSoundVol() + 1);
+				}
+				System.out.println("Sound Option set to " + Settings.getSoundVol());
 				SoundManager.play("click", 0.7f);
 				
 			} else if (x >= .08 && x <= .46 && y >= .52 && y <= .6) {
@@ -217,8 +226,12 @@ public class SettingsScreen implements Screen {
 
 			} else if (x >= .08 && x <= .46 && y >= .72 && y <= .8) {
 
-				game.retroGraphics = game.retroGraphics ? false : true;
-				System.out.println("Retro Mode Option set to " + (game.retroGraphics ? "On" : "Off"));	
+				if (Settings.getRetro()) {
+					Settings.setRetro(false);
+				} else {
+					Settings.setRetro(true);
+				}
+				System.out.println("Retro Mode Option set to " + (Settings.getRetro() ? "On" : "Off"));	
 				TextureManager.init(game);
 
 			} else if (x >= .51 && x <= .96 && y >= .72 && y <= .8) {
@@ -232,39 +245,52 @@ public class SettingsScreen implements Screen {
 				// We need to set the BaseGame screen width + height to the new res so clicks will work correctly,
 				// as they are based off of a percentage of screen height + width, which are set statically.
 		
-				game.screenWidth = screenResOptions[screenResSelection][0];
-				game.screenHeight = screenResOptions[screenResSelection][1];
+				Settings.setWidth(screenResOptions[screenResSelection][0]);
+				Settings.setHeight(screenResOptions[screenResSelection][1]);
 				
 				Gdx.graphics.setDisplayMode(screenResOptions[screenResSelection][0],
 						screenResOptions[screenResSelection][1], false);
-				System.out.println("Screen Resolution Option set to " + game.screenWidth +
-						" x " + game.screenHeight);
+				System.out.println("Screen Resolution Option set to " + Settings.getWidth() +
+						" x " + Settings.getHeight());
 
 			} else if (x >= .51 && x <= .96 && y >= .52 && y <= .6) {
 
-				game.debugMode = game.debugMode ? false : true;
-				System.out.println("Debug Text Option set to " + game.debugMode);
+				if (Settings.getDebug()) {
+					Settings.setDebug(false);
+				} else {
+					Settings.setDebug(true);
+				}
+			
+				System.out.println("Debug Text Option set to " + Settings.getDebug());
 
 			} else if (x >= .51 && x <= .96 && y >= .32 && y <= .4) {
 
-				game.difficulty = game.difficulty >= 2 ? 0 : ++game.difficulty;
-				System.out.println("SP Difficulty Option set to " + game.difficulty);
+				if (Settings.getDifficulty() >= 2) {
+					Settings.setDifficulty(0);
+				} else {
+					Settings.setDifficulty(Settings.getDifficulty() + 1);
+				}
+				
+				System.out.println("SP Difficulty Option set to " + Settings.getDifficulty());
 
 			} else if (x >= .51 && x <= .96 && y >= .12 && y <= .2) {
 
-				game.epileptic = game.epileptic ? false : true;
-				System.out.println("Epileptic Mode set to " + game.epileptic);
+				if (Settings.getEpileptic()) {
+					Settings.setEpileptic(false);
+				} else {
+					Settings.setEpileptic(true);
+				}
+				
+				System.out.println("Epileptic Mode set to " + Settings.getEpileptic());
 
 			} else if (x >= .70 && x<= .84 && y >= .94 && y <= .98) {
 
 				String pretext = "";
-
-				System.out.println(game.playerColor.toString());
-
-				if (game.playerColor.equals("")) {
+				
+				if (Settings.getShipColor().equals("")) {
 					pretext = "#OOFF33";
 				} else {
-					pretext = swapHex(game.playerColor.toString());
+					pretext = swapHex(Settings.getShipColor().toString());
 				}
 
 				Gdx.input.getTextInput(new TextInputListener() {
@@ -275,8 +301,7 @@ public class SettingsScreen implements Screen {
 							text = "FFFFFF";
 						}
 						text = text.replaceAll("#", "").trim();
-						text = "FF" + text;
-						game.playerColor.set(game.settings.colorFromHexString(text));
+						Settings.setShipColor(text);
 					}
 
 					@Override
@@ -286,10 +311,10 @@ public class SettingsScreen implements Screen {
 			} else if (x >= .85 && x<= .99 && y >= .94 && y <= .98) {
 				String pretext = "";
 
-				if (game.playerColor.equals("")) {
+				if (Settings.getWorldColor().equals("")) {
 					pretext = "#BFBFBF";
 				} else {
-					pretext = swapHex(game.gameColor.toString());
+					pretext = swapHex(Settings.getWorldColor().toString());
 				}
 
 				Gdx.input.getTextInput(new TextInputListener() {
@@ -300,8 +325,7 @@ public class SettingsScreen implements Screen {
 							text = "FFFFFF";
 						}
 						text = text.replaceAll("#", "").trim();
-						text = "FF" + text;
-						game.gameColor.set(game.settings.colorFromHexString(text));
+						Settings.setWorldColor(text);
 					}
 
 					@Override
@@ -326,31 +350,8 @@ public class SettingsScreen implements Screen {
 	}
 
 	@Override
-	public void hide() {
-		try {
-			saveSettings();
-		} catch (FileNotFoundException e) {
-			System.out.println("Could not save settings: config/broids.cfg not found");
-			e.printStackTrace();
-		}		
-	}
+	public void hide() {}
 
-	private void saveSettings() throws FileNotFoundException {
-		PrintWriter pw = new PrintWriter(new File("config/broids.cfg"));
-
-		pw.println("Username: " + game.playerName);
-		pw.printf("ShipColor: %s%n", swapHex(game.playerColor.toString()));
-		pw.printf("WorldColor: %s%n", swapHex(game.gameColor.toString()));
-		pw.println("Retro: " + game.retroGraphics);
-		pw.println("SoundVolume: " + this.game.soundVolume);
-		pw.println("MusicVolume: " + this.game.musicVolume);
-		pw.println("Resolution: " + game.screenWidth + " x " + game.screenHeight);
-		pw.println("Debug: " + game.debugMode);
-		pw.println("SPDifficulty: " + game.difficulty);
-		pw.println("Epileptic: " + game.epileptic);
-
-		pw.close();
-	}
 
 	@Override
 	public void pause() {

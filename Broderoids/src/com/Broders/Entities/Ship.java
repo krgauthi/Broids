@@ -2,6 +2,7 @@ package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Player;
+import com.Broders.Logic.Settings;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
 import com.Broders.mygdxgame.TextureManager;
@@ -119,7 +120,7 @@ public class Ship extends Entity {
 
 		Sound zoom = SoundManager.get("zoom");
 		if (!thrustLast && bool) {
-			long soundId = zoom.loop(game.soundVolume * 0.1f);
+			long soundId = zoom.loop(Settings.getSoundVol() * 0.1f);
 			zoom.setPitch(soundId, (float) (0.8f + Math.random() * 0.4f));
 		} else if (thrustLast && !bool) {
 			zoom.stop();

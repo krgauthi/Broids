@@ -256,7 +256,7 @@ public class CoreLogic {
 						mod = 1;
 					System.out.println("your made it level next");
 					round++;
-					for (int i = 0; i < (myGame.difficulty*4 + 1) * mod; i++) {
+					for (int i = 0; i < (Settings.getDifficulty() * 4 + 1) * mod; i++) {
 						while (spawnBroid() == -1); // lols    wtf? -mike
 					}
 				}
@@ -631,7 +631,7 @@ public class CoreLogic {
 					local.setShip(null);
 					respawnTimer = 3.0f;
 					if(getSelf().getLives() == 0){
-						ScoresManager.addScore(myGame.playerName, CoreLogic.getLocal().getScore());
+						ScoresManager.addScore(Settings.getUsername(), CoreLogic.getLocal().getScore());
 						try {
 							ScoresManager.writeScores();
 						} catch (FileNotFoundException e) {

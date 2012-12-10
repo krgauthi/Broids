@@ -40,7 +40,7 @@ public class Player {
 		entities = new HashMap<String, Entity>();
 
 		if (type.equals("Player")) {
-			playerColor = getGame().playerColor;
+			playerColor = Settings.getShipColor();
 
 
 			
@@ -62,7 +62,7 @@ public class Player {
 
 
 		} else {
-			playerColor = getGame().gameColor;
+			playerColor = Settings.getShipColor();
 		}
 
 		bonus = 1.0f;

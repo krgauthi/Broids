@@ -1,5 +1,6 @@
 package com.Broders.Screens;
 
+import com.Broders.Logic.Settings;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
 import com.Broders.mygdxgame.TextureManager;
@@ -44,8 +45,8 @@ public class MainMenu implements Screen{
 		font = this.myGame.font;
 		font.setScale(0.97f, 0.75f);
 
-		xx = myGame.screenWidth;
-		yy = myGame.screenHeight;
+		xx = Settings.getWidth();
+		yy = Settings.getHeight();
 	}
 
 	@Override
@@ -66,7 +67,7 @@ public class MainMenu implements Screen{
 	private void paint(float delta) {
 
 		//Make a black background
-		if(myGame.retroGraphics){
+		if(Settings.getRetro()){
 			GL10 g1 = Gdx.graphics.getGL10();
 			Gdx.gl.glClearColor(0, 0, 0, 1);
 			g1.glClear(GL20.GL_COLOR_BUFFER_BIT);

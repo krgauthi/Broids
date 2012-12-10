@@ -1,5 +1,6 @@
 package com.Broders.Screens;
 
+import com.Broders.Logic.Settings;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.Gdx;
@@ -22,7 +23,7 @@ public class SplashScreen implements Screen {
 	// constructor
 	public SplashScreen(BaseGame g) {
 		this.myGame = g;
-		SoundManager.setMuzakId(SoundManager.get("muzak").loop(myGame.musicVolume * 0.1f));
+		SoundManager.setMuzakId(SoundManager.get("muzak").loop(Settings.getMusicVol() * 0.1f));
 	}
 
 	@Override
@@ -54,8 +55,8 @@ public class SplashScreen implements Screen {
 	public void show() {
 		splsh = new Texture(Gdx.files.internal("data/Brocoders.png"));
 		sprite = new Sprite(splsh);
-		sprite.setSize(myGame.screenHeight * 1.5f, myGame.screenHeight * 1.5f);
-		sprite.setPosition(myGame.screenWidth * 1.5f * .05f, (myGame.screenHeight * .75f) - myGame.screenHeight);
+		sprite.setSize(Settings.getHeight() * 1.5f, Settings.getHeight() * 1.5f);
+		sprite.setPosition(Settings.getWidth() * 1.5f * .05f, (Settings.getHeight() * .75f) - Settings.getHeight());
 		spriteBatch = new SpriteBatch();
 	}
 

@@ -20,32 +20,17 @@ public class BaseGame extends Game {
 
 	public static HashMap<String,Screen> screens;
 
-	public BitmapFont font;
-
-	public int screenHeight;
-	public int screenWidth;	
-	
+	public BitmapFont font;	
 		
 	public double exitBuffer;		//TODO Ref in Settings
-	public boolean epileptic;
-	public boolean debugMode;
-	public int difficulty;
-	public String playerName;
 	public boolean godMode;			//TODO Ref in Settings
 	
 	public boolean multiplayer;
-	
-	public Color gameColor;	
-	public Color playerColor; 	
-	
-	public Integer musicVolume;
-	public Integer soundVolume;
 	
 	public float bounds;
 	public int gameSize; // multi only
 	public boolean connected;
 
-	public boolean retroGraphics;
 	public int asteroidsCount;
 	
 	/*
@@ -59,32 +44,18 @@ public class BaseGame extends Game {
 		// TODO: Put this in a better place, remove the method
 		CoreLogic.setGame(this);
 		
-		screenHeight = Gdx.graphics.getHeight();
-		screenWidth = Gdx.graphics.getWidth();
 		exitBuffer = 1;
-		difficulty = 5;
 		multiplayer = false;
-		gameColor = Color.GREEN;
-		playerColor = Color.MAGENTA;
 		bounds = .25f; // max of .5
 		gameSize = 0;
-		godMode = false;
 
 		font = new BitmapFont(Gdx.files.internal(Settings.data_path
 				+ "smallfonts.fnt"), Gdx.files.internal(Settings.data_path
 				+ "smallfonts_0.png"), false);
-
-		settings = new Settings(this);
 		
-		Gdx.input.setCatchBackKey(true);	
+		Gdx.input.setCatchBackKey(true);
 		
-		try {
-			settings.loadSettings();
-		} catch (FileNotFoundException e) {
-			System.out.println("Unable to find settings file, make sure a file " +
-					"named 'broids.cfg' is located in the assets/data folder.");
-			e.printStackTrace();
-		}
+		Settings.init(this);
 		
 		try {
 			Net.init(this);

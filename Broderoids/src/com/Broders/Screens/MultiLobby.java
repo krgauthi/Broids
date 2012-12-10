@@ -3,6 +3,7 @@ package com.Broders.Screens;
 import java.util.ArrayList;
 import com.Broders.Logic.Net;
 import com.Broders.Logic.Pos;
+import com.Broders.Logic.Settings;
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
@@ -83,7 +84,7 @@ public class MultiLobby implements Screen {
 
 	private void paint(float delta) {
 		// Make a black background
-		if(myGame.retroGraphics){
+		if(Settings.getRetro()){
 			GL10 g1 = Gdx.graphics.getGL10();
 			Gdx.gl.glClearColor(0, 0, 0, 1);
 			g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -177,7 +178,7 @@ public class MultiLobby implements Screen {
 			if(i == selectedGame){
 				TextureManager.getSprites("Ship1").setSize(xx * .05f, xx * .05f);
 				TextureManager.getSprites("Ship1").setPosition( xx * .936f, yy* (.68f - (.16f * i)));
-				TextureManager.getSprites("Ship1").setColor(myGame.playerColor);
+				TextureManager.getSprites("Ship1").setColor(Settings.getShipColor());
 				TextureManager.getSprites("Ship1").draw(spriteBatch);
 			}
 
@@ -198,8 +199,8 @@ public class MultiLobby implements Screen {
 	private void handleInput(float delta) {
 
 		if (Gdx.input.justTouched()) {
-			double x = ((float) Gdx.input.getX() / (float) myGame.screenWidth);
-			double y = ((float) Gdx.input.getY() / (float) myGame.screenHeight);
+			double x = ((float) Gdx.input.getX() / (float) Settings.getWidth());
+			double y = ((float) Gdx.input.getY() / (float) Settings.getHeight());
 
 			// make hit boxes
 			if (y >= .118 && y <= .177) {

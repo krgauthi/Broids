@@ -215,6 +215,10 @@ public class Ship extends Entity {
 
 	@Override
 	public void destroy() {
+		if(CoreLogic.multiplayer){
+			this.getOwner().modScore(-500);
+			this.getOwner().modBonus(1.0f);
+		}
 		float temp = (float) (10+Math.random()%10);
 		for(int i = 0; i < temp;i++){
 			temp = 360/temp;

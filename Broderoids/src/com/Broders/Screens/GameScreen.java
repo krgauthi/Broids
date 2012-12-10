@@ -239,17 +239,17 @@ public class GameScreen implements Screen {
 			float offsetX = CoreLogic.getViewPortX() % 10;
 			float offsetY = CoreLogic.getViewPortY() % 10;
 
-			TextureManager.getSprites("whitePixelSprite").setSize(xx, 1);
+			TextureManager.getSprites("whitePixel").setSize(xx, 1);
 			for (int i = 0; i <= CoreLogic.getHeightScreen(); i = i + 10) {
-				TextureManager.getSprites("whitePixelSprite").setPosition(0,
+				TextureManager.getSprites("whitePixel").setPosition(0,
 						yy * ((i - offsetY) / CoreLogic.getHeightScreen()));
-				TextureManager.getSprites("whitePixelSprite").draw(spriteBatch);
+				TextureManager.getSprites("whitePixel").draw(spriteBatch);
 			}
-			TextureManager.getSprites("whitePixelSprite").setSize(1, yy);
+			TextureManager.getSprites("whitePixel").setSize(1, yy);
 			for (int i = 0; i <= CoreLogic.getWidthScreen(); i = i + 10) {
-				TextureManager.getSprites("whitePixelSprite").setPosition(
+				TextureManager.getSprites("whitePixel").setPosition(
 						xx * ((i - offsetX) / CoreLogic.getWidthScreen()), 0);
-				TextureManager.getSprites("whitePixelSprite").draw(spriteBatch);
+				TextureManager.getSprites("whitePixel").draw(spriteBatch);
 			}
 
 

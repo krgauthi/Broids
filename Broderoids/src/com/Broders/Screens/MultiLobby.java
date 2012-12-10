@@ -9,6 +9,7 @@ import com.Broders.Logic.Net;
 import com.Broders.Logic.Pos;
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
+import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
@@ -113,25 +114,7 @@ public class MultiLobby implements Screen {
 		whiteSprite.setPosition(xx * .15f, 0);
 		whiteSprite.draw(spriteBatch);
 
-		// host and Join game button white
-		whiteSprite.setSize(xx * .2f, yy * .1f);
-		whiteSprite.setPosition(xx * .02f, yy * .85f);
-		whiteSprite.draw(spriteBatch);
-
-		whiteSprite.setSize(xx * .2f, yy * .1f);
-		whiteSprite.setPosition(xx * .24f, yy * .85f);
-		whiteSprite.draw(spriteBatch);
-
-		// host and join game button negative
-		whiteSprite.setColor(Color.BLACK);
-		whiteSprite.setSize(xx * .18f, yy * .08f);
-		whiteSprite.setPosition(xx * .03f, yy * .86f);
-		whiteSprite.draw(spriteBatch);
-
-		whiteSprite.setSize(xx * .18f, yy * .08f);
-		whiteSprite.setPosition(xx * .25f, yy * .86f);
-		whiteSprite.draw(spriteBatch);
-
+		
 		// tabs
 		if (page > 0) {
 
@@ -165,17 +148,14 @@ public class MultiLobby implements Screen {
 			}
 		}
 
-		// text
-		// join
-		font.draw(spriteBatch, "Join", xx * .31f, yy * .93f);
-
-		font.draw(spriteBatch, "Host", xx * .09f, yy * .93f);
-
-		whiteSprite.setSize(xx * .85f, yy * .01f);
-		whiteSprite.setColor(Color.WHITE);
+		
+		
+		TextureManager.getSprites("hostGame").draw(spriteBatch);
+		TextureManager.getSprites("joinGame").draw(spriteBatch);
+		TextureManager.getSprites("refresh").draw(spriteBatch);
+		
+		
 		// game list
-		// for (int i = 0; i < (gameCount - (curPage * 5)) && i < 5; i++) {
-
 		for (int i = 0; i < 5 && (i + curPage * 5) < this.games.size(); i++) {
 			String[] temp = this.games.get(i + curPage * 5);
 
@@ -336,7 +316,9 @@ public class MultiLobby implements Screen {
 	public void show() {
 		buff = 0;
 		
-
+		double x = ((float) Gdx.input.getX() / (float) myGame.screenWidth);
+		double y = ((float) Gdx.input.getY() / (float) myGame.screenHeight);
+		
 		myGame.multiplayer = true;
 
 		white = new Texture(Gdx.files.internal("data/whitebox.png"));
@@ -346,6 +328,18 @@ public class MultiLobby implements Screen {
 
 		arrow = new Texture(Gdx.files.internal("data/ship1.png"));
 		arrowSprite = new Sprite(arrow, 1024, 1024);
+		
+		TextureManager.getSprites("hostGame").setSize(yy * .5f, yy * .5f);
+		TextureManager.getSprites("hostGame").setPosition(xx * .1f, yy * .6f);
+		
+		TextureManager.getSprites("joinGame").setSize(yy * .5f, yy * .5f);
+		TextureManager.getSprites("joinGame").setPosition(xx * .3f, yy * .6f);
+		
+		TextureManager.getSprites("refresh").setSize(yy * .5f, yy * .5f);
+		TextureManager.getSprites("refresh").setPosition(xx * .6f, yy * .6f);
+		
+		
+		
 
 		
 		

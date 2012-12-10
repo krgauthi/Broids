@@ -44,13 +44,8 @@ public class BaseGame extends Game {
 		// TODO: Put this in a better place, remove the method
 		CoreLogic.setGame(this);
 		
-		screenHeight = Gdx.graphics.getHeight();
-		screenWidth = Gdx.graphics.getWidth();
 		exitBuffer = 1;
-		difficulty = 5;
 		multiplayer = false;
-		gameColor = Color.GREEN;
-		playerColor = Color.MAGENTA;
 		bounds = .25f; // max of .5
 		gameSize = 0;
 		godMode = false;

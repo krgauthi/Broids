@@ -1,6 +1,7 @@
 package com.Broders.Screens;
 
 import com.Broders.Logic.Net;
+import com.Broders.Logic.Settings;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
 import com.Broders.mygdxgame.TextureManager;
@@ -51,7 +52,7 @@ public class MultiHost implements Screen {
 	}
 
 	private void paint(float delta) {
-		if(myGame.retroGraphics){
+		if(Settings.getRetro()){
 			GL10 g1 = Gdx.graphics.getGL10();
 			Gdx.gl.glClearColor(0, 0, 0, 1);
 			g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -142,7 +143,7 @@ public class MultiHost implements Screen {
 
 				if (this.gameName == null || this.gameName.equals("") ||
 						this.gameName.length() > 28) {
-					pretext = myGame.playerName + "'s Game";
+					pretext = Settings.getUsername() + "'s Game";
 				} else {
 					pretext = this.gameName;
 				}
@@ -151,7 +152,7 @@ public class MultiHost implements Screen {
 					@Override
 					public void input (String text) {
 						if (text.equals("") || text.length() > 28) {
-							gameName = myGame.playerName + "'s Game";
+							gameName = Settings.getUsername() + "'s Game";
 						} else {
 							gameName = text;
 						}

@@ -3,6 +3,7 @@ package com.Broders.mygdxgame;
 
 import java.util.HashMap;
 
+import com.Broders.Logic.Settings;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -16,7 +17,7 @@ public class TextureManager {
 		textures = new HashMap<String, Texture>();
 		sprites = new HashMap<String, Sprite>();
 
-		if(myGame.retroGraphics){
+		if(Settings.getRetro()){
 			String[][] defaultTextures = {
 					//Hud
 					{"healthBar", "data/healthbracket.png"},

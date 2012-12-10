@@ -6,6 +6,7 @@ import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.InputDir;
 import com.Broders.Logic.Net;
 import com.Broders.Logic.Pos;
+import com.Broders.Logic.Settings;
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
@@ -84,13 +85,13 @@ public class GameScreen implements Screen {
 
 		myGame.multiplayer = this.multiplayer;
 
-		if (myGame.debugMode) {
+		if (Settings.getDebug()) {
 			debug1 = new Tail(50, Color.MAGENTA);
 			debug2 = new Tail(50, Color.CYAN);
 		}
 
-		xx = myGame.screenWidth;
-		yy = myGame.screenHeight;
+		xx = Settings.getWidth();
+		yy = Settings.getHeight();
 
 		// this.myGame.epileptic = false;
 		rand = new Random();
@@ -121,10 +122,10 @@ public class GameScreen implements Screen {
 	 */
 	private void paint(float delta) {
 		GL10 g1 = Gdx.graphics.getGL10();
-		if (myGame.epileptic) {
+		if (Settings.getEpileptic()) {
 			Gdx.gl.glClearColor((rand.nextInt() % 200), rand.nextInt() % 200,
 					rand.nextInt() % 200, 1);
-		} else if(myGame.retroGraphics){
+		} else if(Settings.getRetro()){
 			Gdx.gl.glClearColor(0, 0, 0, 1);
 		}else{
 
@@ -211,7 +212,7 @@ public class GameScreen implements Screen {
 
 		}
 
-		if (myGame.debugMode) {
+		if (Settings.getDebug()) {
 			font.setScale(.25f);
 			String out;
 			if (CoreLogic.getLocalShip() != null) {
@@ -312,7 +313,7 @@ public class GameScreen implements Screen {
 		if (!paused || multiplayer) {
 			CoreLogic.update(delta);
 
-			if (myGame.debugMode) {
+			if (Settings.getDebug()) {
 				debug1.update();
 				debug2.update();
 			}
@@ -328,7 +329,7 @@ public class GameScreen implements Screen {
 
 	private void handleInput(float delta) {
 
-		if (myGame.debugMode) {
+		if (Settings.getDebug()) {
 			// Special Debug keys
 			if (Gdx.input.isKeyPressed(Keys.F1)) {
 				double x = ((float) Gdx.input.getX() / (float) Gdx.graphics

@@ -1,5 +1,6 @@
 package com.Broders.Screens;
 
+import com.Broders.Logic.Settings;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.ScoresManager;
 import com.Broders.mygdxgame.SoundManager;
@@ -26,8 +27,8 @@ public class ScoresScreen implements Screen {
 		font = this.myGame.font;
 		font.setScale(.40f);
 
-		xx = myGame.screenWidth;
-		yy = myGame.screenHeight;
+		xx = Settings.getWidth();
+		yy = Settings.getHeight();
 	}
 
 	@Override
@@ -38,7 +39,7 @@ public class ScoresScreen implements Screen {
 		}
 
 		//Make a black background
-		if(myGame.retroGraphics){
+		if(Settings.getRetro()){
 			GL10 g1 = Gdx.graphics.getGL10();
 			Gdx.gl.glClearColor(0, 0, 0, 1);
 			g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -62,7 +63,7 @@ public class ScoresScreen implements Screen {
 
 	public boolean handleInput(float delta) {
 		if (Gdx.input.justTouched()) {
-			SoundManager.get("click").play(myGame.soundVolume * 0.1f);
+			SoundManager.get("click").play(Settings.getSoundVol() * 0.1f);
 			return true;
 		}
 

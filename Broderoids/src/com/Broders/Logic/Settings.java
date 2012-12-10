@@ -24,11 +24,12 @@ public class Settings {
 	private static Preferences prefs;
 	
 	private static String username;
-	private static Color shipColor;
-	private static Color worldColor;
+	private static String shipColor;
+	private static String worldColor;
 	private static int soundVol;
 	private static int musicVol;
-	// TODO: Resolution?
+	private static int width;
+	private static int height;
 	private static boolean debug;
 	private static int difficulty;
 	private static boolean epileptic;
@@ -75,9 +76,10 @@ public class Settings {
 	public static void load() {
 		int bro = (int) (defaultUsernames.length * Math.random());
 		username = prefs.getString("username", defaultUsernames[bro]);
-		// TODO: Load ShipColor
-		// TODO: Load WorldColor
-		// TODO: Load resolution
+		shipColor = prefs.getString("shipColor", "00FF00");
+		worldColor = prefs.getString("worldColor", "44DDEE");
+		width = prefs.getInteger("width", 1024);
+		height = prefs.getInteger("height", 576);
 		soundVol = prefs.getInteger("soundVol", 5);
 		musicVol = prefs.getInteger("musicVol", 5);
 		difficulty = prefs.getInteger("difficulty", 0);
@@ -146,99 +148,56 @@ public class Settings {
 		load();
 	}
 
-	public int getDifficulty() {
+	public static int getDifficulty() {
 		return difficulty;
 	}
 
-	public void setDifficulty(int difficulty) {
+	public static void setDifficulty(int difficulty) {
 		prefs.putInteger("difficulty", difficulty);
 		prefs.flush();
 		load();
 	}
-
-	public void loadShipColor(String value) {
-		value = value.replaceAll("#", "").trim();
-		value = "FF" + value;
-		game.playerColor.set(colorFromHexString(value));
+	
+	public static Color getWorldColor() {
+		return colorFromHexString("FF" + worldColor);
 	}
 	
-	public void loadWorldColor(String value) {
-		value = value.replaceAll("#", "").trim();
-		value = "FF" + value;
-		game.gameColor.set(colorFromHexString(value));
-	}
-		
-	public void loadSoundVolume(String value) {
-		int vol = 0;
-		try {
-			vol = Integer.parseInt(value);
-		} catch (NumberFormatException nfe) {
-			vol = 5;
-		}
-		if (vol > 10) {
-			vol = 10;
-		} else if (vol < 0) {
-			vol = 0;
-		}
-		game.soundVolume = vol;
-		System.out.printf("Loaded volume setting [%d] from config file%n", vol);
-	}
-		
-	public void loadMusicSetting(String value) {
-
-		int vol = 0;
-		try {
-			vol = Integer.parseInt(value);
-		} catch (NumberFormatException nfe) {
-			vol = 5;
-		}
-		if (vol > 10) {
-			vol = 10;
-		} else if (vol < 0) {
-			vol = 0;
-		}
-		game.musicVolume = vol;
-		System.out.printf("Loaded music setting [%d] from config file%n", vol);
+	public static Color getShipColor() {
+		return colorFromHexString("FF" + shipColor);
 	}
 	
-	public void loadResolution(String value) {
-		String[] sizeStrings = value.split("x");
-		int[] res = {
-			Integer.parseInt(sizeStrings[0].trim()),
-			Integer.parseInt(sizeStrings[1].trim())
-		};
-		if (!(game.screenWidth == res[0] && game.screenHeight == res[1])) {
-			game.getScreen().resize(res[0], res[1]);
-			game.screenWidth = res[0];
-			game.screenHeight = res[1];
-			System.out.printf("Set Screen size to %d x %d%n", res[0], res[1]);
-		} else {
-			System.out.printf("Screen size is already set to [%d x %d]," +
-					" leaving alone%n", res[0], res[1]);
-		}
+	public static void setShipColor(String color) {
+		prefs.putString("shipColor", color);
+		prefs.flush();
+		load();
 	}
 	
-	public void loadDebugSetting(String value) {
-		game.debugMode = Boolean.parseBoolean(value) ? true : false;
-		System.out.printf("Loaded debug setting [%s] from config file%n",
-				Boolean.toString(game.debugMode));
+	public static void setWorldColor(String color){
+		prefs.putString("worldColor", color);
+		prefs.flush();
+		load();
 	}
 	
-	public void loadSPDiffSetting(String value) {
-		try {
-			game.difficulty = Integer.parseInt(value);
-		} catch (NumberFormatException nfe) {
-			game.difficulty = 0;
-		}
-		System.out.printf("Loaded SP Difficulty setting [%d] from config" +
-				" file%n", game.difficulty);
+	public static void setWidth(int width) {
+		prefs.putInteger("width", width);
+		prefs.flush();
+		load();
 	}
 	
-	public void loadEpilepticModeSetting(String value) {
-		game.epileptic = Boolean.parseBoolean(value) ? true : false;
-		System.out.printf("Loaded epileptic mode setting [%s] from config file%n",
-				Boolean.toString(game.epileptic));
+	public static void setHeight(int height) {
+		prefs.putInteger("height", height);
+		prefs.flush();
+		load();
 	}
+	
+	public static int getWidth() {
+		return width;
+	}
+	
+	public static int getHeight() {
+		return height;
+	}
+	// Mikes stuff (OLD)
 	
 	public static String swapHex(String hex) {
 		String bgr = hex.substring(2); // Why libgdx???
@@ -256,7 +215,7 @@ public class Settings {
     // @param hex
     //            Must be of the form 0xAARRGGBB
     // @return the generated Color object
-   private Color colorFromHex(long hex)
+   private static Color colorFromHex(long hex)
    {
            float a = (hex & 0xFF000000L) >> 24;
            float r = (hex & 0xFF0000L) >> 16;
@@ -271,7 +230,7 @@ public class Settings {
     // @param s The hex string to create the Color object from
     // @return
    
-   public Color colorFromHexString(String s)
+   public static Color colorFromHexString(String s)
    {               
            if(s.startsWith("0x"))
                    s = s.substring(2);

@@ -1,6 +1,7 @@
 package com.Broders.mygdxgame;
 import java.util.HashMap;
 
+import com.Broders.Logic.Settings;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
@@ -104,7 +105,7 @@ public class SoundManager {
 	}
 	
 	private static void update() {
-		mv = g.musicVolume * 0.1f;
-		sv = g.soundVolume * 0.1f;
+		mv = Settings.getMusicVol() * 0.1f;
+		sv = Settings.getSoundVol() * 0.1f;
 	}
 }

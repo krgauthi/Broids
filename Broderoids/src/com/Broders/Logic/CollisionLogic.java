@@ -127,10 +127,10 @@ public class CollisionLogic implements ContactListener {
 			Ship craft = (Ship) ship;
 
 			//This is how the ship gets damage from asteroids. If you can think of a better way to
-			//calculate it, please tell me, because this is awful. -R
+			//calculate it, please tell me, because this is bloody awful. -R
 			int damages = calculateDamage(ship.getBody(), asteroid.getBody());
-			damages = 0 - (int) Math.round(Math.pow(damages, 0.48) * Math.log10(asteroid.getBody().getMass()*10)/2);
-			craft.getOwner().modHealth(damages);
+			damages = (int) Math.round(Math.pow(damages, 0.48) * Math.log10(asteroid.getBody().getMass()*10)/2);
+			craft.getOwner().takeDamage(damages);
 
 		} else {
 			CoreLogic.removeEntity(ship);

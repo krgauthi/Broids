@@ -76,17 +76,23 @@ public class BaseGame extends Game {
 
 		settings = new Settings(this);
 		
-		Gdx.input.setCatchBackKey(true);
-		
-		Net.init(this);
-		SoundManager.init(this);	
-		TextureManager.init(this);
+		Gdx.input.setCatchBackKey(true);	
 		
 		try {
 			settings.loadSettings();
 		} catch (FileNotFoundException e) {
 			System.out.println("Unable to find settings file, make sure a file " +
 					"named 'broids.cfg' is located in the assets/data folder.");
+			e.printStackTrace();
+		}
+		
+		try {
+			Net.init(this);
+			SoundManager.init(this);
+			TextureManager.init(this);
+			ScoresManager.init(this);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -98,8 +104,11 @@ public class BaseGame extends Game {
 			screens.put("host", new MultiHost(this));
 			screens.put("lobby", new MultiLobby(this));
 		}
-		//screens.put("single", new GameScreen(this, 0, 0, 0, true));
-		//screens.put("multi", new GameScreen(this, 0, 0, 0, true));
+
+		screens.put("single", new GameScreen(this, 0, 0, 0, true));
+		screens.put("multi", new GameScreen(this, 0, 0, 0, true));
+		screens.put("scores", new ScoresScreen(this));
+
 
 		this.setScreen(BaseGame.screens.get("splash"));
 	}

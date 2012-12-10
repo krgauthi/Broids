@@ -203,6 +203,7 @@ public class SettingsScreen implements Screen {
 				game.musicVolume = game.musicVolume == 10 ? 0 : game.musicVolume + 1;
 				SoundManager.setVolume("muzak", SoundManager.getMuzakId(), 1f);
 				System.out.println("Music Option set to " + game.musicVolume);
+				SoundManager.play("click", 0.7f);
 				
 			} else if (x >= .08 && x <= .46 && y >= .32 && y <= .4) {
 				

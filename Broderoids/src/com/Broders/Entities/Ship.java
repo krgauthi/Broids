@@ -85,7 +85,7 @@ public class Ship extends Entity {
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
 		super.setSprite("Ship1");
-		super.getSprite().flip(false, true);
+		//super.getSprite().flip(false, true);
 		super.getSprite().setOrigin((meter * this.getSize()) / 2,(meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
 		super.getSprite().setColor(super.getColor());
@@ -94,8 +94,9 @@ public class Ship extends Entity {
 		this.thrustLast = false;
 		this.smokeInterval = 0;
 		this.shieldRegen = 0;
+		
+		//TextureManager.getSprites("Ship2").flip(false, true);
 
-		TextureManager.getSprites("Ship2").flip(false, true);
 		TextureManager.getSprites("Ship2").setOrigin((meter * this.getSize()) / 2,	(meter * this.getSize()) / 2);
 		TextureManager.getSprites("Ship2").setSize(meter * this.getSize(), meter * this.getSize());
 
@@ -180,21 +181,23 @@ public class Ship extends Entity {
 		posY = screenHeight
 				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
 
-
+		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
+		
 		if(posX > -this.getSize()*8 && posX < (screenWidth+this.getSize()*8) 
 				&& posY > -this.getSize()*8 && posY < (screenHeight+this.getSize()*8)){
 
 			if (this.getThrust()) {
-
+				TextureManager.getSprites("Ship2").setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
 				TextureManager.getSprites("Ship2").setColor(this.getColor());
 				TextureManager.getSprites("Ship2").setPosition(posX, posY);
-				TextureManager.getSprites("Ship2").setRotation((float) super.getAngle());
+				TextureManager.getSprites("Ship2").setRotation((float) super.getAngle()+180f);
 				TextureManager.getSprites("Ship2").draw(sb);
 
 			} else {
+				TextureManager.getSprites("Ship2").setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
 				super.getSprite().setColor(super.getColor());
 				super.getSprite().setPosition(posX, posY);
-				super.getSprite().setRotation((float) super.getAngle() + (float) (Math.PI / 2));
+				super.getSprite().setRotation((float) super.getAngle() + 180);
 				super.getSprite().draw(sb);
 			}
 		}

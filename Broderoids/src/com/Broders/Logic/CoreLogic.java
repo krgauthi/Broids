@@ -1,5 +1,6 @@
 package com.Broders.Logic;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 
 import com.badlogic.gdx.Gdx;
@@ -12,6 +13,7 @@ import com.Broders.Entities.Ship;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.graphics.Color;
+import com.Broders.mygdxgame.ScoresManager;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -57,7 +59,9 @@ public class CoreLogic {
 	private static float invulnFlash;
 	private static boolean flashing;
 
-	private static String saveId;
+	public static LinkedList<String[]> addPlayers;
+	public static LinkedList<String> rmPlayers;
+	public static LinkedList<EntityData> addEntities;
 
 	public static BaseGame getGame() {
 		return myGame;
@@ -106,6 +110,9 @@ public class CoreLogic {
 		world.setContactListener(collisions);
 		players = new HashMap<String, Player>();
 		rmEntities = new LinkedList<Entity>();
+		addPlayers = new LinkedList<String[]>();
+		rmPlayers = new LinkedList<String>();
+		addEntities = new LinkedList<EntityData>();
 		setHost(h);
 
 		respawnTimer = -10f;
@@ -149,18 +156,26 @@ public class CoreLogic {
 
 		viewPortX = (width / 2) - (widthScreen / 2f);
 		viewPortY = (height / 2) - (heightScreen / 2f);
-		
+
 		Player local = new Player("Player", clientId);
+		local.modHealth(100);
+		local.modShield(100);
 		players.put(Integer.toString(local.getId()), local);
-		saveId = local.getShip().getId();
+
+		//saveId = local.getShip().getId();
+		Net.createEntity(local.getShip());
+
 
 		Player comp = new Player("Comp", 1);
 		players.put(Integer.toString(comp.getId()), comp);
 
 		Player temp = new Player("Temp", 0);
 		players.put(Integer.toString(temp.getId()), temp);
-		
-		SoundManager.play("start");
+
+		if (multiplayer) {
+			// This starts up the thread for async networking
+			Net.handleGame();
+		}
 	}
 
 	/**
@@ -181,14 +196,14 @@ public class CoreLogic {
 			SoundManager.play("respawn");
 			respawnSound = true;
 		}
-		
+
 		if(respawnTimer > 0)
 			respawnTimer -= Gdx.graphics.getDeltaTime();
 		else if(respawnTimer > -9f && (local.getLives() > 0 || multiplayer)){
 			respawnTimer = -10f;
 			invincibleTimer = 3f;
 
-			Ship ship = new Ship(saveId, local,
+			Ship ship = new Ship(Integer.toString(clientId), local,
 					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
 
 			local.setShip(ship);
@@ -198,7 +213,7 @@ public class CoreLogic {
 				local.modHealth(100);
 			}
 
-			local.getEntitiesMap().put(saveId, local.getShip());
+			local.getEntitiesMap().put(Integer.toString(clientId), local.getShip());
 			local.getShip().setInvincible(true);
 			local.modBonus(1.0f);
 		}
@@ -207,14 +222,14 @@ public class CoreLogic {
 		if(invincibleTimer > 0) {
 			invincibleTimer -= Gdx.graphics.getDeltaTime();
 			invulnFlash += Gdx.graphics.getDeltaTime();
-			
+
 			if (invulnFlash >= 0.07f) {
 				if (!flashing) {
 					getLocal().getShip().setColor(Color.CLEAR);
 				} else {
 					getLocal().getShip().setColor();
 				}
-				
+
 				flashing = !flashing;
 				invulnFlash = 0;
 			}	
@@ -228,7 +243,7 @@ public class CoreLogic {
 		int mod = 0;
 
 		// asteroids
-		
+
 		if (getAsteroids().size() <= 0) {
 			if (delay < 5) {
 				display = true;
@@ -242,7 +257,7 @@ public class CoreLogic {
 						mod = 1;
 					System.out.println("your made it level next");
 					round++;
-					for (int i = 0; i < (myGame.difficulty + 1) * mod; i++) {
+					for (int i = 0; i < (myGame.difficulty*4 + 1) * mod; i++) {
 						while (spawnBroid() == -1); // lols    wtf? -mike
 					}
 				}
@@ -331,7 +346,11 @@ public class CoreLogic {
 			}
 
 		}
+		createPlayerQueue();
+		createEntityQueue();
 		cleanEntities();
+		removePlayerQueue();
+
 		if(local != null && local.getShip() != null){
 			local.getShip().setThrust(false);
 			local.getShip().setShooting(false);
@@ -353,12 +372,12 @@ public class CoreLogic {
 		// TODO/NOTE: Should this use S or local.getShip()?
 		//Depends upon local or host player I think.
 		for (Ship S : getShips()) {
-			if (local.getShip().getX() - 10 <= x
-					&& x <= local.getShip().getX() + 10) {
+			if (S.getX() - 10 <= x
+					&& x <= S.getX() + 10) {
 				return -1; // lols Lazy logic TODO make better lazy logic
 			}
-			if (local.getShip().getY() - 8 <= x
-					&& x <= local.getShip().getY() + 8) {
+			if (S.getY() - 8 <= x
+					&& x <= S.getY() + 8) {
 				return -1;
 			}
 		}
@@ -612,14 +631,28 @@ public class CoreLogic {
 					getSelf().modLives(-1);
 					local.setShip(null);
 					respawnTimer = 3.0f;
+					if(getSelf().getLives() == 0){
+						ScoresManager.addScore(myGame.playerName, CoreLogic.getLocal().getScore());
+						try {
+							ScoresManager.writeScores();
+						} catch (FileNotFoundException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
 					respawnSound = false;
+				}
+
+				else{
+					local.setShip(null);
+					respawnTimer = 3.0f;
+					respawnSound = false;
+
 				}
 			}
 
-			if (myGame.multiplayer && host && !(i instanceof Dust)) {
+			else if (myGame.multiplayer && host && !(i instanceof Dust)) {
 				Net.removeEntity(i);
-				local.setShip(null);
-				respawnTimer = 3.0f;
 			}
 
 			i.getOwner().getEntitiesMap().remove(i.getId());
@@ -680,17 +713,63 @@ public class CoreLogic {
 	}
 
 	public static void createPlayer(int id, String name, int score) {
-		Player playr = new Player(name, id);
-		playr.setScore(score);
-		players.put(Integer.toString(id), playr);
+		String[] data = new String[3];
+		data[0] = Integer.toString(id);
+		data[1] = name;
+		data[2] = Integer.toString(score);
+		addPlayers.push(data);
+	}
+
+	public static void createPlayerQueue() {
+		while (!addPlayers.isEmpty()) {
+			String[] data = addPlayers.pop();
+			Player playr = new Player(data[1], Integer.parseInt(data[0]));
+			playr.setScore(Integer.parseInt(data[2]));
+			players.put(Integer.toString(Integer.parseInt(data[0])), playr);
+		}
 	}
 
 	public static void removePlayer(String id) {
-		players.remove(id);
+		rmPlayers.push(id);
+	}
+
+	public static void removePlayerQueue() {
+		while (!rmPlayers.isEmpty()) {
+			String id = rmPlayers.pop();
+			players.remove(id);
+		}
 	}
 
 	public static Player findPlayer(String id) {
 		return players.get(id);
+	}
+
+	public static void createEntity(EntityData ent) {
+		addEntities.push(ent);
+	}
+
+	public static void createEntityQueue() {
+		while (!addEntities.isEmpty()) {
+			EntityData entData = addEntities.pop();
+			String[] idParts = entData.id.split("-");
+			if (entData.type == Net.ENTITY_SHIP) {
+				Player p = CoreLogic.findPlayer(idParts[0]);
+				Ship ent = new Ship(entData.id, p, entData.x, entData.y);
+				p.setShip(ent);
+				ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
+				p.createEntity(ent, idParts[1]);
+			} else if (entData.type == Net.ENTITY_ASTEROID) {
+				Player p = CoreLogic.findPlayer(idParts[0]);
+				Entity ent = new Asteroid(entData.extra, entData.id, p, entData.x, entData.y);
+				ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
+				p.createEntity(ent, idParts[1]);
+			} else if (entData.type == Net.ENTITY_BULLET) {
+				Player p = CoreLogic.findPlayer(idParts[0]);
+				Entity ent = new Bullet(entData.id, p, entData.a, entData.x, entData.y);
+				ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
+				p.createEntity(ent, idParts[1]);
+			}
+		}
 	}
 
 	//public static void pause() {

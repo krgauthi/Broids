@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -29,6 +30,8 @@ public class MainMenu implements Screen{
 	private Sprite singleSprite;
 	private Sprite multiSprite;
 	private Sprite settingsSprite;
+	
+	private BitmapFont font;
 
 	private float buff;
 
@@ -40,6 +43,9 @@ public class MainMenu implements Screen{
 	public MainMenu(BaseGame g){
 
 		this.myGame = g;
+
+		font = this.myGame.font;
+		font.setScale(0.97f, 0.75f);
 
 		xx = myGame.screenWidth;
 		yy = myGame.screenHeight;
@@ -81,6 +87,8 @@ public class MainMenu implements Screen{
 			multiSprite.draw(spriteBatch);
 		}
 		settingsSprite.draw(spriteBatch);
+		font.setScale(0.97f, 0.75f);
+		font.draw(spriteBatch, "High Scores", xx * .56f, yy * .36f);
 		spriteBatch.end();
 
 	}
@@ -105,6 +113,7 @@ public class MainMenu implements Screen{
 				if(y >= .20 && y <= .28){
 					// Single Player
 					SoundManager.play("click", 0.7f);
+					SoundManager.play("start");
 					myGame.setScreen(new GameScreen(this.myGame, 0, 0, 0, true));
 				}else if(myGame.isConnected() && y >= .32 && y <= .43){
 					// Multiplayer
@@ -114,6 +123,10 @@ public class MainMenu implements Screen{
 					// Settings
 					SoundManager.play("click", 0.7f);
 					myGame.setScreen(BaseGame.screens.get("settings"));
+				}else if(y >= .65 && y <= .77){
+					// Settings
+					SoundManager.play("click", 0.7f);
+					myGame.setScreen(BaseGame.screens.get("scores"));
 				}
 			}	
 		}
@@ -148,6 +161,7 @@ public class MainMenu implements Screen{
 	 */
 	@Override
 	public void show() {
+		font.setScale(0.97f, 0.75f);
 		buff = 0;
 
 		myGame.multiplayer = false;

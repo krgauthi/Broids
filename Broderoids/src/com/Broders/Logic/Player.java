@@ -42,9 +42,15 @@ public class Player {
 		if (type.equals("Player")) {
 			playerColor = getGame().playerColor;
 
+			this.modHealth(100);
+			this.modShield(100);
+			
 			playerShip = new Ship(this.nextId(), this,
 					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
 			entities.put(playerShip.getId(), playerShip);
+			if (CoreLogic.getGame().multiplayer) {
+				Net.createEntity(playerShip);
+			}
 
 			score = 0;
 
@@ -103,7 +109,9 @@ public class Player {
 		if (health > 100)
 			health = 100;
 		if (health <= 0) {
-			CoreLogic.removeEntity(playerShip);
+			if (this.playerShip != null) {
+				CoreLogic.removeEntity(playerShip);
+			}
 			health = 0;
 		}
 	}

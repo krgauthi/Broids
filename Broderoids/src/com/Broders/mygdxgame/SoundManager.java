@@ -44,28 +44,32 @@ public class SoundManager {
 	
 	public static long play(String key) {
 		update();
-		if (key.equals("muzak"))
-			return sounds.get(key).play(mv);
-		else
+		if (key.equals("muzak")) {
+			muzakId = sounds.get(key).play(mv);
+			return muzakId;
+		} else
 			return sounds.get(key).play(sv);
 	}
 	
 	public static long play(String key, float volume) {
 		update();
-		if (key.equals("muzak"))
-			return sounds.get(key).play(mv * volume);
-		else
+		if (key.equals("muzak")) {
+			muzakId = sounds.get(key).play(mv * volume);
+			return muzakId;
+		} else
 			return sounds.get(key).play(sv * volume);
 	}
 	
 	public static long play(String key, float volume, float pitch) {
+		update();
 		Sound clip = sounds.get(key);
 		long id = 0;
 		update();
 		
-		if (key.equals("muzak"))
-			id = sounds.get(key).play(mv * volume);
-		else
+		if (key.equals("muzak")) {
+			muzakId = sounds.get(key).play(mv * volume);
+			return muzakId;
+		} else
 			id = sounds.get(key).play(sv * volume);
 
 		clip.setPitch(id, pitch);
@@ -77,7 +81,11 @@ public class SoundManager {
 	}
 	
 	public static void setVolume(String key, long id, float volume) {
-		sounds.get(key).setVolume(id, volume);
+		update();
+		if (key.equals("muzak")) {
+			sounds.get(key).setVolume(id, volume * mv);
+		} else
+			sounds.get(key).setVolume(id, volume * sv);
 	}
 	
 	public static void dispose() {

@@ -243,7 +243,7 @@ public class Ship extends Entity {
 
 	@Override
 	public void destroy() {
-		if(CoreLogic.multiplayer){
+		if(CoreLogic.multiplayer){ 
 			this.getOwner().modScore(-500);
 			this.getOwner().modBonus(1.0f);
 		}

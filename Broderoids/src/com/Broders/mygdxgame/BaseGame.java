@@ -45,7 +45,7 @@ public class BaseGame extends Game {
 	public int gameSize; // multi only
 	public boolean connected;
 
-	public boolean retroGraphics; 	//TODO Ref in Settings
+	public boolean retroGraphics;
 	
 	/*
 	 * (non-Javadoc)
@@ -73,13 +73,13 @@ public class BaseGame extends Game {
 				+ "smallfonts.fnt"), Gdx.files.internal(Settings.data_path
 				+ "smallfonts_0.png"), false);
 
+		settings = new Settings(this);
+		
 		Gdx.input.setCatchBackKey(true);
 		
 		Net.init(this);
 		
-		SoundManager.init();
-		
-		settings = new Settings(this);	
+		SoundManager.init();	
 		
 		try {
 			settings.loadSettings();

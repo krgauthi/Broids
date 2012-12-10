@@ -44,6 +44,7 @@ public class Settings {
 			
 			// checks option to see which option is being read
 			// and then sets that option to the value.
+			System.out.println(option + " : " + value);
 			checkSettings(option, value);
 		}
 	}
@@ -51,23 +52,20 @@ public class Settings {
 	private void checkSettings(String option, String value) {
 		if ( option.equals("username")) {
 			loadUsername(value);
-		} else if (option.equals("ship color")) {
+		} else if (option.equals("shipcolor")) {
+			System.out.println("shipcolor got");
 			loadShipColor(value);
-		} else if (option.equals("world color")) {
+		} else if (option.equals("worldcolor")) {
 			loadWorldColor(value);		
-		} else if (option.equals("background")) {
-			loadBackgroundSetting(value);
-		} else if (option.equals("volume")) {
-			loadVolumeSetting(value);
-		} else if (option.equals("sounds")) {
-			loadSoundSetting(value);
-		} else if (option.equals("music")) {
+		} else if (option.equals("soundvolume")) {
+			loadSoundVolume(value);
+		} else if (option.equals("musicvolume")) {
 			loadMusicSetting(value);
 		} else if (option.equals("resolution")) {
 			loadResolution(value);
 		} else if (option.equals("debug")) {
 			loadDebugSetting(value);
-		} else if (option.equals("sp difficulty")) {
+		} else if (option.equals("spdifficulty")) {
 			loadSPDiffSetting(value);
 		} else if (option.equals("epileptic")) {
 			loadEpilepticModeSetting(value);
@@ -94,33 +92,40 @@ public class Settings {
 		value = "FF" + value;
 		game.gameColor.set(colorFromHexString(value));
 	}
-	
-	// still need to figure out what we're doing for this, if anything
-    // maybe density of stars, no stars, etc..
-	public void loadBackgroundSetting(String value) {
-		System.out.printf("Loaded background setting [%s] from config file%n", 
-				Boolean.toString(Boolean.parseBoolean(value)));
-	}
-	
-	public void loadVolumeSetting(String value) {
-		if (value.equals("false")) {
-			value = "0";
-		} else if (value.equals("true")) {
-			value = "100";
+		
+	public void loadSoundVolume(String value) {
+		System.out.println("load sound volume please");
+		int vol = 0;
+		try {
+			vol = Integer.parseInt(value);
+		} catch (NumberFormatException nfe) {
+			vol = 5;
 		}
-		int vol = Integer.parseInt(value);
+		if (vol > 10) {
+			vol = 10;
+		} else if (vol < 0) {
+			vol = 0;
+		}
+		game.soundVolume = vol;
 		System.out.printf("Loaded volume setting [%d] from config file%n", vol);
 	}
-	
-	// perhaps different sound packs?
-	public void loadSoundSetting(String value) {
-		System.out.printf("Loaded sound setting [%s] from config file%n", 
-				Boolean.toString(Boolean.parseBoolean(value)));
-	}
-	
+		
 	public void loadMusicSetting(String value) {
-		System.out.printf("Loaded music setting [%s] from config file%n", 
-				Boolean.toString(Boolean.parseBoolean(value)));
+		System.out.println("load music volume please");
+
+		int vol = 0;
+		try {
+			vol = Integer.parseInt(value);
+		} catch (NumberFormatException nfe) {
+			vol = 5;
+		}
+		if (vol > 10) {
+			vol = 10;
+		} else if (vol < 0) {
+			vol = 0;
+		}
+		game.musicVolume = vol;
+		System.out.printf("Loaded music setting [%d] from config file%n", vol);
 	}
 	
 	public void loadResolution(String value) {

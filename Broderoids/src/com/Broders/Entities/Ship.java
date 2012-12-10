@@ -5,8 +5,10 @@ import com.Broders.Logic.Player;
 import com.Broders.Logic.Settings;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
+import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -82,7 +84,7 @@ public class Ship extends Entity {
 
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
-		super.setSprite(Settings.data_path + "ship1.png");
+		super.setSprite("Ship1");
 		super.getSprite().flip(false, true);
 		super.getSprite().setOrigin((meter * this.getSize()) / 2,(meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
@@ -93,12 +95,11 @@ public class Ship extends Entity {
 		this.smokeInterval = 0;
 		this.shieldRegen = 0;
 
-		Texture tempTexture = new Texture(Gdx.files.internal(Settings.data_path	+ "ship2.png"));
-		this.sprite = new Sprite(tempTexture, 1024, 1024);
-		this.sprite.flip(false, true);
-		this.sprite.setOrigin((meter * this.getSize()) / 2,	(meter * this.getSize()) / 2);
-		this.sprite.setSize(meter * this.getSize(), meter * this.getSize());
-		this.sprite.setColor(this.getColor());
+		
+		
+		TextureManager.getSprites("Ship2").flip(false, true);
+		TextureManager.getSprites("Ship2").setOrigin((meter * this.getSize()) / 2,	(meter * this.getSize()) / 2);
+		TextureManager.getSprites("Ship2").setSize(meter * this.getSize(), meter * this.getSize());
 
 		//Set type data
 		super.getBody().setUserData(this);
@@ -188,15 +189,16 @@ public class Ship extends Entity {
 				&& posY > -this.getSize()*8 && posY < (screenHeight+this.getSize()*8)){
 
 			if (this.getThrust()) {
-				this.sprite.setPosition(posX, posY);
-				this.sprite.setRotation((float) super.getAngle());
-				this.sprite.setColor(super.getColor());
-				this.sprite.draw(sb);
+
+				TextureManager.getSprites("Ship2").setColor(this.getColor());
+				TextureManager.getSprites("Ship2").setPosition(posX, posY);
+				TextureManager.getSprites("Ship2").setRotation((float) super.getAngle());
+				TextureManager.getSprites("Ship2").draw(sb);
+
 			} else {
-				super.getSprite().setPosition(posX, posY);
-				super.getSprite().setRotation(
-						(float) super.getAngle() + (float) (Math.PI / 2));
 				super.getSprite().setColor(super.getColor());
+				super.getSprite().setPosition(posX, posY);
+				super.getSprite().setRotation((float) super.getAngle() + (float) (Math.PI / 2));
 				super.getSprite().draw(sb);
 			}
 		}
@@ -223,7 +225,15 @@ public class Ship extends Entity {
 
 			if (smokeInterval >= smoke) {
 				float dir = (float) ((super.getAngle() + 90) + (Math.random() * 30 - 15));
-				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), dir , this.getX(), this.getY(), 5);
+				double fire = Math.random();
+				Color color = new Color(Color.GRAY);
+				if (fire <= 0.2)
+					color.set(Color.YELLOW);
+				if (fire > 0.15 && fire < 0.3)
+					color.set(Color.RED);
+				
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), dir ,
+						this.getX(), this.getY(), 5, color);
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 
 				smokeInterval = 0;
@@ -241,7 +251,8 @@ public class Ship extends Entity {
 		for(int i = 0; i < temp;i++){
 			temp = 360/temp;
 			
-			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i) , this.getX(), this.getY(), 30);
+			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), 
+					(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 30, super.getColor());
 			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 
 			setThrust(false);

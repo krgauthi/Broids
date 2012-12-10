@@ -24,7 +24,8 @@ public class SoundManager {
 				{"zoom", "data/Thrust.mp3"},
 				{"click", "data/menuShift.mp3"},
 				{"respawn", "data/ShipRespawn.mp3"},
-				{"start", "data/RoundStart.wav"}
+				{"start", "data/RoundStart.wav"},
+				{"error", "data/error.wav"}
 		};
 		
 		for (String[] noise : defaultSounds) {

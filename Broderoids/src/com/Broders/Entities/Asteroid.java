@@ -33,7 +33,9 @@ public class Asteroid extends Entity {
 		super(id, owner);
 
 		super.setColor();
-		this.sprite = new Sprite(TextureManager.getTexture("broid"));
+
+		super.setSprite("Broid");
+
 
 		this.game = owner.getGame();
 		FixtureDef fixDef = new FixtureDef();
@@ -102,7 +104,8 @@ public class Asteroid extends Entity {
 			for(int i = 0; i < temp;i++){
 				temp = 360/temp;
 				
-				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 25);
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), 
+						(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 25, getColor());
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 				
 			}
@@ -160,7 +163,8 @@ public class Asteroid extends Entity {
 			for(int i = 0; i < temp;i++){
 				temp = 360/temp;
 
-				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 20);
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(),
+						(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 20, getColor());
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 			}
 			this.getX();
@@ -215,7 +219,8 @@ public class Asteroid extends Entity {
 			for(int i = 0; i < temp;i++){
 				temp = 360/temp;
 
-				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 15);
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(),
+						(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 15, getColor());
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 			}
 		}

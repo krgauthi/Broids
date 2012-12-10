@@ -30,7 +30,7 @@ public class Bullet extends Entity {
 		super.setSize(6f);
 		super.setColor();
 
-		super.setSprite(Settings.data_path + "bullet.png");
+		super.setSprite("bullet");
 		super.getSprite().setOrigin((meter * this.getSize()) / 2,
 				(meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(),

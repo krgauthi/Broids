@@ -89,6 +89,12 @@ public class Player {
 
 	public void modShield(int s) {
 		shield += s;
+		
+		if (shield > 100)
+			shield = 100;
+		if (shield <= 0) {
+			shield = 0;
+		}
 	}
 
 	public void modHealth(int s) {
@@ -145,5 +151,13 @@ public class Player {
 
 	public void createEntity(Entity ent, String id) {
 		this.entities.put(id, ent);
+	}
+	
+	public void takeDamage(int damage) {
+		int hit = shield - damage;
+		if (hit < 0) {
+			modHealth(hit);
+		}
+		modShield(0 - damage);
 	}
 }

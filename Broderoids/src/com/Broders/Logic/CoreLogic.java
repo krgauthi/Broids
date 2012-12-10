@@ -177,7 +177,7 @@ public class CoreLogic {
 			if (multiplayer) {
 				Net.createEntity(ship);
 				local.modHealth(100);
-				
+				local.modHealth(100);
 			}
 
 			local.getEntitiesMap().put(saveId, local.getShip());

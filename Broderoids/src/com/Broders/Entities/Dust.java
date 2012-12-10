@@ -15,7 +15,7 @@ public class Dust extends Entity{
 	private float age;
 	private static float deathTime = 0.3f;
 	
-	public Dust(String id, Player owner, float dir, float x, float y, float vel) {
+	public Dust(String id, Player owner, float dir, float x, float y, float vel, Color color) {
 
 		super(id, owner);
 
@@ -30,9 +30,8 @@ public class Dust extends Entity{
 				(meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(),
 				meter * this.getSize());
-		//super.getSprite().setColor(super.getColor());
 		//Trying to add a bit of variety to the color scheme.
-		super.getSprite().setColor(Color.GRAY);
+		super.setColor(color);
 
 		//BodyDef
 		BodyDef bodDef = new BodyDef();

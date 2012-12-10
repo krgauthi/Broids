@@ -9,11 +9,13 @@ import com.Broders.Logic.Net;
 import com.Broders.Logic.Pos;
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
+import com.Broders.mygdxgame.SoundManager;
 import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.TextInputListener;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
@@ -209,32 +211,40 @@ public class MultiLobby implements Screen {
 
 				// join
 				if (x >= .425 && x <= .655) {
-					String[] name = this.games.get(selectedGame + curPage * 5);
+					if (selectedGame >= 0 && selectedGame < gameCount) {
+						
+						String[] name = this.games.get(selectedGame + curPage * 5);
 
-					if (Boolean.parseBoolean(name[1])) {
-						// Enter password					
-						Gdx.input.getTextInput(new TextInputListener() {
-							@Override
-							public void input (String text) {
-								gamePassword = text;
-							}
-							@Override
-							public void canceled () {}
-						}, "Password for game:", "");	
+						if (Boolean.parseBoolean(name[1])) {
+							// Enter password					
+							Gdx.input.getTextInput(new TextInputListener() {
+								@Override
+								public void input (String text) {
+									gamePassword = text;
+								}
+								@Override
+								public void canceled () {}
+							}, "Password for game:", "");	
+						} else {
+							gamePassword = "";
+						}
+
+						System.out.println("Joining Game with password " + gamePassword);
+						Screen temp = Net.joinGame(name[0], gamePassword);
+
+						if (temp != null) {
+							myGame.setScreen(temp);
+							// TODO: Dispose of this screen
+						} else {
+							System.out.println("Shit broke yo");
+						}
+						//host
 					} else {
-						gamePassword = "";
+						Sound error = SoundManager.get("error");
+						long Id = error.play(myGame.soundVolume * 0.1f);
+						error.setPitch(Id, (float) (1.5f));
 					}
 
-					System.out.println("Joining Game with password " + gamePassword);
-					Screen temp = Net.joinGame(name[0], gamePassword);
-
-					if (temp != null) {
-						myGame.setScreen(temp);
-						// TODO: Dispose of this screen
-					} else {
-						System.out.println("Shit broke yo");
-					}
-					//host
 				} else if (x >= .174 && x <= .404) {
 					myGame.setScreen(BaseGame.screens.get("host"));
 					//refresh
@@ -290,28 +300,35 @@ public class MultiLobby implements Screen {
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.ENTER)) {
-			String[] name = this.games.get(selectedGame + curPage * 5);
+			if (selectedGame >= 0 && selectedGame < gameCount) {
+				
+				String[] name = this.games.get(selectedGame + curPage * 5);
 
-			if (Boolean.parseBoolean(name[1])) {
-				// Enter password					
-				Gdx.input.getTextInput(new TextInputListener() {
-					@Override
-					public void input (String text) {
-						gamePassword = text;
-					}
-					@Override
-					public void canceled () {}
-				}, "Password for game:", "");	
-			}
+				if (Boolean.parseBoolean(name[1])) {
+					// Enter password					
+					Gdx.input.getTextInput(new TextInputListener() {
+						@Override
+						public void input (String text) {
+							gamePassword = text;
+						}
+						@Override
+						public void canceled () {}
+					}, "Password for game:", "");	
+				}
 
-			System.out.println("Joining Game with password " + gamePassword);
-			Screen temp = Net.joinGame(name[0], gamePassword);
+				System.out.println("Joining Game with password " + gamePassword);
+				Screen temp = Net.joinGame(name[0], gamePassword);
 
-			if (temp != null) {
-				myGame.setScreen(temp);
-				// TODO: Dispose of this screen
+				if (temp != null) {
+					myGame.setScreen(temp);
+					// TODO: Dispose of this screen
+				} else {
+					System.out.println("Shit broke yo");
+				}
 			} else {
-				System.out.println("Shit broke yo");
+				Sound error = SoundManager.get("error");
+				long Id = error.play(myGame.soundVolume * 0.1f);
+				error.setPitch(Id, (float) (1.5f));
 			}
 		}
 

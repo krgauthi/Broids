@@ -95,15 +95,15 @@ public class MainMenu implements Screen{
 				// single player game X 650-850 Y 180 - 230
 				if(y >= .20 && y <= .28){
 					// Single Player
-					SoundManager.get("click").play(0.05f, 0.8f, 0);
+					SoundManager.get("click").play(myGame.soundVolume * 0.1f);
 					myGame.setScreen(BaseGame.screens.get("single"));
 				}else if(myGame.isConnected() && y >= .32 && y <= .43){
 					// Multiplayer
-					SoundManager.get("click").play(0.05f, 0.8f, 0);
+					SoundManager.get("click").play(myGame.soundVolume * 0.1f);
 					myGame.setScreen(BaseGame.screens.get("lobby"));
 				}else if(y >= .48 && y <= .60){
 					// Settings
-					SoundManager.get("click").play(0.05f, 0.8f, 0);
+					SoundManager.get("click").play(myGame.soundVolume * 0.1f);
 					myGame.setScreen(BaseGame.screens.get("settings"));
 				}
 			}	
@@ -112,7 +112,7 @@ public class MainMenu implements Screen{
 		if(Gdx.input.isKeyPressed(Keys.F1)){
 			double x = ((float)Gdx.input.getX()/(float)Gdx.graphics.getWidth());
 			double y = ((float)Gdx.input.getY()/(float)Gdx.graphics.getHeight());
-			System.out.println("Mouse Pos: "+x+" "+y);
+			System.out.println("Mouse Pos: " + x + " " + y);
 		}
 
 		//backout Fix the quick exit from gamescreen

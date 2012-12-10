@@ -1,10 +1,7 @@
 package com.Broders.Logic;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-
 import com.Broders.mygdxgame.BaseGame;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 
 /* Settings Object class to be used as a modular way to
@@ -22,71 +19,143 @@ import com.badlogic.gdx.graphics.Color;
  */
 public class Settings {
 
-	BaseGame game;
+	private static BaseGame game;
 	public static String data_path = "data/";
+	private static Preferences prefs;
 	
-	public Settings(BaseGame game) {
-		this.game = game;
+	private static String username;
+	private static Color shipColor;
+	private static Color worldColor;
+	private static int soundVol;
+	private static int musicVol;
+	// TODO: Resolution?
+	private static boolean debug;
+	private static int difficulty;
+	private static boolean epileptic;
+	private static boolean retro;
+	
+	private static String[] defaultUsernames = {
+		"Bro",
+		"Broski",
+		"Bromo",
+		"Brotien",
+		"Brodeo",
+		"Brohan",
+		"Brochill",
+		"Brosicle",
+		"Broseph",
+		"Brocean",
+		"Brotastic",
+		"Brofessor",
+		"Han Brolo",
+		"Brosideon",
+		"Broba Fett",
+		"Brohemian",
+		"Brotato Chip",
+		"Brohammad",
+		"Brohan Solo",
+		"Bro Montana",
+		"Bromosexual",
+		"Bromosapien",
+		"Brotien Shake",
+		"Brorontosaurus",
+		"Broseph Stalin",
+		"Abroham Lincoln",
+		"Brorack Brobama",
+		"Broseph Goebbels",
+		"Brorannasarus Rex",
+		"Edgar Allen Bro",
+	};
+	
+	public static void init(BaseGame mygame) {
+		game = mygame;
+		prefs = Gdx.app.getPreferences("broids-prefs");
 	}
 	
-	// Main method for loading settings from settings file
-	// Broken up into individual methods for maintainability
-	public void loadSettings() throws FileNotFoundException {
-		Scanner s = new Scanner(new File("config/broids.cfg")); //@Mike, Fix yer damn plumbing.
-		while (s.hasNextLine()) {
-			String line = s.nextLine();
-			String[] tokens = line.split(":");
-			String option = tokens[0].toLowerCase().trim();
-			String value = null;
-			if (tokens.length > 1) {
-				value = tokens[1].toLowerCase().trim();
-			}
-			
-			// checks option to see which option is being read
-			// and then sets that option to the value.
-			checkSettings(option, value);
-		}
-	}
-	
-	private void checkSettings(String option, String value) {
-		if ( option.equals("username")) {
-			loadUsername(value);
-		} else if (option.equals("shipcolor")) {
-			loadShipColor(value);
-		} else if (option.equals("worldcolor")) {
-			loadWorldColor(value);		
-		} else if (option.equals("soundvolume")) {
-			loadSoundVolume(value);
-		} else if (option.equals("musicvolume")) {
-			loadMusicSetting(value);
-		} else if (option.equals("resolution")) {
-			loadResolution(value);
-		} else if (option.equals("debug")) {
-			loadDebugSetting(value);
-		} else if (option.equals("spdifficulty")) {
-			loadSPDiffSetting(value);
-		} else if (option.equals("epileptic")) {
-			loadEpilepticModeSetting(value);
-		} else if (option.equals("retro")) {
-			loadRetroSetting(value);
-		}
+	public static void load() {
+		int bro = (int) (defaultUsernames.length * Math.random());
+		username = prefs.getString("username", defaultUsernames[bro]);
+		// TODO: Load ShipColor
+		// TODO: Load WorldColor
+		// TODO: Load resolution
+		soundVol = prefs.getInteger("soundVol", 5);
+		musicVol = prefs.getInteger("musicVol", 5);
+		difficulty = prefs.getInteger("difficulty", 0);
+		debug = prefs.getBoolean("debug", false);
+		epileptic = prefs.getBoolean("epileptic", false);
+		retro = prefs.getBoolean("retro", false);
 	}
 
-	private void loadRetroSetting(String value) {
-		game.retroGraphics = Boolean.parseBoolean(value);
-		System.out.printf("Loaded retro setting [%s] from config file%n",
-				Boolean.toString(game.retroGraphics));
+	public static boolean getRetro() {
+		return retro;
 	}
 
-	public void loadUsername(String value) {
-		System.out.printf("Loaded username [%s] from config file%n", value);
-		if (value == "null" || value.length() > 28){
-			game.playerName = "New Bro";
-		} else {
-			game.playerName = value;
-		}
+	public static void setRetro(boolean retro) {
+		prefs.putBoolean("retro", retro);
+		prefs.flush();
+		load();
 	}
 	
+	public static boolean getDebug() {
+		return debug;
+	}
+
+	public static void setDebug(boolean debug) {
+		prefs.putBoolean("debug", debug);
+		prefs.flush();
+		load();
+	}
+
+	public static String getUsername() {
+		return username;
+	}
+
+	public static void setUsername(String username) {
+		prefs.putString("username", username);
+		prefs.flush();
+		load();
+	}
+
+	public static boolean getEpileptic() {
+		return epileptic;
+	}
+
+	public static void setEpileptic(boolean epileptic) {
+		prefs.putBoolean("epileptic", epileptic);
+		prefs.flush();
+		load();
+	}
+
+	public static int getSoundVol() {
+		return soundVol;
+	}
+
+	public static void setSoundVol(int soundVol) {
+		prefs.putInteger("soundVol", soundVol);
+		prefs.flush();
+		load();
+	}
+
+	public static int getMusicVol() {
+		return musicVol;
+	}
+
+	public static void setMusicVol(int musicVol) {
+		prefs.putInteger("musicVol", musicVol);
+		prefs.flush();
+		load();
+	}
+
+	public int getDifficulty() {
+		return difficulty;
+	}
+
+	public void setDifficulty(int difficulty) {
+		prefs.putInteger("difficulty", difficulty);
+		prefs.flush();
+		load();
+	}
+
 	public void loadShipColor(String value) {
 		value = value.replaceAll("#", "").trim();
 		value = "FF" + value;

@@ -183,7 +183,7 @@ public class MultiLobby implements Screen {
 																				// players
 			font.draw(spriteBatch, out, xx * .7f, yy * (.73f - (.16f * i)));
 			String priv = "";
-			if (temp[1].equals("false")) {
+			if (temp[1].equals("true")) {
 				priv = " (p)";
 			}
 

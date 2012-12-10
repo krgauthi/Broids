@@ -20,6 +20,7 @@ public class TextureManager {
 		textures = new HashMap<String, Texture>();
 		sprites = new HashMap<String, Sprite>();
 
+
 		if(myGame.retroGraphics){
 			String[][] defaultTextures = {
 					//Hud
@@ -86,6 +87,7 @@ public class TextureManager {
 				loadTexture(tex[0], tex[1]);
 				loadSprite(tex[0]);
 			}
+
 
 		}
 

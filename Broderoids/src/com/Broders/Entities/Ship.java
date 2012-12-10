@@ -128,7 +128,7 @@ public class Ship extends Entity {
 		
 		if (thrust) {
 			shieldRegen += Gdx.graphics.getDeltaTime();
-			System.out.println(shieldRegen + "    " + Gdx.graphics.getDeltaTime());
+			//System.out.println(shieldRegen + "    " + Gdx.graphics.getDeltaTime());
 		}
 		
 		if (shieldRegen >= 1.0f) {

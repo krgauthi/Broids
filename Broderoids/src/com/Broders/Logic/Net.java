@@ -165,15 +165,10 @@ public class Net extends Thread {
 
 		// TODO: Useful errors
 		if (c == FRAME_ERROR) {
-			System.out.println("frame error");
 			return null;
 		} else if (c != FRAME_LOBBY_JOIN) {
-			System.out.println("c: " + c);
-			System.out.println("'C != FRAME_LOBBY_JOIN' error");
 			return null;
 		}
-
-		System.out.println(inner);
 		
 		JsonObject innerInner = inner.get("d").getAsJsonObject();
 		float x = innerInner.get("x").getAsFloat();
@@ -381,7 +376,7 @@ public class Net extends Thread {
 					int id = o.get("i").getAsInt();
 					String name = o.get("n").getAsString();
 					int score = o.get("s").getAsInt();
-	
+
 					CoreLogic.createPlayer(id, name, score);
 				} else if (frameType == FRAME_GAME_PLAYER_MODIFY) {
 					JsonObject o = obj.get("d").getAsJsonObject();

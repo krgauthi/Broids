@@ -43,7 +43,7 @@ public abstract class Entity {
 	public Entity(String id, Player owner) {
 		this.id = id;
 		this.owner = owner;
-		System.out.println(id);
+		//System.out.println(id);
 	}
 
 	public String getId() {

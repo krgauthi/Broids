@@ -18,6 +18,8 @@ Broderoids-desktop/*.log
 # Broids config file
 Broderoids-android/config/broids.cfg
 Broderoids-desktop/config/broids.cfg
+Broderoids-android/config/HS.bro
+Broderoids-desktop/config/HS.bro
 
 # Ant crap
 Broderoids-android/libs/gson-2.2.2.jar

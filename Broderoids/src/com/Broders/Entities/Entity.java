@@ -27,6 +27,7 @@ public abstract class Entity {
 	protected Body body;
 	private String spriteID;
 
+
 	// Extras
 	private float size;
 	private Color color;

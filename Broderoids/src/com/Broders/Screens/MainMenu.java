@@ -105,7 +105,7 @@ public class MainMenu implements Screen{
 				if(y >= .20 && y <= .28){
 					// Single Player
 					SoundManager.get("click").play(myGame.soundVolume * 0.1f);
-					myGame.setScreen(BaseGame.screens.get("single"));
+					myGame.setScreen(new GameScreen(this.myGame, 0, 0, 0, true));
 				}else if(myGame.isConnected() && y >= .32 && y <= .43){
 					// Multiplayer
 					SoundManager.get("click").play(myGame.soundVolume * 0.1f);

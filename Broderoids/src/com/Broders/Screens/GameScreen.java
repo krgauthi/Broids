@@ -292,19 +292,28 @@ public class GameScreen implements Screen {
 			font.draw(spriteBatch, out, xx*.20f, yy*.65f);
 			font.setScale(.25f);
 		}
-		spriteBatch.end();
+		
 
 
 		if (paused && !multiplayer) {
 
+			TextureManager.getSprites("whitePixel").setSize(xx * .5f, yy * .5f);
+			TextureManager.getSprites("whitePixel").setPosition((xx * .5f)-((xx * .5f)/2), (yy * .5f)-((yy * .5f)/2));
+			TextureManager.getSprites("whitePixel").setColor(.1f, .1f, .1f, .7f);
+			TextureManager.getSprites("whitePixel").draw(spriteBatch);
+			
+			/*
 			//this.overlay = new ShapeRenderer();
 			overlay.begin(ShapeType.FilledRectangle);
 			Color temp = new Color(51f,51f,51f,0.1f);
 			overlay.setColor(temp);
 			overlay.filledRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			overlay.end();
+			*/
 
 		}
+		
+		spriteBatch.end();
 	}
 
 	/*

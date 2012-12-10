@@ -285,9 +285,9 @@ public class Net extends Thread {
 		thread.start();
 	}
 
-	public static void send(JsonObject o) {
-		Net.g.toJson(o, Net.out);
+	public static void send(JsonObject o){
 		try {
+		Net.g.toJson(o, Net.out);
 			Net.out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();

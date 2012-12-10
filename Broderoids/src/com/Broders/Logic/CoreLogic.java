@@ -163,7 +163,7 @@ public class CoreLogic {
 		players.put(Integer.toString(local.getId()), local);
 
 		//saveId = local.getShip().getId();
-		Net.createEntity(local.getShip());
+		//Net.createEntity(local.getShip());
 
 
 		Player comp = new Player("Comp", 1);

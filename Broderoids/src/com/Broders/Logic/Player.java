@@ -42,8 +42,14 @@ public class Player {
 		if (type.equals("Player")) {
 			playerColor = getGame().playerColor;
 
-			this.modHealth(100);
-			this.modShield(100);
+
+			
+			if (getGame().multiplayer) {
+				shield = 100;
+				health = 100;
+			} else {
+				lives = 3;
+			}
 			
 			playerShip = new Ship(this.nextId(), this,
 					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
@@ -54,12 +60,7 @@ public class Player {
 
 			score = 0;
 
-			if (getGame().multiplayer) {
-				shield = 100;
-				health = 100;
-			} else {
-				lives = 3;
-			}
+
 		} else {
 			playerColor = getGame().gameColor;
 		}

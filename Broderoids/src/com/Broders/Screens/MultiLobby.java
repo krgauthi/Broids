@@ -31,7 +31,6 @@ public class MultiLobby implements Screen {
 	private SpriteBatch spriteBatch;
 
 	private BaseGame myGame;
-	private BitmapFont font;
 
 	private Texture white;
 	private Texture arrow;
@@ -63,8 +62,6 @@ public class MultiLobby implements Screen {
 
 		tail = new Tail(5, Color.WHITE);
 
-		font = this.myGame.font;
-		font.setScale(.5f);
 
 		xx = Gdx.graphics.getWidth();
 		yy = Gdx.graphics.getHeight();
@@ -131,8 +128,10 @@ public class MultiLobby implements Screen {
 
 				out = String.format("%d ", curPage + 1);
 
-				font.draw(spriteBatch, out, xx * .078f, yy * .32f);
-				font.setColor(Color.WHITE);
+				myGame.font.setColor(Color.WHITE);
+				myGame.font.setScale(.5f);
+				myGame.font.draw(spriteBatch, out, xx * .078f, yy * .32f);
+				
 			}
 
 			if (curPage > 0) {
@@ -142,11 +141,12 @@ public class MultiLobby implements Screen {
 				TextureManager.getSprites("Ship1").setPosition(xx * .01f, yy * .5f);
 				TextureManager.getSprites("Ship1").draw(spriteBatch);
 
-
 				out = String.format("%d ", curPage);
 
-				font.draw(spriteBatch, out, xx * .078f, yy * .64f);
-				font.setColor(Color.WHITE);
+				myGame.font.setColor(Color.WHITE);
+				myGame.font.setScale(.5f);
+				myGame.font.draw(spriteBatch, out, xx * .078f, yy * .64f);
+				
 			}
 		}
 
@@ -169,13 +169,14 @@ public class MultiLobby implements Screen {
 			// ref
 			// total
 			// players
-			font.draw(spriteBatch, out, xx * .7f, yy * (.73f - (.16f * i)));
+			myGame.font.setScale(.4f);
+			myGame.font.draw(spriteBatch, out, xx * .7f, yy * (.73f - (.16f * i)));
 			String priv = "";
 			if (temp[1].equals("true")) {
 				priv = " (p)";
 			}
 
-			font.draw(spriteBatch, temp[0] + priv, xx * .2f, yy
+			myGame.font.draw(spriteBatch, temp[0] + priv, xx * .2f, yy
 					* (.73f - (.16f * i))); // TODO ref Name of Game
 
 			if(i == selectedGame){

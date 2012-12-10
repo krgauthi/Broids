@@ -2,15 +2,12 @@ package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Player;
-import com.Broders.Logic.Settings;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
 import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -31,7 +28,6 @@ public class Ship extends Entity {
 
 	private Boolean thrust;
 	private Boolean shooting;
-	private Sprite sprite;
 	private boolean invincible;
 
 	private boolean thrustLast;
@@ -94,18 +90,15 @@ public class Ship extends Entity {
 		this.thrustLast = false;
 		this.smokeInterval = 0;
 		this.shieldRegen = 0;
-
-		
 		
 		//TextureManager.getSprites("Ship2").flip(false, true);
+
 		TextureManager.getSprites("Ship2").setOrigin((meter * this.getSize()) / 2,	(meter * this.getSize()) / 2);
 		TextureManager.getSprites("Ship2").setSize(meter * this.getSize(), meter * this.getSize());
 
 		//Set type data
 		super.getBody().setUserData(this);
 	}
-
-
 
 	/**
 	 * Checks if the thrust is engaged/disengaged
@@ -258,9 +251,8 @@ public class Ship extends Entity {
 			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 
 			setThrust(false);
-			Sound death = SoundManager.get("death");
-			long soundId = death.play(game.soundVolume * .1f);
-			death.setPitch(soundId, 0.85f);
+			
+			SoundManager.play("death", 1f, 0.85f);
 		}
 	}
 

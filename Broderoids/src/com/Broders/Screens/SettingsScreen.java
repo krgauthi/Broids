@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.regex.Pattern;
 
-import com.Broders.Logic.Settings;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
 import com.Broders.mygdxgame.TextureManager;
@@ -201,14 +200,15 @@ public class SettingsScreen implements Screen {
 			if (x >= .08 && x <= .46 && y >= .12 && y <= .2) {
 				
 				game.musicVolume = game.musicVolume == 10 ? 0 : game.musicVolume + 1;
-				SoundManager.get("muzak").setVolume(SoundManager.getMuzakId(), game.musicVolume * .1f);
+				SoundManager.setVolume("muzak", SoundManager.getMuzakId(), 1f);
 				System.out.println("Music Option set to " + game.musicVolume);
+				SoundManager.play("click", 0.7f);
 				
 			} else if (x >= .08 && x <= .46 && y >= .32 && y <= .4) {
 				
 				game.soundVolume = game.soundVolume == 10 ? 0 : game.soundVolume + 1;
 				System.out.println("Sound Option set to " + game.soundVolume);
-				SoundManager.get("click").play(game.soundVolume * .1f);
+				SoundManager.play("click", 0.7f);
 				
 			} else if (x >= .08 && x <= .46 && y >= .52 && y <= .6) {
 
@@ -315,7 +315,6 @@ public class SettingsScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -355,19 +354,16 @@ public class SettingsScreen implements Screen {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 
 	}
 

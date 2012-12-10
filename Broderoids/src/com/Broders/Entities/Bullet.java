@@ -2,11 +2,8 @@ package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Player;
-import com.Broders.Logic.Settings;
-import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -19,11 +16,9 @@ public class Bullet extends Entity {
 	private float age;
 	private static float deathTime = 0.5f;
 
-	private BaseGame game;
-
 	public Bullet(String id, Player owner, float dir, float x, float y) {
 		super(id, owner);
-		this.game = owner.getGame();
+		owner.getGame();
 		// sprite
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
@@ -62,10 +57,8 @@ public class Bullet extends Entity {
 
 		//Set type data
 		super.getBody().setUserData(this);
-			
-		Sound pew = SoundManager.get("pew");
-		long soundId = pew.play(game.soundVolume * 0.1f);
-		pew.setPitch(soundId, (float) (0.9f + Math.random() * 0.2));
+		
+		SoundManager.play("pew", 1f, (float) (0.9f + Math.random() * 0.2));
 	}
 
 	

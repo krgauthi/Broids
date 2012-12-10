@@ -120,9 +120,9 @@ public class Player {
 	public void modLives(int s) {
 		lives += s;
 		switch (lives) {
-		case 2:	SoundManager.get("muzak").setPitch(SoundManager.getMuzakId(), 1.1f); break;
-		case 1: SoundManager.get("muzak").setPitch(SoundManager.getMuzakId(), 1.5f); break;
-		default: SoundManager.get("muzak").setPitch(SoundManager.getMuzakId(), 1f);
+		case 2:	SoundManager.setPitch("muzak", SoundManager.getMuzakId(), 1.1f); break;
+		case 1: SoundManager.setPitch("muzak", SoundManager.getMuzakId(), 1.5f); break;
+		default: SoundManager.setPitch("muzak", SoundManager.getMuzakId(), 1f);
 		}
 	}
 

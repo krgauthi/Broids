@@ -1,10 +1,6 @@
 package com.Broders.Screens;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.regex.Pattern;
-
-import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Net;
 import com.Broders.Logic.Pos;
 import com.Broders.Logic.Tail;
@@ -15,7 +11,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Input.TextInputListener;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
@@ -36,8 +31,6 @@ public class MultiLobby implements Screen {
 	private Texture arrow;
 
 	private Sprite whiteSprite;
-	private Sprite arrowSprite;
-
 	private String gamePassword;
 
 	private ArrayList<String[]> games;
@@ -233,6 +226,7 @@ public class MultiLobby implements Screen {
 						Screen temp = Net.joinGame(name[0], gamePassword);
 
 						if (temp != null) {
+							SoundManager.play("click", 0.7f);
 							myGame.setScreen(temp);
 							// TODO: Dispose of this screen
 						} else {
@@ -240,12 +234,11 @@ public class MultiLobby implements Screen {
 						}
 						//host
 					} else {
-						Sound error = SoundManager.get("error");
-						long Id = error.play(myGame.soundVolume * 0.1f);
-						error.setPitch(Id, (float) (1.5f));
+						SoundManager.play("error", 1f, 1.5f);
 					}
 
 				} else if (x >= .174 && x <= .404) {
+					SoundManager.play("click", 0.7f);
 					myGame.setScreen(BaseGame.screens.get("host"));
 					//refresh
 				}else if(x >= .174 && x <= .404){
@@ -321,15 +314,14 @@ public class MultiLobby implements Screen {
 				Screen temp = Net.joinGame(name[0], gamePassword);
 
 				if (temp != null) {
+					SoundManager.play("click", 0.7f);
 					myGame.setScreen(temp);
 					// TODO: Dispose of this screen
 				} else {
 					System.out.println("Shit broke yo");
 				}
 			} else {
-				Sound error = SoundManager.get("error");
-				long Id = error.play(myGame.soundVolume * 0.1f);
-				error.setPitch(Id, (float) (1.5f));
+				SoundManager.play("error", 1f, 1.5f);
 			}
 		}
 
@@ -362,17 +354,11 @@ public class MultiLobby implements Screen {
 	public void show() {
 		buff = 0;
 
-		double x = ((float) Gdx.input.getX() / (float) myGame.screenWidth);
-		double y = ((float) Gdx.input.getY() / (float) myGame.screenHeight);
-
 		myGame.multiplayer = true;
 
 		white = new Texture(Gdx.files.internal("data/whitebox.png"));
 		whiteSprite = new Sprite(white, 32, 32);
 		whiteSprite.setColor(Color.WHITE);
-
-
-		
 
 		TextureManager.getSprites("hostGame").setSize(yy * .5f, yy * .5f);
 		TextureManager.getSprites("hostGame").setPosition(xx * .15f, yy * .6f);

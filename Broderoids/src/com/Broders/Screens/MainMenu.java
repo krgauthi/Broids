@@ -1,20 +1,17 @@
 package com.Broders.Screens;
 
-import com.Broders.Logic.CoreLogic;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
 import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class MainMenu implements Screen{
 
@@ -126,19 +123,20 @@ public class MainMenu implements Screen{
 				// single player game X 650-850 Y 180 - 230
 				if(y >= .20 && y <= .28){
 					// Single Player
-					SoundManager.get("click").play(myGame.soundVolume * 0.07f);
+					SoundManager.play("click", 0.7f);
+					SoundManager.play("start");
 					myGame.setScreen(new GameScreen(this.myGame, 0, 0, 0, true));
 				}else if(myGame.isConnected() && y >= .32 && y <= .43){
 					// Multiplayer
-					SoundManager.get("click").play(myGame.soundVolume * 0.07f);
+					SoundManager.play("click", 0.7f);
 					myGame.setScreen(BaseGame.screens.get("lobby"));
 				}else if(y >= .48 && y <= .60){
 					// Settings
-					SoundManager.get("click").play(myGame.soundVolume * 0.07f);
+					SoundManager.play("click", 0.7f);
 					myGame.setScreen(BaseGame.screens.get("settings"));
 				}else if(y >= .65 && y <= .77){
 					// Settings
-					SoundManager.get("click").play(myGame.soundVolume * 0.1f);
+					SoundManager.play("click", 0.7f);
 					myGame.setScreen(BaseGame.screens.get("scores"));
 				}
 			}	

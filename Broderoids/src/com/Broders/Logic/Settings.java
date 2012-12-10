@@ -32,7 +32,7 @@ public class Settings {
 	// Main method for loading settings from settings file
 	// Broken up into individual methods for maintainability
 	public void loadSettings() throws FileNotFoundException {
-		Scanner s = new Scanner(new File("config/broids.cfg"));
+		Scanner s = new Scanner(new File("config/broids.cfg")); //@Mike, Fix yer damn plumbing.
 		while (s.hasNextLine()) {
 			String line = s.nextLine();
 			String[] tokens = line.split(":");

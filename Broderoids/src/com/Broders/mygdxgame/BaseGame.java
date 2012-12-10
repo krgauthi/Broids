@@ -22,14 +22,14 @@ public class BaseGame extends Game {
 
 	public BitmapFont font;
 
-	public int screenHeight;		//TODO Ref in Settings
-	public int screenWidth;			//TODO Ref in Settings
+	public int screenHeight;
+	public int screenWidth;	
 	
 		
 	public double exitBuffer;		//TODO Ref in Settings
 	public boolean epileptic;
 	public boolean debugMode;
-	public int difficulty;			//TODO Ref in Settings
+	public int difficulty;
 	public String playerName;
 	public boolean godMode;			//TODO Ref in Settings
 	
@@ -76,11 +76,7 @@ public class BaseGame extends Game {
 
 		settings = new Settings(this);
 		
-		Gdx.input.setCatchBackKey(true);
-		
-		Net.init(this);
-		
-		SoundManager.init();	
+		Gdx.input.setCatchBackKey(true);	
 		
 		try {
 			settings.loadSettings();
@@ -90,12 +86,12 @@ public class BaseGame extends Game {
 			e.printStackTrace();
 		}
 		
-		TextureManager.init(this);
-		
 		try {
+			Net.init(this);
+			SoundManager.init(this);
+			TextureManager.init(this);
 			ScoresManager.init(this);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

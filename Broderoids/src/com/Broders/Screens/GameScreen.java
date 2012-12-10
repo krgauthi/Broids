@@ -8,7 +8,6 @@ import com.Broders.Logic.Net;
 import com.Broders.Logic.Pos;
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
-import com.Broders.mygdxgame.ScoresManager;
 import com.Broders.mygdxgame.SoundManager;
 import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.*;
@@ -334,7 +333,6 @@ public class GameScreen implements Screen {
 			gameOver += Gdx.graphics.getDeltaTime();
 			if (gameOver >= 4f) {
 				myGame.setScreen(BaseGame.screens.get("scores"));
-				//TODO Change to High-scores screen.
 			}
 		}
 	}
@@ -421,7 +419,7 @@ public class GameScreen implements Screen {
 				Net.leaveGame();
 			}
 
-			SoundManager.get("muzak").setPitch(SoundManager.getMuzakId(), 1f);
+			SoundManager.setPitch("muzak", SoundManager.getMuzakId(), 1f);
 			myGame.setScreen(BaseGame.screens.get("main"));
 		}
 
@@ -559,6 +557,8 @@ public class GameScreen implements Screen {
 			thrusterButton.setSize(yy * .32f, yy * .32f);
 		}
 		font.setScale(.25f);
+		
+		SoundManager.play("start");
 	}
 
 	@Override

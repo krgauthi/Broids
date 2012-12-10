@@ -112,6 +112,7 @@ public class MultiLobby implements Screen {
 
 			TextureManager.getSprites("Ship1").setSize(yy * .25f, yy * .25f);
 			TextureManager.getSprites("Ship1").setOrigin((yy * .25f) / 2f, (yy * .25f) / 2f);
+			TextureManager.getSprites("Ship1").setRotation(0);
 
 			if (curPage < page) { // display both tabs
 				TextureManager.getSprites("Ship1").setColor(Color.WHITE);

@@ -167,10 +167,10 @@ public class GameScreen implements Screen {
 				score = CoreLogic.getLocal().getScore();
 			}
 
-			spriteBatch.draw(TextureManager.getTexture("healthBlockTexture"), xx * .01f, yy * .5f,
+			spriteBatch.draw(TextureManager.getTexture("healthBlock"), xx * .01f, yy * .5f,
 					((yy * .5f) * .88f) * health / 100, yy * .5f, 0, 0,
 					(int) ((512f * .88f) * health / 100), 512, false, false);
-			spriteBatch.draw(TextureManager.getTexture("shieldBlockTexture"), xx * .01f, yy * .5f,
+			spriteBatch.draw(TextureManager.getTexture("shieldBlock"), xx * .01f, yy * .5f,
 					(yy * .5f) * shield / 100, yy * .5f, 0, 0, (int) (512f * shield / 100),
 					512, false, false);
 

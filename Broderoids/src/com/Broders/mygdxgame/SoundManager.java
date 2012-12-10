@@ -33,6 +33,7 @@ public class SoundManager {
 		};
 		
 		for (String[] noise : defaultSounds) {
+			
 			Sound temp = Gdx.audio.newSound(Gdx.files.internal(noise[1]));
 			sounds.put(noise[0], temp);
 		}

@@ -22,7 +22,7 @@ public class SplashScreen implements Screen {
 	// constructor
 	public SplashScreen(BaseGame g) {
 		this.myGame = g;
-		SoundManager.setMuzakId(SoundManager.get("muzak").loop(myGame.musicVolume * 0.1f));
+		//SoundManager.setMuzakId(SoundManager.get("muzak").loop(myGame.musicVolume * 0.1f));
 	}
 
 	@Override

@@ -23,7 +23,7 @@ public class TextureManager {
 					{"healthBlock", "data/healthbar.png"},
 					{"shieldBar", "data/shieldbracket.png"},
 					{"shieldBlock", "data/shieldbar.png"},
-					{"lives", "data/retroShip1.png"},
+					{"lives", "data/ship1.png"},
 					{"white", "data/whitebox.png"},
 					{"whitePixel", "data/whitepixel.png"},
 
@@ -43,7 +43,8 @@ public class TextureManager {
 					{"pause","data/bttn_pause.png"},
 					{"quit","data/bttn_quit.png"},
 					{"settings","data/bttn_settings.png"},
-					
+					{"resume","data/bttn_resume.png"},
+
 					//Title
 					{"titleLeft","data/menu_title1.png"},
 					{"titleRight","data/menu_title2.png"},

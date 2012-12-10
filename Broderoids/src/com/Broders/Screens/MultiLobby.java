@@ -92,10 +92,15 @@ public class MultiLobby implements Screen {
 
 	private void paint(float delta) {
 		// Make a black background
+		if(myGame.retroGraphics){
 		GL10 g1 = Gdx.graphics.getGL10();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+		}else{
+			GL10 g1 = Gdx.graphics.getGL10();
+			Gdx.gl.glClearColor(.19f, .19f, .19f, 1f);	 
+			g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		}
 		spriteBatch.begin();
 		// Boxes
 
@@ -136,7 +141,8 @@ public class MultiLobby implements Screen {
 			arrowSprite.setOrigin((yy * .25f) / 2f, (yy * .25f) / 2f);
 			
 			if (curPage < page) { // display both tabs
-
+				arrowSprite.setColor(Color.WHITE);
+				arrowSprite.setRotation(180);
 				arrowSprite.setPosition(xx * .01f, yy * .19f);
 				arrowSprite.draw(spriteBatch);
 
@@ -149,10 +155,11 @@ public class MultiLobby implements Screen {
 
 			if (curPage > 0) {
 				// you are on the last tab display the top
-				arrowSprite.setRotation(180);
+				arrowSprite.setColor(Color.WHITE);
+				arrowSprite.setRotation(0);
 				arrowSprite.setPosition(xx * .01f, yy * .5f);
 				arrowSprite.draw(spriteBatch);
-				arrowSprite.setRotation(0);
+				
 
 				out = String.format("%d ", curPage);
 
@@ -194,8 +201,10 @@ public class MultiLobby implements Screen {
 					* (.73f - (.16f * i))); // TODO ref Name of Game
 			
 			if(i == selectedGame){
+				arrowSprite.setRotation(0);
 				arrowSprite.setSize(xx * .05f, xx * .05f);
 				arrowSprite.setPosition( xx * .936f, yy* (.68f - (.16f * i)));
+				arrowSprite.setColor(myGame.playerColor);
 				arrowSprite.draw(spriteBatch);
 			}
 

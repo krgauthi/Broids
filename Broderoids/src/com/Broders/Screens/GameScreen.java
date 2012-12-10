@@ -149,8 +149,11 @@ public class GameScreen implements Screen {
 		if (myGame.epileptic) {
 			Gdx.gl.glClearColor((rand.nextInt() % 200), rand.nextInt() % 200,
 					rand.nextInt() % 200, 1);
-		} else {
+		} else if(myGame.retroGraphics){
 			Gdx.gl.glClearColor(0, 0, 0, 1);
+		}else{
+
+			Gdx.gl.glClearColor(.19f, .19f, .19f, 1f);	 
 		}
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -272,7 +275,7 @@ public class GameScreen implements Screen {
 			
 			//this.overlay = new ShapeRenderer();
 			overlay.begin(ShapeType.FilledRectangle);
-			Color temp = new Color(0.1f,0.1f,0.1f,0.1f);
+			Color temp = new Color(51f,51f,51f,0.1f);
 			overlay.setColor(temp);
 			overlay.filledRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			overlay.end();

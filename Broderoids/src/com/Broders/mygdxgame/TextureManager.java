@@ -5,9 +5,12 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class TextureManager {
 	private static HashMap<String, Texture> textures;
+	public static ShapeRenderer backDrop;
+	
 	
 	public static void init() {
 		textures = new HashMap<String, Texture>();
@@ -29,6 +32,9 @@ public class TextureManager {
 		for (String[] tex : defaultTextures) {
 			load(tex[0], tex[1]);
 		}
+		
+		backDrop = new ShapeRenderer();
+		
 	}
 	
 	public static Texture get(String key) {

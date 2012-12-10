@@ -24,8 +24,8 @@ public class Settings {
 	private static Preferences prefs;
 	
 	private static String username;
-	private static String shipColor;
-	private static String worldColor;
+	private static Color shipColor;
+	private static Color worldColor;
 	private static int soundVol;
 	private static int musicVol;
 	private static int width;
@@ -77,8 +77,8 @@ public class Settings {
 	public static void load() {
 		int bro = (int) (defaultUsernames.length * Math.random());
 		username = prefs.getString("username", defaultUsernames[bro]);
-		shipColor = prefs.getString("shipColor", "00FF00");
-		worldColor = prefs.getString("worldColor", "44DDEE");
+		shipColor = colorFromHexString("FF" + prefs.getString("shipColor", "00FF00"));
+		worldColor = colorFromHexString("FF" + prefs.getString("worldColor", "44DDEE"));
 		width = prefs.getInteger("width", 1024);
 		height = prefs.getInteger("height", 576);
 		soundVol = prefs.getInteger("soundVol", 5);
@@ -160,23 +160,29 @@ public class Settings {
 	}
 	
 	public static Color getWorldColor() {
-		return colorFromHexString("FF" + worldColor);
+		return worldColor;
 	}
 	
 	public static Color getShipColor() {
-		return colorFromHexString("FF" + shipColor);
+		return shipColor;
 	}
 	
 	public static void setShipColor(String color) {
-		prefs.putString("shipColor", color);
-		prefs.flush();
-		load();
+		// TODO: Better safety checks
+		if (color.length() == 6) {
+			prefs.putString("shipColor", color);
+			prefs.flush();
+			load();
+		}
 	}
 	
-	public static void setWorldColor(String color){
-		prefs.putString("worldColor", color);
-		prefs.flush();
-		load();
+	public static void setWorldColor(String color) {
+		// TODO: Better safety checks
+		if (color.length() == 6) {
+			prefs.putString("worldColor", color);
+			prefs.flush();
+			load();
+		}
 	}
 	
 	public static void setWidth(int width) {

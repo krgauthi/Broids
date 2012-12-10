@@ -45,7 +45,7 @@ public class TextureManager {
 				//Game Textures
 				{"Ship1","data/ship1.png"},
 				{"Ship2","data/ship2.png"},
-				{"Broid","data/ship1.png"},
+				{"broid","data/broid.png"},
 				
 		};
 		

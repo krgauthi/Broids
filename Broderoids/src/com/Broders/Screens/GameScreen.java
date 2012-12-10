@@ -9,6 +9,7 @@ import com.Broders.Logic.Pos;
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
+import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -73,10 +74,7 @@ public class GameScreen implements Screen {
 	boolean h2;
 	int id2;
 
-	boolean first;
-
 	public GameScreen(BaseGame game, int id, float width, float height, boolean h) {
-		this.first = true;
 		this.myGame = game;
 		this.multiplayer = id != 0;
 		this.width2 = width;
@@ -91,6 +89,18 @@ public class GameScreen implements Screen {
 			System.out.println("Multi");
 		} else {
 			System.out.println("Single");
+		}
+		
+		if (this.multiplayer) {
+			CoreLogic.setClientId(id2);
+		} else {
+			CoreLogic.setClientId(2);
+		}
+		
+		CoreLogic.initCore(myGame, width2, height2, h2, multiplayer);
+		if (this.multiplayer) {
+			// This starts up the thread for async networking
+			Net.handleGame();
 		}
 
 		font = this.myGame.font;
@@ -112,19 +122,6 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		if(first){
-			CoreLogic.initCore(myGame, width2, height2, h2, multiplayer);
-			if (this.multiplayer) {
-				CoreLogic.setClientId(id2);
-
-				// This starts up the thread for async networking
-				Net.handleGame();
-			} else {
-				CoreLogic.setClientId(2);
-			}
-			first = false;
-		}
-
 		delta = (float) (1.0/30.0);
 
 		Net.lock();
@@ -214,17 +211,20 @@ public class GameScreen implements Screen {
 		} else {
 			// Single player hud
 			String out;
-			out = String.format("Score: %d ", CoreLogic.getLocal().getScore());
-			// player
-			font.draw(spriteBatch, out, xx * .01f, yy * .98f);
+			if (CoreLogic.getLocal() != null) {
+				out = String.format("Score: %d ", CoreLogic.getLocal().getScore());
 
-			String out2 = String.format("Bonus: x%d ", (int)Math.floor(CoreLogic.getLocal().getBonus()));
-			font.draw(spriteBatch, out2, xx * .01f, yy * .94f);
+				// player
+				font.draw(spriteBatch, out, xx * .01f, yy * .98f);
+				
+				String out2 = String.format("Bonus: x%d ", (int)Math.floor(CoreLogic.getLocal().getBonus()));
+				font.draw(spriteBatch, out2, xx * .01f, yy * .94f);
 
-			int heartcount = CoreLogic.getLocal().getLives();
-			for (int i = 0; i < heartcount; i++) {
-				lives.setPosition(xx * (.005f + (i * .02f)), yy * .85f);
-				lives.draw(spriteBatch);
+				int heartcount = CoreLogic.getLocal().getLives();
+				for (int i = 0; i < heartcount; i++) {
+					lives.setPosition(xx * (.005f + (i * .02f)), yy * .85f);
+					lives.draw(spriteBatch);
+				}
 			}
 
 		}
@@ -389,7 +389,6 @@ public class GameScreen implements Screen {
 				Net.leaveGame();
 			}
 
-			this.first = true;
 			SoundManager.get("muzak").setPitch(SoundManager.getMuzakId(), 1f);
 			myGame.setScreen(BaseGame.screens.get("main"));
 		}
@@ -481,13 +480,10 @@ public class GameScreen implements Screen {
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		spriteBatch.end();
 
-		healthBarTexture = new Texture(Gdx.files.internal("data/healthbracket.png"));
-		healthBlockTexture = new Texture(
-				Gdx.files.internal("data/healthbar.png"));
-		shieldBarTexture = new Texture(
-				Gdx.files.internal("data/shieldbracket.png"));
-		shieldBlockTexture = new Texture(
-				Gdx.files.internal("data/shieldbar.png"));
+		healthBarTexture = TextureManager.getTexture("healthBar");
+		healthBlockTexture = TextureManager.getTexture("healthBlock");
+		shieldBarTexture = TextureManager.getTexture("shieldBar");
+		shieldBlockTexture = TextureManager.getTexture("shieldBlock");
 
 		healthBar = new Sprite(healthBarTexture, 512, 512);
 		healthBlock = new Sprite(healthBlockTexture, 512, 512);
@@ -504,31 +500,28 @@ public class GameScreen implements Screen {
 		shieldBar.setSize(yy * .5f, yy * .5f);
 		shieldBlock.setSize(yy * .5f, yy * .5f);
 
-		livesTexture = new Texture(Gdx.files.internal("data/ship1.png"));
+		livesTexture = TextureManager.getTexture("lives");
 		lives = new Sprite(livesTexture, 1024, 1024);
 		lives.setSize(yy * .05f, yy * .05f);
 
-		white = new Texture(Gdx.files.internal("data/whitebox.png"));
+		white = TextureManager.getTexture("white");
 		new Sprite(white, 32, 32);
 
-		whitePixel = new Texture(Gdx.files.internal("data/whitepixel.png"));
+		whitePixel = TextureManager.getTexture("whitePixel");
 		whitePixelSprite = new Sprite(whitePixel, 1, 1);
 
 		if (Gdx.app.getVersion() > 0) {
-			dPadTexture = new Texture(
-					Gdx.files.internal("data/leftrightpad.png"));
+			dPadTexture = TextureManager.getTexture("dPad");
 			dPad = new Sprite(dPadTexture, 512, 512);
 			dPad.setPosition(xx * (0), yy * (-.1f));
 			dPad.setSize(yy * .6f, yy * .6f);
 
-			fireButtonTexture = new Texture(
-					Gdx.files.internal("data/fireButton.png"));
+			fireButtonTexture = TextureManager.getTexture("fireButton");;
 			fireButton = new Sprite(fireButtonTexture, 512, 512);
 			fireButton.setPosition(xx * (.82f), yy * (.25f));
 			fireButton.setSize(yy * .32f, yy * .32f);
 
-			thrusterButtonTexture = new Texture(
-					Gdx.files.internal("data/thrustButton.png"));
+			thrusterButtonTexture = TextureManager.getTexture("thrustButton");
 			thrusterButton = new Sprite(thrusterButtonTexture, 512, 512);
 			thrusterButton.setPosition(xx * (.69f), yy * 0);
 			thrusterButton.setSize(yy * .32f, yy * .32f);
@@ -555,22 +548,6 @@ public class GameScreen implements Screen {
 	@Override
 	public void dispose() {
 		this.spriteBatch.dispose();
-
-		if (Gdx.app.getVersion() > 0) {
-			this.dPadTexture.dispose();
-			this.fireButtonTexture.dispose();
-			this.thrusterButtonTexture.dispose();
-		}
-
-		this.healthBarTexture.dispose();
-		this.healthBlockTexture.dispose();
-		this.shieldBarTexture.dispose();
-		this.shieldBlockTexture.dispose();
-
-		this.livesTexture.dispose();
-		this.white.dispose();
-
-		this.whitePixel.dispose();
 		this.overlay.dispose();
 		
 		CoreLogic.dispose();

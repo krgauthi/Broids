@@ -24,7 +24,7 @@ public abstract class Entity {
 	//private String ent;
 	//private String type;
 	protected Body body;
-	private Sprite sprite;
+	protected Sprite sprite;
 
 	// Extras
 	private float size;

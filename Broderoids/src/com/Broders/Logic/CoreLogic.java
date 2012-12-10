@@ -146,11 +146,9 @@ public class CoreLogic {
 			height = heightScreen;
 		}
 
-
-
 		viewPortX = (width / 2) - (widthScreen / 2f);
 		viewPortY = (height / 2) - (heightScreen / 2f);
-
+		
 		Player local = new Player("Player", clientId);
 		players.put(Integer.toString(local.getId()), local);
 		saveId = local.getShip().getId();
@@ -177,7 +175,7 @@ public class CoreLogic {
 		Player local = getLocal();
 
 		//Respawn
-		if (respawnTimer < 1f && !respawnSound && getLocal().getLives() < 3
+		if (respawnTimer < 1f && !respawnSound && local != null && getLocal().getLives() < 3
 				&& getLocal().getLives() > 0) {
 			SoundManager.get("respawn").play();
 			respawnSound = true;
@@ -399,7 +397,7 @@ public class CoreLogic {
 	 */
 	public static void execute(float delta, InputDir in) {
 		Player local = getLocal();
-		if(local.getShip() != null){
+		if(local != null && local.getShip() != null){
 			boolean mod = false;
 			if (in.equals("left")) {
 				local.getShip().getBody().applyTorque(500.0f);

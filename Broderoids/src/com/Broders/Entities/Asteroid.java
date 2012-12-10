@@ -4,7 +4,9 @@ import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Player;
 import com.Broders.Logic.Settings;
 import com.Broders.mygdxgame.SoundManager;
+import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -26,7 +28,7 @@ public class Asteroid extends Entity {
 		super(id, owner);
 
 		super.setColor();
-		super.setSprite(Settings.data_path + "broid.png");
+		this.sprite = new Sprite(TextureManager.getTexture("broid"));
 
 		FixtureDef fixDef = new FixtureDef();
 		CircleShape shape = new CircleShape();

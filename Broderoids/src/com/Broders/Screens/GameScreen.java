@@ -8,6 +8,7 @@ import com.Broders.Logic.Net;
 import com.Broders.Logic.Pos;
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
+import com.Broders.mygdxgame.ScoresManager;
 import com.Broders.mygdxgame.SoundManager;
 import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.*;
@@ -54,7 +55,7 @@ public class GameScreen implements Screen {
 	private Sprite shieldBar;
 	private Sprite shieldBlock;
 	private Sprite lives;
-	
+
 	private boolean paused;
 	private float pauseWait;
 	private ShapeRenderer overlay;
@@ -62,7 +63,7 @@ public class GameScreen implements Screen {
 	private float gameOver;
 
 	private SpriteBatch spriteBatch;
-	
+
 	private Tail debug1;
 	private Tail debug2;
 
@@ -197,9 +198,14 @@ public class GameScreen implements Screen {
 					(yy * .5f) * shield / 100, yy * .5f, 0, 0, (int) (512f * shield / 100),
 					512, false, false);
 
-			String healthText = "HEALTH: " + health + " / 100";
-			String shieldText = "SHIELD: " + shield + " / 100";
+
+			//String healthText = "HEALTH: " + health + " / 100";
+			//String shieldText = "SHIELD: " + shield + " / 100";
 			
+
+			String healthText = "HEALTH: " + CoreLogic.getLocal().getHealth() + " / 100";
+			String shieldText = "SHIELD: " + CoreLogic.getLocal().getShield() + " / 100";
+
 			font.draw(spriteBatch, healthText, xx * .05f, yy * .92f);
 			font.draw(spriteBatch, shieldText, xx * .08f, yy * .975f);
 
@@ -288,15 +294,16 @@ public class GameScreen implements Screen {
 		}
 		spriteBatch.end();
 
+
 		if (paused && !multiplayer) {
-			
+
 			//this.overlay = new ShapeRenderer();
 			overlay.begin(ShapeType.FilledRectangle);
 			Color temp = new Color(51f,51f,51f,0.1f);
 			overlay.setColor(temp);
 			overlay.filledRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 			overlay.end();
-			
+
 		}
 	}
 
@@ -408,7 +415,7 @@ public class GameScreen implements Screen {
 			SoundManager.get("muzak").setPitch(SoundManager.getMuzakId(), 1f);
 			myGame.setScreen(BaseGame.screens.get("main"));
 		}
-		
+
 		pauseWait += Gdx.graphics.getDeltaTime();
 		if (Gdx.input.isKeyPressed(Keys.ESCAPE) && pauseWait >= 0.2f) {
 			if (paused)
@@ -565,7 +572,7 @@ public class GameScreen implements Screen {
 	public void dispose() {
 		this.spriteBatch.dispose();
 		this.overlay.dispose();
-		
+
 		CoreLogic.dispose();
 	}
 }

@@ -57,7 +57,7 @@ public class CoreLogic {
 	public static BaseGame getGame() {
 		return myGame;
 	}
-	
+
 	public static void setGame(BaseGame game) {
 		myGame = game;
 	}
@@ -82,7 +82,7 @@ public class CoreLogic {
 		}
 		return gcd(q, p % q);
 	}
-	
+
 	public static boolean getHost() {
 		return host;
 	}
@@ -102,30 +102,40 @@ public class CoreLogic {
 		rmEntities = new LinkedList<Entity>();
 		setHost(h);
 
-		int gcd = gcd(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		widthScreen = Gdx.graphics.getWidth() / gcd / Gdx.graphics.getDensity()
-				* 5;
-		heightScreen = Gdx.graphics.getHeight() / gcd
-				/ Gdx.graphics.getDensity() * 5;
+		respawnTimer = -10f;
+		invincibleTimer = -10f;
 
 		bulletCooldown = 0;
 		round = -1;
-		//paused = false;
 
-		respawnTimer = -10f;
-		invincibleTimer = -10f;
+		/*int gcd = gcd(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		widthScreen = Gdx.graphics.getWidth() / gcd / Gdx.graphics.getDensity()
+		 * 5;
+		heightScreen = Gdx.graphics.getHeight() / gcd
+				/ Gdx.graphics.getDensity() * 5;
+		//paused = false;*/
+
+		widthScreen = 160;
+		if(Gdx.app.getVersion() > 0){
+			heightScreen = (Gdx.graphics.getHeight()/Gdx.graphics.getHeight())*160;
+		}
+		else{
+			heightScreen = 90;
+		}
 
 		if (widthIn != 0.0) {
 			width = widthIn;
 		} else {
 			width = widthScreen;
 		}
-		
+
 		if (heightIn != 0.0) {
 			height = heightIn;
 		} else {
 			height = heightScreen;
 		}
+
+
 
 		viewPortX = (width / 2) - (widthScreen / 2f);
 		viewPortY = (height / 2) - (heightScreen / 2f);
@@ -158,9 +168,9 @@ public class CoreLogic {
 	 * @param delta
 	 */
 	public static void update(float delta) {
-		
+
 		bulletCooldown += Gdx.graphics.getDeltaTime();
-		
+
 		Player local = getLocal();
 
 		//Respawn
@@ -172,7 +182,7 @@ public class CoreLogic {
 
 			Ship ship = new Ship(saveId, local,
 					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
-			
+
 			local.setShip(ship);
 			if (multiplayer) {
 				Net.createEntity(ship);
@@ -313,7 +323,7 @@ public class CoreLogic {
 		float x = (float) (CoreLogic.getWidth() * Math.random());
 		float y = (float) (CoreLogic.getHeight() * Math.random());
 		float dir = (float) (Math.PI * Math.random());
-		
+
 		Player local = getLocal();
 
 		// Prevent spawning on the player(s)
@@ -349,11 +359,11 @@ public class CoreLogic {
 		roid.getBody().setAngularVelocity(spin);
 
 		getComp().getEntitiesMap().put(roid.getId(), roid);
-		
+
 		if(multiplayer){
 			Net.createEntity(roid);
 		}
-		
+
 		return 0;
 	}
 
@@ -399,7 +409,7 @@ public class CoreLogic {
 					local.getEntitiesMap().put(shot.getId(), shot);
 					bulletCooldown = 0;
 					local.getShip().setShooting(true);
-					
+
 					if(multiplayer){					
 						Net.createEntity(shot);
 					}
@@ -418,7 +428,7 @@ public class CoreLogic {
 				local.getShip().setThrust(true);
 				mod = true;
 			}
-			
+
 			if (mod && multiplayer) {
 				Net.modifyEntity(local.getShip());
 			}
@@ -620,11 +630,11 @@ public class CoreLogic {
 	public static HashMap<String, Player> getPlayersMap() {
 		return players;
 	}
-	
+
 	public static Player getPlayer(String id) {
 		return players.get(id);
 	}
-	
+
 	public static Player getLocal() {
 		return getSelf();
 	}
@@ -632,7 +642,7 @@ public class CoreLogic {
 	public static boolean getRoundBool() {
 		return display;
 	}
-	
+
 	public static void setRoundOver() {
 		display = true;
 	}
@@ -650,7 +660,7 @@ public class CoreLogic {
 		playr.setScore(score);
 		players.put(Integer.toString(id), playr);
 	}
-	
+
 	public static void removePlayer(String id) {
 		players.remove(id);
 	}
@@ -658,7 +668,7 @@ public class CoreLogic {
 	public static Player findPlayer(String id) {
 		return players.get(id);
 	}
-	
+
 	//public static void pause() {
 	//	paused = !paused;
 	//}

@@ -89,6 +89,8 @@ public class BaseGame extends Game {
 			e.printStackTrace();
 		}
 		
+		TextureManager.init();
+		
 		screens = new HashMap<String,Screen>();
 		screens.put("splash", new SplashScreen(this));
 		screens.put("main", new MainMenu(this));
@@ -101,6 +103,8 @@ public class BaseGame extends Game {
 		screens.put("multi", new GameScreen(this, 0, 0, 0, true));
 
 		this.setScreen(BaseGame.screens.get("splash"));
+		
+		retroGraphics = false;
 	}
 
 	@Override

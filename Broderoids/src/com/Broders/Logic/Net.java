@@ -152,7 +152,9 @@ public class Net extends Thread {
 
 		JsonObject d = new JsonObject();
 		d.addProperty("n", name);
-		d.addProperty("p", pass);
+		if (pass != null) {
+			d.addProperty("p", pass);
+		}
 		o.add("d", d);
 
 		Net.send(o);
@@ -163,8 +165,11 @@ public class Net extends Thread {
 
 		// TODO: Useful errors
 		if (c == FRAME_ERROR) {
+			System.out.println("frame error");
 			return null;
 		} else if (c != FRAME_LOBBY_JOIN) {
+			System.out.println("c: " + c);
+			System.out.println("'C != FRAME_LOBBY_JOIN' error");
 			return null;
 		}
 

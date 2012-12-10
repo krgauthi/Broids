@@ -35,7 +35,6 @@ public class SettingsScreen implements Screen {
 	private int screenResSelection;
 	private int[][] screenResOptions = {{1920, 1200},
 			{640, 480}, {1600, 900}}; // will be two separate integers
-	private boolean backgroundBool; // currently unused
 	private int sPDiff;  // 1: easy 2: med 3: hard
 
 	private BitmapFont font;
@@ -59,6 +58,9 @@ public class SettingsScreen implements Screen {
 	}
 
 	private void paint(float delta) {
+		
+		spriteBatch.begin();
+		
 		if(game.retroGraphics){
 			GL10 gl = Gdx.graphics.getGL10();
 			Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -81,7 +83,7 @@ public class SettingsScreen implements Screen {
 
 		// Title
 		font.setScale(.75f);
-		//font.draw(spriteBatch, "Settings", (float) (game.screenWidth * .4), (float) (game.screenHeight * .95));
+		font.draw(spriteBatch, "Settings", (float) (game.screenWidth * .4), (float) (game.screenHeight * .95));
 		font.setScale(.5f);
 
 		// Music
@@ -98,7 +100,7 @@ public class SettingsScreen implements Screen {
 				(float) (game.screenHeight * .6));
 
 		// Background Image
-		font.draw(spriteBatch, "Background: " + backgroundBool,
+		font.draw(spriteBatch, "Retro Mode: " + game.retroGraphics,
 				(float) (game.screenWidth * .08), (float) (game.screenHeight * .8));
 
 		// Screen Resolution
@@ -217,16 +219,9 @@ public class SettingsScreen implements Screen {
 
 			} else if (x >= .08 && x <= .46 && y >= .72 && y <= .8) {
 
-				backgroundBool = backgroundBool ? false : true;
-				System.out.println("Background Option set to " + backgroundBool);
-
-				//				System.out.println("CYAN " + Color.CYAN.toString());
-				//				System.out.println("RED " + Color.RED.toString());
-				//				System.out.println("GREEN " + Color.GREEN.toString());
-				//				System.out.println("BLUE " + Color.BLUE.toString());
-				//				System.out.println("WHITE " + Color.WHITE.toString());
-				//				System.out.println("BLACK " + Color.BLACK.toString());
-
+				
+				game.retroGraphics = game.retroGraphics ? false : true;
+				System.out.println("Retro Mode Option set to " + game.retroGraphics);		
 
 			} else if (x >= .51 && x <= .96 && y >= .72 && y <= .8) {
 
@@ -341,7 +336,7 @@ public class SettingsScreen implements Screen {
 		pw.println("Username: " + game.playerName);
 		pw.printf("Ship Color: %s%n", swapHex(game.playerColor.toString()));
 		pw.printf("World Color: %s%n", swapHex(game.gameColor.toString()));
-		pw.println("Background: " + this.backgroundBool);
+		pw.println("Retro: " + game.retroGraphics);
 		pw.println("Volume: " + this.volBool);
 		pw.println("Sounds: " + this.soundBool);
 		pw.println("Music: " + this.musicBool);

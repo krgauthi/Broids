@@ -141,6 +141,8 @@ public class MainMenu implements Screen{
 	public void show() {
 		buff = 0;
 		
+		myGame.multiplayer = false;
+		
 		titleTex = new Texture(Gdx.files.internal("data/Broderoids.png"));
 		titleSprite = new Sprite(titleTex,512,512);
 		titleSprite.setPosition(0,yy*(-.5f));

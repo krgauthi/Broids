@@ -42,6 +42,8 @@ public class BaseGame extends Game {
 	public int gameSize; // multi only
 	public boolean connected;
 
+	public boolean retroGraphics; 	//TODO Ref in Settings
+	
 	/*
 	 * (non-Javadoc)
 	 * 

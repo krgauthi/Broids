@@ -48,13 +48,14 @@ public class BaseGame extends Game {
 		multiplayer = false;
 		bounds = .25f; // max of .5
 		gameSize = 0;
-		godMode = false;
 
 		font = new BitmapFont(Gdx.files.internal(Settings.data_path
 				+ "smallfonts.fnt"), Gdx.files.internal(Settings.data_path
 				+ "smallfonts_0.png"), false);
 		
 		Gdx.input.setCatchBackKey(true);
+		
+		Settings.init(this);
 		
 		try {
 			Net.init(this);

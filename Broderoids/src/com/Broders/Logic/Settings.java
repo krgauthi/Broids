@@ -71,6 +71,7 @@ public class Settings {
 	public static void init(BaseGame mygame) {
 		game = mygame;
 		prefs = Gdx.app.getPreferences("broids-prefs");
+		load();
 	}
 	
 	public static void load() {

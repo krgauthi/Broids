@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import com.Broders.mygdxgame.BaseGame;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
 /* Settings Object class to be used as a modular way to
@@ -23,10 +24,14 @@ import com.badlogic.gdx.graphics.Color;
 public class Settings {
 
 	BaseGame game;
+	
 	public static String data_path = "data/";
 	
 	public Settings(BaseGame game) {
 		this.game = game;
+			
+
+		
 	}
 	
 	// Main method for loading settings from settings file

@@ -104,15 +104,15 @@ public class MainMenu implements Screen{
 				// single player game X 650-850 Y 180 - 230
 				if(y >= .20 && y <= .28){
 					// Single Player
-					SoundManager.get("click").play(myGame.soundVolume * 0.07f);
+					SoundManager.play("click", 0.7f);
 					myGame.setScreen(new GameScreen(this.myGame, 0, 0, 0, true));
 				}else if(myGame.isConnected() && y >= .32 && y <= .43){
 					// Multiplayer
-					SoundManager.get("click").play(myGame.soundVolume * 0.07f);
+					SoundManager.play("click", 0.7f);
 					myGame.setScreen(BaseGame.screens.get("lobby"));
 				}else if(y >= .48 && y <= .60){
 					// Settings
-					SoundManager.get("click").play(myGame.soundVolume * 0.07f);
+					SoundManager.play("click", 0.7f);
 					myGame.setScreen(BaseGame.screens.get("settings"));
 				}
 			}	

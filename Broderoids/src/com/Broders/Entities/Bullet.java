@@ -62,10 +62,8 @@ public class Bullet extends Entity {
 
 		//Set type data
 		super.getBody().setUserData(this);
-			
-		Sound pew = SoundManager.get("pew");
-		long soundId = pew.play(game.soundVolume * 0.1f);
-		pew.setPitch(soundId, (float) (0.9f + Math.random() * 0.2));
+		
+		SoundManager.play("pew", 1f, (float) (0.9f + Math.random() * 0.2));
 	}
 
 	

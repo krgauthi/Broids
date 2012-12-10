@@ -95,8 +95,6 @@ public class Ship extends Entity {
 		this.smokeInterval = 0;
 		this.shieldRegen = 0;
 
-		
-		
 		TextureManager.getSprites("Ship2").flip(false, true);
 		TextureManager.getSprites("Ship2").setOrigin((meter * this.getSize()) / 2,	(meter * this.getSize()) / 2);
 		TextureManager.getSprites("Ship2").setSize(meter * this.getSize(), meter * this.getSize());
@@ -104,8 +102,6 @@ public class Ship extends Entity {
 		//Set type data
 		super.getBody().setUserData(this);
 	}
-
-
 
 	/**
 	 * Checks if the thrust is engaged/disengaged
@@ -256,9 +252,8 @@ public class Ship extends Entity {
 			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 
 			setThrust(false);
-			Sound death = SoundManager.get("death");
-			long soundId = death.play(game.soundVolume * .1f);
-			death.setPitch(soundId, 0.85f);
+			
+			SoundManager.play("death", 1f, 0.85f);
 		}
 	}
 

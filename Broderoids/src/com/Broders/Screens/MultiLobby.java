@@ -233,6 +233,7 @@ public class MultiLobby implements Screen {
 						Screen temp = Net.joinGame(name[0], gamePassword);
 
 						if (temp != null) {
+							SoundManager.play("click", 0.7f);
 							myGame.setScreen(temp);
 							// TODO: Dispose of this screen
 						} else {
@@ -240,12 +241,11 @@ public class MultiLobby implements Screen {
 						}
 						//host
 					} else {
-						Sound error = SoundManager.get("error");
-						long Id = error.play(myGame.soundVolume * 0.1f);
-						error.setPitch(Id, (float) (1.5f));
+						SoundManager.play("error", 1f, 1.5f);
 					}
 
 				} else if (x >= .174 && x <= .404) {
+					SoundManager.play("click", 0.7f);
 					myGame.setScreen(BaseGame.screens.get("host"));
 					//refresh
 				}else if(x >= .174 && x <= .404){
@@ -320,15 +320,14 @@ public class MultiLobby implements Screen {
 				Screen temp = Net.joinGame(name[0], gamePassword);
 
 				if (temp != null) {
+					SoundManager.play("click", 0.7f);
 					myGame.setScreen(temp);
 					// TODO: Dispose of this screen
 				} else {
 					System.out.println("Shit broke yo");
 				}
 			} else {
-				Sound error = SoundManager.get("error");
-				long Id = error.play(myGame.soundVolume * 0.1f);
-				error.setPitch(Id, (float) (1.5f));
+				SoundManager.play("error", 1f, 1.5f);
 			}
 		}
 

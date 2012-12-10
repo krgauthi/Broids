@@ -201,14 +201,14 @@ public class SettingsScreen implements Screen {
 			if (x >= .08 && x <= .46 && y >= .12 && y <= .2) {
 				
 				game.musicVolume = game.musicVolume == 10 ? 0 : game.musicVolume + 1;
-				SoundManager.get("muzak").setVolume(SoundManager.getMuzakId(), game.musicVolume * .1f);
+				SoundManager.setVolume("muzak", SoundManager.getMuzakId(), 1f);
 				System.out.println("Music Option set to " + game.musicVolume);
 				
 			} else if (x >= .08 && x <= .46 && y >= .32 && y <= .4) {
 				
 				game.soundVolume = game.soundVolume == 10 ? 0 : game.soundVolume + 1;
 				System.out.println("Sound Option set to " + game.soundVolume);
-				SoundManager.get("click").play(game.soundVolume * .1f);
+				SoundManager.play("click", 0.7f);
 				
 			} else if (x >= .08 && x <= .46 && y >= .52 && y <= .6) {
 

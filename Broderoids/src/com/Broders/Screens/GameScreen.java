@@ -283,7 +283,7 @@ public class GameScreen implements Screen {
 			font.setScale(.25f);
 		}
 		
-		if (CoreLogic.getLocal().getLives() == 0) {
+		if (CoreLogic.getLocal().getLives() == 0 && !multiplayer) {
 			font .setScale(2f);
 			String out;
 			out = String.format("Game Over!"); 
@@ -409,7 +409,7 @@ public class GameScreen implements Screen {
 				Net.leaveGame();
 			}
 
-			SoundManager.get("muzak").setPitch(SoundManager.getMuzakId(), 1f);
+			SoundManager.setPitch("muzak", SoundManager.getMuzakId(), 1f);
 			myGame.setScreen(BaseGame.screens.get("main"));
 		}
 		

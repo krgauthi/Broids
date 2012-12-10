@@ -13,13 +13,10 @@ public class TextureManager {
 	private static HashMap<String, Texture> textures;
 	private static HashMap<String, Sprite> sprites;
 
-
-
 	public static void init(BaseGame g) {
 		BaseGame myGame = g;
 		textures = new HashMap<String, Texture>();
 		sprites = new HashMap<String, Sprite>();
-
 
 		if(myGame.retroGraphics){
 			String[][] defaultTextures = {
@@ -47,7 +44,6 @@ public class TextureManager {
 					{"Ship2","data/retroShip2.png"},
 					{"Broid","data/retroBroid.png"},
 					{"bullet","data/bullet.png"},
-
 			};
 
 			for (String[] tex : defaultTextures) {
@@ -87,13 +83,7 @@ public class TextureManager {
 				loadTexture(tex[0], tex[1]);
 				loadSprite(tex[0]);
 			}
-
-
-
 		}
-
-
-
 	}
 
 	public static Texture getTexture(String key) {
@@ -114,11 +104,7 @@ public class TextureManager {
 		sprites.put(key, temp);
 	}
 
-
-
 	public static void destroy() {
 
 	}
-
-
 }

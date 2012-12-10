@@ -2,6 +2,7 @@ package com.Broders.Screens;
 
 import com.Broders.Logic.Net;
 import com.Broders.mygdxgame.BaseGame;
+import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Input.Keys;
@@ -200,6 +201,7 @@ public class MultiHost implements Screen {
 					// TODO: Pass the right values
 					Screen s = Net.newGame(this.gameName, 5, x, y, this.password);
 					if (s != null) {
+						SoundManager.play("click", 0.7f);
 						myGame.setScreen(s);
 					} else {
 						// Error

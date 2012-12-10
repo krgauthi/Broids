@@ -79,8 +79,8 @@ public class BaseGame extends Game {
 		Gdx.input.setCatchBackKey(true);
 		
 		Net.init(this);
-		
-		SoundManager.init();	
+		SoundManager.init(this);	
+		TextureManager.init(this);
 		
 		try {
 			settings.loadSettings();
@@ -89,8 +89,6 @@ public class BaseGame extends Game {
 					"named 'broids.cfg' is located in the assets/data folder.");
 			e.printStackTrace();
 		}
-		
-		TextureManager.init(this);
 		
 		screens = new HashMap<String,Screen>();
 		screens.put("splash", new SplashScreen(this));

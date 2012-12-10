@@ -30,35 +30,12 @@ public class GameScreen implements Screen {
 
 	private Random rand;
 
-	private Texture dPadTexture;
-	private Texture fireButtonTexture;
-	private Texture thrusterButtonTexture;
-
-	private Texture healthBarTexture;
-	private Texture healthBlockTexture;
-	private Texture shieldBarTexture;
-	private Texture shieldBlockTexture;
-
-	private Texture livesTexture;
-	private Texture white;
-
-	private Texture whitePixel;
-	private Sprite whitePixelSprite;
-
-	private Sprite dPad;
-	private Sprite fireButton;
-	private Sprite thrusterButton;
-
-	private Sprite healthBar;
-	private Sprite healthBlock;
-	private Sprite shieldBar;
-	private Sprite shieldBlock;
-	private Sprite lives;
+	
 
 	private boolean paused;
 	private float pauseWait;
 	private ShapeRenderer overlay;
-	
+
 	private float gameOver;
 
 	private SpriteBatch spriteBatch;
@@ -93,13 +70,13 @@ public class GameScreen implements Screen {
 		} else {
 			System.out.println("Single");
 		}
-		
+
 		if (this.multiplayer) {
 			CoreLogic.setClientId(id2);
 		} else {
 			CoreLogic.setClientId(2);
 		}
-		
+
 		CoreLogic.initCore(myGame, width2, height2, h2, multiplayer);
 
 		font = this.myGame.font;
@@ -167,18 +144,18 @@ public class GameScreen implements Screen {
 
 		// If Android
 		if (Gdx.app.getVersion() > 0) {
-			dPad.draw(spriteBatch, .45f); // TODO @mike .45f make this a setting
+			TextureManager.getSprites("dPad").draw(spriteBatch, .45f); // TODO @mike .45f make this a setting
 			// for how transparent to have
 			// android controls
-			fireButton.draw(spriteBatch, .45f);
-			thrusterButton.draw(spriteBatch, .45f);
+			TextureManager.getSprites("fireButton").draw(spriteBatch, .45f);
+			TextureManager.getSprites("thrusterButton").draw(spriteBatch, .45f);
 		}
 
 		if (multiplayer) {
 			// Draw HUD
-			healthBar.draw(spriteBatch);
+			TextureManager.getSprites("healthBar").draw(spriteBatch);
 			// healthBlock.draw(spriteBatch);
-			shieldBar.draw(spriteBatch);
+			TextureManager.getSprites("shieldBar").draw(spriteBatch);
 			// shieldBlock.draw(spriteBatch);
 
 			int health = 0;
@@ -190,17 +167,17 @@ public class GameScreen implements Screen {
 				score = CoreLogic.getLocal().getScore();
 			}
 
-			spriteBatch.draw(healthBlockTexture, xx * .01f, yy * .5f,
+			spriteBatch.draw(TextureManager.getTexture("healthBlockTexture"), xx * .01f, yy * .5f,
 					((yy * .5f) * .88f) * health / 100, yy * .5f, 0, 0,
 					(int) ((512f * .88f) * health / 100), 512, false, false);
-			spriteBatch.draw(shieldBlockTexture, xx * .01f, yy * .5f,
+			spriteBatch.draw(TextureManager.getTexture("shieldBlockTexture"), xx * .01f, yy * .5f,
 					(yy * .5f) * shield / 100, yy * .5f, 0, 0, (int) (512f * shield / 100),
 					512, false, false);
 
 
 			//String healthText = "HEALTH: " + health + " / 100";
 			//String shieldText = "SHIELD: " + shield + " / 100";
-			
+
 
 			String healthText = "HEALTH: " + CoreLogic.getLocal().getHealth() + " / 100";
 			String shieldText = "SHIELD: " + CoreLogic.getLocal().getShield() + " / 100";
@@ -221,14 +198,14 @@ public class GameScreen implements Screen {
 
 				// player
 				font.draw(spriteBatch, out, xx * .01f, yy * .98f);
-				
+
 				String out2 = String.format("Bonus: x%d ", (int)Math.floor(CoreLogic.getLocal().getBonus()));
 				font.draw(spriteBatch, out2, xx * .01f, yy * .94f);
 
 				int heartcount = CoreLogic.getLocal().getLives();
 				for (int i = 0; i < heartcount; i++) {
-					lives.setPosition(xx * (.005f + (i * .02f)), yy * .85f);
-					lives.draw(spriteBatch);
+					TextureManager.getSprites("lives").setPosition(xx * (.005f + (i * .02f)), yy * .85f);
+					TextureManager.getSprites("lives").draw(spriteBatch);
 				}
 			}
 
@@ -261,17 +238,17 @@ public class GameScreen implements Screen {
 			float offsetX = CoreLogic.getViewPortX() % 10;
 			float offsetY = CoreLogic.getViewPortY() % 10;
 
-			whitePixelSprite.setSize(xx, 1);
+			TextureManager.getSprites("whitePixelSprite").setSize(xx, 1);
 			for (int i = 0; i <= CoreLogic.getHeightScreen(); i = i + 10) {
-				whitePixelSprite.setPosition(0,
+				TextureManager.getSprites("whitePixelSprite").setPosition(0,
 						yy * ((i - offsetY) / CoreLogic.getHeightScreen()));
-				whitePixelSprite.draw(spriteBatch);
+				TextureManager.getSprites("whitePixelSprite").draw(spriteBatch);
 			}
-			whitePixelSprite.setSize(1, yy);
+			TextureManager.getSprites("whitePixelSprite").setSize(1, yy);
 			for (int i = 0; i <= CoreLogic.getWidthScreen(); i = i + 10) {
-				whitePixelSprite.setPosition(
+				TextureManager.getSprites("whitePixelSprite").setPosition(
 						xx * ((i - offsetX) / CoreLogic.getWidthScreen()), 0);
-				whitePixelSprite.draw(spriteBatch);
+				TextureManager.getSprites("whitePixelSprite").draw(spriteBatch);
 			}
 
 		}
@@ -283,7 +260,7 @@ public class GameScreen implements Screen {
 			font.draw(spriteBatch, out, xx*.25f, yy*.65f);
 			font.setScale(.25f);
 		}
-		
+
 		if (!CoreLogic.multiplayer && CoreLogic.getLocal().getLives() == 0) {
 			font .setScale(2f);
 			String out;
@@ -291,7 +268,7 @@ public class GameScreen implements Screen {
 			font.draw(spriteBatch, out, xx*.20f, yy*.65f);
 			font.setScale(.25f);
 		}
-		
+
 
 
 		if (paused && !multiplayer) {
@@ -300,18 +277,21 @@ public class GameScreen implements Screen {
 			TextureManager.getSprites("whitePixel").setPosition((xx * .5f)-((xx * .5f)/2), (yy * .5f)-((yy * .5f)/2));
 			TextureManager.getSprites("whitePixel").setColor(.1f, .1f, .1f, .7f);
 			TextureManager.getSprites("whitePixel").draw(spriteBatch);
+
+			TextureManager.getSprites("pause").setSize(yy * .75f, yy * .75f);
+			TextureManager.getSprites("pause").setPosition((xx * .5f) - (yy * .375f), yy - (yy * .7f));
+			TextureManager.getSprites("pause").draw(spriteBatch);
 			
-			/*
-			//this.overlay = new ShapeRenderer();
-			overlay.begin(ShapeType.FilledRectangle);
-			Color temp = new Color(51f,51f,51f,0.1f);
-			overlay.setColor(temp);
-			overlay.filledRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-			overlay.end();
-			*/
+			TextureManager.getSprites("mainMenu").setSize(yy * .75f, yy * .75f);
+			TextureManager.getSprites("mainMenu").setPosition((xx * .5f) - (yy * .375f), yy - (yy * .85f));
+			TextureManager.getSprites("mainMenu").draw(spriteBatch);
+			
+			TextureManager.getSprites("resume").setSize(yy * .75f, yy * .75f);
+			TextureManager.getSprites("resume").setPosition((xx * .5f) - (yy * .375f),0);
+			TextureManager.getSprites("resume").draw(spriteBatch);
 
 		}
-		
+
 		spriteBatch.end();
 	}
 
@@ -328,7 +308,7 @@ public class GameScreen implements Screen {
 				debug2.update();
 			}
 		}
-		
+
 		if (!multiplayer && CoreLogic.getLocal().getLives() == 0) {
 			gameOver += Gdx.graphics.getDeltaTime();
 			if (gameOver >= 4f) {
@@ -504,60 +484,32 @@ public class GameScreen implements Screen {
 
 		spriteBatch = new SpriteBatch();
 
-		spriteBatch.begin();
-		GL10 g1 = Gdx.graphics.getGL10();
-		Gdx.gl.glClearColor(0, 0, 1, 1);
-		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		spriteBatch.end();
+		TextureManager.getSprites("healthBar").setPosition(xx * .01f, yy * .5f);
+		TextureManager.getSprites("healthBlock").setPosition(xx * .01f, yy * .5f);
+		TextureManager.getSprites("shieldBar").setPosition(xx * .01f, yy * .5f);
+		TextureManager.getSprites("shieldBlock").setPosition(xx * .01f, yy * .5f);
 
-		healthBarTexture = TextureManager.getTexture("healthBar");
-		healthBlockTexture = TextureManager.getTexture("healthBlock");
-		shieldBarTexture = TextureManager.getTexture("shieldBar");
-		shieldBlockTexture = TextureManager.getTexture("shieldBlock");
-
-		healthBar = new Sprite(healthBarTexture, 512, 512);
-		healthBlock = new Sprite(healthBlockTexture, 512, 512);
-		shieldBar = new Sprite(shieldBarTexture, 512, 512);
-		shieldBlock = new Sprite(shieldBlockTexture, 512, 512);
-
-		healthBar.setPosition(xx * .01f, yy * .5f);
-		healthBlock.setPosition(xx * .01f, yy * .5f);
-		shieldBar.setPosition(xx * .01f, yy * .5f);
-		shieldBlock.setPosition(xx * .01f, yy * .5f);
-
-		healthBar.setSize(yy * .5f, yy * .5f);
-		healthBlock.setSize(yy * .5f, yy * .5f);
-		shieldBar.setSize(yy * .5f, yy * .5f);
-		shieldBlock.setSize(yy * .5f, yy * .5f);
-
-		livesTexture = TextureManager.getTexture("lives");
-		lives = new Sprite(livesTexture, 1024, 1024);
-		lives.setSize(yy * .05f, yy * .05f);
-
-		white = TextureManager.getTexture("white");
-		new Sprite(white, 32, 32);
-
-		whitePixel = TextureManager.getTexture("whitePixel");
-		whitePixelSprite = new Sprite(whitePixel, 1, 1);
+		TextureManager.getSprites("healthBar").setSize(yy * .5f, yy * .5f);
+		TextureManager.getSprites("healthBlock").setSize(yy * .5f, yy * .5f);
+		TextureManager.getSprites("shieldBar").setSize(yy * .5f, yy * .5f);
+		TextureManager.getSprites("shieldBlock").setSize(yy * .5f, yy * .5f);
+		
+		TextureManager.getSprites("lives").setSize(yy * .05f, yy * .05f);
 
 		if (Gdx.app.getVersion() > 0) {
-			dPadTexture = TextureManager.getTexture("dPad");
-			dPad = new Sprite(dPadTexture, 512, 512);
-			dPad.setPosition(xx * (0), yy * (-.1f));
-			dPad.setSize(yy * .6f, yy * .6f);
+			
+			TextureManager.getSprites("dPad").setPosition(xx * (0), yy * (-.1f));
+			TextureManager.getSprites("dPad").setSize(yy * .6f, yy * .6f);
 
-			fireButtonTexture = TextureManager.getTexture("fireButton");;
-			fireButton = new Sprite(fireButtonTexture, 512, 512);
-			fireButton.setPosition(xx * (.82f), yy * (.25f));
-			fireButton.setSize(yy * .32f, yy * .32f);
+		
+			TextureManager.getSprites("fireButton").setPosition(xx * (.82f), yy * (.25f));
+			TextureManager.getSprites("fireButton").setSize(yy * .32f, yy * .32f);
 
-			thrusterButtonTexture = TextureManager.getTexture("thrustButton");
-			thrusterButton = new Sprite(thrusterButtonTexture, 512, 512);
-			thrusterButton.setPosition(xx * (.69f), yy * 0);
-			thrusterButton.setSize(yy * .32f, yy * .32f);
+			TextureManager.getSprites("thrusterButton").setPosition(xx * (.69f), yy * 0);
+			TextureManager.getSprites("thrusterButton").setSize(yy * .32f, yy * .32f);
 		}
 		font.setScale(.25f);
-		
+
 		SoundManager.play("start");
 	}
 

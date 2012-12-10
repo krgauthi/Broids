@@ -30,7 +30,7 @@ public class MainMenu implements Screen{
 	private Sprite singleSprite;
 	private Sprite multiSprite;
 	private Sprite settingsSprite;
-	
+
 	private BitmapFont font;
 
 	private float buff;
@@ -81,6 +81,19 @@ public class MainMenu implements Screen{
 
 		//add buttons and logo to this layer
 		spriteBatch.begin();
+
+		TextureManager.getSprites("titleLeft").draw(spriteBatch);
+		TextureManager.getSprites("titleRight").draw(spriteBatch);
+
+		TextureManager.getSprites("singlePlayer").draw(spriteBatch);
+		if (myGame.isConnected())
+			TextureManager.getSprites("multiplayer").draw(spriteBatch);
+
+		TextureManager.getSprites("settings").draw(spriteBatch);
+		TextureManager.getSprites("highScores").draw(spriteBatch);
+		TextureManager.getSprites("quit").draw(spriteBatch);
+
+		/*
 		titleSprite.draw(spriteBatch);
 		singleSprite.draw(spriteBatch);
 		if (myGame.isConnected()) {
@@ -89,6 +102,7 @@ public class MainMenu implements Screen{
 		settingsSprite.draw(spriteBatch);
 		font.setScale(0.97f, 0.75f);
 		font.draw(spriteBatch, "High Scores", xx * .56f, yy * .36f);
+		 */
 		spriteBatch.end();
 
 	}
@@ -164,6 +178,28 @@ public class MainMenu implements Screen{
 		buff = 0;
 
 		myGame.multiplayer = false;
+
+		TextureManager.getSprites("titleLeft").setSize(yy*.5f, yy * .5f);
+		TextureManager.getSprites("titleLeft").setPosition((xx * .5f)-(yy*.5f), yy - (yy * .5f));
+
+		TextureManager.getSprites("titleRight").setSize(yy*.5f, yy * .5f);
+		TextureManager.getSprites("titleRight").setPosition(xx * .5f, yy - (yy * .5f));
+
+		TextureManager.getSprites("singlePlayer").setSize(yy*.75f, yy * .75f);
+		TextureManager.getSprites("singlePlayer").setPosition((xx * .5f)-(yy*.75f),(yy * .1f));
+
+		TextureManager.getSprites("multiplayer").setSize(yy*.75f, yy * .75f);
+		TextureManager.getSprites("multiplayer").setPosition((xx * .5f)-(yy*.75f), 0 - (yy * .05f));
+
+		TextureManager.getSprites("highScores").setSize(yy*.75f, yy * .75f);
+		TextureManager.getSprites("highScores").setPosition(xx * .5f,(yy * .1f));
+
+		TextureManager.getSprites("settings").setSize(yy*.75f, yy * .75f);
+		TextureManager.getSprites("settings").setPosition(xx * .5f, 0 - (yy * .05f));
+
+		TextureManager.getSprites("quit").setSize(yy*.75f, yy * .75f);
+		TextureManager.getSprites("quit").setPosition((xx * .5f)-(yy*.4f), 0 - (yy * .2f));
+
 
 		titleTex = new Texture(Gdx.files.internal("data/Broderoids.png"));
 		titleSprite = new Sprite(titleTex,512,512);

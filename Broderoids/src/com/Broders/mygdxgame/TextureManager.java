@@ -41,6 +41,17 @@ public class TextureManager {
 					{"hostGame","data/bttn_host.png"},
 					{"joinGame","data/bttn_join.png"},
 					{"refresh","data/bttn_refresh.png"},
+					{"singlePlayer","data/bttn_singleplayer.png"},
+					{"multiplayer","data/bttn_multiplayer.png"},
+					{"highScores","data/bttn_highScore.png"},
+					{"mainMenu","data/bttn_mainMenu.png"},
+					{"pause","data/bttn_pause.png"},
+					{"quit","data/bttn_quit.png"},
+					{"settings","data/bttn_settings.png"},
+					
+					//Title
+					{"titleLeft","data/menu_title1.png"},
+					{"titleRight","data/menu_title2.png"},
 
 					//Retro Textures
 					{"Ship1","data/retroShip1.png"},
@@ -75,6 +86,18 @@ public class TextureManager {
 					{"hostGame","data/bttn_host.png"},
 					{"joinGame","data/bttn_join.png"},
 					{"refresh","data/bttn_refresh.png"},
+					{"singlePlayer","data/bttn_singleplayer.png"},
+					{"multiplayer","data/bttn_multiplayer.png"},
+					{"highScores","data/bttn_highScore.png"},
+					{"mainMenu","data/bttn_mainMenu.png"},
+					{"pause","data/bttn_pause.png"},
+					{"quit","data/bttn_quit.png"},
+					{"settings","data/bttn_settings.png"},
+
+					//Title
+					{"titleLeft","data/menu_title1.png"},
+					{"titleRight","data/menu_title2.png"},
+					
 
 					//Game Textures
 					{"Ship1","data/ship1.png"},

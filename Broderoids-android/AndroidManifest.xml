@@ -10,7 +10,7 @@
         android:icon="@drawable/bro_icon"
         android:label="@string/app_name" >
         <activity
-            android:name="Broderoids"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize">

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Net;
 import com.Broders.Logic.NetException;
 import com.Broders.Logic.Pos;
@@ -43,6 +44,8 @@ public class MultiLobby implements Screen {
 	float xx;
 	float yy;
 	float buff;
+	
+	float rotation;
 
 	// Test Variables?
 	int gameCount;
@@ -72,6 +75,8 @@ public class MultiLobby implements Screen {
 		curPage = 0;
 
 		selectedGame = -1;
+		
+		rotation = 0;
 
 	}
 
@@ -187,6 +192,7 @@ public class MultiLobby implements Screen {
 			
 			if(i == selectedGame){
 				arrowSprite.setSize(xx * .05f, xx * .05f);
+				arrowSprite.setRotation(rotation);
 				arrowSprite.setPosition( xx * .936f, yy* (.68f - (.16f * i)));
 				arrowSprite.draw(spriteBatch);
 			}
@@ -201,6 +207,7 @@ public class MultiLobby implements Screen {
 
 	private void update(float delta) {
 		tail.update();
+		rotation += 1;
 
 	}
 
@@ -305,6 +312,8 @@ public class MultiLobby implements Screen {
 	public void show() {
 		buff = 0;
 
+		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
+		
 		white = new Texture(Gdx.files.internal("data/whitebox.png"));
 		whiteSprite = new Sprite(white, 32, 32);
 		whiteSprite.setColor(Color.WHITE);
@@ -312,8 +321,10 @@ public class MultiLobby implements Screen {
 
 		arrow = new Texture(Gdx.files.internal("data/ship1.png"));
 		arrowSprite = new Sprite(arrow, 1024, 1024);
-		arrowSprite.setOrigin((yy * .25f) / 2f, (yy * .25f) / 2f);
 		arrowSprite.setSize(yy * .25f, yy * .25f);
+		//arrowSprite.setOrigin((meter(yy * .25f) / 2f, (yy * .25f) / 2f);
+		
+		
 
 		spriteBatch = new SpriteBatch();
 

@@ -229,7 +229,7 @@ public class CoreLogic {
 
 		}
 
-		if(local.getShip() != null){
+		if(local != null && local.getShip() != null){
 			// viewport logic
 			if ((local.getShip().getX() - viewPortX) / widthScreen > (1 - myGame.bounds)) {
 				if (viewPortX < width - widthScreen) {
@@ -309,7 +309,7 @@ public class CoreLogic {
 
 		}
 		cleanEntities();
-		if(local.getShip() != null){
+		if(local != null && local.getShip() != null){
 			local.getShip().setThrust(false);
 			local.getShip().setShooting(false);
 		}

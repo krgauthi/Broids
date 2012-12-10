@@ -221,6 +221,8 @@ public class MultiLobby implements Screen {
 							@Override
 							public void canceled () {}
 						}, "Password for game:", "");	
+					} else {
+						gamePassword = "";
 					}
 
 					System.out.println("Joining Game with password " + gamePassword);

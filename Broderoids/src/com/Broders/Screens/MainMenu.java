@@ -118,28 +118,38 @@ public class MainMenu implements Screen{
 			double y = ((float)Gdx.input.getY()/yy);
 
 			//make hit boxes
-			if(x >= .55 && x <= .82){
+			if(x >= .116 && x <= .458){
 
 				// single player game X 650-850 Y 180 - 230
-				if(y >= .20 && y <= .28){
+				if(y >= .480 && y <= .567){
 					// Single Player
 					SoundManager.play("click", 0.7f);
 					SoundManager.play("start");
 					myGame.setScreen(new GameScreen(this.myGame, 0, 0, 0, true));
-				}else if(myGame.isConnected() && y >= .32 && y <= .43){
+				}else if(myGame.isConnected() && y >= .628 && y <= .718){
 					// Multiplayer
 					SoundManager.play("click", 0.7f);
 					myGame.setScreen(BaseGame.screens.get("lobby"));
-				}else if(y >= .48 && y <= .60){
+				}
+			}else if(x >= .537 && x <= .882){
+				if(y >= .480 && y <= .567){
+					//HighScore
+					SoundManager.play("click", 0.7f);
+					myGame.setScreen(BaseGame.screens.get("scores"));
+				}else if(y >= .628 && y <= .718){
 					// Settings
 					SoundManager.play("click", 0.7f);
 					myGame.setScreen(BaseGame.screens.get("settings"));
-				}else if(y >= .65 && y <= .77){
+				}
+			}
+
+			if(x >= .312 && x <= .688){
+				if(y >= .777 && y <= .868){
 					// Settings
 					SoundManager.play("click", 0.7f);
-					myGame.setScreen(BaseGame.screens.get("scores"));
+					Gdx.app.exit();
 				}
-			}	
+			}
 		}
 
 		if(Gdx.input.isKeyPressed(Keys.F1)){

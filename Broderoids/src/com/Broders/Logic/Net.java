@@ -3,6 +3,7 @@ package com.Broders.Logic;
 import com.Broders.Entities.*;
 import com.Broders.Screens.GameScreen;
 import com.Broders.mygdxgame.BaseGame;
+import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.Vector2;
 import com.google.gson.*;
@@ -165,6 +166,7 @@ public class Net extends Thread {
 
 		// TODO: Useful errors
 		if (c == FRAME_ERROR) {
+			SoundManager.get("error").play();
 			return null;
 		} else if (c != FRAME_LOBBY_JOIN) {
 			return null;
@@ -201,6 +203,7 @@ public class Net extends Thread {
 
 		// TODO: Useful errors
 		if (c == FRAME_ERROR) {
+			SoundManager.get("error").play();
 			return null;
 		} else if (c != FRAME_LOBBY_JOIN) {
 			return null;
@@ -230,6 +233,7 @@ public class Net extends Thread {
 
 		int command = o.get("c").getAsInt();
 		if (command == Net.FRAME_ERROR) {
+			SoundManager.get("error").play();
 			return ret;
 		} else if (command != Net.FRAME_LOBBY_LIST) {
 			return ret;
@@ -265,12 +269,13 @@ public class Net extends Thread {
 	private static void handleErrorFrame(JsonObject o) throws Exception {
 		int command = o.get("c").getAsInt();
 		if (command != Net.FRAME_ERROR) {
+			SoundManager.get("error").play();
 			invalidFrame();
 			return;
 		}
 
 		String text = o.get("d").getAsString();
-
+		SoundManager.get("error").play();
 		throw new Exception(text);
 	}
 

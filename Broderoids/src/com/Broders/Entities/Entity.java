@@ -182,6 +182,7 @@ public abstract class Entity {
 				&& posX < (screenWidth + (this.getSize() * 8))
 				&& posY > -(this.getSize() * 8)
 				&& posY < (screenHeight + (this.getSize() * 8))) {
+			this.getSprite().setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
 			this.getSprite().setSize(meter * this.getSize(),meter * this.getSize());
 			this.getSprite().setColor(this.getColor());
 			this.getSprite().setPosition(posX, posY);

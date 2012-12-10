@@ -184,19 +184,20 @@ public class Ship extends Entity {
 		posY = screenHeight
 				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
 
-
+		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
+		
 		if(posX > -this.getSize()*8 && posX < (screenWidth+this.getSize()*8) 
 				&& posY > -this.getSize()*8 && posY < (screenHeight+this.getSize()*8)){
 
 			if (this.getThrust()) {
-				
+				TextureManager.getSprites("Ship2").setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
 				TextureManager.getSprites("Ship2").setColor(this.getColor());
 				TextureManager.getSprites("Ship2").setPosition(posX, posY);
 				TextureManager.getSprites("Ship2").setRotation((float) super.getAngle());
 				TextureManager.getSprites("Ship2").draw(sb);
 
 			} else {
-				
+				TextureManager.getSprites("Ship2").setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
 				super.getSprite().setColor(super.getColor());
 				super.getSprite().setPosition(posX, posY);
 				super.getSprite().setRotation((float) super.getAngle() + (float) (Math.PI / 2));

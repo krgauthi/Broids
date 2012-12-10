@@ -249,6 +249,7 @@ public class MultiLobby implements Screen {
 					myGame.setScreen(BaseGame.screens.get("host"));
 					//refresh
 				}else if(x >= .174 && x <= .404){
+					games.clear();
 					games = Net.listGames();
 				}
 			} else if (y >= .55 && y <= .77) {

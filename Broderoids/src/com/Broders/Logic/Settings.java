@@ -67,7 +67,15 @@ public class Settings {
 			loadSPDiffSetting(value);
 		} else if (option.equals("epileptic")) {
 			loadEpilepticModeSetting(value);
+		} else if (option.equals("retro")) {
+			loadRetroSetting(value);
 		}
+	}
+
+	private void loadRetroSetting(String value) {
+		game.retroGraphics = Boolean.parseBoolean(value);
+		System.out.printf("Loaded retro setting [%s] from config file%n",
+				Boolean.toString(game.retroGraphics));
 	}
 
 	public void loadUsername(String value) {
@@ -132,6 +140,8 @@ public class Settings {
 		};
 		if (!(game.screenWidth == res[0] && game.screenHeight == res[1])) {
 			game.getScreen().resize(res[0], res[1]);
+			game.screenWidth = res[0];
+			game.screenHeight = res[1];
 			System.out.printf("Set Screen size to %d x %d%n", res[0], res[1]);
 		} else {
 			System.out.printf("Screen size is already set to [%d x %d]," +
@@ -146,8 +156,13 @@ public class Settings {
 	}
 	
 	public void loadSPDiffSetting(String value) {
+		try {
+			game.difficulty = Integer.parseInt(value);
+		} catch (NumberFormatException nfe) {
+			game.difficulty = 0;
+		}
 		System.out.printf("Loaded SP Difficulty setting [%d] from config" +
-				" file%n", Integer.parseInt(value));
+				" file%n", game.difficulty);
 	}
 	
 	public void loadEpilepticModeSetting(String value) {

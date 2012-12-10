@@ -46,6 +46,7 @@ public class BaseGame extends Game {
 	public boolean connected;
 
 	public boolean retroGraphics;
+	public int asteroidsCount;
 	
 	/*
 	 * (non-Javadoc)

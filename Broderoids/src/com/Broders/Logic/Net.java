@@ -329,35 +329,18 @@ public class Net extends Thread {
 						JsonObject ento = inn.get("e").getAsJsonObject();
 						for (JsonElement ee : ento.getAsJsonArray()) {
 							JsonObject o = ee.getAsJsonObject();
+							EntityData ed = new EntityData();
+							ed.type = o.get("t").getAsInt();
+							ed.id = o.get("id").getAsString();
+							ed.extra = o.get("e").getAsInt();
+							ed.x = o.get("x").getAsFloat();
+							ed.y = o.get("y").getAsFloat();
+							ed.xv = o.get("xv").getAsFloat();
+							ed.yv = o.get("yv").getAsFloat();
+							ed.a = o.get("a").getAsFloat();
+							ed.av = o.get("av").getAsFloat();
 							
-							int type = o.get("t").getAsInt();
-							String id = o.get("id").getAsString();
-							int extra = o.get("e").getAsInt();
-							float x = o.get("x").getAsFloat();
-							float y = o.get("y").getAsFloat();
-							float xv = o.get("xv").getAsFloat();
-							float yv = o.get("yv").getAsFloat();
-							float a = o.get("a").getAsFloat();
-							float av = o.get("av").getAsFloat();
-	
-							if (type == ENTITY_SHIP) {
-								String[] idParts = id.split("-");
-								Player p = CoreLogic.findPlayer(idParts[0]);
-								Entity ent = new Ship(id, p, x, y);
-								ent.teleport(x, y, a, av, xv, yv);
-							} else if (type == ENTITY_ASTEROID) {
-								// TODO: Don't only spawn LARGES
-								String[] idParts = id.split("-");
-								Player p = CoreLogic.findPlayer(idParts[0]);
-								Entity ent = new Asteroid(extra, id, p, x, y);
-								ent.teleport(x, y, a, av, xv, yv);
-							} else if (type == ENTITY_BULLET) {
-								String[] idParts = id.split("-");
-								Player p = CoreLogic.findPlayer(idParts[0]);
-								Entity ent = new Bullet(id, p, a, x, y);
-								ent.teleport(x, y, a, av, xv, yv);
-								p.createEntity(ent, idParts[1]);
-							}
+							CoreLogic.createEntity(ed);
 						}	
 					} else if (frameType == FRAME_GAME_COLLISION) {
 						JsonObject o = obj.get("d").getAsJsonObject();
@@ -390,34 +373,18 @@ public class Net extends Thread {
 					CoreLogic.removePlayer(Integer.toString(id));
 				} else if (frameType == FRAME_GAME_ENTITY_CREATE) {
 					JsonObject o = obj.get("d").getAsJsonObject();
-					int type = o.get("t").getAsInt();
-					String id = o.get("id").getAsString();
-					int extra = o.get("e").getAsInt();
-					float x = o.get("x").getAsFloat();
-					float y = o.get("y").getAsFloat();
-					float xv = o.get("xv").getAsFloat();
-					float yv = o.get("yv").getAsFloat();
-					float a = o.get("a").getAsFloat();
-					float av = o.get("av").getAsFloat();
-	
-					if (type == ENTITY_SHIP) {
-						String[] idParts = id.split("-");
-						Player p = CoreLogic.findPlayer(idParts[0]);
-						Entity ent = new Ship(id, p, x, y);
-						ent.teleport(x, y, a, av, xv, yv);
-					} else if (type == ENTITY_ASTEROID) {
-						// TODO: Don't only spawn LARGES
-						String[] idParts = id.split("-");
-						Player p = CoreLogic.findPlayer(idParts[0]);
-						Entity ent = new Asteroid(extra, id, p, x, y);
-						ent.teleport(x, y, a, av, xv, yv);
-					} else if (type == ENTITY_BULLET) {
-						String[] idParts = id.split("-");
-						Player p = CoreLogic.findPlayer(idParts[0]);
-						Entity ent = new Bullet(id, p, a, x, y);
-						ent.teleport(x, y, a, av, xv, yv);
-						p.createEntity(ent, idParts[1]);
-					}
+					EntityData ed = new EntityData();
+					ed.type = o.get("t").getAsInt();
+					ed.id = o.get("id").getAsString();
+					ed.extra = o.get("e").getAsInt();
+					ed.x = o.get("x").getAsFloat();
+					ed.y = o.get("y").getAsFloat();
+					ed.xv = o.get("xv").getAsFloat();
+					ed.yv = o.get("yv").getAsFloat();
+					ed.a = o.get("a").getAsFloat();
+					ed.av = o.get("av").getAsFloat();
+					
+					CoreLogic.createEntity(ed);
 				} else if (frameType == FRAME_GAME_ENTITY_MODIFY) {
 					JsonObject o = obj.get("d").getAsJsonObject();
 					String id = o.get("id").getAsString();

@@ -45,6 +45,9 @@ public class Player {
 			playerShip = new Ship(this.nextId(), this,
 					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
 			entities.put(playerShip.getId(), playerShip);
+			if (CoreLogic.getGame().multiplayer) {
+				Net.createEntity(playerShip);
+			}
 
 			score = 0;
 

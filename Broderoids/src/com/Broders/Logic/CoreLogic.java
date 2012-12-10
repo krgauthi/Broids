@@ -56,6 +56,10 @@ public class CoreLogic {
 	private static boolean respawnSound;
 	private static float invulnFlash;
 	private static boolean flashing;
+	
+	public static LinkedList<String[]> addPlayers;
+	public static LinkedList<String> rmPlayers;
+	public static LinkedList<EntityData> addEntities;
 
 	public static BaseGame getGame() {
 		return myGame;
@@ -104,6 +108,9 @@ public class CoreLogic {
 		world.setContactListener(collisions);
 		players = new HashMap<String, Player>();
 		rmEntities = new LinkedList<Entity>();
+		addPlayers = new LinkedList<String[]>();
+		rmPlayers = new LinkedList<String>();
+		addEntities = new LinkedList<EntityData>();
 		setHost(h);
 
 		respawnTimer = -10f;
@@ -335,7 +342,11 @@ public class CoreLogic {
 			}
 
 		}
+		createPlayerQueue();
+		createEntityQueue();
 		cleanEntities();
+		removePlayerQueue();
+		
 		if(local != null && local.getShip() != null){
 			local.getShip().setThrust(false);
 			local.getShip().setShooting(false);
@@ -684,17 +695,62 @@ public class CoreLogic {
 	}
 
 	public static void createPlayer(int id, String name, int score) {
-		Player playr = new Player(name, id);
-		playr.setScore(score);
-		players.put(Integer.toString(id), playr);
+		String[] data = new String[3];
+		data[0] = Integer.toString(id);
+		data[1] = name;
+		data[2] = Integer.toString(score);
+		addPlayers.push(data);
+	}
+	
+	public static void createPlayerQueue() {
+		while (!addPlayers.isEmpty()) {
+			String[] data = addPlayers.pop();
+			Player playr = new Player(data[1], Integer.parseInt(data[0]));
+			playr.setScore(Integer.parseInt(data[2]));
+			players.put(Integer.toString(Integer.parseInt(data[0])), playr);
+		}
 	}
 
 	public static void removePlayer(String id) {
-		players.remove(id);
+		rmPlayers.push(id);
+	}
+	
+	public static void removePlayerQueue() {
+		while (!rmPlayers.isEmpty()) {
+			String id = rmPlayers.pop();
+			players.remove(id);
+		}
 	}
 
 	public static Player findPlayer(String id) {
 		return players.get(id);
+	}
+
+	public static void createEntity(EntityData ent) {
+		addEntities.push(ent);
+	}
+	
+	public static void createEntityQueue() {
+		while (!addEntities.isEmpty()) {
+			EntityData entData = addEntities.pop();
+			String[] idParts = entData.id.split("-");
+			if (entData.type == Net.ENTITY_SHIP) {
+				Player p = CoreLogic.findPlayer(idParts[0]);
+				Entity ent = new Ship(entData.id, p, entData.x, entData.y);
+				ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
+				p.createEntity(ent, idParts[1]);
+			} else if (entData.type == Net.ENTITY_ASTEROID) {
+				Player p = CoreLogic.findPlayer(idParts[0]);
+				Entity ent = new Asteroid(entData.extra, entData.id, p, entData.x, entData.y);
+				ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
+				p.createEntity(ent, idParts[1]);
+			} else if (entData.type == Net.ENTITY_BULLET) {
+				Player p = CoreLogic.findPlayer(idParts[0]);
+				Entity ent = new Bullet(entData.id, p, entData.a, entData.x, entData.y);
+				ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
+				p.createEntity(ent, idParts[1]);
+			}
+		}
 	}
 
 	//public static void pause() {

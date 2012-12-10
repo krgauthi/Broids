@@ -22,7 +22,9 @@ public class SoundManager {
 				{"pew","data/Shot.mp3"},
 				{"muzak", "data/Broderoids.mp3"},
 				{"zoom", "data/Thrust.mp3"},
-				{"click", "data/menuShift.mp3"}
+				{"click", "data/menuShift.mp3"},
+				{"respawn", "data/ShipRespawn.mp3"},
+				{"start", "data/RoundStart.wav"}
 		};
 		
 		for (String[] noise : defaultSounds) {

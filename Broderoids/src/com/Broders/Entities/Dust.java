@@ -22,7 +22,7 @@ public class Dust extends Entity{
 		// sprite
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
-		super.setSize(10f);
+		super.setSize((float) Math.random() * 6 + 7f);
 		super.setColor();
 
 		super.setSprite(Settings.data_path + "bullet.png");

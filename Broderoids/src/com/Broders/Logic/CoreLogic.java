@@ -10,6 +10,7 @@ import com.Broders.Entities.Dust;
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.Ship;
 import com.Broders.mygdxgame.BaseGame;
+import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -51,6 +52,7 @@ public class CoreLogic {
 
 	private static float respawnTimer;
 	private static float invincibleTimer;
+	private static boolean respawnSound;
 
 	private static String saveId;
 
@@ -149,6 +151,8 @@ public class CoreLogic {
 
 		Player temp = new Player("Temp", 0);
 		players.put(Integer.toString(temp.getId()), temp);
+		
+		SoundManager.get("start").play();
 	}
 
 	/**
@@ -164,6 +168,12 @@ public class CoreLogic {
 		Player local = getLocal();
 
 		//Respawn
+		if (respawnTimer < 1f && !respawnSound && getLocal().getLives() < 3
+				&& getLocal().getLives() > 0) {
+			SoundManager.get("respawn").play();
+			respawnSound = true;
+		}
+		
 		if(respawnTimer > 0)
 			respawnTimer -= Gdx.graphics.getDeltaTime();
 		else if(respawnTimer > -9f && (local.getLives() > 0 || multiplayer)){
@@ -579,6 +589,7 @@ public class CoreLogic {
 					getSelf().modLives(-1);
 					local.setShip(null);
 					respawnTimer = 3.0f;
+					respawnSound = false;
 				}
 			}
 

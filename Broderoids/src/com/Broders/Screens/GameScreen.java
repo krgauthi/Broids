@@ -30,7 +30,7 @@ public class GameScreen implements Screen {
 
 	private Random rand;
 
-	
+
 
 	private boolean paused;
 	private float pauseWait;
@@ -251,6 +251,15 @@ public class GameScreen implements Screen {
 				TextureManager.getSprites("whitePixelSprite").draw(spriteBatch);
 			}
 
+
+
+		}
+
+
+		if(Gdx.input.isKeyPressed(Keys.F1)){
+			double x = ((float)Gdx.input.getX()/(float)Gdx.graphics.getWidth());
+			double y = ((float)Gdx.input.getY()/(float)Gdx.graphics.getHeight());
+			System.out.println("Mouse Pos: " + x + " " + y);
 		}
 
 		if(CoreLogic.getRoundBool()){
@@ -281,11 +290,11 @@ public class GameScreen implements Screen {
 			TextureManager.getSprites("pause").setSize(yy * .75f, yy * .75f);
 			TextureManager.getSprites("pause").setPosition((xx * .5f) - (yy * .375f), yy - (yy * .7f));
 			TextureManager.getSprites("pause").draw(spriteBatch);
-			
+
 			TextureManager.getSprites("mainMenu").setSize(yy * .75f, yy * .75f);
 			TextureManager.getSprites("mainMenu").setPosition((xx * .5f) - (yy * .375f), yy - (yy * .85f));
 			TextureManager.getSprites("mainMenu").draw(spriteBatch);
-			
+
 			TextureManager.getSprites("resume").setSize(yy * .75f, yy * .75f);
 			TextureManager.getSprites("resume").setPosition((xx * .5f) - (yy * .375f),0);
 			TextureManager.getSprites("resume").draw(spriteBatch);
@@ -411,6 +420,32 @@ public class GameScreen implements Screen {
 			pauseWait = 0;
 		}
 
+		if(paused){
+			if(Gdx.input.justTouched()){
+				double x = ((float)Gdx.input.getX()/xx);
+				double y = ((float)Gdx.input.getY()/yy);
+
+				if(x >= .326 && x <= .672){
+
+					if(y >= .428 && y <= .519){
+						if (multiplayer) {
+							Net.leaveGame();
+						}
+
+						SoundManager.setPitch("muzak", SoundManager.getMuzakId(), 1f);
+						myGame.setScreen(BaseGame.screens.get("main"));
+					}else if(y >= .578 && y <= .666){
+						resume();
+					}
+
+				}
+
+
+			}
+
+		}
+
+
 		// if Android
 		if (Gdx.app.getVersion() > 0) {
 			if (Gdx.input.isTouched(0) || Gdx.input.isTouched(1)
@@ -493,15 +528,15 @@ public class GameScreen implements Screen {
 		TextureManager.getSprites("healthBlock").setSize(yy * .5f, yy * .5f);
 		TextureManager.getSprites("shieldBar").setSize(yy * .5f, yy * .5f);
 		TextureManager.getSprites("shieldBlock").setSize(yy * .5f, yy * .5f);
-		
+
 		TextureManager.getSprites("lives").setSize(yy * .05f, yy * .05f);
 
 		if (Gdx.app.getVersion() > 0) {
-			
+
 			TextureManager.getSprites("dPad").setPosition(xx * (0), yy * (-.1f));
 			TextureManager.getSprites("dPad").setSize(yy * .6f, yy * .6f);
 
-		
+
 			TextureManager.getSprites("fireButton").setPosition(xx * (.82f), yy * (.25f));
 			TextureManager.getSprites("fireButton").setSize(yy * .32f, yy * .32f);
 

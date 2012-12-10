@@ -29,10 +29,10 @@ public class Ship extends Entity {
 	private Boolean shooting;
 	private Sprite sprite;
 	private boolean invincible;
+	
 	private boolean thrustLast;
 	private float smokeInterval;
-
-	// TODO implement method for sound shooting and death sound
+	private float shieldRegen;
 
 	/**
 	 * Just pass in "classic" Initializes a Ship by creating the appropriate
@@ -85,6 +85,7 @@ public class Ship extends Entity {
 		this.thrust = false;
 		this.thrustLast = false;
 		this.smokeInterval = 0;
+		this.shieldRegen = 0;
 
 		Texture tempTexture = new Texture(Gdx.files.internal(Settings.data_path	+ "ship2.png"));
 		this.sprite = new Sprite(tempTexture, 1024, 1024);
@@ -121,9 +122,19 @@ public class Ship extends Entity {
 		} else if (thrustLast && !bool) {
 			SoundManager.get("zoom").stop();
 		}
-
+		
 		this.thrustLast = this.thrust;
 		this.thrust = bool;
+		
+		if (thrust) {
+			shieldRegen += Gdx.graphics.getDeltaTime();
+			System.out.println(shieldRegen + "    " + Gdx.graphics.getDeltaTime());
+		}
+		
+		if (shieldRegen >= 1.0f) {
+			getOwner().modShield(1);
+			shieldRegen = 0;
+		}
 	}
 
 	/**
@@ -202,10 +213,8 @@ public class Ship extends Entity {
 			smokeInterval +=  Gdx.graphics.getDeltaTime();
 			
 			if (smokeInterval >= smoke) {
-				System.out.println("Smoke " + smoke);
-				
 				float dir = (float) ((super.getAngle() + 90) + (Math.random() * 30 - 15));
-				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), dir , this.getX(), this.getY(), 7);
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), dir , this.getX(), this.getY(), 5);
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 				
 				smokeInterval = 0;

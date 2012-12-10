@@ -1,13 +1,11 @@
 package com.Broders.Screens;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.Pattern;
 
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Net;
-import com.Broders.Logic.NetException;
 import com.Broders.Logic.Pos;
 import com.Broders.Logic.Tail;
 import com.Broders.mygdxgame.BaseGame;
@@ -22,9 +20,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 public class MultiLobby implements Screen {
 
@@ -79,9 +74,8 @@ public class MultiLobby implements Screen {
 		curPage = 0;
 
 		selectedGame = -1;
-		
+
 		rotation = 0;
-		
 	}
 
 	@Override
@@ -148,7 +142,6 @@ public class MultiLobby implements Screen {
 				
 				font.draw(spriteBatch, out, xx * .078f, yy * .32f);
 				font.setColor(Color.WHITE);
-
 			}
 
 			if (curPage > 0) {
@@ -163,7 +156,6 @@ public class MultiLobby implements Screen {
 				font.draw(spriteBatch, out, xx * .078f, yy * .64f);
 				font.setColor(Color.WHITE);
 			}
-
 		}
 
 		// text
@@ -196,7 +188,7 @@ public class MultiLobby implements Screen {
 
 			font.draw(spriteBatch, temp[0] + priv, xx * .2f, yy
 					* (.73f - (.16f * i))); // TODO ref Name of Game
-			
+	
 			if(i == selectedGame){
 				arrowSprite.setSize(xx * .05f, xx * .05f);
 				arrowSprite.setPosition( xx * .936f, yy* (.68f - (.16f * i)));
@@ -267,7 +259,6 @@ public class MultiLobby implements Screen {
 						selectedGame = -1;
 						curPage--;
 					}
-
 				}
 			}
 			//Game boxes
@@ -302,6 +293,10 @@ public class MultiLobby implements Screen {
 				curPage++;
 			}
 		}
+		
+		//if (Gdx.input.isKeyPressed(Keys.ENTER)) {
+			//TODO  This should start the game
+		//}
 
 		if (Gdx.input.isKeyPressed(Keys.F1)) {
 			double x = ((float) Gdx.input.getX() / (float) Gdx.graphics
@@ -325,7 +320,6 @@ public class MultiLobby implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -348,7 +342,6 @@ public class MultiLobby implements Screen {
 		
 
 		spriteBatch = new SpriteBatch();
-
 	}
 
 	@Override
@@ -358,14 +351,12 @@ public class MultiLobby implements Screen {
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -373,7 +364,6 @@ public class MultiLobby implements Screen {
 		this.spriteBatch.dispose();
 		this.arrow.dispose();
 		this.white.dispose();
-
 	}
-
+	
 }

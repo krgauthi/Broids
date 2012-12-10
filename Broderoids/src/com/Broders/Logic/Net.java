@@ -368,7 +368,9 @@ public class Net extends Thread {
 					String name = o.get("n").getAsString();
 					int score = o.get("s").getAsInt();
 
-					CoreLogic.createPlayer(id, name, score);
+					if (id != CoreLogic.clientId) {
+						CoreLogic.createPlayer(id, name, score);
+					}
 				} else if (frameType == FRAME_GAME_PLAYER_MODIFY) {
 					JsonObject o = obj.get("d").getAsJsonObject();
 					int id = o.get("i").getAsInt();
@@ -404,17 +406,23 @@ public class Net extends Thread {
 					float av = o.get("av").getAsFloat();
 	
 					Entity ent = CoreLogic.findEntity(id);
-					
-					// NOTE: Hacky work around
-					if (ent != null) {
-						ent.teleport(x, y, a, av, xv, yv);
+					String[] idParts = id.split("-");
+					if (!idParts[0].equals(Integer.toString(CoreLogic.clientId))
+							&& !(CoreLogic.getHost() && idParts[0].equals("1"))) {
+						// NOTE: Hacky work around
+						if (ent != null) {
+							ent.teleport(x, y, a, av, xv, yv);
+						}
 					}
 				} else if (frameType == FRAME_GAME_ENTITY_REMOVE) {
 					if (!CoreLogic.getHost()) {
 						String data = obj.get("d").getAsString();
 	
 						Entity ent = CoreLogic.findEntity(data);
-						CoreLogic.removeEntity(ent);
+						
+						if (ent.getOwner() != CoreLogic.getLocal() && ent.getOwner() != CoreLogic.getComp()) {
+							CoreLogic.removeEntity(ent);
+						}
 					}
 				} else if (frameType == FRAME_GAME_HOST_CHANGE) {
 					CoreLogic.setHost(true);

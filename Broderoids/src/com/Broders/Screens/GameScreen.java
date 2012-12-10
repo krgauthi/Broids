@@ -285,7 +285,7 @@ public class GameScreen implements Screen {
 			font.setScale(.25f);
 		}
 		
-		if (CoreLogic.getLocal().getLives() == 0) {
+		if (!CoreLogic.multiplayer && CoreLogic.getLocal().getLives() == 0) {
 			font .setScale(2f);
 			String out;
 			out = String.format("Game Over!"); 

@@ -44,7 +44,7 @@ public class CoreLogic {
 
 	private static float bulletCooldown;
 
-	private static int clientId;
+	protected static int clientId;
 
 	private static int round;
 	//private static boolean paused;
@@ -754,22 +754,25 @@ public class CoreLogic {
 		while (!addEntities.isEmpty()) {
 			EntityData entData = addEntities.pop();
 			String[] idParts = entData.id.split("-");
-			if (entData.type == Net.ENTITY_SHIP) {
-				Player p = CoreLogic.findPlayer(idParts[0]);
-				Ship ent = new Ship(entData.id, p, entData.x, entData.y);
-				p.setShip(ent);
-				ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
-				p.createEntity(ent, idParts[1]);
-			} else if (entData.type == Net.ENTITY_ASTEROID) {
-				Player p = CoreLogic.findPlayer(idParts[0]);
-				Entity ent = new Asteroid(entData.extra, entData.id, p, entData.x, entData.y);
-				ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
-				p.createEntity(ent, idParts[1]);
-			} else if (entData.type == Net.ENTITY_BULLET) {
-				Player p = CoreLogic.findPlayer(idParts[0]);
-				Entity ent = new Bullet(entData.id, p, entData.a, entData.x, entData.y);
-				ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
-				p.createEntity(ent, idParts[1]);
+			if (!idParts[0].equals(Integer.toString(clientId))
+					&& !(host && idParts[0].equals("1"))) {
+				if (entData.type == Net.ENTITY_SHIP) {
+					Player p = CoreLogic.findPlayer(idParts[0]);
+					Ship ent = new Ship(entData.id, p, entData.x, entData.y);
+					p.setShip(ent);
+					ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
+					p.createEntity(ent, idParts[1]);
+				} else if (entData.type == Net.ENTITY_ASTEROID) {
+					Player p = CoreLogic.findPlayer(idParts[0]);
+					Entity ent = new Asteroid(entData.extra, entData.id, p, entData.x, entData.y);
+					ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
+					p.createEntity(ent, idParts[1]);
+				} else if (entData.type == Net.ENTITY_BULLET) {
+					Player p = CoreLogic.findPlayer(idParts[0]);
+					Entity ent = new Bullet(entData.id, p, entData.a, entData.x, entData.y);
+					ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
+					p.createEntity(ent, idParts[1]);
+				}
 			}
 		}
 	}

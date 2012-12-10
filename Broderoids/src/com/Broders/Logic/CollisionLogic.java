@@ -150,10 +150,10 @@ public class CollisionLogic implements ContactListener {
 	}
 	
 	public static void shipShip(Entity shipA, Entity shipB) {
-		int damages = calculateDamage(shipA.getBody(), shipB.getBody());
+		/*int damages = calculateDamage(shipA.getBody(), shipB.getBody());
 		damages = 0 - (int) Math.round(Math.pow(damages, 0.55));
 		shipA.getOwner().modHealth(damages);
-		shipB.getOwner().modHealth(damages);
+		shipB.getOwner().modHealth(damages);*/
 	}
 
 	/**

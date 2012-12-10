@@ -324,7 +324,7 @@ public class GameScreen implements Screen {
 		if (!multiplayer && CoreLogic.getLocal().getLives() == 0) {
 			gameOver += Gdx.graphics.getDeltaTime();
 			if (gameOver >= 4f) {
-				myGame.setScreen(BaseGame.screens.get("main"));
+				myGame.setScreen(BaseGame.screens.get("scores"));
 				//TODO Change to High-scores screen.
 			}
 		}

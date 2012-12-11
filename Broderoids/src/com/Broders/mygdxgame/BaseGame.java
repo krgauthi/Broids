@@ -21,18 +21,18 @@ public class BaseGame extends Game {
 	public static HashMap<String,Screen> screens;
 
 	public BitmapFont font;	
-		
+
 	public double exitBuffer;		//TODO Ref in Settings
 	public boolean godMode;			//TODO Ref in Settings
-	
+
 	public boolean multiplayer;
-	
+
 	public float bounds;
 	public int gameSize; // multi only
 	public boolean connected;
 
 	public int asteroidsCount;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -40,10 +40,10 @@ public class BaseGame extends Game {
 	 */
 	@Override
 	public void create() {
-		
+
 		// TODO: Put this in a better place, remove the method
 		CoreLogic.setGame(this);
-		
+
 		exitBuffer = 1;
 		multiplayer = false;
 		bounds = .25f; // max of .5
@@ -51,21 +51,18 @@ public class BaseGame extends Game {
 
 		font = new BitmapFont(Gdx.files.internal(Settings.data_path
 				+ "smallfonts.fnt"), Gdx.files.internal(Settings.data_path
-				+ "smallfonts_0.png"), false);
-		
+						+ "smallfonts_0.png"), false);
+
 		Gdx.input.setCatchBackKey(true);
-		
+
 		Settings.init(this);
-		
-		try {
-			Net.init(this);
-			SoundManager.init(this);
-			TextureManager.init(this);
-			ScoresManager.init(this);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		
+
+		Net.init(this);
+		SoundManager.init(this);
+		TextureManager.init(this);
+
+		ScoresManager.init(this);
+
 		screens = new HashMap<String,Screen>();
 		screens.put("splash", new SplashScreen(this));
 		screens.put("main", new MainMenu(this));
@@ -85,7 +82,7 @@ public class BaseGame extends Game {
 	public void render() {
 		super.render();
 	}
-	
+
 	@Override
 	public void dispose() {
 
@@ -102,7 +99,7 @@ public class BaseGame extends Game {
 	@Override
 	public void resume() {
 	}
-	
+
 	public void setConnected(boolean c) {
 		connected = c;
 	}

@@ -632,11 +632,6 @@ public class CoreLogic {
 					respawnTimer = 3.0f;
 					if(getSelf().getLives() == 0){
 						ScoresManager.addScore(Settings.getUsername(), CoreLogic.getLocal().getScore());
-						try {
-							ScoresManager.writeScores();
-						} catch (FileNotFoundException e) {
-							e.printStackTrace();
-						}
 					}
 					respawnSound = false;
 				}

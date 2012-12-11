@@ -108,9 +108,7 @@ public class MultiLobby implements Screen {
 		if (page > 0) {
 			
 			TextureManager.getSprites("Ship1").setSize(yy * .25f, yy * .25f);
-			TextureManager.getSprites("Ship1").setOrigin((yy * .25f)/2f, (yy * .25f)/2f);
-			
-			
+			TextureManager.getSprites("Ship1").setOrigin((yy * .25f)/2f, (yy * .25f)/2f);			
 
 			if (curPage < page) { // Arrow Down
 				TextureManager.getSprites("Ship1").setColor(Color.WHITE);
@@ -145,6 +143,7 @@ public class MultiLobby implements Screen {
 
 		TextureManager.getSprites("hostGame").draw(spriteBatch);
 		TextureManager.getSprites("joinGame").draw(spriteBatch);
+		TextureManager.getSprites("mainMenu").draw(spriteBatch);
 		TextureManager.getSprites("refresh").draw(spriteBatch);
 
 
@@ -185,6 +184,9 @@ public class MultiLobby implements Screen {
 		}
 
 		tail.draw(spriteBatch);
+		
+		
+		
 
 		spriteBatch.end();
 
@@ -203,10 +205,10 @@ public class MultiLobby implements Screen {
 			double y = ((float) Gdx.input.getY() / (float) Settings.getHeight());
 
 			// make hit boxes
-			if (y >= .118 && y <= .177) {
+			if (y >= .0486 && y <= .104) {
 
-				// join
-				if (x >= .425 && x <= .655) {
+				// join 
+				if (x >= .272 && x <= .476) {
 					if (selectedGame >= 0 && selectedGame < gameCount) {
 						
 						String[] name = this.games.get(selectedGame + curPage * 5);
@@ -239,12 +241,15 @@ public class MultiLobby implements Screen {
 					} else {
 						SoundManager.play("error", 1f, 1.5f);
 					}
-
-				} else if (x >= .174 && x <= .404) {
+					//Join
+				} else if (x >= .0214 && x <= .225) {
 					SoundManager.play("click", 0.7f);
 					myGame.setScreen(BaseGame.screens.get("host"));
+					//Main Menu
+				}else if(x >= .520 && x <= .726){
+					myGame.setScreen(BaseGame.screens.get("main"));
 					//refresh
-				}else if(x >= .174 && x <= .404){
+				}else if(x >= .770 && x <= .975){
 					games.clear();
 					games = Net.listGames();
 				}
@@ -363,14 +368,17 @@ public class MultiLobby implements Screen {
 
 		TextureManager.getSprites("whitePixel").setColor(Color.WHITE);
 
-		TextureManager.getSprites("hostGame").setSize(yy * .5f, yy * .5f);
-		TextureManager.getSprites("hostGame").setPosition(xx * .15f, yy * .6f);
+		TextureManager.getSprites("hostGame").setSize(xx * .25f, xx * .25f);
+		TextureManager.getSprites("hostGame").setPosition(0, yy * .7f);
 
-		TextureManager.getSprites("joinGame").setSize(yy * .5f, yy * .5f);
-		TextureManager.getSprites("joinGame").setPosition(xx * .4f, yy * .6f);
+		TextureManager.getSprites("joinGame").setSize(xx * .25f, xx * .25f);
+		TextureManager.getSprites("joinGame").setPosition((xx * .25f), yy * .7f);
+		
+		TextureManager.getSprites("mainMenu").setSize(xx * .25f, xx * .25f);
+		TextureManager.getSprites("mainMenu").setPosition(((xx * .25f)*2), yy * .7f);
 
-		TextureManager.getSprites("refresh").setSize(yy * .5f, yy * .5f);
-		TextureManager.getSprites("refresh").setPosition(xx * .73f, yy * .6f);
+		TextureManager.getSprites("refresh").setSize(xx * .25f, xx * .25f);
+		TextureManager.getSprites("refresh").setPosition(((xx * .25f)*3), yy * .7f);
 
 		spriteBatch = new SpriteBatch();
 	}

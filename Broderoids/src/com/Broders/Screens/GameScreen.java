@@ -35,7 +35,7 @@ public class GameScreen implements Screen {
 
 	private boolean paused;
 	private float pauseWait;
-	private ShapeRenderer overlay;
+
 
 	private float gameOver;
 
@@ -44,7 +44,7 @@ public class GameScreen implements Screen {
 	private Tail debug1;
 	private Tail debug2;
 
-	private BitmapFont font;
+	
 
 	float xx; // Clean reference for screen width
 	float yy; // Clean reference for screen height
@@ -63,7 +63,7 @@ public class GameScreen implements Screen {
 		this.id2 = id;
 		this.paused = false;
 		this.pauseWait = 0;
-		this.overlay = new ShapeRenderer();
+		
 		this.gameOver = 0;
 
 		if (this.multiplayer) {
@@ -80,8 +80,8 @@ public class GameScreen implements Screen {
 
 		CoreLogic.initCore(myGame, width2, height2, h2, multiplayer);
 
-		font = this.myGame.font;
-		font.setScale(.25f);
+	
+		myGame.font.setScale(.25f);
 
 		myGame.multiplayer = this.multiplayer;
 
@@ -183,13 +183,13 @@ public class GameScreen implements Screen {
 			String healthText = "HEALTH: " + CoreLogic.getLocal().getHealth() + " / 100";
 			String shieldText = "SHIELD: " + CoreLogic.getLocal().getShield() + " / 100";
 
-			font.draw(spriteBatch, healthText, xx * .05f, yy * .92f);
-			font.draw(spriteBatch, shieldText, xx * .08f, yy * .975f);
+			myGame.font.draw(spriteBatch, healthText, xx * .05f, yy * .92f);
+			myGame.font.draw(spriteBatch, shieldText, xx * .08f, yy * .975f);
 
 			String out;
 			out = String.format("Score: %d ", score); 
 			// player
-			font.draw(spriteBatch, out, xx * .01f, yy * .87f);
+			myGame.font.draw(spriteBatch, out, xx * .01f, yy * .87f);
 
 		} else {
 			// Single player hud
@@ -198,10 +198,10 @@ public class GameScreen implements Screen {
 				out = String.format("Score: %d ", CoreLogic.getLocal().getScore());
 
 				// player
-				font.draw(spriteBatch, out, xx * .01f, yy * .98f);
+				myGame.font.draw(spriteBatch, out, xx * .01f, yy * .98f);
 
 				String out2 = String.format("Bonus: x%d ", (int)Math.floor(CoreLogic.getLocal().getBonus()));
-				font.draw(spriteBatch, out2, xx * .01f, yy * .94f);
+				myGame.font.draw(spriteBatch, out2, xx * .01f, yy * .94f);
 
 				int heartcount = CoreLogic.getLocal().getLives();
 				for (int i = 0; i < heartcount; i++) {
@@ -213,24 +213,24 @@ public class GameScreen implements Screen {
 		}
 
 		if (Settings.getDebug()) {
-			font.setScale(.25f);
+			myGame.font.setScale(.25f);
 			String out;
 			if (CoreLogic.getLocalShip() != null) {
 				out = String.format("Ship Pos in Meters: (%f,%f) ", CoreLogic
 						.getLocalShip().getX(), CoreLogic.getLocalShip().getY());
-				font.draw(spriteBatch, out, xx * .01f, yy - (yy * .21f));
+				myGame.font.draw(spriteBatch, out, xx * .01f, yy - (yy * .21f));
 				out = String.format("ViewPort Pos in Meters: (%f,%f) ",
 						CoreLogic.getViewPortX(), CoreLogic.getViewPortY());
-				font.draw(spriteBatch, out, xx * .01f, yy - (yy * .25f));
+				myGame.font.draw(spriteBatch, out, xx * .01f, yy - (yy * .25f));
 				out = String.format("Ship angle in Radians: %f", CoreLogic
 						.getLocalShip().getBody().getAngle());
-				font.draw(spriteBatch, out, xx * .01f, yy - (yy * .29f));
+				myGame.font.draw(spriteBatch, out, xx * .01f, yy - (yy * .29f));
 				out = String.format("FPS: %d", Gdx.graphics.getFramesPerSecond());
-				font.draw(spriteBatch, out, xx * .01f, yy - (yy * .33f));
+				myGame.font.draw(spriteBatch, out, xx * .01f, yy - (yy * .33f));
 				if (CoreLogic.getLocalShip().getThrust())
-					font.draw(spriteBatch, "Thruster", xx * .01f, yy - (yy * .37f));
+					myGame.font.draw(spriteBatch, "Thruster", xx * .01f, yy - (yy * .37f));
 				if (CoreLogic.getLocalShip().getShooting())
-					font.draw(spriteBatch, "Pew Pew", xx * .01f, yy - (yy * .4f));
+					myGame.font.draw(spriteBatch, "Pew Pew", xx * .01f, yy - (yy * .4f));
 			}
 
 			debug1.draw(spriteBatch);
@@ -264,19 +264,19 @@ public class GameScreen implements Screen {
 		}
 
 		if(CoreLogic.getRoundBool()){
-			font .setScale(2f);
+			myGame.font .setScale(2f);
 			String out;
 			out = String.format("Round: %d! ", CoreLogic.getRound()+2); 
-			font.draw(spriteBatch, out, xx*.25f, yy*.65f);
-			font.setScale(.25f);
+			myGame.font.draw(spriteBatch, out, xx*.25f, yy*.65f);
+			myGame.font.setScale(.25f);
 		}
 
 		if (!CoreLogic.multiplayer && CoreLogic.getLocal().getLives() == 0) {
-			font .setScale(2f);
+			myGame.font .setScale(2f);
 			String out;
 			out = String.format("Game Over!"); 
-			font.draw(spriteBatch, out, xx*.20f, yy*.65f);
-			font.setScale(.25f);
+			myGame.font.draw(spriteBatch, out, xx*.20f, yy*.65f);
+			myGame.font.setScale(.25f);
 		}
 
 
@@ -544,7 +544,7 @@ public class GameScreen implements Screen {
 			TextureManager.getSprites("thrusterButton").setPosition(xx * (.69f), yy * 0);
 			TextureManager.getSprites("thrusterButton").setSize(yy * .32f, yy * .32f);
 		}
-		font.setScale(.25f);
+		myGame.font.setScale(.25f);
 
 		SoundManager.play("start");
 	}
@@ -568,7 +568,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void dispose() {
 		this.spriteBatch.dispose();
-		this.overlay.dispose();
+	
 
 		CoreLogic.dispose();
 	}

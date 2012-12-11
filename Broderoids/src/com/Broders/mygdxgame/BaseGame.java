@@ -57,6 +57,9 @@ public class BaseGame extends Game {
 
 		Settings.init(this);
 
+		Settings.setWidth(Gdx.graphics.getWidth());
+		Settings.setHeight(Gdx.graphics.getHeight());
+		
 		Net.init(this);
 		SoundManager.init(this);
 		TextureManager.init(this);

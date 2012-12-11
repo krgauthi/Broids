@@ -62,7 +62,7 @@ public class Player {
 
 
 		} else {
-			playerColor = Settings.getShipColor();
+			playerColor = Settings.getWorldColor();
 		}
 
 		bonus = 1.0f;

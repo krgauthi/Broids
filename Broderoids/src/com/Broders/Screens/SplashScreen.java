@@ -53,7 +53,7 @@ public class SplashScreen implements Screen {
 
 	@Override
 	public void show() {
-		splsh = new Texture(Gdx.files.internal("data/Brocoders.png"));
+		splsh = new Texture(Gdx.files.internal("data/brocoders.png"));
 		sprite = new Sprite(splsh);
 		sprite.setSize(Settings.getHeight() * 1.5f, Settings.getHeight() * 1.5f);
 		sprite.setPosition(Settings.getWidth() * 1.5f * .05f, (Settings.getHeight() * .75f) - Settings.getHeight());

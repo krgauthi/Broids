@@ -1,5 +1,4 @@
 package com.Broders.Logic;
-
 import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
@@ -19,10 +18,12 @@ import com.badlogic.gdx.graphics.Color;
  */
 public class Settings {
 
+
 	private static BaseGame game;
 	public static String data_path = "data/";
 	private static Preferences prefs;
 	
+
 	private static String username;
 	private static Color shipColor;
 	private static Color worldColor;
@@ -72,6 +73,7 @@ public class Settings {
 		game = mygame;
 		prefs = Gdx.app.getPreferences("broids-prefs");
 		load();
+
 	}
 	
 	public static void load() {

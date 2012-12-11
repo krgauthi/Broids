@@ -119,8 +119,9 @@ public class Ship extends Entity {
 	public void setThrust(boolean bool) {
 
 		Sound zoom = SoundManager.get("zoom");
+		long soundId;
 		if (!thrustLast && bool) {
-			long soundId = zoom.loop(Settings.getSoundVol() * 0.1f);
+			soundId = zoom.loop(Settings.getSoundVol() * 0.1f);
 			zoom.setPitch(soundId, (float) (0.8f + Math.random() * 0.4f));
 		} else if (thrustLast && !bool) {
 			zoom.stop();
@@ -249,6 +250,8 @@ public class Ship extends Entity {
 
 		SoundManager.play("death", 1f, 0.85f);
 		float temp = (float) (10+Math.random()%10);
+		setThrust(false);
+		SoundManager.play("death", 1f, 0.85f);
 		for(int i = 0; i < temp;i++){
 			temp = 360/temp;
 

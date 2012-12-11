@@ -51,9 +51,9 @@ public class SettingsScreen implements Screen {
 	}
 
 	private void paint(float delta) {
-		
+
 		spriteBatch.begin();
-		
+
 		if(Settings.getRetro()){
 			GL10 gl = Gdx.graphics.getGL10();
 			Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -90,8 +90,8 @@ public class SettingsScreen implements Screen {
 				(float) (Settings.getHeight() * .4));
 
 		// Volume
-//		font.draw(spriteBatch, "Volume: " + volBool, (float) (Settings.getWidth() * .08),
-//				(float) (Settings.getHeight() * .6));
+		//		font.draw(spriteBatch, "Volume: " + volBool, (float) (Settings.getWidth() * .08),
+		//				(float) (Settings.getHeight() * .6));
 
 		// Background Image
 		font.draw(spriteBatch, "Retro Mode: " + (Settings.getRetro() ? "On" : "Off"),
@@ -128,12 +128,12 @@ public class SettingsScreen implements Screen {
 
 		// ShipColor		
 
-		
+
 		TextureManager.getSprites("whitePixel").setSize(Settings.getWidth() * .06f, Settings.getHeight() * .05f);
 		TextureManager.getSprites("whitePixel").setPosition(Settings.getWidth() * .775f, Settings.getHeight() * .94f);
 		TextureManager.getSprites("whitePixel").setColor(Settings.getShipColor());
 		TextureManager.getSprites("whitePixel").draw(spriteBatch);
-		
+
 		//World Color
 		TextureManager.getSprites("whitePixel").setSize(Settings.getWidth() * .06f, Settings.getHeight() * .05f);
 		TextureManager.getSprites("whitePixel").setPosition(Settings.getWidth() * .93f, Settings.getHeight() * .94f);
@@ -150,7 +150,8 @@ public class SettingsScreen implements Screen {
 	}
 
 	private void handleInput(float delta) {
-		if(Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACKSPACE)){
+		if(Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACKSPACE) ||
+				(Gdx.app.getVersion() > 0 && Gdx.input.isKeyPressed(Keys.BACK))){
 			game.setScreen(BaseGame.screens.get("main"));
 		}
 
@@ -189,7 +190,7 @@ public class SettingsScreen implements Screen {
 			}
 
 			if (x >= .08 && x <= .46 && y >= .12 && y <= .2) {
-				
+
 				if (Settings.getMusicVol() == 10) {
 					Settings.setMusicVol(0);
 				} else {
@@ -198,9 +199,9 @@ public class SettingsScreen implements Screen {
 				SoundManager.setVolume("muzak", SoundManager.getMuzakId(), 1f);
 				System.out.println("Music Option set to " + Settings.getMusicVol());
 				SoundManager.play("click", 0.7f);
-				
+
 			} else if (x >= .08 && x <= .46 && y >= .32 && y <= .4) {
-				
+
 				if (Settings.getSoundVol() == 10) {
 					Settings.setSoundVol(0);
 				} else {
@@ -208,11 +209,11 @@ public class SettingsScreen implements Screen {
 				}
 				System.out.println("Sound Option set to " + Settings.getSoundVol());
 				SoundManager.play("click", 0.7f);
-				
+
 			} else if (x >= .08 && x <= .46 && y >= .52 && y <= .6) {
 
-//				volBool = volBool ? false : true;
-//				System.out.println("Volume Option set to " + volBool);
+				//				volBool = volBool ? false : true;
+				//				System.out.println("Volume Option set to " + volBool);
 
 			} else if (x >= .08 && x <= .46 && y >= .72 && y <= .8) {
 
@@ -234,10 +235,12 @@ public class SettingsScreen implements Screen {
 
 				// We need to set the BaseGame screen width + height to the new res so clicks will work correctly,
 				// as they are based off of a percentage of screen height + width, which are set statically.
-		
-				Settings.setWidth(screenResOptions[screenResSelection][0]);
-				Settings.setHeight(screenResOptions[screenResSelection][1]);
-				
+
+				if(Gdx.app.getVersion() <= 0){
+					Settings.setWidth(screenResOptions[screenResSelection][0]);
+					Settings.setHeight(screenResOptions[screenResSelection][1]);
+				}
+
 				Gdx.graphics.setDisplayMode(screenResOptions[screenResSelection][0],
 						screenResOptions[screenResSelection][1], false);
 				System.out.println("Screen Resolution Option set to " + Settings.getWidth() +
@@ -250,7 +253,7 @@ public class SettingsScreen implements Screen {
 				} else {
 					Settings.setDebug(true);
 				}
-			
+
 				System.out.println("Debug Text Option set to " + Settings.getDebug());
 
 			} else if (x >= .51 && x <= .96 && y >= .32 && y <= .4) {
@@ -260,7 +263,7 @@ public class SettingsScreen implements Screen {
 				} else {
 					Settings.setDifficulty(Settings.getDifficulty() + 1);
 				}
-				
+
 				System.out.println("SP Difficulty Option set to " + Settings.getDifficulty());
 
 			} else if (x >= .51 && x <= .96 && y >= .12 && y <= .2) {
@@ -270,13 +273,13 @@ public class SettingsScreen implements Screen {
 				} else {
 					Settings.setEpileptic(true);
 				}
-				
+
 				System.out.println("Epileptic Mode set to " + Settings.getEpileptic());
 
 			} else if (x >= .70 && x<= .84 && y >= .94 && y <= .98) {
 
 				String pretext = "";
-				
+
 				if (Settings.getShipColor().equals("")) {
 					pretext = "#OOFF33";
 				} else {

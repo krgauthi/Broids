@@ -105,8 +105,9 @@ public class MultiHost implements Screen {
 		float inputx = Gdx.input.getX() / xx;
 		float inputy = Gdx.input.getY() / yy;
 
-		if ((Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input
-				.isKeyPressed(Keys.BACKSPACE))) {
+		if ((Gdx.input.isKeyPressed(Keys.ESCAPE) || 
+				Gdx.input.isKeyPressed(Keys.BACKSPACE)) ||
+				(Gdx.app.getVersion() > 0 && Gdx.input.isKeyPressed(Keys.BACK))) {
 			myGame.setScreen(BaseGame.screens.get("lobby"));
 		}
 

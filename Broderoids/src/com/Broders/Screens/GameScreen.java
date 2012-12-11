@@ -414,7 +414,9 @@ public class GameScreen implements Screen {
 		}
 
 		pauseWait += Gdx.graphics.getDeltaTime();
-		if (Gdx.input.isKeyPressed(Keys.ESCAPE) && pauseWait >= 0.2f) {
+		if ((Gdx.input.isKeyPressed(Keys.ESCAPE) ||
+			(Gdx.app.getVersion() > 0 && Gdx.input.isKeyPressed(Keys.BACK))) &&
+			 pauseWait >= 0.2f) {
 			if (paused)
 				resume();
 			else pause();

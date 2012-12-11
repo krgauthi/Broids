@@ -149,7 +149,7 @@ public class GameScreen implements Screen {
 			// for how transparent to have
 			// android controls
 			TextureManager.getSprites("fireButton").draw(spriteBatch, .45f);
-			TextureManager.getSprites("thrusterButton").draw(spriteBatch, .45f);
+			TextureManager.getSprites("thrustButton").draw(spriteBatch, .45f);
 		}
 
 		if (multiplayer) {
@@ -541,8 +541,8 @@ public class GameScreen implements Screen {
 			TextureManager.getSprites("fireButton").setPosition(xx * (.82f), yy * (.25f));
 			TextureManager.getSprites("fireButton").setSize(yy * .32f, yy * .32f);
 
-			TextureManager.getSprites("thrusterButton").setPosition(xx * (.69f), yy * 0);
-			TextureManager.getSprites("thrusterButton").setSize(yy * .32f, yy * .32f);
+			TextureManager.getSprites("thrustButton").setPosition(xx * (.69f), yy * 0);
+			TextureManager.getSprites("thrustButton").setSize(yy * .32f, yy * .32f);
 		}
 		myGame.font.setScale(.25f);
 

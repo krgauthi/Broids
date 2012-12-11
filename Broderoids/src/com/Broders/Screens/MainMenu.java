@@ -199,9 +199,6 @@ public class MainMenu implements Screen{
 		TextureManager.getSprites("quit").setSize(yy*.75f, yy * .75f);
 		TextureManager.getSprites("quit").setPosition((xx * .5f)-(yy*.4f), 0 - (yy * .2f));
 
-
-
-
 		spriteBatch = new SpriteBatch();
 	}
 

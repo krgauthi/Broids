@@ -403,7 +403,8 @@ public class GameScreen implements Screen {
 		}
 
 		// Backout to main menu
-		if (Gdx.input.isKeyPressed(Keys.BACKSPACE)) {
+		if (Gdx.input.isKeyPressed(Keys.BACKSPACE) ||
+				(Gdx.app.getVersion() > 0 && Gdx.input.isKeyPressed(Keys.BACK))) {
 
 			if (multiplayer) {
 				Net.leaveGame();

@@ -150,7 +150,9 @@ public class MainMenu implements Screen{
 		}
 
 		//backout Fix the quick exit from gamescreen
-		if((Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACKSPACE)) && buff > myGame.exitBuffer){
+		if((Gdx.input.isKeyPressed(Keys.ESCAPE) || 
+				Gdx.input.isKeyPressed(Keys.BACKSPACE)) && buff > myGame.exitBuffer ||
+				(Gdx.app.getVersion() > 0 && Gdx.input.isKeyPressed(Keys.BACK) && buff > myGame.exitBuffer)){
 			Gdx.app.exit();
 		}else{
 			if(buff < myGame.exitBuffer){

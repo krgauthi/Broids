@@ -9,8 +9,8 @@ import com.badlogic.gdx.audio.Sound;
 public class SoundManager {
 
 	private static HashMap<String, Sound> sounds;
-	private static Music muzak;
-	private static long muzakId;
+	private static Music music;
+	private static long musicId;
 	private static BaseGame g;
 	private static float mv;
 	private static float sv;
@@ -35,9 +35,9 @@ public class SoundManager {
 				{"error", "data/error.wav"}
 		};
 		
-		muzak = Gdx.audio.newMusic(Gdx.files.internal("data/broderoids.mp3"));
-		muzak.play();
-		muzak.setLooping(true);
+		music = Gdx.audio.newMusic(Gdx.files.internal("data/broderoids.mp3"));
+		music.play();
+		music.setLooping(true);
 		for (String[] noise : defaultSounds) {
 			Sound temp = Gdx.audio.newSound(Gdx.files.internal(noise[1]));
 			sounds.put(noise[0], temp);
@@ -58,11 +58,7 @@ public class SoundManager {
 
 	public static long play(String key, float volume) {
 		update();
-		if (key.equals("muzak")) {
-			muzakId = sounds.get(key).play(mv * volume);
-			return muzakId;
-		} else
-			return sounds.get(key).play(sv * volume);
+		return sounds.get(key).play(sv * volume);
 	}
 
 	public static long play(String key, float volume, float pitch) {
@@ -71,11 +67,7 @@ public class SoundManager {
 		long id = 0;
 		update();
 
-		if (key.equals("muzak")) {
-			muzakId = sounds.get(key).play(mv * volume);
-			return muzakId;
-		} else
-			id = sounds.get(key).play(sv * volume);
+		id = sounds.get(key).play(sv * volume);
 
 		clip.setPitch(id, pitch);
 		return id;
@@ -87,25 +79,21 @@ public class SoundManager {
 
 	public static void setVolume(String key, long id, float volume) {
 		update();
-		if (key.equals("muzak")) {
-			sounds.get(key).setVolume(id, volume * mv);
-		} else
-			sounds.get(key).setVolume(id, volume * sv);
+		sounds.get(key).setVolume(id, volume * sv);
 	}
 
 	public static void dispose() {
 		for (Sound noise : sounds.values()) {
+			noise.stop();
 			noise.dispose();
 		}
+		music.stop();
+		music.dispose();
 		sounds = null;
 	}
-
-	public static long getMuzakId() {
-		return muzakId;
-	}
-
-	public static void setMuzakId(long muzakId) {
-		SoundManager.muzakId = muzakId;
+	
+	public static void setMusicVolume(float volume){
+		music.setVolume(volume * 0.1f);
 	}
 
 	private static void update() {

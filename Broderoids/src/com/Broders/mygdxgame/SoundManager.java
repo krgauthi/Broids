@@ -9,6 +9,7 @@ import com.badlogic.gdx.audio.Sound;
 public class SoundManager {
 
 	private static HashMap<String, Sound> sounds;
+	private static Music muzak;
 	private static long muzakId;
 	private static BaseGame g;
 	private static float mv;
@@ -18,7 +19,6 @@ public class SoundManager {
 	public static void init(BaseGame game) {
 
 		g = game;
-		setMuzakId(0);
 
 		sounds = new HashMap<String, Sound>();
 
@@ -28,7 +28,6 @@ public class SoundManager {
 				{"roidBreak2", "data/asteroidboom2.wav"},
 				{"roidBreak3", "data/asteroidboom3.wav"},
 				{"pew","data/shot.mp3"},
-				{"muzak", "data/broderoids.mp3"},
 				{"zoom", "data/thrust.mp3"},
 				{"click", "data/menushift.mp3"},
 				{"respawn", "data/shiprespawn.mp3"},
@@ -36,7 +35,9 @@ public class SoundManager {
 				{"error", "data/error.wav"}
 		};
 		
-
+		muzak = Gdx.audio.newMusic(Gdx.files.internal("data/broderoids.mp3"));
+		muzak.play();
+		muzak.setLooping(true);
 		for (String[] noise : defaultSounds) {
 			Sound temp = Gdx.audio.newSound(Gdx.files.internal(noise[1]));
 			sounds.put(noise[0], temp);
@@ -52,11 +53,7 @@ public class SoundManager {
 
 	public static long play(String key) {
 		update();
-		if (key.equals("muzak")) {
-			muzakId = sounds.get(key).play(mv);
-			return muzakId;
-		} else
-			return sounds.get(key).play(sv);
+		return sounds.get(key).play(sv);
 	}
 
 	public static long play(String key, float volume) {

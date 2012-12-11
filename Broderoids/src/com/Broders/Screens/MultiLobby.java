@@ -28,10 +28,7 @@ public class MultiLobby implements Screen {
 
 	private BaseGame myGame;
 
-	private Texture white;
-	private Texture arrow;
 
-	private Sprite whiteSprite;
 	private String gamePassword;
 
 	private ArrayList<String[]> games;
@@ -96,16 +93,16 @@ public class MultiLobby implements Screen {
 		spriteBatch.begin();
 		// Boxes
 
-		whiteSprite.setColor(Color.WHITE);
+		TextureManager.getSprites("whitePixel").setColor(Color.WHITE);
 		// horizontal line
-		whiteSprite.setSize(xx * .85f, yy * .01f);
-		whiteSprite.setPosition(xx * .15f, yy * .8f);
-		whiteSprite.draw(spriteBatch);
+		TextureManager.getSprites("whitePixel").setSize(xx * .85f, yy * .01f);
+		TextureManager.getSprites("whitePixel").setPosition(xx * .15f, yy * .8f);
+		TextureManager.getSprites("whitePixel").draw(spriteBatch);
 
 		// vertical line
-		whiteSprite.setSize(yy * .01f, yy * .8f);
-		whiteSprite.setPosition(xx * .15f, 0);
-		whiteSprite.draw(spriteBatch);
+		TextureManager.getSprites("whitePixel").setSize(yy * .01f, yy * .8f);
+		TextureManager.getSprites("whitePixel").setPosition(xx * .15f, 0);
+		TextureManager.getSprites("whitePixel").draw(spriteBatch);
 
 
 		// tabs
@@ -156,9 +153,9 @@ public class MultiLobby implements Screen {
 		for (int i = 0; i < 5 && (i + curPage * 5) < this.games.size(); i++) {
 			String[] temp = this.games.get(i + curPage * 5);
 
-			whiteSprite.setPosition(xx * .15f, yy
+			TextureManager.getSprites("whitePixel").setPosition(xx * .15f, yy
 					* (.8f - (.16f * ((float) i + 1))));
-			whiteSprite.draw(spriteBatch);
+			TextureManager.getSprites("whitePixel").draw(spriteBatch);
 
 			out = String.format("Total Players: %s / %s ", temp[2], temp[3]); // TODO
 			// ref
@@ -359,9 +356,8 @@ public class MultiLobby implements Screen {
 
 		myGame.multiplayer = true;
 
-		white = new Texture(Gdx.files.internal("data/whitebox.png"));
-		whiteSprite = new Sprite(white, 32, 32);
-		whiteSprite.setColor(Color.WHITE);
+
+		TextureManager.getSprites("whitePixel").setColor(Color.WHITE);
 
 		TextureManager.getSprites("hostGame").setSize(yy * .5f, yy * .5f);
 		TextureManager.getSprites("hostGame").setPosition(xx * .15f, yy * .6f);
@@ -393,8 +389,7 @@ public class MultiLobby implements Screen {
 	@Override
 	public void dispose() {
 		this.spriteBatch.dispose();
-		this.arrow.dispose();
-		this.white.dispose();
+
 	}
 
 }

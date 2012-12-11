@@ -19,16 +19,6 @@ public class MainMenu implements Screen{
 
 	private SpriteBatch spriteBatch;
 
-	private Texture titleTex;
-	private Texture singleTex;
-	private Texture multiTex;
-	private Texture settingsTex;
-
-	private Sprite titleSprite;
-	private Sprite singleSprite;
-	private Sprite multiSprite;
-	private Sprite settingsSprite;
-
 	private BitmapFont font;
 
 	private float buff;
@@ -209,27 +199,6 @@ public class MainMenu implements Screen{
 		TextureManager.getSprites("quit").setSize(yy*.75f, yy * .75f);
 		TextureManager.getSprites("quit").setPosition((xx * .5f)-(yy*.4f), 0 - (yy * .2f));
 
-
-		/*titleTex = new Texture(Gdx.files.internal("data/Broderoids.png"));
-		titleSprite = new Sprite(titleTex,512,512);
-		titleSprite.setPosition(0,yy*(-.5f));
-		titleSprite.setSize(yy, yy);
-
-		singleTex = new Texture(Gdx.files.internal("data/SinglePlayer.png"));
-		singleSprite = new Sprite(singleTex,512,512);
-		singleSprite.setPosition(xx*.55f,yy*.35f);
-		singleSprite.setSize(yy*.5f,yy*.5f);
-
-		multiTex = new Texture(Gdx.files.internal("data/Multiplayer.png"));
-		multiSprite = new Sprite(multiTex,512,512);
-		multiSprite.setPosition(xx*.55f,yy*.2f);
-		multiSprite.setSize(yy*.5f,yy*.5f);
-
-		settingsTex = new Texture(Gdx.files.internal("data/Settings.png"));
-		settingsSprite = new Sprite(settingsTex,512,512);
-		settingsSprite.setPosition(xx*.55f,yy*.05f);
-		settingsSprite.setSize(yy*.5f,yy*.5f);*/
-
 		spriteBatch = new SpriteBatch();
 	}
 
@@ -251,10 +220,7 @@ public class MainMenu implements Screen{
 	@Override
 	public void dispose() {
 		this.spriteBatch.dispose();
-		this.titleTex.dispose();
-		this.settingsTex.dispose();
-		this.multiTex.dispose();
-		this.settingsTex.dispose();
+
 	}
 
 }

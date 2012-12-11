@@ -3,6 +3,7 @@ package com.Broders.Screens;
 import com.Broders.Logic.Settings;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
+import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
@@ -14,8 +15,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class SplashScreen implements Screen {
 
 	private SpriteBatch spriteBatch;
-	private Texture splsh;
-	private Sprite sprite;
 	private BaseGame myGame;
 
 	private float timeout = 3.0f;
@@ -39,7 +38,7 @@ public class SplashScreen implements Screen {
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		spriteBatch.begin();
-		sprite.draw(spriteBatch);
+		TextureManager.getSprites("splash").draw(spriteBatch);
 		spriteBatch.end();
 	}
 
@@ -53,10 +52,10 @@ public class SplashScreen implements Screen {
 
 	@Override
 	public void show() {
-		splsh = new Texture(Gdx.files.internal("data/brocoders.png"));
-		sprite = new Sprite(splsh);
-		sprite.setSize(Settings.getHeight() * 1.5f, Settings.getHeight() * 1.5f);
-		sprite.setPosition(Settings.getWidth() * 1.5f * .05f, (Settings.getHeight() * .75f) - Settings.getHeight());
+		
+		
+		TextureManager.getSprites("splash").setSize(Settings.getHeight() * 1.5f, Settings.getHeight() * 1.5f);
+		TextureManager.getSprites("splash").setPosition(Settings.getWidth() * 1.5f * .05f, (Settings.getHeight() * .75f) - Settings.getHeight());
 		spriteBatch = new SpriteBatch();
 	}
 
@@ -77,7 +76,6 @@ public class SplashScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		splsh.dispose();
 		spriteBatch.dispose();
 	}
 

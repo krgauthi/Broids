@@ -28,7 +28,6 @@ public class MultiLobby implements Screen {
 
 	private BaseGame myGame;
 
-
 	private String gamePassword;
 
 	private ArrayList<String[]> games;
@@ -109,35 +108,35 @@ public class MultiLobby implements Screen {
 		if (page > 0) {
 			
 			TextureManager.getSprites("Ship1").setSize(yy * .25f, yy * .25f);
+			TextureManager.getSprites("Ship1").setOrigin((yy * .25f)/2f, (yy * .25f)/2f);
 			
 			
 
-			if (curPage < page) { // display both tabs
+			if (curPage < page) { // Arrow Down
 				TextureManager.getSprites("Ship1").setColor(Color.WHITE);
 				TextureManager.getSprites("Ship1").setRotation(180);
-				TextureManager.getSprites("Ship1").setPosition(xx * .01f, yy * .19f);
+				TextureManager.getSprites("Ship1").setPosition(xx * .01f, yy * .18f);
 				TextureManager.getSprites("Ship1").draw(spriteBatch);
 
 				out = String.format("%d ", curPage + 1);
 
 				myGame.font.setColor(Color.BLACK);
 				myGame.font.setScale(.5f);
-				myGame.font.draw(spriteBatch, out, xx * .078f, yy * .32f);
+				myGame.font.draw(spriteBatch, out, xx * .073f, yy * .33f);
 				
 			}
 
-			if (curPage > 0) {
-				// you are on the last tab display the top
+			if (curPage > 0) {			//Arrow Up
 				TextureManager.getSprites("Ship1").setColor(Color.WHITE);
 				TextureManager.getSprites("Ship1").setRotation(0);
-				TextureManager.getSprites("Ship1").setPosition(xx * .01f, yy * .5f);
+				TextureManager.getSprites("Ship1").setPosition(xx * .01f, yy * .48f);
 				TextureManager.getSprites("Ship1").draw(spriteBatch);
 
 				out = String.format("%d ", curPage);
 
 				myGame.font.setColor(Color.BLACK);
 				myGame.font.setScale(.5f);
-				myGame.font.draw(spriteBatch, out, xx * .078f, yy * .64f);
+				myGame.font.draw(spriteBatch, out, xx * .073f, yy * .64f);
 				
 			}
 		}
@@ -150,9 +149,10 @@ public class MultiLobby implements Screen {
 
 
 		// game list
+		TextureManager.getSprites("whitePixel").setSize(xx * .85f, yy * .01f);
 		for (int i = 0; i < 5 && (i + curPage * 5) < this.games.size(); i++) {
 			String[] temp = this.games.get(i + curPage * 5);
-
+			
 			TextureManager.getSprites("whitePixel").setPosition(xx * .15f, yy
 					* (.8f - (.16f * ((float) i + 1))));
 			TextureManager.getSprites("whitePixel").draw(spriteBatch);
@@ -161,7 +161,7 @@ public class MultiLobby implements Screen {
 			// ref
 			// total
 			// players
-			myGame.font.setColor(Color.BLACK);
+			myGame.font.setColor(Color.WHITE);
 			myGame.font.setScale(.4f);
 			myGame.font.draw(spriteBatch, out, xx * .7f, yy * (.73f - (.16f * i)));
 			String priv = "";
@@ -173,8 +173,11 @@ public class MultiLobby implements Screen {
 					* (.73f - (.16f * i))); // TODO ref Name of Game
 
 			if(i == selectedGame){
+			//	System.out.println("Game Selected: "+selectedGame);
 				TextureManager.getSprites("Ship1").setSize(xx * .05f, xx * .05f);
 				TextureManager.getSprites("Ship1").setPosition( xx * .936f, yy* (.68f - (.16f * i)));
+				TextureManager.getSprites("Ship1").setRotation(rotation);
+				TextureManager.getSprites("Ship1").setOrigin((xx * .05f)/2f	, (xx * .05f)/2f);
 				TextureManager.getSprites("Ship1").setColor(Settings.getShipColor());
 				TextureManager.getSprites("Ship1").draw(spriteBatch);
 			}

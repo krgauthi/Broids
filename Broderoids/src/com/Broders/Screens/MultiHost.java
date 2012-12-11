@@ -63,6 +63,9 @@ public class MultiHost implements Screen {
 		}
 
 		spriteBatch.begin();
+		
+		TextureManager.getSprites("Ship1").setSize(yy * .05f, yy * .05f);
+		TextureManager.getSprites("Ship1").setRotation(0);
 
 		// Box Selections
 		if (worldSize == 0) {
@@ -221,6 +224,7 @@ public class MultiHost implements Screen {
 		spriteBatch = new SpriteBatch();
 
 		TextureManager.getSprites("Ship1").setSize(yy * .05f, yy * .05f);
+		TextureManager.getSprites("Ship1").setRotation(0);
 	}
 
 	@Override

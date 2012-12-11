@@ -44,7 +44,7 @@ public class GameScreen implements Screen {
 	private Tail debug1;
 	private Tail debug2;
 
-	
+
 
 	float xx; // Clean reference for screen width
 	float yy; // Clean reference for screen height
@@ -63,7 +63,7 @@ public class GameScreen implements Screen {
 		this.id2 = id;
 		this.paused = false;
 		this.pauseWait = 0;
-		
+
 		this.gameOver = 0;
 
 		if (this.multiplayer) {
@@ -80,7 +80,7 @@ public class GameScreen implements Screen {
 
 		CoreLogic.initCore(myGame, width2, height2, h2, multiplayer);
 
-	
+
 		myGame.font.setScale(.25f);
 
 		myGame.multiplayer = this.multiplayer;
@@ -157,7 +157,7 @@ public class GameScreen implements Screen {
 			TextureManager.getSprites("healthBar").draw(spriteBatch);
 
 			TextureManager.getSprites("shieldBar").draw(spriteBatch);
-		
+
 
 			int health = 0;
 			int shield = 0;
@@ -281,7 +281,7 @@ public class GameScreen implements Screen {
 
 
 
-		if (paused && !multiplayer) {
+		if (paused) {
 
 			TextureManager.getSprites("whitePixel").setSize(xx * .5f, yy * .5f);
 			TextureManager.getSprites("whitePixel").setPosition((xx * .5f)-((xx * .5f)/2), (yy * .5f)-((yy * .5f)/2));
@@ -415,8 +415,8 @@ public class GameScreen implements Screen {
 
 		pauseWait += Gdx.graphics.getDeltaTime();
 		if ((Gdx.input.isKeyPressed(Keys.ESCAPE) ||
-			(Gdx.app.getVersion() > 0 && Gdx.input.isKeyPressed(Keys.BACK))) &&
-			 pauseWait >= 0.2f) {
+				(Gdx.app.getVersion() > 0 && Gdx.input.isKeyPressed(Keys.BACK))) &&
+				pauseWait >= 0.2f) {
 			if (paused)
 				resume();
 			else pause();
@@ -570,7 +570,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void dispose() {
 		this.spriteBatch.dispose();
-	
+
 
 		CoreLogic.dispose();
 	}

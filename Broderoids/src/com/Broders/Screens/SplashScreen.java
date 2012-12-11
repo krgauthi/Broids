@@ -27,6 +27,8 @@ public class SplashScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
+		
+		
 		timeout -= delta;
 		if (timeout <= 0 || this.handleInput(delta)) {
 			myGame.setScreen(BaseGame.screens.get("main"));
@@ -54,9 +56,22 @@ public class SplashScreen implements Screen {
 	public void show() {
 		
 		
+		
 		TextureManager.getSprites("splash").setSize(Settings.getHeight() * 1.5f, Settings.getHeight() * 1.5f);
 		TextureManager.getSprites("splash").setPosition(Settings.getWidth() * 1.5f * .05f, (Settings.getHeight() * .75f) - Settings.getHeight());
 		spriteBatch = new SpriteBatch();
+		
+		
+		
+		
+		spriteBatch.begin();
+		TextureManager.getSprites("splash").draw(spriteBatch);
+		spriteBatch.end();
+		
+		
+		
+		
+
 	}
 
 	@Override

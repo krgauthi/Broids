@@ -61,10 +61,9 @@ public class BaseGame extends Game {
 		Settings.setHeight(Gdx.graphics.getHeight());
 		
 		Net.init(this);
-		SoundManager.init(this);
-		TextureManager.init(this);
-
 		ScoresManager.init(this);
+		TextureManager.init(this);
+		SoundManager.init(this);
 
 		screens = new HashMap<String,Screen>();
 		screens.put("splash", new SplashScreen(this));

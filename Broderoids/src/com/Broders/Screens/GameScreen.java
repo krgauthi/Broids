@@ -251,9 +251,6 @@ public class GameScreen implements Screen {
 						xx * ((i - offsetX) / CoreLogic.getWidthScreen()), 0);
 				TextureManager.getSprites("whitePixel").draw(spriteBatch);
 			}
-
-
-
 		}
 
 

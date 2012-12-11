@@ -23,16 +23,16 @@ public class SoundManager {
 		sounds = new HashMap<String, Sound>();
 
 		String[][] defaultSounds = {
-				{"death","data/ShipBoom.mp3"},
-				{"roidBreak1", "data/AsteroidBoom1.wav"},
-				{"roidBreak2", "data/AsteroidBoom2.wav"},
-				{"roidBreak3", "data/AsteroidBoom3.wav"},
-				{"pew","data/Shot.mp3"},
-				{"muzak", "data/Broderoids.mp3"},
-				{"zoom", "data/Thrust.mp3"},
-				{"click", "data/menuShift.mp3"},
-				{"respawn", "data/ShipRespawn.mp3"},
-				{"start", "data/RoundStart.wav"},
+				{"death","data/shipboom.mp3"},
+				{"roidBreak1", "data/asteroidboom1.wav"},
+				{"roidBreak2", "data/asteroidboom2.wav"},
+				{"roidBreak3", "data/asteroidboom3.wav"},
+				{"pew","data/shot.mp3"},
+				{"muzak", "data/broderoids.mp3"},
+				{"zoom", "data/thrust.mp3"},
+				{"click", "data/menushift.mp3"},
+				{"respawn", "data/shiprespawn.mp3"},
+				{"start", "data/roundstart.wav"},
 				{"error", "data/error.wav"}
 		};
 		

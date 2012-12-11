@@ -30,8 +30,8 @@ public class TextureManager {
 
 					// Android only
 					{"dPad", "data/leftrightpad.png"},
-					{"fireButton", "data/fireButton.png"},
-					{"thrustButton", "data/thrustButton.png"},
+					{"fireButton", "data/firebutton.png"},
+					{"thrustButton", "data/thrustbutton.png"},
 
 					//Menu
 					{"hostGame","data/bttn_host.png"},
@@ -39,8 +39,8 @@ public class TextureManager {
 					{"refresh","data/bttn_refresh.png"},
 					{"singlePlayer","data/bttn_singleplayer.png"},
 					{"multiplayer","data/bttn_multiplayer.png"},
-					{"highScores","data/bttn_highScore.png"},
-					{"mainMenu","data/bttn_mainMenu.png"},
+					{"highScores","data/bttn_highscore.png"},
+					{"mainMenu","data/bttn_mainmenu.png"},
 					{"pause","data/bttn_pause.png"},
 					{"quit","data/bttn_quit.png"},
 					{"settings","data/bttn_settings.png"},
@@ -51,9 +51,9 @@ public class TextureManager {
 					{"titleRight","data/menu_title2.png"},
 
 					//Retro Textures
-					{"Ship1","data/retroShip1.png"},
-					{"Ship2","data/retroShip2.png"},
-					{"Broid","data/retroBroid.png"},
+					{"Ship1","data/retroship1.png"},
+					{"Ship2","data/retroship2.png"},
+					{"Broid","data/retrobroid.png"},
 					{"bullet","data/bullet.png"},
 			};
 
@@ -75,8 +75,8 @@ public class TextureManager {
 
 					// Android only
 					{"dPad", "data/leftrightpad.png"},
-					{"fireButton", "data/fireButton.png"},
-					{"thrustButton", "data/thrustButton.png"},
+					{"fireButton", "data/firebutton.png"},
+					{"thrustButton", "data/thrustbutton.png"},
 
 					//Menu
 					{"hostGame","data/bttn_host.png"},
@@ -84,8 +84,8 @@ public class TextureManager {
 					{"refresh","data/bttn_refresh.png"},
 					{"singlePlayer","data/bttn_singleplayer.png"},
 					{"multiplayer","data/bttn_multiplayer.png"},
-					{"highScores","data/bttn_highScore.png"},
-					{"mainMenu","data/bttn_mainMenu.png"},
+					{"highScores","data/bttn_highscore.png"},
+					{"mainMenu","data/bttn_mainmenu.png"},
 					{"pause","data/bttn_pause.png"},
 					{"quit","data/bttn_quit.png"},
 					{"settings","data/bttn_settings.png"},

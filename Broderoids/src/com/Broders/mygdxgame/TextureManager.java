@@ -94,6 +94,7 @@ public class TextureManager {
 					//Title
 					{"titleLeft","data/menu_title1.png"},
 					{"titleRight","data/menu_title2.png"},
+					{"splash","data/brocoders.png"},
 					
 
 					//Game Textures
@@ -126,6 +127,16 @@ public class TextureManager {
 	public static void loadSprite(String key) {
 		Sprite temp = new Sprite(textures.get(key));
 		sprites.put(key, temp);
+	}
+	
+	public static void reload(BaseGame g){
+		for(String temp : textures.keySet()){
+			textures.get(temp).dispose();
+			textures.remove(temp);
+		}
+		
+		init(g);
+		
 	}
 
 	public static void destroy() {

@@ -1,11 +1,6 @@
 package com.Broders.Logic;
-
 import com.Broders.mygdxgame.BaseGame;
-<<<<<<< HEAD
-import com.badlogic.gdx.Gdx;
-=======
 import com.badlogic.gdx.*;
->>>>>>> 0e2e10d59b0640422f4cceaa5c8eeb948bd93ecd
 import com.badlogic.gdx.graphics.Color;
 
 /* Settings Object class to be used as a modular way to
@@ -23,41 +18,12 @@ import com.badlogic.gdx.graphics.Color;
  */
 public class Settings {
 
-<<<<<<< HEAD
-	BaseGame game;
-	
-=======
+
 	private static BaseGame game;
->>>>>>> 0e2e10d59b0640422f4cceaa5c8eeb948bd93ecd
 	public static String data_path = "data/";
 	private static Preferences prefs;
 	
-<<<<<<< HEAD
-	public Settings(BaseGame game) {
-		this.game = game;
-			
 
-		
-	}
-	
-	// Main method for loading settings from settings file
-	// Broken up into individual methods for maintainability
-	public void loadSettings() throws FileNotFoundException {
-		Scanner s = new Scanner(new File("config/broids.cfg")); //@Mike, Fix yer damn plumbing.
-		while (s.hasNextLine()) {
-			String line = s.nextLine();
-			String[] tokens = line.split(":");
-			String option = tokens[0].toLowerCase().trim();
-			String value = null;
-			if (tokens.length > 1) {
-				value = tokens[1].toLowerCase().trim();
-			}
-			
-			// checks option to see which option is being read
-			// and then sets that option to the value.
-			checkSettings(option, value);
-		}
-=======
 	private static String username;
 	private static Color shipColor;
 	private static Color worldColor;
@@ -107,7 +73,7 @@ public class Settings {
 		game = mygame;
 		prefs = Gdx.app.getPreferences("broids-prefs");
 		load();
->>>>>>> 0e2e10d59b0640422f4cceaa5c8eeb948bd93ecd
+
 	}
 	
 	public static void load() {

@@ -210,7 +210,7 @@ public class MainMenu implements Screen{
 		TextureManager.getSprites("quit").setPosition((xx * .5f)-(yy*.4f), 0 - (yy * .2f));
 
 
-		titleTex = new Texture(Gdx.files.internal("data/Broderoids.png"));
+		/*titleTex = new Texture(Gdx.files.internal("data/Broderoids.png"));
 		titleSprite = new Sprite(titleTex,512,512);
 		titleSprite.setPosition(0,yy*(-.5f));
 		titleSprite.setSize(yy, yy);
@@ -228,7 +228,7 @@ public class MainMenu implements Screen{
 		settingsTex = new Texture(Gdx.files.internal("data/Settings.png"));
 		settingsSprite = new Sprite(settingsTex,512,512);
 		settingsSprite.setPosition(xx*.55f,yy*.05f);
-		settingsSprite.setSize(yy*.5f,yy*.5f);
+		settingsSprite.setSize(yy*.5f,yy*.5f);*/
 
 		spriteBatch = new SpriteBatch();
 	}

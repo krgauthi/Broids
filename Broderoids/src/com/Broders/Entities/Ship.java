@@ -91,7 +91,7 @@ public class Ship extends Entity {
 		this.thrustLast = false;
 		this.smokeInterval = 0;
 		this.shieldRegen = 0;
-		
+
 		//TextureManager.getSprites("Ship2").flip(false, true);
 
 		TextureManager.getSprites("Ship2").setOrigin((meter * this.getSize()) / 2,	(meter * this.getSize()) / 2);
@@ -119,8 +119,9 @@ public class Ship extends Entity {
 	public void setThrust(boolean bool) {
 
 		Sound zoom = SoundManager.get("zoom");
+		long soundId;
 		if (!thrustLast && bool) {
-			long soundId = zoom.loop(Settings.getSoundVol() * 0.1f);
+			soundId = zoom.loop(Settings.getSoundVol() * 0.1f);
 			zoom.setPitch(soundId, (float) (0.8f + Math.random() * 0.4f));
 		} else if (thrustLast && !bool) {
 			zoom.stop();
@@ -179,7 +180,7 @@ public class Ship extends Entity {
 				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
 
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
-		
+
 		if(posX > -this.getSize()*8 && posX < (screenWidth+this.getSize()*8) 
 				&& posY > -this.getSize()*8 && posY < (screenHeight+this.getSize()*8)){
 
@@ -229,7 +230,7 @@ public class Ship extends Entity {
 					color.set(Color.YELLOW);
 				if (fire > 0.15 && fire < 0.3)
 					color.set(Color.RED);
-				
+
 				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), dir ,
 						this.getX(), this.getY(), 5, color);
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
@@ -246,16 +247,14 @@ public class Ship extends Entity {
 			this.getOwner().modBonus(1.0f);
 		}
 		float temp = (float) (10+Math.random()%10);
+		setThrust(false);
+		SoundManager.play("death", 1f, 0.85f);
 		for(int i = 0; i < temp;i++){
 			temp = 360/temp;
-			
+
 			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), 
 					(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 30, super.getColor());
 			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
-
-			setThrust(false);
-			
-			SoundManager.play("death", 1f, 0.85f);
 		}
 	}
 

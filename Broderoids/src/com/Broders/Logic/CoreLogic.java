@@ -62,6 +62,7 @@ public class CoreLogic {
 	public static LinkedList<String[]> addPlayers;
 	public static LinkedList<String> rmPlayers;
 	public static LinkedList<EntityData> addEntities;
+	private static String saveId;
 
 	public static BaseGame getGame() {
 		return myGame;
@@ -135,12 +136,7 @@ public class CoreLogic {
 		//paused = false;*/
 
 		widthScreen = 160;
-		if(Gdx.app.getVersion() > 0){
-			heightScreen = (Gdx.graphics.getHeight()/Gdx.graphics.getHeight())*160;
-		}
-		else{
-			heightScreen = 90;
-		}
+		heightScreen = (160f)*(((float)Settings.getHeight())/((float)Settings.getWidth()));
 
 		if (widthIn != 0.0) {
 			width = widthIn;
@@ -162,7 +158,7 @@ public class CoreLogic {
 		local.modShield(100);
 		players.put(Integer.toString(local.getId()), local);
 
-		//saveId = local.getShip().getId();
+		saveId = local.getShip().getId();
 
 		Player comp = new Player("Comp", 1);
 		players.put(Integer.toString(comp.getId()), comp);
@@ -202,7 +198,7 @@ public class CoreLogic {
 			respawnTimer = -10f;
 			invincibleTimer = 3f;
 
-			Ship ship = new Ship(local.nextId(), local,
+			Ship ship = new Ship(saveId, local,
 					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
 
 			local.setShip(ship);
@@ -212,7 +208,7 @@ public class CoreLogic {
 				local.modHealth(100);
 			}
 
-			local.getEntitiesMap().put(Integer.toString(clientId), local.getShip());
+			local.getEntitiesMap().put(saveId, local.getShip());
 			local.getShip().setInvincible(true);
 			local.modBonus(1.0f);
 		}

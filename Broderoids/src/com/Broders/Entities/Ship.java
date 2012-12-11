@@ -34,7 +34,7 @@ public class Ship extends Entity {
 	private boolean thrustLast;
 	private float smokeInterval;
 	private float shieldRegen;
-	
+
 	private BaseGame game;
 
 	/**
@@ -51,7 +51,7 @@ public class Ship extends Entity {
 		super(id, owner);
 
 		this.game = owner.getGame();
-		
+
 		Vector2 vertices[] = new Vector2[3];
 		vertices[0] = new Vector2(-1.5f, 1.39f);
 		vertices[1] = new Vector2(-1.5f, -1.39f);
@@ -91,7 +91,7 @@ public class Ship extends Entity {
 		this.thrustLast = false;
 		this.smokeInterval = 0;
 		this.shieldRegen = 0;
-		
+
 		//TextureManager.getSprites("Ship2").flip(false, true);
 
 		TextureManager.getSprites("Ship2").setOrigin((meter * this.getSize()) / 2,	(meter * this.getSize()) / 2);
@@ -179,7 +179,7 @@ public class Ship extends Entity {
 				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
 
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
-		
+
 		if(posX > -this.getSize()*8 && posX < (screenWidth+this.getSize()*8) 
 				&& posY > -this.getSize()*8 && posY < (screenHeight+this.getSize()*8)){
 
@@ -229,7 +229,7 @@ public class Ship extends Entity {
 					color.set(Color.YELLOW);
 				if (fire > 0.15 && fire < 0.3)
 					color.set(Color.RED);
-				
+
 				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), dir ,
 						this.getX(), this.getY(), 5, color);
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
@@ -245,18 +245,20 @@ public class Ship extends Entity {
 			this.getOwner().modScore(-500);
 			this.getOwner().modBonus(1.0f);
 		}
+		setThrust(false);
+
+		SoundManager.play("death", 1f, 0.85f);
 		float temp = (float) (10+Math.random()%10);
 		for(int i = 0; i < temp;i++){
 			temp = 360/temp;
-			
+
 			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), 
 					(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 30, super.getColor());
 			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
-
-			setThrust(false);
-			
-			SoundManager.play("death", 1f, 0.85f);
 		}
+
+		
+
 	}
 
 	public void setInvincible(boolean b){

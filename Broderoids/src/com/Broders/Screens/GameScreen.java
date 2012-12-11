@@ -155,9 +155,9 @@ public class GameScreen implements Screen {
 		if (multiplayer) {
 			// Draw HUD
 			TextureManager.getSprites("healthBar").draw(spriteBatch);
-			// healthBlock.draw(spriteBatch);
+
 			TextureManager.getSprites("shieldBar").draw(spriteBatch);
-			// shieldBlock.draw(spriteBatch);
+		
 
 			int health = 0;
 			int shield = 0;

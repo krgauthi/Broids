@@ -17,8 +17,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -130,25 +128,17 @@ public class SettingsScreen implements Screen {
 
 		// ShipColor		
 
-		Pixmap p = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-		p.setColor(Settings.getShipColor());
-		p.fillRectangle(0,  0, 1, 1);
-		Texture tex = new Texture(p, true);
-		p.dispose();
-
-		spriteBatch.draw(tex, Settings.getWidth() * .775f, Settings.getHeight() * .94f,
-				0, 0, 60, 26);
-
-		// WorldColor
-
-		p = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-		p.setColor(Settings.getWorldColor());
-		p.fillRectangle(0,  0, 1, 1);
-		tex = new Texture(p, true);
-		p.dispose();
-
-		spriteBatch.draw(tex, Settings.getWidth() * .93f, Settings.getHeight() * .94f,
-				0, 0, 60, 26);
+		
+		TextureManager.getSprites("whitePixel").setSize(Settings.getWidth() * .06f, Settings.getHeight() * .05f);
+		TextureManager.getSprites("whitePixel").setPosition(Settings.getWidth() * .775f, Settings.getHeight() * .94f);
+		TextureManager.getSprites("whitePixel").setColor(Settings.getShipColor());
+		TextureManager.getSprites("whitePixel").draw(spriteBatch);
+		
+		//World Color
+		TextureManager.getSprites("whitePixel").setSize(Settings.getWidth() * .06f, Settings.getHeight() * .05f);
+		TextureManager.getSprites("whitePixel").setPosition(Settings.getWidth() * .93f, Settings.getHeight() * .94f);
+		TextureManager.getSprites("whitePixel").setColor(Settings.getWorldColor());
+		TextureManager.getSprites("whitePixel").draw(spriteBatch);
 
 		spriteBatch.end();		
 	}

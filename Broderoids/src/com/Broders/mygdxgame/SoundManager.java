@@ -18,11 +18,11 @@ public class SoundManager {
 	private static float mv;
 	private static int android;
 	public static void init() {
-		
-		
+
+
 		if(Gdx.app.getVersion() > 0)
 			android = 1;
-		
+
 		sounds = new HashMap<String, Sound>();
 
 		String[][] defaultSounds = {
@@ -42,7 +42,7 @@ public class SoundManager {
 			Sound temp = Gdx.audio.newSound(Gdx.files.internal(noise[1]));
 			sounds.put(noise[0], temp);
 		}
-		
+
 		update();
 		//if android
 		if (android == 1) {
@@ -75,7 +75,7 @@ public class SoundManager {
 
 		long id = clip.play(sv * volume);
 		clip.setPitch(id, pitch);
-		
+
 		return id;
 	}
 
@@ -102,23 +102,24 @@ public class SoundManager {
 		}
 		sounds = null;
 	}
-	
+
 	public static void setMusicVolume(float volume) {
 		update();
-			
+
 		if (android == 1) {
 			music.setVolume(volume);
 		} else {
 			muzak.setVolume(muzakId, volume);
 		}
-		
+
 		System.out.println("Volume parameter = " + volume);
 	}
-	
+
 	public static void setMusicPitch(float pitch) {
 		update();
-		if (android == 1);
+		if (android != 1){
 			muzak.setPitch(muzakId, pitch);
+		}
 	}
 
 	public static void update() {

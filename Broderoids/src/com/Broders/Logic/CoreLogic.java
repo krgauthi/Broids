@@ -219,7 +219,8 @@ public class CoreLogic {
 				local.modShield(100);
 			}
 
-			local.getEntitiesMap().put(saveId, local.getShip());
+			String[] idParts = saveId.split("-");
+			local.getEntitiesMap().put(idParts[1], local.getShip());
 			local.getShip().setInvincible(true);
 			local.modBonus(1.0f);
 		}
@@ -402,7 +403,8 @@ public class CoreLogic {
 
 		roid.getBody().setAngularVelocity(spin);
 
-		getComp().getEntitiesMap().put(roid.getId(), roid);
+		String[] idParts = roid.getId().split("-");
+		getComp().getEntitiesMap().put(idParts[1], roid);
 
 		if(multiplayer){
 			Net.createEntity(roid);
@@ -450,7 +452,8 @@ public class CoreLogic {
 
 					Bullet shot = new Bullet(getSelf().nextId(),
 							getSelf(), dir, x, y);
-					local.getEntitiesMap().put(shot.getId(), shot);
+					String[] idParts = shot.getId().split("-");
+					local.getEntitiesMap().put(idParts[1], shot);
 					bulletCooldown = 0;
 					local.getShip().setShooting(true);
 
@@ -653,7 +656,8 @@ public class CoreLogic {
 				}
 			}
 
-			i.getOwner().getEntitiesMap().remove(i.getId());
+			String[] idParts = i.getId().split("-");
+			i.getOwner().getEntitiesMap().remove(idParts[1]);
 			i.destroy();
 			world.destroyBody(i.getBody());
 		}
@@ -753,25 +757,25 @@ public class CoreLogic {
 			EntityData entData = addEntities.pop();
 			String[] idParts = entData.id.split("-");
 			System.out.println("Entity: " + entData.id);
-			if (!idParts[0].equals(Integer.toString(clientId))
-					&& !(host && idParts[0].equals("1"))) {
-				if (entData.type == Net.ENTITY_SHIP) {
-					Player p = CoreLogic.findPlayer(idParts[0]);
-					Ship ent = new Ship(entData.id, p, entData.x, entData.y);
-					p.setShip(ent);
-					ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
-					p.createEntity(ent, idParts[1]);
-				} else if (entData.type == Net.ENTITY_ASTEROID) {
-					Player p = CoreLogic.findPlayer(idParts[0]);
-					Entity ent = new Asteroid(entData.extra, entData.id, p, entData.x, entData.y);
-					ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
-					p.createEntity(ent, idParts[1]);
-				} else if (entData.type == Net.ENTITY_BULLET) {
-					Player p = CoreLogic.findPlayer(idParts[0]);
-					Entity ent = new Bullet(entData.id, p, entData.a, entData.x, entData.y);
-					ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
-					p.createEntity(ent, idParts[1]);
-				}
+			if (entData.type == Net.ENTITY_SHIP) {
+				Player p = CoreLogic.findPlayer(idParts[0]);
+				Ship ent = new Ship(entData.id, p, entData.x, entData.y);
+				p.setShip(ent);
+				ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
+				p.createEntity(ent, idParts[1]);
+				Net.createEntity(ent);
+			} else if (entData.type == Net.ENTITY_ASTEROID) {
+				Player p = CoreLogic.findPlayer(idParts[0]);
+				Entity ent = new Asteroid(entData.extra, entData.id, p, entData.x, entData.y);
+				ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
+				p.createEntity(ent, idParts[1]);
+				Net.createEntity(ent);
+			} else if (entData.type == Net.ENTITY_BULLET) {
+				Player p = CoreLogic.findPlayer(idParts[0]);
+				Entity ent = new Bullet(entData.id, p, entData.a, entData.x, entData.y);
+				ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
+				p.createEntity(ent, idParts[1]);
+				Net.createEntity(ent);
 			}
 		}
 	}

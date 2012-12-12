@@ -2,6 +2,7 @@ package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Player;
+import com.Broders.Logic.Settings;
 import com.Broders.mygdxgame.SoundManager;
 import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.Gdx;
@@ -118,6 +119,7 @@ public class Ship extends Entity {
 		
 		if (!this.thrustLast && !this.thrust && bool) {
 			zoomId = zoom.play();
+			zoom.setVolume(zoomId, Settings.getSoundVol());
 			zoom.setLooping(zoomId, true);
 		} else if(!this.thrustLast && !this.thrust && !bool){
 			zoom.stop();
@@ -229,7 +231,8 @@ public class Ship extends Entity {
 
 				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), dir ,
 						this.getX(), this.getY(), 5, color);
-				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
+				String[] idParts = D.getId().split("-");
+				CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
 
 				smokeInterval = 0;
 			}
@@ -254,7 +257,8 @@ public class Ship extends Entity {
 
 			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), 
 					(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 30, super.getColor());
-			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
+			String[] idParts = D.getId().split("-");
+			CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
 		}
 	}
 

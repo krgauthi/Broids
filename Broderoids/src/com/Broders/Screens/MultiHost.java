@@ -25,6 +25,7 @@ public class MultiHost implements Screen {
 	private String password;
 	private String gameSize;
 	private String gameDiff;
+	private int limit;
 
 	int worldSize = 0;
 
@@ -34,6 +35,8 @@ public class MultiHost implements Screen {
 	public MultiHost(BaseGame game) {
 		this.myGame = game;
 
+		limit = 5;
+		
 		gameSize = "Small";
 		worldSize = 0;
 		switch(Settings.getDifficulty()){
@@ -76,14 +79,21 @@ public class MultiHost implements Screen {
 
 		spriteBatch.begin();
 
+		TextureManager.getSprites("Ship1").setRotation(90);
+		TextureManager.getSprites("Ship1").setPosition(xx * .5f, yy * .5f);
+		TextureManager.getSprites("Ship1").draw(spriteBatch);
+		
+		
+		
+		
 
 		// text
-
 		myGame.font.setScale(.5f);
 		myGame.font.draw(spriteBatch, "Game Name: " + this.gameName, xx * .1f, yy * .9f);
 		myGame.font.draw(spriteBatch, "Password: " + this.password.replaceAll(".", "*"), xx * .1f, yy *.75f);
 		myGame.font.draw(spriteBatch, "World Size : "+this.gameSize, xx * .1f, yy * .6f);
 		myGame.font.draw(spriteBatch, "Difficulty: "+this.gameDiff, xx * .1f, yy * .45f);
+		myGame.font.draw(spriteBatch, "Max Players: "+this.limit, xx * .1f, yy * .3f);
 		myGame.font.draw(spriteBatch, "Play!", xx * .8f, yy * .9f);
 
 		spriteBatch.end();

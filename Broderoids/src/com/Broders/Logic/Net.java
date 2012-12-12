@@ -509,10 +509,6 @@ public class Net extends Thread {
 
 				Entity ent = CoreLogic.findEntity(id);
 				if (!ownedByLocal(id)) {
-					if (ent instanceof Ship) {
-						System.out.println(ent.getAngle());
-						System.out.println(ent.getAngularVelocity());
-					}
 					// NOTE: Hacky work around
 					if (ent != null) {
 						ent.teleport(x, y, a, av, xv, yv);

@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Net extends Thread {
-	public static int protocol_version = 1;
+	public static int protocol_version = 2;
 	
 	private static Thread cur;
 	
@@ -164,7 +164,11 @@ public class Net extends Thread {
 		o.addProperty("c", COMMAND_GAME_ENTITY_REMOVE);
 		JsonObject d = new JsonObject();
 		d.addProperty("a", eA.getId());
+		d.addProperty("ap", eA.getPoints());
+		d.addProperty("at", Net.entityType(eA));
 		d.addProperty("b", eB.getId());
+		d.addProperty("bp", eB.getPoints());
+		d.addProperty("bt", Net.entityType(eB));
 		o.add("d", d);
 	}
 
@@ -344,6 +348,36 @@ public class Net extends Thread {
 		
 		return false;
 	}
+	
+	private static void handleCollision(String eS, int points, int type) {
+		Entity e = CoreLogic.findEntity(eS);
+
+		if (e instanceof Ship) {
+			if (type == Net.ENTITY_SHIP) {
+				// Not used
+			} else if (type == Net.ENTITY_ASTEROID) {
+				CollisionLogic.shipDanger(e);
+			} else if (type == Net.ENTITY_BULLET) {
+				CollisionLogic.shipDanger(e);
+			}
+		} else if (e instanceof Asteroid) {
+			if (type == Net.ENTITY_SHIP) {
+				// Not used
+			} else if (type == Net.ENTITY_ASTEROID) {
+				// Not used
+			} else if (type == Net.ENTITY_BULLET) {
+				CollisionLogic.asteroidBullet(e);
+			}
+		} else if (e instanceof Bullet) {
+			if (type == Net.ENTITY_SHIP) {
+				CollisionLogic.bulletShip(e, points);
+			} else if (type == Net.ENTITY_ASTEROID) {
+				CollisionLogic.bulletAsteroid(e, points);
+			} else if (type == Net.ENTITY_BULLET) {
+				// Not used
+			}
+		}
+	}
 
 	@Override
 	public void run() {
@@ -363,22 +397,26 @@ public class Net extends Thread {
 
 			e = obj.get("c");
 			int frameType = e.getAsInt();
-			if (!CoreLogic.isHost()) {
-				if (frameType == FRAME_GAME_COLLISION) {
-					System.out.println("Collision");
-					
-					JsonObject o = obj.get("d").getAsJsonObject();
-					String A = o.get("a").getAsString();
-					Entity eA = CoreLogic.findEntity(A);
-					String B = o.get("b").getAsString();
-					Entity eB = CoreLogic.findEntity(B);
-					CollisionLogic.entityContact(eA, eB);
-				} else if (frameType == FRAME_GAME_ROUND_OVER) {
-					CoreLogic.setRoundOver();
-				}
-			}
+			if (frameType == FRAME_GAME_COLLISION) {
+				System.out.println("Collision");
+				
+				JsonObject o = obj.get("d").getAsJsonObject();
+				String A = o.get("a").getAsString();
+				int ap = o.get("ap").getAsInt();
+				int at = o.get("at").getAsInt();
+				String B = o.get("b").getAsString();
+				int bp = o.get("bp").getAsInt();
+				int bt = o.get("bt").getAsInt();
 
-			if (frameType == FRAME_GAME_SYNC) {
+				if (ownedByLocal(A)) {
+					Net.handleCollision(A, bp, bt);
+				}
+				if (ownedByLocal(B)) {
+					Net.handleCollision(B, ap, at);
+				}
+			} else if (frameType == FRAME_GAME_ROUND_OVER) {
+				CoreLogic.setRoundOver();
+			} else if (frameType == FRAME_GAME_SYNC) {
 				System.out.println("Sync");
 				
 				// NOTE: This should be the first thing the client gets,

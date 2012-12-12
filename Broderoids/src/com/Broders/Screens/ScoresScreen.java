@@ -49,10 +49,12 @@ public class ScoresScreen implements Screen {
 			g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		}
 
+		float dpi = Gdx.graphics.getDensity()*160f;
+		
 		spriteBatch.begin();
-		font.setScale(.60f);
+		font.setScale(.60f*Gdx.graphics.getDensity());
 		font.draw(spriteBatch, "High Scores", xx * .40f, yy * .98f);
-		font.setScale(.50f);
+		font.setScale(.50f*Gdx.graphics.getDensity());
 		for(int i = 0; i < 10; i++){
 			font.draw(spriteBatch, scores[i][0], xx * .05f, yy * (.85f - i*.08f));
 			font.draw(spriteBatch, scores[i][1], xx * .20f, yy * (.85f - i*.08f));

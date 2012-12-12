@@ -11,13 +11,11 @@ public class SoundManager {
 	private static HashMap<String, Sound> sounds;
 	private static Music music;
 	private static BaseGame g;
+
 	private static float sv;
 
 
-	public static void init(BaseGame game) {
-
-		g = game;
-
+	public static void init() {
 		sounds = new HashMap<String, Sound>();
 
 		String[][] defaultSounds = {

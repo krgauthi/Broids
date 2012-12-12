@@ -18,7 +18,6 @@ public class Bullet extends Entity {
 
 	public Bullet(String id, Player owner, float dir, float x, float y) {
 		super(id, owner);
-		owner.getGame();
 		// sprite
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 

@@ -38,7 +38,6 @@ public abstract class Entity {
 
 	protected String id;
 	protected Player owner;
-
 	
 	public Entity(String id, Player owner) {
 		this.id = id;

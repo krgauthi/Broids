@@ -4,13 +4,11 @@ import java.util.HashMap;
 
 import com.Broders.Entities.Entity;
 import com.Broders.Entities.Ship;
-import com.Broders.mygdxgame.BaseGame;
-import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.graphics.Color;
 
 public class Player {
 	private int id;
-	private BaseGame myGame;
+	
 	private Color playerColor;
 	protected HashMap<String, Entity> entities;
 	private Ship playerShip;
@@ -36,7 +34,6 @@ public class Player {
 	public Player(String type, int id) {
 		this.id = id;
 		nextEntityId = 0;
-		setGame(CoreLogic.getGame());
 		entities = new HashMap<String, Entity>();
 
 		if (type.equals("Player")) {
@@ -44,7 +41,7 @@ public class Player {
 
 
 			
-			if (getGame().multiplayer) {
+			if (CoreLogic.multiplayer) {
 				shield = 100;
 				health = 100;
 			} else {
@@ -168,13 +165,5 @@ public class Player {
 			modHealth(hit);
 		}
 		modShield(0 - damage);
-	}
-
-	public BaseGame getGame() {
-		return myGame;
-	}
-
-	public void setGame(BaseGame myGame) {
-		this.myGame = myGame;
 	}
 }

@@ -12,8 +12,7 @@ public class TextureManager {
 	private static HashMap<String, Texture> textures;
 	private static HashMap<String, Sprite> sprites;
 
-	public static void init(BaseGame g) {
-		BaseGame myGame = g;
+	public static void init() {
 		textures = new HashMap<String, Texture>();
 		sprites = new HashMap<String, Sprite>();
 
@@ -136,8 +135,7 @@ public class TextureManager {
 			textures.remove(temp);
 		}
 		
-		init(g);
-		
+		init();
 	}
 
 	public static void destroy() {

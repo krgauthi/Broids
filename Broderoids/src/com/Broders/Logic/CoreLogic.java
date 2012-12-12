@@ -621,7 +621,7 @@ public class CoreLogic {
 	}
 
 	public static void removeEntity(Entity ent) {
-		if (!ent.isDead()) {
+		if (ent != null && !ent.isDead()) {
 			ent.setDead();
 			rmEntities.add(ent);
 		}

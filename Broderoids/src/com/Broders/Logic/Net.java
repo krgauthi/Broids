@@ -345,52 +345,19 @@ public class Net extends Thread {
 				element = parser.next();
 
 				Net.lock();
-
+				
 				// Since we know we have an object,
 				// lets do what we need to with it
 				JsonObject obj = element.getAsJsonObject();
+				
+				System.out.println(obj);
 
 				JsonElement e;
 
 				e = obj.get("c");
 				int frameType = e.getAsInt();
 				if (!CoreLogic.getHost()) {
-					if (frameType == FRAME_GAME_SYNC) {
-						System.out.println("Sync");
-						
-						// NOTE: This should be the first thing the client gets,
-						// so we can assume that there's nothing else in here.
-						// In other words, just add all the objects
-
-						JsonObject inn = obj.get("d").getAsJsonObject();
-						JsonObject pla = inn.get("p").getAsJsonObject();
-						for (JsonElement pe : pla.getAsJsonArray()) {
-							JsonObject o = pe.getAsJsonObject();
-
-							int id = o.get("i").getAsInt();
-							String name = o.get("n").getAsString();
-							int score = o.get("s").getAsInt();
-
-							CoreLogic.createPlayer(id, name, score);
-						}
-
-						JsonObject ento = inn.get("e").getAsJsonObject();
-						for (JsonElement ee : ento.getAsJsonArray()) {
-							JsonObject o = ee.getAsJsonObject();
-							EntityData ed = new EntityData();
-							ed.type = o.get("t").getAsInt();
-							ed.id = o.get("id").getAsString();
-							ed.extra = o.get("e").getAsInt();
-							ed.x = o.get("x").getAsFloat();
-							ed.y = o.get("y").getAsFloat();
-							ed.xv = o.get("xv").getAsFloat();
-							ed.yv = o.get("yv").getAsFloat();
-							ed.a = o.get("a").getAsFloat();
-							ed.av = o.get("av").getAsFloat();
-
-							CoreLogic.createEntity(ed);
-						}	
-					} else if (frameType == FRAME_GAME_COLLISION) {
+					if (frameType == FRAME_GAME_COLLISION) {
 						System.out.println("Collision");
 						
 						JsonObject o = obj.get("d").getAsJsonObject();
@@ -404,7 +371,43 @@ public class Net extends Thread {
 					}
 				}
 
-				if (frameType == FRAME_GAME_PLAYER_CREATE) {
+				if (frameType == FRAME_GAME_SYNC) {
+					System.out.println("Sync");
+					
+					// NOTE: This should be the first thing the client gets,
+					// so we can assume that there's nothing else in here.
+					// In other words, just add all the objects
+					
+					JsonObject inn = obj.get("d").getAsJsonObject();
+
+					JsonElement pla = inn.get("p");
+					for (JsonElement pe : pla.getAsJsonArray()) {
+						JsonObject o = pe.getAsJsonObject();
+
+						int id = o.get("i").getAsInt();
+						String name = o.get("n").getAsString();
+						int score = o.get("s").getAsInt();
+
+						CoreLogic.createPlayer(id, name, score);
+					}
+
+					JsonElement ento = inn.get("e");
+					for (JsonElement ee : ento.getAsJsonArray()) {
+						JsonObject o = ee.getAsJsonObject();
+						EntityData ed = new EntityData();
+						ed.type = o.get("t").getAsInt();
+						ed.id = o.get("id").getAsString();
+						ed.extra = o.get("e").getAsInt();
+						ed.x = o.get("x").getAsFloat();
+						ed.y = o.get("y").getAsFloat();
+						ed.xv = o.get("xv").getAsFloat();
+						ed.yv = o.get("yv").getAsFloat();
+						ed.a = o.get("a").getAsFloat();
+						ed.av = o.get("av").getAsFloat();
+
+						CoreLogic.createEntity(ed);
+					}
+				} else if (frameType == FRAME_GAME_PLAYER_CREATE) {
 					JsonObject o = obj.get("d").getAsJsonObject();
 					int id = o.get("i").getAsInt();
 					String name = o.get("n").getAsString();

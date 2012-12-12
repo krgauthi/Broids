@@ -715,6 +715,7 @@ public class CoreLogic {
 			String[] data = addPlayers.pop();
 			Player playr = new Player(false, data[1], Integer.parseInt(data[0]));
 			playr.setScore(Integer.parseInt(data[2]));
+			System.out.println("Player: " + playr.getId());
 			players.put(Integer.toString(Integer.parseInt(data[0])), playr);
 		}
 	}
@@ -742,6 +743,7 @@ public class CoreLogic {
 		while (!addEntities.isEmpty()) {
 			EntityData entData = addEntities.pop();
 			String[] idParts = entData.id.split("-");
+			System.out.println("Entity: " + entData.id);
 			if (!idParts[0].equals(Integer.toString(clientId))
 					&& !(host && idParts[0].equals("1"))) {
 				if (entData.type == Net.ENTITY_SHIP) {

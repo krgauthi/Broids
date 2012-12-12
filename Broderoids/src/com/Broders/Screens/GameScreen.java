@@ -70,7 +70,6 @@ public class GameScreen implements Screen {
 
 		CoreLogic.initCore(myGame, width2, height2, h2, multiplayer);
 
-
 		float dpi = Gdx.graphics.getDensity()*160f;
 		float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
 		myGame.font.setScale(0.5f*dpi*(inchHeight/22f)/72f);
@@ -407,9 +406,12 @@ public class GameScreen implements Screen {
 				Net.leaveGame();
 			}
 
-			//SoundManager.setMusicPitch(1f);
 			if(CoreLogic.getLocalShip() != null)
 				CoreLogic.getLocalShip().killZoom();
+
+			if (Gdx.app.getVersion() <= 0)
+				SoundManager.setMusicPitch(1f);
+
 			myGame.setScreen(BaseGame.screens.get("main"));
 		}
 
@@ -433,11 +435,13 @@ public class GameScreen implements Screen {
 					if(y >= .428 && y <= .519){
 						if (multiplayer) {
 							Net.leaveGame();
+
 						}
 
-						//SoundManager.setMusicPitch(1f);
+						SoundManager.setMusicPitch(1f);
 						if(CoreLogic.getLocalShip() != null)
 							CoreLogic.getLocalShip().killZoom();
+
 						myGame.setScreen(BaseGame.screens.get("main"));
 					}else if(y >= .578 && y <= .666){
 						resume();

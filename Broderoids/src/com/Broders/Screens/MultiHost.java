@@ -19,9 +19,6 @@ public class MultiHost implements Screen {
 	private BaseGame myGame;
 	private SpriteBatch spriteBatch;
 
-
-
-
 	private String gameName;
 	private String password;
 	private String gameSize;

@@ -57,10 +57,8 @@ public class Bullet extends Entity {
 		//Set type data
 		super.getBody().setUserData(this);
 		
-		SoundManager.play("pew", 1f, (float) (0.9f + Math.random() * 0.2));
+		SoundManager.play("pew", 1f, (float) (0.85f + Math.random() * 0.3));
 	}
-
-	
 
 	@Override
 	public void update() {
@@ -72,7 +70,6 @@ public class Bullet extends Entity {
 			}
 			super.owner.modBonus(1.0f);
 		}
-
 	}
 
 	@Override

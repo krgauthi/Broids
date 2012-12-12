@@ -131,9 +131,10 @@ public class MultiHost implements Screen {
 			if(inputy >= .678 && inputy <= .772){
 				
 				if(inputx >= .016 && inputx <= .095){
-					
+					if(limit > 5)
+						limit--;
 				}else if(inputx >= .291 && inputx <= .367){
-					
+					limit++;
 				}
 				
 			}

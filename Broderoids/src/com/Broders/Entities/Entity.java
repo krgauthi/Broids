@@ -222,21 +222,8 @@ public abstract class Entity {
 	 * @param y
 	 *            Y-Coordinate in the world (meters)
 	 */
-	public void teleport(float x, float y) {
-		Vector2 linV = this.body.getLinearVelocity();
-		float angV = this.body.getAngularVelocity();
-		float angle = this.body.getAngle();
-
-		CoreLogic.getWorld().destroyBody(this.body);
-
-		this.bodDef.position.set(x, y);
-		this.bodDef.angle = angle;
-		this.body = CoreLogic.getWorld().createBody(bodDef);
-		this.body.createFixture(this.fixDef);
-		this.body.setAngularVelocity(angV);
-		this.body.setLinearVelocity(linV);
-
-		this.body.setUserData(this);
+	public void teleport(float x, float y) {		
+		this.body.setTransform(x, y, this.body.getAngle());
 	}
 	
 	public float getAngularVelocity() {
@@ -266,18 +253,10 @@ public abstract class Entity {
 	public void teleport(float x, float y, float angle, float angleVel,
 			float vX, float vY) {
 
-		// Destroys the physical body of this Entity
-		CoreLogic.getWorld().destroyBody(this.body);
-
 		// Creates a new Body with the info in the given parameters
-		this.bodDef.position.set(x, y);
-		this.bodDef.angle = angle;
-		this.body = CoreLogic.getWorld().createBody(bodDef);
-		this.body.createFixture(this.fixDef);
+		this.body.setTransform(x, y, this.body.getAngle());
 		this.body.setAngularVelocity(angleVel);
 		this.body.setLinearVelocity(new Vector2(vX, vY));
-
-		this.body.setUserData(this);
 	}
 
 	public abstract void update();

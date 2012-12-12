@@ -22,6 +22,7 @@ public class MultiHost implements Screen {
 	private String password;
 	private String gameSize;
 	private String gameDiff;
+	private int limit;
 
 	int worldSize = 0;
 
@@ -30,6 +31,8 @@ public class MultiHost implements Screen {
 
 	public MultiHost(BaseGame game) {
 		this.myGame = game;
+
+		limit = 5;
 
 		gameSize = "Small";
 		worldSize = 0;
@@ -73,14 +76,22 @@ public class MultiHost implements Screen {
 
 		spriteBatch.begin();
 
+		TextureManager.getSprites("Ship1").setRotation(270);
+		TextureManager.getSprites("Ship1").setPosition(xx * .29f, yy * .29f);
+		TextureManager.getSprites("Ship1").draw(spriteBatch);
+
+		TextureManager.getSprites("Ship1").setRotation(90);
+		TextureManager.getSprites("Ship1").setPosition(xx * .075f, yy * .19f);
+		TextureManager.getSprites("Ship1").draw(spriteBatch);
+
 
 		// text
-
 		myGame.font.setScale(.5f);
 		myGame.font.draw(spriteBatch, "Game Name: " + this.gameName, xx * .1f, yy * .9f);
 		myGame.font.draw(spriteBatch, "Password: " + this.password.replaceAll(".", "*"), xx * .1f, yy *.75f);
 		myGame.font.draw(spriteBatch, "World Size : "+this.gameSize, xx * .1f, yy * .6f);
 		myGame.font.draw(spriteBatch, "Difficulty: "+this.gameDiff, xx * .1f, yy * .45f);
+		myGame.font.draw(spriteBatch, "Max Players: "+this.limit, xx * .1f, yy * .3f);
 		myGame.font.draw(spriteBatch, "Play!", xx * .8f, yy * .9f);
 
 		spriteBatch.end();
@@ -112,7 +123,21 @@ public class MultiHost implements Screen {
 		}
 
 		if (Gdx.input.justTouched()) {
-			// world size
+
+			//arrows
+			if(inputy >= .678 && inputy <= .772){
+
+				if(inputx >= .016 && inputx <= .095){
+					if(limit > 5)
+						limit--;
+				}else if(inputx >= .291 && inputx <= .367){
+					limit++;
+				}
+
+			}
+
+
+
 
 			if (inputx >= .096 && inputx <= .590) {
 				//Game name Text
@@ -193,10 +218,7 @@ public class MultiHost implements Screen {
 
 					}
 				}
-
 			}
-
-
 
 			//play Button
 			if (inputy > .09 && inputy < .173) {
@@ -205,8 +227,8 @@ public class MultiHost implements Screen {
 					int x;
 					int y;
 					if (worldSize == 0) {
-						x = Gdx.graphics.getWidth();
-						y = Gdx.graphics.getHeight();
+						x = 160;
+						y = (int)((160f)*(((float)Settings.getHeight())/((float)Settings.getWidth())));
 					} else if (worldSize == 1) {
 						x = 500;
 						y = 500;
@@ -215,7 +237,7 @@ public class MultiHost implements Screen {
 						y = 1000;
 					}
 					// TODO: Pass the right values
-					Screen s = Net.newGame(this.gameName, 5, x, y, this.password);
+					Screen s = Net.newGame(this.gameName, limit, x, y, this.password);
 					if (s != null) {
 						SoundManager.play("click", 0.7f);
 						myGame.setScreen(s);
@@ -236,7 +258,8 @@ public class MultiHost implements Screen {
 	public void show() {
 		spriteBatch = new SpriteBatch();
 
-		TextureManager.getSprites("Ship1").setSize(yy * .05f, yy * .05f);
+		TextureManager.getSprites("Ship1").setSize(yy * .15f, yy * .15f);
+		TextureManager.getSprites("Ship1").setOrigin((yy * .05f)/2f, (yy * .05f)/2f);
 		TextureManager.getSprites("Ship1").setRotation(0);
 	}
 

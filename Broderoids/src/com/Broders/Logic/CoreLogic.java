@@ -113,6 +113,7 @@ public class CoreLogic {
 		addPlayers = new LinkedList<String[]>();
 		rmPlayers = new LinkedList<String>();
 		addEntities = new LinkedList<EntityData>();
+
 		setHost(h);
 
 		respawnTimer = -10f;
@@ -179,7 +180,6 @@ public class CoreLogic {
 	 * @param delta
 	 */
 	public static void update(float delta) {
-
 		bulletCooldown += Gdx.graphics.getDeltaTime();
 
 		Player local = getLocal();
@@ -609,8 +609,10 @@ public class CoreLogic {
 	}
 
 	public static void removeEntity(Entity ent) {
-		if (!rmEntities.contains(ent))
+		if (!ent.isDead()) {
+			ent.setDead();
 			rmEntities.add(ent);
+		}
 	}
 
 	public static void setClientId(int id) {
@@ -621,6 +623,10 @@ public class CoreLogic {
 		Player local = getLocal();
 		for (Entity i : rmEntities) {
 			if (i instanceof Ship) {
+				if (Net.ownedByLocal(i.getId())) {
+					Net.removeEntity(i);
+				}
+
 				if (!myGame.multiplayer && i.getOwner().getId() == clientId) {
 					getSelf().modLives(-1);
 					local.setShip(null);
@@ -637,10 +643,6 @@ public class CoreLogic {
 					respawnSound = false;
 
 				}
-			}
-
-			else if (myGame.multiplayer && host && !(i instanceof Dust)) {
-				Net.removeEntity(i);
 			}
 
 			i.getOwner().getEntitiesMap().remove(i.getId());
@@ -713,6 +715,7 @@ public class CoreLogic {
 			String[] data = addPlayers.pop();
 			Player playr = new Player(false, data[1], Integer.parseInt(data[0]));
 			playr.setScore(Integer.parseInt(data[2]));
+			System.out.println("Player: " + playr.getId());
 			players.put(Integer.toString(Integer.parseInt(data[0])), playr);
 		}
 	}
@@ -740,6 +743,7 @@ public class CoreLogic {
 		while (!addEntities.isEmpty()) {
 			EntityData entData = addEntities.pop();
 			String[] idParts = entData.id.split("-");
+			System.out.println("Entity: " + entData.id);
 			if (!idParts[0].equals(Integer.toString(clientId))
 					&& !(host && idParts[0].equals("1"))) {
 				if (entData.type == Net.ENTITY_SHIP) {

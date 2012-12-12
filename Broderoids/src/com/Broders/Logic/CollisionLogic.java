@@ -36,43 +36,32 @@ public class CollisionLogic implements ContactListener {
 			return;
 		}
 
-		if (CoreLogic.getGame().multiplayer && CoreLogic.getHost()) {
+		//Multiplayer
+		if (CoreLogic.getGame().multiplayer && CoreLogic.isHost()) {
 			Net.collision(eA, eB);
 		}
 
-		if (!CoreLogic.getGame().multiplayer || CoreLogic.getHost()) {
+		//Single Player
+		else if (!CoreLogic.getGame().multiplayer) {
 			// Ship-Asteroid
 			if (eA instanceof Ship && eB instanceof Asteroid && !((Ship) eA).isInvincible()) {
-				CollisionLogic.shipAsteroid(eA, eB);
+				CollisionLogic.shipDanger(eA);
 			}
 			// Asteroid-Ship
 			if (eA instanceof Asteroid && eB instanceof Ship && !((Ship) eB).isInvincible()) {
-				CollisionLogic.shipAsteroid(eB, eA);
+				CollisionLogic.shipDanger(eB);
 			}
 
 			// Bullet-Asteroid
 			if (eA instanceof Bullet && eB instanceof Asteroid) {
-				CollisionLogic.bulletAsteroid(eA, eB);
+				CollisionLogic.bulletAsteroid(eA, eB.getPoints());
+				CollisionLogic.asteroidBullet(eB);
 			}
 
 			// Asteroid-Bullet
 			if (eA instanceof Asteroid && eB instanceof Bullet) {
-				CollisionLogic.bulletAsteroid(eB, eA);
-			}
-
-			// Ship-Bullet
-			if (eA instanceof Bullet && eB instanceof Ship) {
-				CollisionLogic.shipBullet(eB, eA);
-			}
-
-			// Bullet-Ship
-			if (eA instanceof Ship && eB instanceof Bullet) {
-				CollisionLogic.shipBullet(eA, eB);
-			}
-
-			//Ship-Ship, for multiplayer
-			if (eA instanceof Ship && eB instanceof Ship) {
-				CollisionLogic.shipShip(eA, eB);
+				CollisionLogic.bulletAsteroid(eB, eA.getPoints());
+				CollisionLogic.asteroidBullet(eA);
 			}
 		}
 	}
@@ -103,10 +92,11 @@ public class CollisionLogic implements ContactListener {
 
 		//Collisions to ignore: invincible ships and bullets
 		if ((eA instanceof Ship && ((Ship)eA).isInvincible()) ||
-			(eB instanceof Ship && ((Ship)eB).isInvincible()) ||
-			eA instanceof Bullet || eB instanceof Bullet	||
-			eA instanceof Dust 	 || eB instanceof Dust)
-			{
+				(eB instanceof Ship && ((Ship)eB).isInvincible()) ||
+				eA instanceof Bullet || eB instanceof Bullet	||
+				eA instanceof Dust 	 || eB instanceof Dust ||
+				(CoreLogic.multiplayer && !CoreLogic.isHost()))
+		{
 
 			contact.setEnabled(false);
 		}
@@ -120,50 +110,27 @@ public class CollisionLogic implements ContactListener {
 
 	}
 
-	public static void shipAsteroid(Entity ship, Entity asteroid){
-
-		if (CoreLogic.getGame().multiplayer) {
-			Ship craft = (Ship) ship;
-
-			//This is how the ship gets damage from asteroids. If you can think of a better way to
-			//calculate it, please tell me, because this is bloody awful. -R
-			int damages = calculateDamage(ship.getBody(), asteroid.getBody());
-			damages = (int) Math.round(Math.pow(damages, 0.48) * Math.log10(asteroid.getBody().getMass()*10)/2);
-			craft.getOwner().takeDamage(damages);
-			if (craft.getOwner() == CoreLogic.getLocal()) {
-				Net.modifyPlayer(craft.getOwner());
-			}
-		} else {
-			CoreLogic.removeEntity(ship);
-		}
+	public static void bulletAsteroid(Entity bullet, int score){
+		bullet.getOwner().modScore(score);
+		CoreLogic.removeEntity(bullet);
 	}
 
-	public static void bulletAsteroid(Entity bullet, Entity asteroid){
-		if (!CoreLogic.multiplayer) {
-			CoreLogic.removeEntity(bullet);
-			CoreLogic.removeEntity(asteroid);
-		} else if (CoreLogic.getHost()) {
-			Net.collision(bullet, asteroid);
-			
-			// TODO: Put this in the right place
-			CoreLogic.removeEntity(bullet);
-			CoreLogic.removeEntity(asteroid);
-		}
-
-		// Call score method for the player here
-		bullet.getOwner().modScore(asteroid.getPoints());
+	public static void asteroidBullet(Entity asteroid){
+		CoreLogic.removeEntity(asteroid);
 	}
 
-	public static void shipBullet(Entity ship, Entity bullet) {
-		if (CoreLogic.getGame().multiplayer && !(ship.getOwner().equals(bullet.getOwner())))
+	public static void shipDanger(Entity ship) {
+		if (CoreLogic.getGame().multiplayer){
 			ship.getOwner().modHealth(-10);
+			Net.modifyPlayer(ship.getOwner());
+		}
+		else
+			CoreLogic.removeEntity(ship);
 	}
 	
-	public static void shipShip(Entity shipA, Entity shipB) {
-		/*int damages = calculateDamage(shipA.getBody(), shipB.getBody());
-		damages = 0 - (int) Math.round(Math.pow(damages, 0.55));
-		shipA.getOwner().modHealth(damages);
-		shipB.getOwner().modHealth(damages);*/
+	public static void bulletShip(Entity bullet, int score) {
+		bullet.getOwner().modScore(score);
+		CoreLogic.removeEntity(bullet);
 	}
 
 	/**
@@ -178,10 +145,12 @@ public class CollisionLogic implements ContactListener {
 		float x = A.getLinearVelocity().x - B.getLinearVelocity().x;
 		float y = A.getLinearVelocity().y - B.getLinearVelocity().y;
 		float vel = (float) Math.sqrt(x*x + y*y);
+		int damages = (int) Math.round(vel*vel);
+		damages = (int) Math.round(Math.pow(damages, 0.48) * Math.log10(B.getMass()*10)/2);
 
 		//int[] damages = {Math.round((B.getMass() * vel*vel)/2),
 		//				Math.round((A.getMass() * vel*vel)/2)};
 
-		return Math.round(vel*vel);
+		return damages;
 	}
 }

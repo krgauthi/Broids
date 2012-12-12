@@ -338,7 +338,7 @@ public class Net extends Thread {
 	public static boolean ownedByLocal(String id) {
 		String[] idParts = id.split("-");
 		if (idParts[0].equals(Integer.toString(CoreLogic.clientId)) || 
-				(CoreLogic.getHost() && idParts[0].equals("1"))) {
+				(CoreLogic.isHost() && idParts[0].equals("1"))) {
 			return true;
 		}
 		
@@ -363,7 +363,7 @@ public class Net extends Thread {
 
 			e = obj.get("c");
 			int frameType = e.getAsInt();
-			if (!CoreLogic.getHost()) {
+			if (!CoreLogic.isHost()) {
 				if (frameType == FRAME_GAME_COLLISION) {
 					System.out.println("Collision");
 					

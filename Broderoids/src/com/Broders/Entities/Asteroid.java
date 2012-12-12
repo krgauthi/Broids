@@ -103,7 +103,7 @@ public class Asteroid extends Entity {
 			}
 			
 			sound(1f);
-			if (!CoreLogic.multiplayer || CoreLogic.getHost()) {
+			if (!CoreLogic.multiplayer || CoreLogic.isHost()) {
 				dir = (float) Math.toRadians(this.getAngle());
 				x1 = (float) (this.getX() + 7.5 * Math.cos(dir));
 				x2 = (float) (this.getX() + 7.5 * Math.cos(dir));
@@ -162,7 +162,7 @@ public class Asteroid extends Entity {
 			}
 			this.getX();
 			
-			if (!CoreLogic.multiplayer || CoreLogic.getHost()) {
+			if (!CoreLogic.multiplayer || CoreLogic.isHost()) {
 				dir = (float) Math.toRadians(this.getAngle());
 				x1 = (float) (this.getX() + 3.75 * Math.cos(dir));
 				x2 = (float) (this.getX() + 3.75 * Math.cos(dir));

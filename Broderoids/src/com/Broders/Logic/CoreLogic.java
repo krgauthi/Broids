@@ -94,7 +94,7 @@ public class CoreLogic {
 		return gcd(q, p % q);
 	}
 
-	public static boolean getHost() {
+	public static boolean isHost() {
 		return host;
 	}
 
@@ -192,7 +192,7 @@ public class CoreLogic {
 			respawnSound = true;
 		}
 
-		if (getHost() && multiplayer) {
+		if (isHost() && multiplayer) {
 			if (hostTickTimer > 0) {
 				hostTickTimer = -5.0f;
 				for (Entity i : getComp().getEntities()) {
@@ -631,7 +631,7 @@ public class CoreLogic {
 		Player local = getLocal();
 		for (Entity i : rmEntities) {
 			if (i instanceof Ship) {
-				if (Net.ownedByLocal(i.getId())) {
+				if (multiplayer && Net.ownedByLocal(i.getId())) {
 					Net.removeEntity(i);
 				}
 

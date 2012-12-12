@@ -10,14 +10,17 @@ import com.badlogic.gdx.utils.Disposable;
 public class SoundManager {
 
 	private static HashMap<String, Sound> sounds;
+
 	private static Disposable music;
 	private static long musicId;
 	private static float mv;
 	private static float sv;
 	private static boolean android;
 
-	public static void init(BaseGame game) {
+		
 
+	public static void init() {
+		
 		android = Gdx.app.getVersion() > 0;
 		sounds = new HashMap<String, Sound>();
 

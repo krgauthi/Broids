@@ -266,9 +266,9 @@ public class Net extends Thread {
 	}
 
 	// TODO: Do we actually want this?
-	private static void invalidFrame() throws NetException {
+	/*private static void invalidFrame() throws NetException {
 		throw new NetException(0, "Invalid frame recieved");
-	}
+	}*/
 
 	public static void lock() {
 		Net.l.lock();
@@ -278,7 +278,7 @@ public class Net extends Thread {
 		Net.l.unlock();
 	}
 
-	private static void handleErrorFrame(JsonObject o) throws Exception {
+	/*private static void handleErrorFrame(JsonObject o) throws Exception {
 		int command = o.get("c").getAsInt();
 		if (command != Net.FRAME_ERROR) {
 			SoundManager.play("error");
@@ -289,7 +289,7 @@ public class Net extends Thread {
 		String text = o.get("d").getAsString();
 		SoundManager.play("error");
 		throw new Exception(text);
-	}
+	}*/
 
 	public static void handleGame() {
 		// TODO: Handle thread.join();

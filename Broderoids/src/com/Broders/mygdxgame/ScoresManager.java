@@ -1,14 +1,9 @@
 package com.Broders.mygdxgame;
 
-import java.io.*;
-import java.util.*;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 public class ScoresManager {
-
-	private static BaseGame game;
 	public static String data_path = "data/";
 	private static Preferences prefs;
 	private static String scores [][] = {
@@ -34,8 +29,7 @@ public class ScoresManager {
 		{"UnBro", "2000"},
 		{"BroKe", "1000"}};
 
-	public static void init(BaseGame g){
-		game = g;
+	public static void init(){
 		prefs = Gdx.app.getPreferences("broids-prefs");
 		load();
 	}

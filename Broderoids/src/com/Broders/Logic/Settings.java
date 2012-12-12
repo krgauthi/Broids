@@ -1,5 +1,4 @@
 package com.Broders.Logic;
-import com.Broders.mygdxgame.BaseGame;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 
@@ -17,9 +16,6 @@ import com.badlogic.gdx.graphics.Color;
  * @TimeAnnotation("O(n)") lol just kidding
  */
 public class Settings {
-
-
-	private static BaseGame game;
 	public static String data_path = "data/";
 	private static Preferences prefs;
 
@@ -35,6 +31,7 @@ public class Settings {
 	private static int difficulty;
 	private static boolean epileptic;
 	private static boolean retro;
+	
 
 	private static String[] defaultUsernames = {
 		"Bro",
@@ -74,8 +71,7 @@ public class Settings {
 		"Doctor Bro",
 	};
 
-	public static void init(BaseGame mygame) {
-		game = mygame;
+	public static void init() {
 		prefs = Gdx.app.getPreferences("broids-prefs");
 		load();
 
@@ -96,10 +92,11 @@ public class Settings {
 		}
 		soundVol = prefs.getInteger("soundVol", 5);
 		musicVol = prefs.getInteger("musicVol", 5);
-		difficulty = prefs.getInteger("difficulty", 0);
+		difficulty = prefs.getInteger("difficulty", 1);
 		debug = prefs.getBoolean("debug", false);
 		epileptic = prefs.getBoolean("epileptic", false);
 		retro = prefs.getBoolean("retro", false);
+		
 	}
 
 	public static boolean getRetro() {
@@ -260,4 +257,5 @@ public class Settings {
 
 		return colorFromHex(Long.parseLong(s, 16));
 	}
+
 }

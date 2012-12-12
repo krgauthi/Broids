@@ -206,7 +206,7 @@ public class CoreLogic {
 		
 		if(respawnTimer > 0)
 			respawnTimer -= Gdx.graphics.getDeltaTime();
-		else if(respawnTimer > -9f && (local.getLives() > 0 || multiplayer)){
+		else if(respawnTimer > -9f && (local.getLives() > 0 || (multiplayer && local.getHealth() <= 0))){
 			respawnTimer = -10f;
 			invincibleTimer = 3f;
 

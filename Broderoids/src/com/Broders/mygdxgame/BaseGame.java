@@ -67,13 +67,11 @@ public class BaseGame extends Game {
 		screens.put("splash", new SplashScreen(this));
 		screens.put("main", new MainMenu(this));
 		screens.put("settings", new SettingsScreen(this));
+		screens.put("scores", new ScoresScreen(this));
 		if (connected) {
 			screens.put("host", new MultiHost(this));
 			screens.put("lobby", new MultiLobby(this));
 		}
-
-		screens.put("scores", new ScoresScreen(this));
-
 
 		this.setScreen(BaseGame.screens.get("splash"));
 	}

@@ -32,6 +32,7 @@ public class Asteroid extends Entity {
 
 		FixtureDef fixDef = new FixtureDef();
 		CircleShape shape = new CircleShape();
+		
 		this.type = type;
 		if (this.type == SMALL) {
 			super.setSize(3.75f);
@@ -99,10 +100,9 @@ public class Asteroid extends Entity {
 				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), 
 						(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 25, getColor());
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
-				
 			}
 			
-			sound(0.8f);
+			sound(1f);
 			if (!CoreLogic.multiplayer || CoreLogic.getHost()) {
 				dir = (float) Math.toRadians(this.getAngle());
 				x1 = (float) (this.getX() + 7.5 * Math.cos(dir));
@@ -114,7 +114,7 @@ public class Asteroid extends Entity {
 				roid1 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, x1,
 						y1);
 	
-				float initForce = (float) (3000 + (3000 * Math.random()));
+				float initForce = (float) (3200 + (3000 * Math.random()));
 				float x = (float) (initForce * Math.cos(dir));
 				float y = (float) (initForce * Math.sin(dir));
 	
@@ -133,7 +133,7 @@ public class Asteroid extends Entity {
 	//Medium Roid2
 				roid2 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, x2, y2);
 	
-				initForce = (float) (3000 + (3000 * Math.random()));
+				initForce = (float) (3200 + (3000 * Math.random()));
 				x = (float) (initForce * Math.cos(dir));
 				y = (float) (initForce * Math.sin(dir));
 	
@@ -150,7 +150,7 @@ public class Asteroid extends Entity {
 			}
 		} else if (this.type == MEDIUM) {
 			
-			sound(1.2f);
+			sound(1);
 			
 			float temp = (float) (5+Math.random()%10);
 			for(int i = 0; i < temp;i++){
@@ -172,7 +172,7 @@ public class Asteroid extends Entity {
 	//Small roid1
 				roid1 = new Asteroid(SMALL, this.owner.nextId(), this.owner, x1, y1);
 	
-				float initForce = (float) (400 + (200 * Math.random()));
+				float initForce = (float) (440 + (230 * Math.random()));
 				float x = (float) (initForce * Math.cos(Math.random()*2*Math.PI));
 				float y = (float) (initForce * Math.sin(Math.random()*2*Math.PI));
 	
@@ -191,7 +191,7 @@ public class Asteroid extends Entity {
 	//Small Roid2	
 				roid2 = new Asteroid(SMALL, this.owner.nextId(), this.owner, x2, y2);
 	
-				initForce = (float) (400 + (200 * Math.random()));
+				initForce = (float) (420 + (220 * Math.random()));
 				x = (float) (initForce * Math.cos(dir));
 				y = (float) (initForce * Math.sin(dir));
 	
@@ -223,7 +223,7 @@ public class Asteroid extends Entity {
 	
 	private void sound(float pitch) {
 		int pick = (int) Math.floor(Math.random() * 3);
-		SoundManager.play("roidBreak" + Integer.toString(pick + 1));
+		SoundManager.play("roidBreak" + Integer.toString(pick + 1), 1f, pitch);
 	}
 	
 	/**

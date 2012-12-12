@@ -100,6 +100,9 @@ public class GameScreen implements Screen {
 		Net.lock();
 		// Handle input
 		handleInput(delta);
+		if (!Net.l.isHeldByCurrentThread()) {
+			return;
+		}
 		Net.unlock();
 
 		Net.lock();

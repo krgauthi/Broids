@@ -56,6 +56,7 @@ public class CoreLogic {
 	private static float invincibleTimer;
 	private static boolean respawnSound;
 	private static float invulnFlash;
+	private static float hostTickTimer;
 	private static boolean flashing;
 
 	public static LinkedList<String[]> addPlayers;
@@ -124,6 +125,7 @@ public class CoreLogic {
 
 		respawnTimer = -10f;
 		invincibleTimer = -10f;
+		hostTickTimer = -5.0f;
 		respawnSound = false;
 		invulnFlash = 0;
 		flashing = false;
@@ -167,7 +169,6 @@ public class CoreLogic {
 		players.put(Integer.toString(temp.getId()), temp);
 
 		if (multiplayer) {
-			Net.createEntity(local.getShip());
 			// This starts up the thread for async networking
 			Net.handleGame();
 		}
@@ -191,6 +192,17 @@ public class CoreLogic {
 			respawnSound = true;
 		}
 
+		if (getHost() && multiplayer) {
+			if (hostTickTimer > 0) {
+				hostTickTimer = -5.0f;
+				for (Entity i : getComp().getEntities()) {
+					Net.modifyEntity(i);
+				}
+			} else {
+				hostTickTimer += Gdx.graphics.getDeltaTime();
+			}
+		}
+		
 		if(respawnTimer > 0)
 			respawnTimer -= Gdx.graphics.getDeltaTime();
 		else if(respawnTimer > -9f && (local.getLives() > 0 || multiplayer)){
@@ -360,11 +372,7 @@ public class CoreLogic {
 		float y = (float) (CoreLogic.getHeight() * Math.random());
 		float dir = (float) (Math.PI * Math.random());
 
-		getLocal();
-
 		// Prevent spawning on the player(s)
-		// TODO/NOTE: Should this use S or local.getShip()?
-		//Depends upon local or host player I think.
 		for (Ship S : getShips()) {
 			if (S.getX() - 10 <= x
 					&& x <= S.getX() + 10) {
@@ -703,6 +711,7 @@ public class CoreLogic {
 	}
 
 	public static void createPlayer(int id, String name, int score) {
+		new Exception().printStackTrace();
 		String[] data = new String[3];
 		data[0] = Integer.toString(id);
 		data[1] = name;

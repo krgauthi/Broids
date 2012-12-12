@@ -247,6 +247,7 @@ public class MultiLobby implements Screen {
 					myGame.setScreen(BaseGame.screens.get("main"));
 					//refresh
 				}else if(x >= .770 && x <= .975){
+					System.out.println("Refresh");
 					games.clear();
 					games = Net.listGames();
 				}

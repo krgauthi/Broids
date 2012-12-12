@@ -26,8 +26,6 @@ public class SettingsScreen implements Screen {
 	private SpriteBatch spriteBatch;
 
 	private int screenResSelection;
-	private int[][] screenResOptions = {{1024, 768}, {1024, 576},
-			{640, 480}, {600, 800}}; // will be two separate integers
 
 	private BitmapFont font;
 
@@ -96,11 +94,6 @@ public class SettingsScreen implements Screen {
 		font.draw(spriteBatch, "Retro Mode: " + (Settings.getRetro() ? "On" : "Off"),
 				(float) (Settings.getWidth() * .08), (float) (Settings.getHeight() * .8));
 
-		// Screen Resolution
-		font.draw(spriteBatch, "Screen Resolution: " + screenResOptions[screenResSelection][0] + 
-				" x " + screenResOptions[screenResSelection][1],
-				(float) (Settings.getWidth() * .52), (float) (Settings.getHeight() * .8));
-
 		// Debug Text Option
 		font.draw(spriteBatch, "Debug Text: " + (Settings.getDebug() ? "On" : "Off"),
 				(float) (Settings.getWidth() * .52), (float) (Settings.getHeight() * .6));
@@ -147,6 +140,12 @@ public class SettingsScreen implements Screen {
 	}
 
 	private void handleInput(float delta) {
+		if(Gdx.input.isKeyPressed(Keys.F1)){
+			double x = ((float)Gdx.input.getX()/(float)Gdx.graphics.getWidth());
+			double y = ((float)Gdx.input.getY()/(float)Gdx.graphics.getHeight());
+			System.out.println("Mouse Pos: " + x + " " + y);
+		}
+		
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACKSPACE) ||
 				(Gdx.app.getVersion() > 0 && Gdx.input.isKeyPressed(Keys.BACK))){
 			game.setScreen(BaseGame.screens.get("main"));
@@ -221,26 +220,6 @@ public class SettingsScreen implements Screen {
 				}
 				System.out.println("Retro Mode Option set to " + (Settings.getRetro() ? "On" : "Off"));	
 				TextureManager.init();
-			} else if (x >= .51 && x <= .96 && y >= .72 && y <= .8) {
-
-				if (screenResSelection == (screenResOptions.length - 1)) {
-					screenResSelection = 0;
-				} else {
-					screenResSelection++;
-				}
-
-				// We need to set the BaseGame screen width + height to the new res so clicks will work correctly,
-				// as they are based off of a percentage of screen height + width, which are set statically.
-
-				if(Gdx.app.getVersion() <= 0){
-					Settings.setWidth(screenResOptions[screenResSelection][0]);
-					Settings.setHeight(screenResOptions[screenResSelection][1]);
-				}
-
-				Gdx.graphics.setDisplayMode(screenResOptions[screenResSelection][0],
-						screenResOptions[screenResSelection][1], false);
-				System.out.println("Screen Resolution Option set to " + Settings.getWidth() +
-						" x " + Settings.getHeight());
 
 			} else if (x >= .51 && x <= .96 && y >= .52 && y <= .6) {
 

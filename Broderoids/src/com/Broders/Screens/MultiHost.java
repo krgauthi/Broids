@@ -85,7 +85,7 @@ public class MultiHost implements Screen {
 		
 		TextureManager.getSprites("Ship1").setRotation(270);
 		//TextureManager.getSprites("Ship1").setPosition(xx * .29f, yy * .29f);				I think the new libGdx Rotates differently? 
-		TextureManager.getSprites("Ship1").setPosition(xx * .29f, yy * .19f);
+		TextureManager.getSprites("Ship1").setPosition(xx * .24f, yy * .195f);
 		TextureManager.getSprites("Ship1").draw(spriteBatch);
 
 		// text
@@ -96,7 +96,7 @@ public class MultiHost implements Screen {
 
 		TextureManager.getSprites("Ship1").setRotation(90);
 		//TextureManager.getSprites("Ship1").setPosition(xx * .075f, yy * .19f);
-		TextureManager.getSprites("Ship1").setPosition(xx * .02f, yy * .19f);
+		TextureManager.getSprites("Ship1").setPosition(xx * .015f, yy * .195f);
 		TextureManager.getSprites("Ship1").draw(spriteBatch);
 
 		myGame.font.draw(spriteBatch, "Game Name: " + this.gameName, xx * .1f, yy * .9f);
@@ -139,10 +139,10 @@ public class MultiHost implements Screen {
 			//arrows
 			if(inputy >= .678 && inputy <= .772){
 
-				if(inputx >= .016 && inputx <= .095){
+				if(inputx >= .015 && inputx <= .084){
 					if(limit > 5)
 						limit--;
-				}else if(inputx >= .291 && inputx <= .367){
+				}else if(inputx >= .252 && inputx <= .321){
 					limit++;
 				}
 

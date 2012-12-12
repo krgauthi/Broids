@@ -5,7 +5,6 @@ import com.Broders.Logic.Settings;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.utils.Disposable;
 
 public class SoundManager {
 
@@ -16,8 +15,6 @@ public class SoundManager {
 	private static long muzakId;
 	private static float sv;
 	private static boolean android;
-	private static boolean vol;
-	
 	public static void init() {
 		
 		android = Gdx.app.getVersion() > 0;
@@ -90,28 +87,26 @@ public class SoundManager {
 			noise.stop();
 			noise.dispose();
 		}
-		if (android)
+		if (android) {
 			music.stop();
-		else 
+			music.dispose();
+		} else { 
 			muzak.stop();
-		//music.dispose();
+			muzak.dispose();
+		}
 		sounds = null;
 	}
 	
 	public static void setMusicVolume(float volume) {
 		update();
-		float bleh = 0;
-		if (vol)
-			bleh = 1;
 			
 		if (android) {
-			music.setVolume(bleh);
+			music.setVolume(volume);
 		} else {
-			muzak.setVolume(muzakId, bleh);
+			muzak.setVolume(muzakId, volume);
 		}
 		
 		System.out.println("Volume parameter = " + volume);
-		vol = !vol;
 	}
 	
 	public static void setMusicPitch(float pitch) {

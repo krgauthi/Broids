@@ -94,8 +94,7 @@ public class CollisionLogic implements ContactListener {
 		if ((eA instanceof Ship && ((Ship)eA).isInvincible()) ||
 				(eB instanceof Ship && ((Ship)eB).isInvincible()) ||
 				eA instanceof Bullet || eB instanceof Bullet	||
-				eA instanceof Dust 	 || eB instanceof Dust ||
-				(CoreLogic.multiplayer && !CoreLogic.isHost()))
+				eA instanceof Dust 	 || eB instanceof Dust)
 		{
 
 			contact.setEnabled(false);

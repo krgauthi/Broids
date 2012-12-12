@@ -256,9 +256,6 @@ public class Ship extends Entity {
 					(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 30, super.getColor());
 			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 		}
-
-		
-
 	}
 
 	public void setInvincible(boolean b){
@@ -267,6 +264,10 @@ public class Ship extends Entity {
 
 	public boolean isInvincible(){
 		return invincible;
+	}
+	
+	public void killZoom() {
+		zoom.stop();
 	}
 
 }

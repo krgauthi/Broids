@@ -36,8 +36,6 @@ public class GameScreen implements Screen {
 	private Tail debug1;
 	private Tail debug2;
 
-
-
 	float xx; // Clean reference for screen width
 	float yy; // Clean reference for screen height
 
@@ -398,7 +396,8 @@ public class GameScreen implements Screen {
 				Net.leaveGame();
 			}
 
-			//SoundManager.setPitch("muzak", SoundManager.getMuzakId(), 1f);
+			//SoundManager.setMusicPitch(1f);
+			CoreLogic.getLocalShip().killZoom();
 			myGame.setScreen(BaseGame.screens.get("main"));
 		}
 
@@ -423,20 +422,16 @@ public class GameScreen implements Screen {
 						if (multiplayer) {
 							Net.leaveGame();
 						}
-
-						//SoundManager.setPitch("muzak", SoundManager.getMuzakId(), 1f);
+						
+						//SoundManager.setMusicPitch(1f);
+						CoreLogic.getLocalShip().killZoom();
 						myGame.setScreen(BaseGame.screens.get("main"));
 					}else if(y >= .578 && y <= .666){
 						resume();
 					}
-
 				}
-
-
 			}
-
 		}
-
 
 		// if Android
 		if (Gdx.app.getVersion() > 0) {

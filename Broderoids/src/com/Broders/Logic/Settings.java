@@ -67,6 +67,11 @@ public class Settings {
 		"Broseph Goebbels",
 		"Brorannasarus Rex",
 		"Edgar Allen Bro",
+		"Luke Browalker",
+		"Brolbo Baggins",
+		"Brodo Baggins",
+		"Tron: Brogacy",
+		"Doctor Bro",
 	};
 
 	public static void init(BaseGame mygame) {

@@ -5,21 +5,20 @@ import com.Broders.Logic.Settings;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.utils.Disposable;
 
 public class SoundManager {
 
 	private static HashMap<String, Sound> sounds;
-	private static Music music;
+	private static Disposable music;
 	private static long musicId;
-	private static BaseGame g;
 	private static float mv;
 	private static float sv;
-
+	private static boolean android;
 
 	public static void init(BaseGame game) {
 
-		g = game;
-
+		android = Gdx.app.getVersion() > 0;
 		sounds = new HashMap<String, Sound>();
 
 		String[][] defaultSounds = {
@@ -35,12 +34,21 @@ public class SoundManager {
 				{"error", "data/error.wav"}
 		};
 		
-		music = Gdx.audio.newMusic(Gdx.files.internal("data/broderoids.mp3"));
-		music.play();
-		music.setLooping(true);
+
 		for (String[] noise : defaultSounds) {
 			Sound temp = Gdx.audio.newSound(Gdx.files.internal(noise[1]));
 			sounds.put(noise[0], temp);
+		}
+		
+		//if android
+		if (android) {
+			music = Gdx.audio.newMusic(Gdx.files.internal("data/broderoids.mp3"));
+			((Music) music).play();
+			((Music) music).setLooping(true);
+		} else {
+			music = Gdx.audio.newSound(Gdx.files.internal("data/broderoids.mp3"));
+			((Sound) music).play();
+			((Sound) music).loop();
 		}
 
 	}
@@ -48,8 +56,6 @@ public class SoundManager {
 	public static Sound get(String key) {
 		return sounds.get(key);
 	}
-
-
 
 	public static long play(String key) {
 		update();
@@ -64,12 +70,10 @@ public class SoundManager {
 	public static long play(String key, float volume, float pitch) {
 		update();
 		Sound clip = sounds.get(key);
-		long id = 0;
-		update();
 
-		id = sounds.get(key).play(sv * volume);
-
+		long id = clip.play(sv * volume);
 		clip.setPitch(id, pitch);
+		
 		return id;
 	}
 
@@ -79,7 +83,7 @@ public class SoundManager {
 
 	public static void setVolume(String key, long id, float volume) {
 		update();
-		sounds.get(key).setVolume(id, volume * sv);
+		sounds.get(key).setVolume(id, volume);
 	}
 
 	public static void dispose() {
@@ -87,16 +91,28 @@ public class SoundManager {
 			noise.stop();
 			noise.dispose();
 		}
-		music.stop();
+		if (android)
+			((Music) music).stop();
+		else 
+			((Sound) music).stop();
 		music.dispose();
 		sounds = null;
 	}
 	
-	public static void setMusicVolume(float volume){
-		music.setVolume(volume * 0.1f);
+	public static void setMusicVolume(float volume) {
+		update();
+		if (android)
+			((Music) music).setVolume(mv);
+		else
+			((Sound) music).setVolume(musicId, mv);
+	}
+	
+	public static void setMusicPitch(float pitch) {
+		if (!android);
+			((Sound) music).setPitch(musicId, pitch);
 	}
 
-	private static void update() {
+	public static void update() {
 		mv = Settings.getMusicVol() * 0.1f;
 		sv = Settings.getSoundVol() * 0.1f;
 	}

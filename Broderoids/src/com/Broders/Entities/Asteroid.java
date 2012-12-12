@@ -30,10 +30,10 @@ public class Asteroid extends Entity {
 
 		super.setSprite("Broid");
 
-
 		owner.getGame();
 		FixtureDef fixDef = new FixtureDef();
 		CircleShape shape = new CircleShape();
+		
 		this.type = type;
 		if (this.type == SMALL) {
 			super.setSize(3.75f);
@@ -101,7 +101,6 @@ public class Asteroid extends Entity {
 				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), 
 						(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 25, getColor());
 				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
-				
 			}
 			
 			sound(0.8f);

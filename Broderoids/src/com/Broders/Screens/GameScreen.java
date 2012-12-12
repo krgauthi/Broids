@@ -16,12 +16,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class GameScreen implements Screen {
 
@@ -31,11 +26,8 @@ public class GameScreen implements Screen {
 
 	private Random rand;
 
-
-
 	private boolean paused;
 	private float pauseWait;
-
 
 	private float gameOver;
 
@@ -43,8 +35,6 @@ public class GameScreen implements Screen {
 
 	private Tail debug1;
 	private Tail debug2;
-
-
 
 	float xx; // Clean reference for screen width
 	float yy; // Clean reference for screen height
@@ -79,7 +69,6 @@ public class GameScreen implements Screen {
 		}
 
 		CoreLogic.initCore(myGame, width2, height2, h2, multiplayer);
-
 
 		myGame.font.setScale(.25f);
 
@@ -406,7 +395,9 @@ public class GameScreen implements Screen {
 				Net.leaveGame();
 			}
 
-			//SoundManager.setPitch("muzak", SoundManager.getMuzakId(), 1f);
+			if (Gdx.app.getVersion() <= 0)
+				SoundManager.setMusicPitch(1f);
+			
 			myGame.setScreen(BaseGame.screens.get("main"));
 		}
 

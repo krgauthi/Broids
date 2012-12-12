@@ -6,6 +6,7 @@ import com.Broders.Entities.Entity;
 import com.Broders.Entities.Ship;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
 public class Player {
@@ -32,7 +33,7 @@ public class Player {
 	public int getId() {
 		return this.id;
 	}
-	
+
 	public Player(String type, int id) {
 		this.id = id;
 		nextEntityId = 0;
@@ -43,14 +44,14 @@ public class Player {
 			playerColor = Settings.getShipColor();
 
 
-			
+
 			if (getGame().multiplayer) {
 				shield = 100;
 				health = 100;
 			} else {
 				lives = 3;
 			}
-			
+
 			playerShip = new Ship(this.nextId(), this,
 					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
 			entities.put(playerShip.getId(), playerShip);
@@ -96,7 +97,7 @@ public class Player {
 
 	public void modShield(int s) {
 		shield += s;
-		
+
 		if (shield > 100)
 			shield = 100;
 		if (shield <= 0) {
@@ -106,7 +107,7 @@ public class Player {
 
 	public void modHealth(int s) {
 		health += s;
-		
+
 		if (health > 100)
 			health = 100;
 		if (health <= 0) {
@@ -119,11 +120,13 @@ public class Player {
 
 	public void modLives(int s) {
 		lives += s;
-		/*switch (lives) {
-		case 2:	SoundManager.setPitch("muzak", SoundManager.getMuzakId(), 1.1f); break;
-		case 1: SoundManager.setPitch("muzak", SoundManager.getMuzakId(), 1.5f); break;
-		default: SoundManager.setPitch("muzak", SoundManager.getMuzakId(), 1f);
-		}*/
+		if (Gdx.app.getVersion() <= 0) {
+			switch (lives) {
+			case 2:	SoundManager.setMusicPitch(1.1f); break;
+			case 1: SoundManager.setMusicPitch(1.5f); break;
+			default: SoundManager.setMusicPitch(1f);
+			}
+		}
 	}
 
 	public void modScore(int s) {
@@ -155,13 +158,13 @@ public class Player {
 	}
 
 	public void setScore(int score) {
-			this.score = score;
+		this.score = score;
 	}
 
 	public void createEntity(Entity ent, String id) {
 		this.entities.put(id, ent);
 	}
-	
+
 	public void takeDamage(int damage) {
 		int hit = shield - damage;
 		if (hit < 0) {

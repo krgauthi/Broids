@@ -6,6 +6,7 @@ import com.Broders.mygdxgame.ScoresManager;
 import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -62,7 +63,8 @@ public class ScoresScreen implements Screen {
 	}
 
 	public boolean handleInput(float delta) {
-		if (Gdx.input.justTouched()) {
+		if (Gdx.input.justTouched() || Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACKSPACE) ||
+				(Gdx.app.getVersion() > 0 && Gdx.input.isKeyPressed(Keys.BACK))) {
 			SoundManager.get("click").play(Settings.getSoundVol() * 0.1f);
 			return true;
 		}

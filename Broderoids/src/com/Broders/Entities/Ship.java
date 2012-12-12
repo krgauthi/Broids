@@ -245,6 +245,7 @@ public class Ship extends Entity {
 		setThrust(false);
 
 		SoundManager.play("death", 1f, 0.85f);
+		zoom.stop();
 		float temp = (float) (10+Math.random()%10);
 		setThrust(false);
 		SoundManager.play("death", 1f, 0.85f);

@@ -326,7 +326,7 @@ public class Net extends Thread {
 	public Net() {
 	}
 	
-	private static boolean ownedByLocal(String id) {
+	public static boolean ownedByLocal(String id) {
 		String[] idParts = id.split("-");
 		if (idParts[0].equals(Integer.toString(CoreLogic.clientId)) || 
 				(CoreLogic.getHost() && idParts[0].equals("1"))) {

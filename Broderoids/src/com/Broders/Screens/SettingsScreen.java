@@ -96,7 +96,7 @@ public class SettingsScreen implements Screen {
 
 		// Debug Text Option
 		font.draw(spriteBatch, "Debug Text: " + (Settings.getDebug() ? "On" : "Off"),
-				(float) (Settings.getWidth() * .52), (float) (Settings.getHeight() * .6));
+				(float) (Settings.getWidth() * .08), (float) (Settings.getHeight() * .6));
 
 		// Single Player Difficulty
 		font.draw(spriteBatch, "Single Player Difficulty: " + sPDiffString(Settings.getDifficulty()),
@@ -107,28 +107,28 @@ public class SettingsScreen implements Screen {
 				(float) (Settings.getWidth() * .52), (float) (Settings.getHeight() * .2));
 
 		// User Name
-		font.setScale(.25f);
-		font.draw(spriteBatch, "Ship Color:", (float) (Settings.getWidth() * .70),
-				(float) (Settings.getHeight() * .98));
+		
+		font.draw(spriteBatch, "Ship Color:", (float) (Settings.getWidth() * .52),
+				(float) (Settings.getHeight() * .6));
 
-		font.setScale(.25f);
-		font.draw(spriteBatch, "World Color:", Settings.getWidth() * .845f,
-				Settings.getHeight() * .98f);
+		
+		font.draw(spriteBatch, "World Color:", Settings.getWidth() * .685f,
+				Settings.getHeight() * .6f);
 
-		font.draw(spriteBatch, "Username: " + Settings.getUsername(), (float) (Settings.getWidth() * .70),
-				(float) (Settings.getHeight() * .93));
+		font.draw(spriteBatch, "Username: " + Settings.getUsername(), (float) (Settings.getWidth() * .52),
+				(float) (Settings.getHeight() * .8));
 
 		// ShipColor		
 
 
 		TextureManager.getSprites("whitePixel").setSize(Settings.getWidth() * .06f, Settings.getHeight() * .05f);
-		TextureManager.getSprites("whitePixel").setPosition(Settings.getWidth() * .775f, Settings.getHeight() * .94f);
+		TextureManager.getSprites("whitePixel").setPosition(Settings.getWidth() * .624f, Settings.getHeight() * .6f-(Settings.getHeight() * .05f));
 		TextureManager.getSprites("whitePixel").setColor(Settings.getShipColor());
 		TextureManager.getSprites("whitePixel").draw(spriteBatch);
 
 		//World Color
 		TextureManager.getSprites("whitePixel").setSize(Settings.getWidth() * .06f, Settings.getHeight() * .05f);
-		TextureManager.getSprites("whitePixel").setPosition(Settings.getWidth() * .93f, Settings.getHeight() * .94f);
+		TextureManager.getSprites("whitePixel").setPosition(Settings.getWidth() * .8f, Settings.getHeight() * .6f-(Settings.getHeight() * .05f));
 		TextureManager.getSprites("whitePixel").setColor(Settings.getWorldColor());
 		TextureManager.getSprites("whitePixel").draw(spriteBatch);
 
@@ -160,7 +160,7 @@ public class SettingsScreen implements Screen {
 			perc_X = Math.abs(Double.valueOf(twoDForm.format(x)));
 			perc_Y = Math.abs(Double.valueOf(twoDForm.format(y)));
 
-			if ( x >= .7 && x <= .83 && y <= .93 && y >= .89 ) {
+			if ( x >= .51 && x <= .96 && y >= .75 && y <= .8 ) {
 
 				String pretext = "";
 
@@ -206,12 +206,12 @@ public class SettingsScreen implements Screen {
 				//System.out.println("Sound Option set to " + Settings.getSoundVol());
 				SoundManager.play("click", 0.7f);
 
-			} else if (x >= .08 && x <= .46 && y >= .52 && y <= .6) {
+			} //else if (x >= .08 && x <= .46 && y >= .52 && y <= .6) {
 
 				//				volBool = volBool ? false : true;
 				//				System.out.println("Volume Option set to " + volBool);
 
-			} else if (x >= .08 && x <= .46 && y >= .72 && y <= .8) {
+			 /*} else */if (x >= .08 && x <= .46 && y >= .72 && y <= .8) {
 
 				if (Settings.getRetro()) {
 					Settings.setRetro(false);
@@ -221,7 +221,7 @@ public class SettingsScreen implements Screen {
 				System.out.println("Retro Mode Option set to " + (Settings.getRetro() ? "On" : "Off"));	
 				TextureManager.init();
 
-			} else if (x >= .51 && x <= .96 && y >= .52 && y <= .6) {
+			} else if (x >= .08 && x <= .46 && y >= .52 && y <= .6) {
 
 				if (Settings.getDebug()) {
 					Settings.setDebug(false);
@@ -251,7 +251,7 @@ public class SettingsScreen implements Screen {
 
 				System.out.println("Epileptic Mode set to " + Settings.getEpileptic());
 
-			} else if (x >= .70 && x<= .84 && y >= .94 && y <= .98) {
+			} else if (x >= .51 && x <= .685 && y >= .55 && y <= .6) {
 
 				String pretext = "";
 
@@ -276,7 +276,7 @@ public class SettingsScreen implements Screen {
 					public void canceled () {}
 				}, "Enter new player color", pretext);	
 
-			} else if (x >= .85 && x<= .99 && y >= .94 && y <= .98) {
+			} else if (x >= .69 && x <= .86 && y >= .55 && y <= .6) {
 				String pretext = "";
 
 				if (Settings.getWorldColor().equals("")) {

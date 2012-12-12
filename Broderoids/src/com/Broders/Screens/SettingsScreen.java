@@ -196,7 +196,7 @@ public class SettingsScreen implements Screen {
 				} else {
 					Settings.setMusicVol(Settings.getMusicVol() + 1);
 				}
-				SoundManager.setVolume("muzak", SoundManager.getMuzakId(), 1f);
+				SoundManager.setMusicVolume(Settings.getMusicVol());
 				System.out.println("Music Option set to " + Settings.getMusicVol());
 				SoundManager.play("click", 0.7f);
 

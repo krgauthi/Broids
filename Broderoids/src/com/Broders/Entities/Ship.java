@@ -36,6 +36,8 @@ public class Ship extends Entity {
 	private float shieldRegen;
 
 	private BaseGame game;
+	private long zoomId;
+	private Sound zoom;
 
 	/**
 	 * Just pass in "classic" Initializes a Ship by creating the appropriate
@@ -99,6 +101,7 @@ public class Ship extends Entity {
 
 		//Set type data
 		super.getBody().setUserData(this);
+		zoom = SoundManager.get("zoom");
 	}
 
 	/**
@@ -117,20 +120,18 @@ public class Ship extends Entity {
 	 *            True to enable, false to disable
 	 */
 	public void setThrust(boolean bool) {
-
-		Sound zoom = SoundManager.get("zoom");
-		long soundId;
-		if (!thrustLast && bool) {
-			soundId = zoom.loop(Settings.getSoundVol() * 0.1f);
-			zoom.setPitch(soundId, (float) (0.8f + Math.random() * 0.4f));
-		} else if (thrustLast && !bool) {
+		
+		if (!this.thrustLast && !this.thrust && bool) {
+			zoomId = zoom.play();
+			zoom.setLooping(zoomId, true);
+		} else if(!this.thrustLast && !this.thrust && !bool){
 			zoom.stop();
 		}
-
+		
 		this.thrustLast = this.thrust;
 		this.thrust = bool;
 
-		if (thrust) {
+		if (bool) {
 			shieldRegen += Gdx.graphics.getDeltaTime();
 		}
 

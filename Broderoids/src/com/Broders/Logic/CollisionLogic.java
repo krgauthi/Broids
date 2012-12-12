@@ -37,7 +37,7 @@ public class CollisionLogic implements ContactListener {
 		}
 
 		//Multiplayer
-		if (CoreLogic.getGame().multiplayer && CoreLogic.isHost()) {
+		if (CoreLogic.multiplayer && CoreLogic.isHost()) {
 			Net.collision(eA, eB);
 		}
 

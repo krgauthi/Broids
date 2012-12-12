@@ -229,7 +229,8 @@ public class Ship extends Entity {
 
 				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), dir ,
 						this.getX(), this.getY(), 5, color);
-				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
+				String[] idParts = D.getId().split("-");
+				CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
 
 				smokeInterval = 0;
 			}
@@ -254,7 +255,8 @@ public class Ship extends Entity {
 
 			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), 
 					(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 30, super.getColor());
-			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
+			String[] idParts = D.getId().split("-");
+			CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
 		}
 	}
 

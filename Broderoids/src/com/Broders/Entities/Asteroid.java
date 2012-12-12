@@ -99,7 +99,8 @@ public class Asteroid extends Entity {
 				
 				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), 
 						(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 25, getColor());
-				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
+				String[] idParts = D.getId().split("-");
+				CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
 			}
 			
 			sound(1f);
@@ -128,7 +129,8 @@ public class Asteroid extends Entity {
 					spin *= -1;
 				roid1.getBody().setAngularVelocity(spin);
 				
-				CoreLogic.getComp().getEntitiesMap().put(roid1.getId(), roid1);
+				String[] idParts = roid1.getId().split("-");
+				CoreLogic.getComp().getEntitiesMap().put(idParts[1], roid1);
 	
 	//Medium Roid2
 				roid2 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, x2, y2);
@@ -146,7 +148,8 @@ public class Asteroid extends Entity {
 					spin *= -1;
 				roid1.getBody().setAngularVelocity(spin);
 	
-				CoreLogic.getComp().getEntitiesMap().put(roid2.getId(), roid2);
+				idParts = roid2.getId().split("-");
+				CoreLogic.getComp().getEntitiesMap().put(idParts[1], roid2);
 			}
 		} else if (this.type == MEDIUM) {
 			
@@ -158,7 +161,8 @@ public class Asteroid extends Entity {
 
 				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(),
 						(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 20, getColor());
-				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
+				String[] idParts = D.getId().split("-");
+				CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
 			}
 			this.getX();
 			
@@ -186,7 +190,8 @@ public class Asteroid extends Entity {
 					spin *= -1;
 				roid1.getBody().setAngularVelocity(spin);
 				
-				CoreLogic.getComp().getEntitiesMap().put(roid1.getId(), roid1);
+				String[] idParts = roid1.getId().split("-");
+				CoreLogic.getComp().getEntitiesMap().put(idParts[1], roid1);
 	
 	//Small Roid2	
 				roid2 = new Asteroid(SMALL, this.owner.nextId(), this.owner, x2, y2);
@@ -204,7 +209,8 @@ public class Asteroid extends Entity {
 					spin *= -1;
 				roid2.getBody().applyTorque(spin);
 				
-				CoreLogic.getComp().getEntitiesMap().put(roid2.getId(), roid2);
+				idParts = roid2.getId().split("-");
+				CoreLogic.getComp().getEntitiesMap().put(idParts[1], roid2);
 			}
 		} else {
 			
@@ -216,7 +222,8 @@ public class Asteroid extends Entity {
 
 				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(),
 						(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 15, getColor());
-				CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
+				String[] idParts = D.getId().split("-");
+				CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
 			}
 		}
 	}

@@ -246,8 +246,6 @@ public class Net extends Thread {
 
 		System.out.println(inner);
 
-
-
 		return new GameScreen(CoreLogic.getGame(), id, x, y, hosting);
 	}
 
@@ -327,6 +325,16 @@ public class Net extends Thread {
 
 	public Net() {
 	}
+	
+	private static boolean ownedByLocal(String id) {
+		String[] idParts = id.split("-");
+		if (idParts[0].equals(Integer.toString(CoreLogic.clientId)) || 
+				(CoreLogic.getHost() && idParts[0].equals("1"))) {
+			return true;
+		}
+		
+		return false;
+	}
 
 	@Override
 	public void run() {
@@ -348,9 +356,8 @@ public class Net extends Thread {
 				int frameType = e.getAsInt();
 				if (!CoreLogic.getHost()) {
 					if (frameType == FRAME_GAME_SYNC) {
-						if (debug) {
-							System.out.println("Sync");
-						}
+						System.out.println("Sync");
+						
 						// NOTE: This should be the first thing the client gets,
 						// so we can assume that there's nothing else in here.
 						// In other words, just add all the objects
@@ -384,9 +391,8 @@ public class Net extends Thread {
 							CoreLogic.createEntity(ed);
 						}	
 					} else if (frameType == FRAME_GAME_COLLISION) {
-						if (debug) {
-							System.out.println("Collision");
-						}
+						System.out.println("Collision");
+						
 						JsonObject o = obj.get("d").getAsJsonObject();
 						String A = o.get("a").getAsString();
 						Entity eA = CoreLogic.findEntity(A);
@@ -399,21 +405,18 @@ public class Net extends Thread {
 				}
 
 				if (frameType == FRAME_GAME_PLAYER_CREATE) {
-					if (debug) {
-						System.out.println("Create Player");
-					}
 					JsonObject o = obj.get("d").getAsJsonObject();
 					int id = o.get("i").getAsInt();
 					String name = o.get("n").getAsString();
 					int score = o.get("s").getAsInt();
 
 					if (id != CoreLogic.clientId) {
+						System.out.println("Create Player");
 						CoreLogic.createPlayer(id, name, score);
 					}
 				} else if (frameType == FRAME_GAME_PLAYER_MODIFY) {
-					if (debug) {
-						System.out.println("Modify Player");
-					}
+					System.out.println("Modify Player");
+					
 					JsonObject o = obj.get("d").getAsJsonObject();
 					int id = o.get("i").getAsInt();
 					int score = o.get("s").getAsInt();
@@ -421,15 +424,11 @@ public class Net extends Thread {
 					Player p = CoreLogic.getPlayer(Integer.toString(id));
 					p.setScore(score);
 				} else if (frameType == FRAME_GAME_PLAYER_REMOVE) {
-					if (debug) {
-						System.out.println("Remove Player");
-					}
+					System.out.println("Remove Player");
+					
 					int id = obj.get("d").getAsInt();
 					CoreLogic.removePlayer(Integer.toString(id));
 				} else if (frameType == FRAME_GAME_ENTITY_CREATE) {
-					if (debug) {
-						System.out.println("Create Entity");
-					}
 					JsonObject o = obj.get("d").getAsJsonObject();
 					EntityData ed = new EntityData();
 					ed.type = o.get("t").getAsInt();
@@ -442,11 +441,13 @@ public class Net extends Thread {
 					ed.a = o.get("a").getAsFloat();
 					ed.av = o.get("av").getAsFloat();
 
-					CoreLogic.createEntity(ed);
-				} else if (frameType == FRAME_GAME_ENTITY_MODIFY) {
-					if (debug) {
-						System.out.println("Modify Entity");
+					if (!ownedByLocal(ed.id)) {
+						System.out.println("Create Entity");
+						CoreLogic.createEntity(ed);	
 					}
+				} else if (frameType == FRAME_GAME_ENTITY_MODIFY) {
+					System.out.println("Modify Entity");
+					
 					JsonObject o = obj.get("d").getAsJsonObject();
 					String id = o.get("id").getAsString();
 					float x = o.get("x").getAsFloat();
@@ -457,26 +458,20 @@ public class Net extends Thread {
 					float av = o.get("av").getAsFloat();
 
 					Entity ent = CoreLogic.findEntity(id);
-					String[] idParts = id.split("-");
-					if (!idParts[0].equals(Integer.toString(CoreLogic.clientId))
-							&& !(CoreLogic.getHost() && idParts[0].equals("1"))) {
+					if (!ownedByLocal(id)) {
 						// NOTE: Hacky work around
 						if (ent != null) {
 							ent.teleport(x, y, a, av, xv, yv);
 						}
 					}
 				} else if (frameType == FRAME_GAME_ENTITY_REMOVE) {
-					if (debug) {
-						System.out.println("Remove Entity");
-					}
-					if (!CoreLogic.getHost()) {
-						String data = obj.get("d").getAsString();
+					System.out.println("Remove Entity");
+					
+					String id = obj.get("d").getAsString();
 
-						Entity ent = CoreLogic.findEntity(data);
-
-						if (ent.getOwner() != CoreLogic.getLocal() && ent.getOwner() != CoreLogic.getComp()) {
-							CoreLogic.removeEntity(ent);
-						}
+					if (!ownedByLocal(id)) {
+						Entity ent = CoreLogic.findEntity(id);
+						CoreLogic.removeEntity(ent);
 					}
 				} else if (frameType == FRAME_GAME_HOST_CHANGE) {
 					CoreLogic.setHost(true);

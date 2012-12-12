@@ -397,6 +397,9 @@ public class Net extends Thread {
 			JsonElement e;
 
 			e = obj.get("c");
+			
+			System.out.println(obj);
+
 			int frameType = e.getAsInt();
 			if (frameType == FRAME_GAME_COLLISION) {
 				System.out.println("Collision");
@@ -479,8 +482,8 @@ public class Net extends Thread {
 			} else if (frameType == FRAME_GAME_PLAYER_REMOVE) {
 				System.out.println("Remove Player");
 				
-				int id = obj.get("d").getAsInt();
-				CoreLogic.removePlayer(Integer.toString(id));
+				String id = obj.get("d").getAsString();
+				CoreLogic.removePlayer(id);
 			} else if (frameType == FRAME_GAME_ENTITY_CREATE) {
 				JsonObject o = obj.get("d").getAsJsonObject();
 				EntityData ed = new EntityData();

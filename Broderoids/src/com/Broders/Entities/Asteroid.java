@@ -223,7 +223,7 @@ public class Asteroid extends Entity {
 	
 	private void sound(float pitch) {
 		int pick = (int) Math.floor(Math.random() * 3);
-		SoundManager.play("roidBreak" + Integer.toString(pick + 1));
+		SoundManager.play("roidBreak" + Integer.toString(pick + 1), 1f, pitch);
 	}
 	
 	/**

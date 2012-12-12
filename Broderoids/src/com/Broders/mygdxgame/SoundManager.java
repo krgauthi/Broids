@@ -13,11 +13,8 @@ public class SoundManager {
 
 	private static Disposable music;
 	private static long musicId;
-	private static float mv;
 	private static float sv;
 	private static boolean android;
-
-		
 
 	public static void init() {
 		
@@ -50,10 +47,8 @@ public class SoundManager {
 			((Music) music).setLooping(true);
 		} else {
 			music = Gdx.audio.newSound(Gdx.files.internal("data/broderoids.mp3"));
-			((Sound) music).play();
-			((Sound) music).loop();
+			musicId = ((Sound) music).loop();
 		}
-
 	}
 
 	public static Sound get(String key) {
@@ -104,19 +99,20 @@ public class SoundManager {
 	
 	public static void setMusicVolume(float volume) {
 		update();
-		if (android)
-			((Music) music).setVolume(mv);
-		else
-			((Sound) music).setVolume(musicId, mv);
+		if (android) {
+			((Music) music).setVolume(volume);
+		} else {
+			((Sound) music).setVolume(musicId, volume);
+		}
 	}
 	
 	public static void setMusicPitch(float pitch) {
+		update();
 		if (!android);
 			((Sound) music).setPitch(musicId, pitch);
 	}
 
 	public static void update() {
-		mv = Settings.getMusicVol() * 0.1f;
 		sv = Settings.getSoundVol() * 0.1f;
 	}
 }

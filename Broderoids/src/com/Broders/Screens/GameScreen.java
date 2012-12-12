@@ -423,17 +423,12 @@ public class GameScreen implements Screen {
 							Net.leaveGame();
 						}
 
-						//SoundManager.setPitch("muzak", SoundManager.getMuzakId(), 1f);
 						myGame.setScreen(BaseGame.screens.get("main"));
 					}else if(y >= .578 && y <= .666){
 						resume();
 					}
-
 				}
-
-
 			}
-
 		}
 
 

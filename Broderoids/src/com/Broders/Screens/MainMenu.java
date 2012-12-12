@@ -14,7 +14,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class MainMenu implements Screen{
 
-
 	private SpriteBatch spriteBatch;
 
 	private BitmapFont font;

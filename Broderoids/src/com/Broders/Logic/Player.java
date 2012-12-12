@@ -160,5 +160,6 @@ public class Player {
 			modHealth(hit);
 		}
 		modShield(0 - damage);
+		System.out.println(shield + " " + health);
 	}
 }

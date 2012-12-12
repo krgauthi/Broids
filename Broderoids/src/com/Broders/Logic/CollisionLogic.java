@@ -120,7 +120,8 @@ public class CollisionLogic implements ContactListener {
 
 	public static void shipDanger(Entity ship) {
 		if (CoreLogic.multiplayer){
-			ship.getOwner().takeDamage(-10);
+			
+			ship.getOwner().takeDamage(10);
 			Net.modifyPlayer(ship.getOwner());
 		}
 		else

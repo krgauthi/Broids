@@ -414,9 +414,7 @@ public class Net extends Thread {
 						System.out.println("Create Player");
 						CoreLogic.createPlayer(id, name, score);
 					}
-				} else if (frameType == FRAME_GAME_PLAYER_MODIFY) {
-					System.out.println("Modify Player");
-					
+				} else if (frameType == FRAME_GAME_PLAYER_MODIFY) {					
 					JsonObject o = obj.get("d").getAsJsonObject();
 					int id = o.get("i").getAsInt();
 					int score = o.get("s").getAsInt();

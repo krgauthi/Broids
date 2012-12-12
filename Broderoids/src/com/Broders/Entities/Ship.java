@@ -245,6 +245,7 @@ public class Ship extends Entity {
 		setThrust(false);
 
 		SoundManager.play("death", 1f, 0.85f);
+		zoom.stop();
 		float temp = (float) (10+Math.random()%10);
 		setThrust(false);
 		SoundManager.play("death", 1f, 0.85f);
@@ -255,9 +256,6 @@ public class Ship extends Entity {
 					(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 30, super.getColor());
 			CoreLogic.getScratch().getEntitiesMap().put(D.getId(), D);
 		}
-
-		
-
 	}
 
 	public void setInvincible(boolean b){
@@ -266,6 +264,10 @@ public class Ship extends Entity {
 
 	public boolean isInvincible(){
 		return invincible;
+	}
+	
+	public void killZoom() {
+		zoom.stop();
 	}
 
 }

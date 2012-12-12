@@ -144,8 +144,6 @@ public class SettingsScreen implements Screen {
 
 	private void update(float delta) {
 
-
-
 	}
 
 	private void handleInput(float delta) {

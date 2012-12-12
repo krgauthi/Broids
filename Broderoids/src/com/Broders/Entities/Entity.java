@@ -25,6 +25,7 @@ public abstract class Entity {
 	//private String type;
 	protected Body body;
 	private String spriteID;
+	private boolean dead;
 
 
 	// Extras
@@ -42,6 +43,7 @@ public abstract class Entity {
 	public Entity(String id, Player owner) {
 		this.id = id;
 		this.owner = owner;
+		dead = false;
 		//System.out.println(id);
 	}
 
@@ -292,5 +294,13 @@ public abstract class Entity {
 	
 	public int getPoints(){
 		return points;
+	}
+	
+	public boolean isDead() {
+		return this.dead;
+	}
+	
+	public void setDead() {
+		this.dead = true;
 	}
 }

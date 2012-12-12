@@ -5,6 +5,7 @@ import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.ScoresManager;
 import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL20;
@@ -25,7 +26,6 @@ public class ScoresScreen implements Screen {
 		this.myGame = g;
 		scores = ScoresManager.getScores();
 		font = this.myGame.font;
-		font.setScale(.40f);
 
 		xx = Settings.getWidth();
 		yy = Settings.getHeight();
@@ -50,11 +50,12 @@ public class ScoresScreen implements Screen {
 		}
 
 		float dpi = Gdx.graphics.getDensity()*160f;
+		float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
 		
 		spriteBatch.begin();
-		font.setScale(.60f*Gdx.graphics.getDensity());
+		font.setScale(2*dpi*(inchHeight/22f)/72f);
 		font.draw(spriteBatch, "High Scores", xx * .40f, yy * .98f);
-		font.setScale(.50f*Gdx.graphics.getDensity());
+		font.setScale(dpi*(inchHeight/22f)/72f);
 		for(int i = 0; i < 10; i++){
 			font.draw(spriteBatch, scores[i][0], xx * .05f, yy * (.85f - i*.08f));
 			font.draw(spriteBatch, scores[i][1], xx * .20f, yy * (.85f - i*.08f));
@@ -64,7 +65,8 @@ public class ScoresScreen implements Screen {
 	}
 
 	public boolean handleInput(float delta) {
-		if (Gdx.input.justTouched()) {
+		if (Gdx.input.justTouched() || Gdx.input.isKeyPressed(Keys.BACK) ||
+			Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACKSPACE)) {
 			SoundManager.get("click").play(Settings.getSoundVol() * 0.1f);
 			return true;
 		}

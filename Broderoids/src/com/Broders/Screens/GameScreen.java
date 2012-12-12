@@ -73,7 +73,9 @@ public class GameScreen implements Screen {
 		CoreLogic.initCore(myGame, width2, height2, h2, multiplayer);
 
 
-		myGame.font.setScale(.25f);
+		float dpi = Gdx.graphics.getDensity()*160f;
+		float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
+		myGame.font.setScale(0.5f*dpi*(inchHeight/22f)/72f);
 
 		myGame.multiplayer = this.multiplayer;
 
@@ -205,7 +207,9 @@ public class GameScreen implements Screen {
 		}
 
 		if (Settings.getDebug()) {
-			myGame.font.setScale(.25f);
+			float dpi = Gdx.graphics.getDensity()*160f;
+			float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
+			myGame.font.setScale(0.5f*dpi*(inchHeight/22f)/72f);
 			String out;
 			if (CoreLogic.getLocalShip() != null) {
 				out = String.format("Ship Pos in Meters: (%f,%f) ", CoreLogic
@@ -253,19 +257,26 @@ public class GameScreen implements Screen {
 		}
 
 		if(CoreLogic.getRoundBool()){
-			myGame.font .setScale(2f);
+			float dpi = Gdx.graphics.getDensity()*160f;
+			float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
+			myGame.font.setScale(4.0f*dpi*(inchHeight/22f)/72f);
 			String out;
 			out = String.format("Round: %d! ", CoreLogic.getRound()+2); 
 			myGame.font.draw(spriteBatch, out, xx*.25f, yy*.65f);
-			myGame.font.setScale(.25f);
+			dpi = Gdx.graphics.getDensity()*160f;
+			inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
+			myGame.font.setScale(0.5f*dpi*(inchHeight/22f)/72f);
 		}
 
 		if (!CoreLogic.multiplayer && CoreLogic.getLocal().getLives() == 0) {
-			myGame.font .setScale(2f);
+			float dpi = Gdx.graphics.getDensity()*160f;
+			float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
+			myGame.font.setScale(4.0f*dpi*(inchHeight/22f)/72f);
 			String out;
-			out = String.format("Game Over!"); 
-			myGame.font.draw(spriteBatch, out, xx*.20f, yy*.65f);
-			myGame.font.setScale(.25f);
+			out = String.format("Game Over!");
+			dpi = Gdx.graphics.getDensity()*160f;
+			inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
+			myGame.font.setScale(0.5f*dpi*(inchHeight/22f)/72f);
 		}
 
 
@@ -535,7 +546,9 @@ public class GameScreen implements Screen {
 			TextureManager.getSprites("thrustButton").setPosition(xx * (.69f), yy * 0);
 			TextureManager.getSprites("thrustButton").setSize(yy * .32f, yy * .32f);
 		}
-		myGame.font.setScale(.25f);
+		float dpi = Gdx.graphics.getDensity()*160f;
+		float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
+		myGame.font.setScale(0.5f*dpi*(inchHeight/22f)/72f);
 
 		SoundManager.play("start");
 	}

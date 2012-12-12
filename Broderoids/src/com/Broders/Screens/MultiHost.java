@@ -78,8 +78,10 @@ public class MultiHost implements Screen {
 
 
 		// text
+		float dpi = Gdx.graphics.getDensity()*160f;
+		float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
 
-		myGame.font.setScale(.5f);
+		myGame.font.setScale(dpi*(inchHeight/22f)/72f);
 		myGame.font.draw(spriteBatch, "Game Name: " + this.gameName, xx * .1f, yy * .9f);
 		myGame.font.draw(spriteBatch, "Password: " + this.password.replaceAll(".", "*"), xx * .1f, yy *.75f);
 		myGame.font.draw(spriteBatch, "World Size : "+this.gameSize, xx * .1f, yy * .6f);

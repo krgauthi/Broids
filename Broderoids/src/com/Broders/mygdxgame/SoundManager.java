@@ -33,6 +33,7 @@ public class SoundManager {
 		
 		music = Gdx.audio.newMusic(Gdx.files.internal("data/broderoids.mp3"));
 		music.play();
+		music.setVolume((float)Settings.getMusicVol());
 		music.setLooping(true);
 		for (String[] noise : defaultSounds) {
 			Sound temp = Gdx.audio.newSound(Gdx.files.internal(noise[1]));

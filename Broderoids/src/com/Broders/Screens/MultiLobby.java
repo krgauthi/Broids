@@ -116,7 +116,9 @@ public class MultiLobby implements Screen {
 				out = String.format("%d ", curPage + 1);
 
 				myGame.font.setColor(Color.BLACK);
-				myGame.font.setScale(.5f);
+				float dpi = Gdx.graphics.getDensity()*160f;
+				float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
+				myGame.font.setScale(dpi*(inchHeight/22f)/72f);
 				myGame.font.draw(spriteBatch, out, xx * .073f, yy * .33f);
 				
 			}
@@ -126,11 +128,13 @@ public class MultiLobby implements Screen {
 				TextureManager.getSprites("Ship1").setRotation(0);
 				TextureManager.getSprites("Ship1").setPosition(xx * .01f, yy * .48f);
 				TextureManager.getSprites("Ship1").draw(spriteBatch);
-
+				
 				out = String.format("%d ", curPage);
 
 				myGame.font.setColor(Color.BLACK);
-				myGame.font.setScale(.5f);
+				float dpi = Gdx.graphics.getDensity()*160f;
+				float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
+				myGame.font.setScale(dpi*(inchHeight/22f)/72f);
 				myGame.font.draw(spriteBatch, out, xx * .073f, yy * .64f);
 				
 			}
@@ -158,7 +162,9 @@ public class MultiLobby implements Screen {
 			// total
 			// players
 			myGame.font.setColor(Color.WHITE);
-			myGame.font.setScale(.4f);
+			float dpi = Gdx.graphics.getDensity()*160f;
+			float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
+			myGame.font.setScale(dpi*(inchHeight/22f)/72f);
 			myGame.font.draw(spriteBatch, out, xx * .7f, yy * (.73f - (.16f * i)));
 			String priv = "";
 			if (temp[1].equals("true")) {

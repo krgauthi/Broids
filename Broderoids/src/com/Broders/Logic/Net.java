@@ -160,8 +160,9 @@ public class Net extends Thread {
 	}
 
 	public static void collision(Entity eA, Entity eB) {
+
 		JsonObject o = new JsonObject();
-		o.addProperty("c", COMMAND_GAME_ENTITY_REMOVE);
+		o.addProperty("c", COMMAND_GAME_COLLISION);
 		JsonObject d = new JsonObject();
 		d.addProperty("a", eA.getId());
 		d.addProperty("ap", eA.getPoints());
@@ -170,6 +171,7 @@ public class Net extends Thread {
 		d.addProperty("bp", eB.getPoints());
 		d.addProperty("bt", Net.entityType(eB));
 		o.add("d", d);
+		Net.send(o);
 	}
 
 	private static void entitySend(JsonObject o, Entity e) {
@@ -257,8 +259,6 @@ public class Net extends Thread {
 		// float y = inner.get("y").getAsFloat();
 		boolean hosting = inner.get("h").getAsBoolean();
 		int id = inner.get("i").getAsInt();
-
-		System.out.println(inner);
 
 		return new GameScreen(CoreLogic.getGame(), id, x, y, hosting);
 	}
@@ -352,6 +352,12 @@ public class Net extends Thread {
 	private static void handleCollision(String eS, int points, int type) {
 		Entity e = CoreLogic.findEntity(eS);
 
+		System.out.println(eS);
+		System.out.println(e);
+		
+		String[] idParts = eS.split("-");
+		System.out.println(CoreLogic.getPlayer(idParts[0]).getEntitiesMap());
+		
 		if (e instanceof Ship) {
 			if (type == Net.ENTITY_SHIP) {
 				// Not used
@@ -401,6 +407,7 @@ public class Net extends Thread {
 				System.out.println("Collision");
 				
 				JsonObject o = obj.get("d").getAsJsonObject();
+
 				String A = o.get("a").getAsString();
 				int ap = o.get("ap").getAsInt();
 				int at = o.get("at").getAsInt();
@@ -409,9 +416,11 @@ public class Net extends Thread {
 				int bt = o.get("bt").getAsInt();
 
 				if (ownedByLocal(A)) {
+					System.out.println("A");
 					Net.handleCollision(A, bp, bt);
 				}
 				if (ownedByLocal(B)) {
+					System.out.println("B");
 					Net.handleCollision(B, ap, at);
 				}
 			} else if (frameType == FRAME_GAME_ROUND_OVER) {
@@ -504,13 +513,12 @@ public class Net extends Thread {
 				float av = o.get("av").getAsFloat();
 
 				Entity ent = CoreLogic.findEntity(id);
-				System.out.println(id);
-				//if (!ownedByLocal(id)) {
+				if (!ownedByLocal(id)) {
 					// NOTE: Hacky work around
 					if (ent != null) {
 						ent.teleport(x, y, a, av, xv, yv);
 					}
-				//}
+				}
 			} else if (frameType == FRAME_GAME_ENTITY_REMOVE) {
 				System.out.println("Remove Entity");
 				

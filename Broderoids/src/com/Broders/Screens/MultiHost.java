@@ -79,13 +79,14 @@ public class MultiHost implements Screen {
 
 		spriteBatch.begin();
 
-		TextureManager.getSprites("Ship1").setRotation(90);
-		TextureManager.getSprites("Ship1").setPosition(xx * .5f, yy * .5f);
+		TextureManager.getSprites("Ship1").setRotation(270);
+		TextureManager.getSprites("Ship1").setPosition(xx * .28f, yy * .29f);
 		TextureManager.getSprites("Ship1").draw(spriteBatch);
 		
-		
-		
-		
+		TextureManager.getSprites("Ship1").setRotation(90);
+		TextureManager.getSprites("Ship1").setPosition(xx * .075f, yy * .19f);
+		TextureManager.getSprites("Ship1").draw(spriteBatch);
+
 
 		// text
 		myGame.font.setScale(.5f);
@@ -125,7 +126,20 @@ public class MultiHost implements Screen {
 		}
 
 		if (Gdx.input.justTouched()) {
-			// world size
+			
+			//arrows
+			if(inputy >= .678 && inputy <= .772){
+				
+				if(inputx >= .5 && inputx <= .5){
+					
+				}else if(inputx >= .5 && inputx <= .5){
+					
+				}
+				
+			}
+			
+			
+			
 
 			if (inputx >= .096 && inputx <= .590) {
 				//Game name Text
@@ -249,7 +263,8 @@ public class MultiHost implements Screen {
 	public void show() {
 		spriteBatch = new SpriteBatch();
 
-		TextureManager.getSprites("Ship1").setSize(yy * .05f, yy * .05f);
+		TextureManager.getSprites("Ship1").setSize(yy * .15f, yy * .15f);
+		TextureManager.getSprites("Ship1").setOrigin((yy * .05f)/2f, (yy * .05f)/2f);
 		TextureManager.getSprites("Ship1").setRotation(0);
 	}
 

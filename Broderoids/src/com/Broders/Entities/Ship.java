@@ -2,8 +2,6 @@ package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
 import com.Broders.Logic.Player;
-import com.Broders.Logic.Settings;
-import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
 import com.Broders.mygdxgame.TextureManager;
 import com.badlogic.gdx.Gdx;
@@ -35,7 +33,6 @@ public class Ship extends Entity {
 	private float smokeInterval;
 	private float shieldRegen;
 
-	private BaseGame game;
 	private long zoomId;
 	private Sound zoom;
 
@@ -51,8 +48,6 @@ public class Ship extends Entity {
 	 */
 	public Ship(String id, Player owner, float x, float y) {
 		super(id, owner);
-
-		this.game = owner.getGame();
 
 		Vector2 vertices[] = new Vector2[3];
 		vertices[0] = new Vector2(-1.5f, 1.39f);

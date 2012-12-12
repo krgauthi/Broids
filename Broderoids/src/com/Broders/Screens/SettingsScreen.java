@@ -1,8 +1,5 @@
 package com.Broders.Screens;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.regex.Pattern;
 
@@ -223,8 +220,7 @@ public class SettingsScreen implements Screen {
 					Settings.setRetro(true);
 				}
 				System.out.println("Retro Mode Option set to " + (Settings.getRetro() ? "On" : "Off"));	
-				TextureManager.init(game);
-
+				TextureManager.init();
 			} else if (x >= .51 && x <= .96 && y >= .72 && y <= .8) {
 
 				if (screenResSelection == (screenResOptions.length - 1)) {

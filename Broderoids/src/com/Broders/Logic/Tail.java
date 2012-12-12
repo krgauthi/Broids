@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Tail extends LinkedList<Pos> {
+	// This is just to get rid of a warning. Don't ask. No one knows.
+	private static final long serialVersionUID = 2794586982731452858L;
 
 	private int length;
 	private boolean flag = true;

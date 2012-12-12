@@ -10,16 +10,10 @@ public class SoundManager {
 
 	private static HashMap<String, Sound> sounds;
 	private static Music music;
-	private static long musicId;
-	private static BaseGame g;
-	private static float mv;
 	private static float sv;
 
 
-	public static void init(BaseGame game) {
-
-		g = game;
-
+	public static void init() {
 		sounds = new HashMap<String, Sound>();
 
 		String[][] defaultSounds = {
@@ -97,7 +91,6 @@ public class SoundManager {
 	}
 
 	private static void update() {
-		mv = Settings.getMusicVol() * 0.1f;
 		sv = Settings.getSoundVol() * 0.1f;
 	}
 }

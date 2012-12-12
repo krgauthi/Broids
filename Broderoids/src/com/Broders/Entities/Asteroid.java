@@ -30,8 +30,6 @@ public class Asteroid extends Entity {
 
 		super.setSprite("Broid");
 
-
-		owner.getGame();
 		FixtureDef fixDef = new FixtureDef();
 		CircleShape shape = new CircleShape();
 		this.type = type;

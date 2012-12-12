@@ -8,9 +8,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 public class BaseGame extends Game {
@@ -55,15 +53,15 @@ public class BaseGame extends Game {
 
 		Gdx.input.setCatchBackKey(true);
 
-		Settings.init(this);
+		Settings.init();
 
 		Settings.setWidth(Gdx.graphics.getWidth());
 		Settings.setHeight(Gdx.graphics.getHeight());
 		
 		Net.init(this);
-		ScoresManager.init(this);
-		TextureManager.init(this);
-		SoundManager.init(this);
+		ScoresManager.init();
+		TextureManager.init();
+		SoundManager.init();
 
 		screens = new HashMap<String,Screen>();
 		screens.put("splash", new SplashScreen(this));

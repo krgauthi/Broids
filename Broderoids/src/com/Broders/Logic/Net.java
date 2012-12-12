@@ -444,8 +444,6 @@ public class Net extends Thread {
 						CoreLogic.createEntity(ed);	
 					}
 				} else if (frameType == FRAME_GAME_ENTITY_MODIFY) {
-					System.out.println("Modify Entity");
-					
 					JsonObject o = obj.get("d").getAsJsonObject();
 					String id = o.get("id").getAsString();
 					float x = o.get("x").getAsFloat();

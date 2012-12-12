@@ -146,6 +146,11 @@ public class GameScreen implements Screen {
 			TextureManager.getSprites("thrustButton").draw(spriteBatch, .45f);
 		}
 
+		
+		float dpi = Gdx.graphics.getDensity()*160f;
+		float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
+		myGame.font.setScale(0.55f*dpi*(inchHeight/22f)/72f);
+		
 		if (multiplayer) {
 			// Draw HUD
 			TextureManager.getSprites("healthBar").draw(spriteBatch);
@@ -174,8 +179,8 @@ public class GameScreen implements Screen {
 			//String shieldText = "SHIELD: " + shield + " / 100";
 
 
-			String healthText = "HEALTH: " + CoreLogic.getLocal().getHealth() + " / 100";
-			String shieldText = "SHIELD: " + CoreLogic.getLocal().getShield() + " / 100";
+			String healthText = "HEALTH: " + CoreLogic.getLocal().getHealth() + " / 100";		//lol Ive never written in C before I swear
+			String shieldText = "SHIELD: " + CoreLogic.getLocal().getShield() + " / 100";		//Sprintf(shieldText,"SHIELD: %d / 100",getShield);
 
 			myGame.font.draw(spriteBatch, healthText, xx * .05f, yy * .92f);
 			myGame.font.draw(spriteBatch, shieldText, xx * .08f, yy * .975f);
@@ -207,8 +212,8 @@ public class GameScreen implements Screen {
 		}
 
 		if (Settings.getDebug()) {
-			float dpi = Gdx.graphics.getDensity()*160f;
-			float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
+			dpi = Gdx.graphics.getDensity()*160f;
+			inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
 			myGame.font.setScale(0.5f*dpi*(inchHeight/22f)/72f);
 			String out;
 			if (CoreLogic.getLocalShip() != null) {
@@ -256,9 +261,9 @@ public class GameScreen implements Screen {
 			System.out.println("Mouse Pos: " + x + " " + y);
 		}
 
-		if(CoreLogic.getRoundBool()){
-			float dpi = Gdx.graphics.getDensity()*160f;
-			float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
+		if(CoreLogic.getRoundBool() && !CoreLogic.multiplayer){
+			dpi = Gdx.graphics.getDensity()*160f;
+			inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
 			myGame.font.setScale(4.0f*dpi*(inchHeight/22f)/72f);
 			String out;
 			out = String.format("Round: %d! ", CoreLogic.getRound()+2); 
@@ -269,8 +274,8 @@ public class GameScreen implements Screen {
 		}
 
 		if (!CoreLogic.multiplayer && CoreLogic.getLocal().getLives() == 0) {
-			float dpi = Gdx.graphics.getDensity()*160f;
-			float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
+			dpi = Gdx.graphics.getDensity()*160f;
+			inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
 			myGame.font.setScale(4.0f*dpi*(inchHeight/22f)/72f);
 			String out;
 			out = String.format("Game Over!");

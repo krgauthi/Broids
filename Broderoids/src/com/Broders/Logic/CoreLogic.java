@@ -716,7 +716,6 @@ public class CoreLogic {
 	}
 
 	public static void createPlayer(int id, String name, int score) {
-		new Exception().printStackTrace();
 		String[] data = new String[3];
 		data[0] = Integer.toString(id);
 		data[1] = name;

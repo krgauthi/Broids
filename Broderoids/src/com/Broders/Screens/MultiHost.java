@@ -36,7 +36,7 @@ public class MultiHost implements Screen {
 		this.myGame = game;
 
 		limit = 5;
-		
+
 		gameSize = "Small";
 		worldSize = 0;
 		switch(Settings.getDifficulty()){
@@ -80,9 +80,9 @@ public class MultiHost implements Screen {
 		spriteBatch.begin();
 
 		TextureManager.getSprites("Ship1").setRotation(270);
-		TextureManager.getSprites("Ship1").setPosition(xx * .28f, yy * .29f);
+		TextureManager.getSprites("Ship1").setPosition(xx * .29f, yy * .29f);
 		TextureManager.getSprites("Ship1").draw(spriteBatch);
-		
+
 		TextureManager.getSprites("Ship1").setRotation(90);
 		TextureManager.getSprites("Ship1").setPosition(xx * .075f, yy * .19f);
 		TextureManager.getSprites("Ship1").draw(spriteBatch);
@@ -126,21 +126,21 @@ public class MultiHost implements Screen {
 		}
 
 		if (Gdx.input.justTouched()) {
-			
+
 			//arrows
 			if(inputy >= .678 && inputy <= .772){
-				
+
 				if(inputx >= .016 && inputx <= .095){
 					if(limit > 5)
 						limit--;
 				}else if(inputx >= .291 && inputx <= .367){
 					limit++;
 				}
-				
+
 			}
-			
-			
-			
+
+
+
 
 			if (inputx >= .096 && inputx <= .590) {
 				//Game name Text
@@ -221,10 +221,7 @@ public class MultiHost implements Screen {
 
 					}
 				}
-
 			}
-
-
 
 			//play Button
 			if (inputy > .09 && inputy < .173) {
@@ -233,8 +230,8 @@ public class MultiHost implements Screen {
 					int x;
 					int y;
 					if (worldSize == 0) {
-						x = Gdx.graphics.getWidth();
-						y = Gdx.graphics.getHeight();
+						x = 160;
+						y = (int)((160f)*(((float)Settings.getHeight())/((float)Settings.getWidth())));
 					} else if (worldSize == 1) {
 						x = 500;
 						y = 500;
@@ -243,7 +240,7 @@ public class MultiHost implements Screen {
 						y = 1000;
 					}
 					// TODO: Pass the right values
-					Screen s = Net.newGame(this.gameName, 5, x, y, this.password);
+					Screen s = Net.newGame(this.gameName, limit, x, y, this.password);
 					if (s != null) {
 						SoundManager.play("click", 0.7f);
 						myGame.setScreen(s);

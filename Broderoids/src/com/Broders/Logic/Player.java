@@ -31,40 +31,31 @@ public class Player {
 		return this.id;
 	}
 	
-	public Player(String type, int id) {
+	public Player(boolean local, String name, int id) {
 		this.id = id;
 		nextEntityId = 0;
 		entities = new HashMap<String, Entity>();
 
-		if (type.equals("Player")) {
+		shield = 100;
+		health = 100;
+		lives = 3;
+		bonus = 1.0f;
+		score = 0;
+		
+		if (local) {
 			playerColor = Settings.getShipColor();
-
-
 			
-			if (CoreLogic.multiplayer) {
-				shield = 100;
-				health = 100;
-			} else {
-				lives = 3;
-			}
+			String sid = this.nextId();
 			
-			playerShip = new Ship(this.nextId(), this,
-					CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
-			entities.put(playerShip.getId(), playerShip);
+			playerShip = new Ship(sid, this, CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
+			entities.put(sid, playerShip);
+
 			if (CoreLogic.getGame().multiplayer) {
 				Net.createEntity(playerShip);
 			}
-
-			score = 0;
-
-
 		} else {
 			playerColor = Settings.getWorldColor();
 		}
-
-		bonus = 1.0f;
-		score = 0;
-
 	}
 
 	public int getShield() {

@@ -635,10 +635,6 @@ public class CoreLogic {
 		Player local = getLocal();
 		for (Entity i : rmEntities) {
 			if (i instanceof Ship) {
-				if (multiplayer && Net.ownedByLocal(i.getId())) {
-					Net.removeEntity(i);
-				}
-
 				if (!myGame.multiplayer && i.getOwner().getId() == clientId) {
 					getSelf().modLives(-1);
 					local.setShip(null);
@@ -657,6 +653,10 @@ public class CoreLogic {
 				}
 			}
 
+			if (multiplayer && Net.ownedByLocal(i.getId())) {
+				Net.removeEntity(i);
+			}
+			
 			String[] idParts = i.getId().split("-");
 			i.getOwner().getEntitiesMap().remove(idParts[1]);
 			i.destroy();

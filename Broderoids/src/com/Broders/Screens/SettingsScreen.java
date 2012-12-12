@@ -73,9 +73,11 @@ public class SettingsScreen implements Screen {
 		// Option Texts
 
 		// Title
-		font.setScale(.75f);
+		float dpi = Gdx.graphics.getDensity()*160f;
+		float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
+		font.setScale(1.5f*dpi*(inchHeight/22f)/72f);
 		font.draw(spriteBatch, "Settings", (float) (Settings.getWidth() * .4), (float) (Settings.getHeight() * .95));
-		font.setScale(.5f);
+		game.font.setScale(dpi*(inchHeight/22f)/72f);
 
 		// Music
 		font.draw(spriteBatch, "Music: " + Settings.getMusicVol(), (float) (Settings.getWidth() * .08),
@@ -141,8 +143,6 @@ public class SettingsScreen implements Screen {
 	}
 
 	private void update(float delta) {
-
-
 
 	}
 

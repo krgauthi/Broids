@@ -48,6 +48,7 @@ public class TextureManager {
 					//Title
 					{"titleLeft","data/menu_title1.png"},
 					{"titleRight","data/menu_title2.png"},
+					{"splash","data/brocoders.png"},
 
 					//Retro Textures
 					{"Ship1","data/retroship1.png"},

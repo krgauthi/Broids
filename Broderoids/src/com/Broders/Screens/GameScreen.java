@@ -408,7 +408,8 @@ public class GameScreen implements Screen {
 			}
 
 			//SoundManager.setMusicPitch(1f);
-			CoreLogic.getLocalShip().killZoom();
+			if(CoreLogic.getLocalShip() != null)
+				CoreLogic.getLocalShip().killZoom();
 			myGame.setScreen(BaseGame.screens.get("main"));
 		}
 

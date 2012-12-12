@@ -194,7 +194,7 @@ public class SettingsScreen implements Screen {
 					Settings.setMusicVol(Settings.getMusicVol() + 1);
 				}
 				SoundManager.setMusicVolume(Settings.getMusicVol());
-				System.out.println("Music Option set to " + Settings.getMusicVol());
+				//System.out.println("Music Option set to " + Settings.getMusicVol());
 				SoundManager.play("click", 0.7f);
 
 			} else if (x >= .08 && x <= .46 && y >= .32 && y <= .4) {
@@ -204,7 +204,7 @@ public class SettingsScreen implements Screen {
 				} else {
 					Settings.setSoundVol(Settings.getSoundVol() + 1);
 				}
-				System.out.println("Sound Option set to " + Settings.getSoundVol());
+				//System.out.println("Sound Option set to " + Settings.getSoundVol());
 				SoundManager.play("click", 0.7f);
 
 			} else if (x >= .08 && x <= .46 && y >= .52 && y <= .6) {

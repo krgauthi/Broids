@@ -11,11 +11,13 @@ public class SoundManager {
 
 	private static HashMap<String, Sound> sounds;
 
-	private static Disposable music;
-	private static long musicId;
+	private static Music music;
+	private static Sound muzak;
+	private static long muzakId;
 	private static float sv;
 	private static boolean android;
-
+	private static boolean vol;
+	
 	public static void init() {
 		
 		android = Gdx.app.getVersion() > 0;
@@ -33,8 +35,7 @@ public class SoundManager {
 				{"start", "data/roundstart.wav"},
 				{"error", "data/error.wav"}
 		};
-		
-
+	
 		for (String[] noise : defaultSounds) {
 			Sound temp = Gdx.audio.newSound(Gdx.files.internal(noise[1]));
 			sounds.put(noise[0], temp);
@@ -43,11 +44,11 @@ public class SoundManager {
 		//if android
 		if (android) {
 			music = Gdx.audio.newMusic(Gdx.files.internal("data/broderoids.mp3"));
-			((Music) music).play();
-			((Music) music).setLooping(true);
+			music.play();
+			music.setLooping(true);
 		} else {
-			music = Gdx.audio.newSound(Gdx.files.internal("data/broderoids.mp3"));
-			musicId = ((Sound) music).loop();
+			muzak = Gdx.audio.newSound(Gdx.files.internal("data/broderoids.mp3"));
+			muzakId = muzak.loop();
 		}
 	}
 
@@ -90,26 +91,33 @@ public class SoundManager {
 			noise.dispose();
 		}
 		if (android)
-			((Music) music).stop();
+			music.stop();
 		else 
-			((Sound) music).stop();
-		music.dispose();
+			muzak.stop();
+		//music.dispose();
 		sounds = null;
 	}
 	
 	public static void setMusicVolume(float volume) {
 		update();
+		float bleh = 0;
+		if (vol)
+			bleh = 1;
+			
 		if (android) {
-			((Music) music).setVolume(volume);
+			music.setVolume(bleh);
 		} else {
-			((Sound) music).setVolume(musicId, volume);
+			muzak.setVolume(muzakId, bleh);
 		}
+		
+		System.out.println("Volume parameter = " + volume);
+		vol = !vol;
 	}
 	
 	public static void setMusicPitch(float pitch) {
 		update();
 		if (!android);
-			((Sound) music).setPitch(musicId, pitch);
+			muzak.setPitch(muzakId, pitch);
 	}
 
 	public static void update() {

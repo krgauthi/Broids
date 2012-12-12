@@ -398,8 +398,6 @@ public class Net extends Thread {
 			JsonElement e;
 
 			e = obj.get("c");
-			
-			System.out.println(obj);
 
 			int frameType = e.getAsInt();
 			if (frameType == FRAME_GAME_COLLISION) {

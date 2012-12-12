@@ -478,6 +478,8 @@ public class CoreLogic {
 			}
 
 			if (mod && multiplayer) {
+				System.out.println(local.getShip().getAngle());
+				System.out.println(local.getShip().getAngularVelocity());
 				Net.modifyEntity(local.getShip());
 			}
 		}

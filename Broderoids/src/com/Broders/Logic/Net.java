@@ -15,6 +15,8 @@ import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Net extends Thread {
+	public static int protocol_version = 1;
+	
 	// Server -> Client communication;
 	public static final int FRAME_ERROR = -1;
 	public static final int FRAME_GAME_LEAVE = 0;
@@ -33,6 +35,7 @@ public class Net extends Thread {
 	public static final int FRAME_LOBBY_LIST = 20;
 	public static final int FRAME_LOBBY_CREATE = 21;
 	public static final int FRAME_LOBBY_JOIN = 22;
+	public static final int FRAME_PROTOCOL = 23;
 
 	// Client -> Server communication;
 	public static final int COMMAND_GAME_LEAVE = 0;
@@ -48,6 +51,7 @@ public class Net extends Thread {
 	public static final int COMMAND_LOBBY_LIST = 20;
 	public static final int COMMAND_LOBBY_CREATE = 21;
 	public static final int COMMAND_LOBBY_JOIN = 22;
+	public static final int COMMAND_PROTOCOL = 23;
 
 	// Entity types
 	public static final int ENTITY_ASTEROID = 0;
@@ -55,8 +59,6 @@ public class Net extends Thread {
 	public static final int ENTITY_BULLET = 2;
 
 	private static BaseGame main;
-
-	// public Semaphore entitiesLock;
 
 	private static Socket s;
 	private static JsonWriter out;
@@ -67,19 +69,33 @@ public class Net extends Thread {
 	public static void init(BaseGame game) {
 		main = game;
 
+		main.setConnected(false);
+		
 		// Open the network connection
 		try {
 			g = new Gson();
 			s = new Socket("sekhmet.lug.mtu.edu", 9988);
 			//s = new Socket("localhost", 9988);
-			main.setConnected(true);
 			out = new JsonWriter(new BufferedWriter(new OutputStreamWriter(
 					s.getOutputStream())));
 			parser = new JsonStreamParser(new BufferedReader(
 					new InputStreamReader(s.getInputStream())));
+			
+			JsonObject o = new JsonObject();
+			o.addProperty("c", COMMAND_PROTOCOL);
+			o.addProperty("d", protocol_version);
+			
+			Net.send(o);
+			
+			JsonElement e = parser.next();
+			o = e.getAsJsonObject();
+			int success = o.get("d").getAsInt();
+
+			if (success == 1) {
+				main.setConnected(true);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			main.setConnected(false);
 		}
 
 		l = new ReentrantLock();
@@ -96,7 +112,7 @@ public class Net extends Thread {
 		o.addProperty("c", COMMAND_GAME_PLAYER_MODIFY);
 		JsonObject d = new JsonObject();
 		d.addProperty("i", p.getId());
-		//d.addProperty("n", ) // Name
+		d.addProperty("n", Settings.getUsername());
 		d.addProperty("s", p.getScore());
 		d.addProperty("c", p.getColor().toString());
 		//d.addProperty("h", ) // Host
@@ -317,6 +333,7 @@ public class Net extends Thread {
 		JsonElement element;
 		while (parser.hasNext()) {
 			try {
+				boolean debug = Settings.getDebug();
 				element = parser.next();
 
 				Net.lock();
@@ -331,6 +348,9 @@ public class Net extends Thread {
 				int frameType = e.getAsInt();
 				if (!CoreLogic.getHost()) {
 					if (frameType == FRAME_GAME_SYNC) {
+						if (debug) {
+							System.out.println("Sync");
+						}
 						// NOTE: This should be the first thing the client gets,
 						// so we can assume that there's nothing else in here.
 						// In other words, just add all the objects
@@ -364,6 +384,9 @@ public class Net extends Thread {
 							CoreLogic.createEntity(ed);
 						}	
 					} else if (frameType == FRAME_GAME_COLLISION) {
+						if (debug) {
+							System.out.println("Collision");
+						}
 						JsonObject o = obj.get("d").getAsJsonObject();
 						String A = o.get("a").getAsString();
 						Entity eA = CoreLogic.findEntity(A);
@@ -376,6 +399,9 @@ public class Net extends Thread {
 				}
 
 				if (frameType == FRAME_GAME_PLAYER_CREATE) {
+					if (debug) {
+						System.out.println("Create Player");
+					}
 					JsonObject o = obj.get("d").getAsJsonObject();
 					int id = o.get("i").getAsInt();
 					String name = o.get("n").getAsString();
@@ -385,6 +411,9 @@ public class Net extends Thread {
 						CoreLogic.createPlayer(id, name, score);
 					}
 				} else if (frameType == FRAME_GAME_PLAYER_MODIFY) {
+					if (debug) {
+						System.out.println("Modify Player");
+					}
 					JsonObject o = obj.get("d").getAsJsonObject();
 					int id = o.get("i").getAsInt();
 					int score = o.get("s").getAsInt();
@@ -392,9 +421,15 @@ public class Net extends Thread {
 					Player p = CoreLogic.getPlayer(Integer.toString(id));
 					p.setScore(score);
 				} else if (frameType == FRAME_GAME_PLAYER_REMOVE) {
+					if (debug) {
+						System.out.println("Remove Player");
+					}
 					int id = obj.get("d").getAsInt();
 					CoreLogic.removePlayer(Integer.toString(id));
 				} else if (frameType == FRAME_GAME_ENTITY_CREATE) {
+					if (debug) {
+						System.out.println("Create Entity");
+					}
 					JsonObject o = obj.get("d").getAsJsonObject();
 					EntityData ed = new EntityData();
 					ed.type = o.get("t").getAsInt();
@@ -409,6 +444,9 @@ public class Net extends Thread {
 
 					CoreLogic.createEntity(ed);
 				} else if (frameType == FRAME_GAME_ENTITY_MODIFY) {
+					if (debug) {
+						System.out.println("Modify Entity");
+					}
 					JsonObject o = obj.get("d").getAsJsonObject();
 					String id = o.get("id").getAsString();
 					float x = o.get("x").getAsFloat();
@@ -428,6 +466,9 @@ public class Net extends Thread {
 						}
 					}
 				} else if (frameType == FRAME_GAME_ENTITY_REMOVE) {
+					if (debug) {
+						System.out.println("Remove Entity");
+					}
 					if (!CoreLogic.getHost()) {
 						String data = obj.get("d").getAsString();
 

@@ -252,13 +252,13 @@ public class CoreLogic {
 
 		// asteroids
 
-		if (getAsteroids().size() <= 0) {
+		if (getComp().getEntitiesMap().size() <= 0) {
 			if (delay < 5) {
 				display = true;
 				delay = delay + delta;
 			} else {
 				if (host) {
-					if (myGame.multiplayer) {
+					if (multiplayer) {
 						mod = (myGame.gameSize * 15);
 					}
 					if (mod == 0)
@@ -763,19 +763,16 @@ public class CoreLogic {
 				p.setShip(ent);
 				ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
 				p.createEntity(ent, idParts[1]);
-				Net.createEntity(ent);
 			} else if (entData.type == Net.ENTITY_ASTEROID) {
 				Player p = CoreLogic.findPlayer(idParts[0]);
 				Entity ent = new Asteroid(entData.extra, entData.id, p, entData.x, entData.y);
 				ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
 				p.createEntity(ent, idParts[1]);
-				Net.createEntity(ent);
 			} else if (entData.type == Net.ENTITY_BULLET) {
 				Player p = CoreLogic.findPlayer(idParts[0]);
 				Entity ent = new Bullet(entData.id, p, entData.a, entData.x, entData.y);
 				ent.teleport(entData.x, entData.y, entData.a, entData.av, entData.xv, entData.yv);
 				p.createEntity(ent, idParts[1]);
-				Net.createEntity(ent);
 			}
 		}
 	}

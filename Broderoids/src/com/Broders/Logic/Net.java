@@ -331,6 +331,7 @@ public class Net extends Thread {
 			Net.out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 
@@ -414,12 +415,9 @@ public class Net extends Thread {
 				int bt = o.get("bt").getAsInt();
 
 				if (ownedByLocal(A)) {
-					System.out.println("A");
-					System.out.println(o);
 					Net.handleCollision(A, bp, bt);
 				}
 				if (ownedByLocal(B)) {
-					System.out.println("B");
 					Net.handleCollision(B, ap, at);
 				}
 			} else if (frameType == FRAME_GAME_ROUND_OVER) {

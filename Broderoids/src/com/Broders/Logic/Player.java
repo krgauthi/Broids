@@ -22,8 +22,7 @@ public class Player {
 	private int nextEntityId;
 
 	public String nextId() {
-		while (entities.containsKey(Integer.toString(id) + "-"
-				+ Integer.toString(nextEntityId))) {
+		while (entities.containsKey(Integer.toString(nextEntityId))) {
 			nextEntityId++;
 		}
 		return Integer.toString(id) + "-" + Integer.toString(nextEntityId);

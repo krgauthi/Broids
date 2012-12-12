@@ -1,6 +1,7 @@
 package com.Broders.Entities;
 
 import com.Broders.Logic.CoreLogic;
+import com.Broders.Logic.Net;
 import com.Broders.Logic.Player;
 import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.Gdx;
@@ -131,6 +132,9 @@ public class Asteroid extends Entity {
 				
 				String[] idParts = roid1.getId().split("-");
 				CoreLogic.getComp().getEntitiesMap().put(idParts[1], roid1);
+				if (CoreLogic.multiplayer && Net.ownedByLocal(roid1.getId())) {
+					Net.createEntity(roid1);
+				}
 	
 	//Medium Roid2
 				roid2 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, x2, y2);
@@ -150,6 +154,9 @@ public class Asteroid extends Entity {
 	
 				idParts = roid2.getId().split("-");
 				CoreLogic.getComp().getEntitiesMap().put(idParts[1], roid2);
+				if (CoreLogic.multiplayer && Net.ownedByLocal(roid2.getId())) {
+					Net.createEntity(roid2);
+				}
 			}
 		} else if (this.type == MEDIUM) {
 			
@@ -192,6 +199,9 @@ public class Asteroid extends Entity {
 				
 				String[] idParts = roid1.getId().split("-");
 				CoreLogic.getComp().getEntitiesMap().put(idParts[1], roid1);
+				if (CoreLogic.multiplayer && Net.ownedByLocal(roid1.getId())) {
+					Net.createEntity(roid1);
+				}
 	
 	//Small Roid2	
 				roid2 = new Asteroid(SMALL, this.owner.nextId(), this.owner, x2, y2);
@@ -211,6 +221,10 @@ public class Asteroid extends Entity {
 				
 				idParts = roid2.getId().split("-");
 				CoreLogic.getComp().getEntitiesMap().put(idParts[1], roid2);
+				
+				if (CoreLogic.multiplayer && Net.ownedByLocal(roid2.getId())) {
+					Net.createEntity(roid2);
+				}
 			}
 		} else {
 			
@@ -224,6 +238,7 @@ public class Asteroid extends Entity {
 						(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 15, getColor());
 				String[] idParts = D.getId().split("-");
 				CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
+
 			}
 		}
 	}

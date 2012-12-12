@@ -351,12 +351,6 @@ public class Net extends Thread {
 	
 	private static void handleCollision(String eS, int points, int type) {
 		Entity e = CoreLogic.findEntity(eS);
-
-		System.out.println(eS);
-		System.out.println(e);
-		
-		String[] idParts = eS.split("-");
-		System.out.println(CoreLogic.getPlayer(idParts[0]).getEntitiesMap());
 		
 		if (e instanceof Ship) {
 			if (type == Net.ENTITY_SHIP) {
@@ -372,6 +366,7 @@ public class Net extends Thread {
 			} else if (type == Net.ENTITY_ASTEROID) {
 				// Not used
 			} else if (type == Net.ENTITY_BULLET) {
+				
 				CollisionLogic.asteroidBullet(e);
 			}
 		} else if (e instanceof Bullet) {
@@ -417,6 +412,7 @@ public class Net extends Thread {
 
 				if (ownedByLocal(A)) {
 					System.out.println("A");
+					System.out.println(o);
 					Net.handleCollision(A, bp, bt);
 				}
 				if (ownedByLocal(B)) {

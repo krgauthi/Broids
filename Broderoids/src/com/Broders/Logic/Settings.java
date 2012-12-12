@@ -19,7 +19,6 @@ public class Settings {
 	public static String data_path = "data/";
 	private static Preferences prefs;
 
-
 	private static String username;
 	private static Color shipColor;
 	private static Color worldColor;
@@ -32,13 +31,13 @@ public class Settings {
 	private static boolean epileptic;
 	private static boolean retro;
 	
-
 	private static String[] defaultUsernames = {
 		"Bro",
 		"Broski",
 		"Bromo",
 		"Brotien",
 		"Brodeo",
+		"Broku",
 		"Brohan",
 		"Brochill",
 		"Brosicle",
@@ -64,6 +63,13 @@ public class Settings {
 		"Broseph Goebbels",
 		"Brorannasarus Rex",
 		"Edgar Allen Bro",
+		"Luke Browalker",
+		"Brolbo Baggins",
+		"Brodo Baggins",
+		"Tron: Brogacy",
+		"Doctor Bro",
+		"Darth Broder",
+		"BroNotFoundException",
 	};
 
 	public static void init() {

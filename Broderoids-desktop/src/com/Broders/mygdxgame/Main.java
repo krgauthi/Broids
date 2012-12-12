@@ -12,6 +12,7 @@ public class Main {
 		cfg.width = 1024;	//1280, 720  1024  576 load resolution from file or settings manager?
 		cfg.height = 576;
 		
+		
 		new LwjglApplication(new BaseGame(), cfg);
 	}
 }

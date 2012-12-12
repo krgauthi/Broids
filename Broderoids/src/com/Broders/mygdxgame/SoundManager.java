@@ -109,7 +109,7 @@ public class SoundManager {
 		if (android == 1) {
 			music.setVolume(volume);
 		} else {
-			muzak.setVolume(muzakId, volume);
+			muzak.setVolume(muzakId, volume * 0.1f);
 		}
 
 		System.out.println("Volume parameter = " + volume);

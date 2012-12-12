@@ -135,7 +135,6 @@ public class MultiHost implements Screen {
 		}
 
 		if (Gdx.input.justTouched()) {
-
 			//arrows
 			if(inputy >= .678 && inputy <= .772){
 

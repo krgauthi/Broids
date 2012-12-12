@@ -434,9 +434,10 @@ public class GameScreen implements Screen {
 						if (multiplayer) {
 							Net.leaveGame();
 						}
-						
+
 						//SoundManager.setMusicPitch(1f);
-						CoreLogic.getLocalShip().killZoom();
+						if(CoreLogic.getLocalShip() != null)
+							CoreLogic.getLocalShip().killZoom();
 						myGame.setScreen(BaseGame.screens.get("main"));
 					}else if(y >= .578 && y <= .666){
 						resume();

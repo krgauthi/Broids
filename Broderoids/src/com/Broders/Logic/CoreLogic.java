@@ -643,9 +643,7 @@ public class CoreLogic {
 						ScoresManager.addScore(Settings.getUsername(), CoreLogic.getLocal().getScore());
 					}
 					respawnSound = false;
-				}
-
-				else{
+				} else if (myGame.multiplayer && i.getOwner().getId() == clientId) {
 					local.setShip(null);
 					respawnTimer = 3.0f;
 					respawnSound = false;

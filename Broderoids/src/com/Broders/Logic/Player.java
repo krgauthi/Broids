@@ -48,8 +48,9 @@ public class Player {
 			
 			String sid = this.nextId();
 			
+			String[] idParts = sid.split("-");
 			playerShip = new Ship(sid, this, CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
-			entities.put(sid, playerShip);
+			entities.put(idParts[0], playerShip);
 
 			if (CoreLogic.multiplayer) {
 				Net.createEntity(playerShip);

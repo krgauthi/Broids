@@ -31,11 +31,8 @@ public class GameScreen implements Screen {
 
 	private Random rand;
 
-
-
 	private boolean paused;
 	private float pauseWait;
-
 
 	private float gameOver;
 

@@ -22,10 +22,12 @@ public class MultiHost implements Screen {
 	private SpriteBatch spriteBatch;
 
 
-	
+
 
 	private String gameName;
 	private String password;
+	private String gameSize;
+	private String gameDiff;
 
 	int worldSize = 0;
 
@@ -35,9 +37,22 @@ public class MultiHost implements Screen {
 	public MultiHost(BaseGame game) {
 		this.myGame = game;
 
+		gameSize = "Small";
+		worldSize = 0;
+		switch(Settings.getDifficulty()){
 
+		case 0:	gameDiff = "Easy";
+		break;
 
-		gameName = "";
+		case 1:	gameDiff = "Medium";
+		break;
+
+		case 2:	gameDiff = "Hard";
+		break;
+
+		}
+
+		gameName = Settings.getUsername()+"'s Game";
 		password = "";
 
 		xx = Gdx.graphics.getWidth();
@@ -63,37 +78,15 @@ public class MultiHost implements Screen {
 		}
 
 		spriteBatch.begin();
-		
-		TextureManager.getSprites("Ship1").setSize(yy * .05f, yy * .05f);
-		TextureManager.getSprites("Ship1").setRotation(0);
 
-		// Box Selections
-		if (worldSize == 0) {
-			TextureManager.getSprites("Ship1").setPosition(xx * .12f, yy * .58f);
-			TextureManager.getSprites("Ship1").draw(spriteBatch);
-		}
-
-		if (worldSize == 1) {
-			TextureManager.getSprites("Ship1").setPosition(xx * .23f, yy * .58f);
-			TextureManager.getSprites("Ship1").draw(spriteBatch);
-		}
-
-		if (worldSize == 2) {
-			TextureManager.getSprites("Ship1").setPosition(xx * .33f, yy * .58f);
-			TextureManager.getSprites("Ship1").draw(spriteBatch);
-		}
 
 		// text
-		
-		myGame.font.setScale(.3f);
-		myGame.font.draw(spriteBatch, "Game Name: " + this.gameName, xx * .4f, yy * .9f);
-		myGame.font.draw(spriteBatch, "Password: " + this.password.replaceAll(".", "*"), xx * .4f, yy *.84f);
-		myGame.font.setScale(.5f);
-		myGame.font.draw(spriteBatch, "World Size", xx * .17f, yy * .8f);
-		myGame.font.draw(spriteBatch, "Small", xx * .1f, yy * .7f);
-		myGame.font.draw(spriteBatch, "Medium", xx * .19f, yy * .7f);
-		myGame.font.draw(spriteBatch, "Large", xx * .31f, yy * .7f);
 
+		myGame.font.setScale(.5f);
+		myGame.font.draw(spriteBatch, "Game Name: " + this.gameName, xx * .1f, yy * .9f);
+		myGame.font.draw(spriteBatch, "Password: " + this.password.replaceAll(".", "*"), xx * .1f, yy *.75f);
+		myGame.font.draw(spriteBatch, "World Size : "+this.gameSize, xx * .1f, yy * .6f);
+		myGame.font.draw(spriteBatch, "Difficulty: "+this.gameDiff, xx * .1f, yy * .45f);
 		myGame.font.draw(spriteBatch, "Play!", xx * .8f, yy * .9f);
 
 		spriteBatch.end();
@@ -101,6 +94,8 @@ public class MultiHost implements Screen {
 	}
 
 	private void update(float delta) {
+
+
 	}
 
 	private void handleInput(float delta) {
@@ -124,68 +119,92 @@ public class MultiHost implements Screen {
 
 		if (Gdx.input.justTouched()) {
 			// world size
-			if (inputy < .364 && inputy > .289) {
-				// small
-				if (inputx > .098 && inputx < .173) {
-					worldSize = 0;
-				}
-				// medium
-				if (inputx > .187 && inputx < .292) {
-					worldSize = 1;
-				}
-				// large
-				if (inputx > .306 && inputx < .382) {
-					worldSize = 2;
-				}
-			}
 
-			// Game name text
+			if (inputx >= .096 && inputx <= .590) {
+				//Game name Text
+				if(inputy >= 0.092 && inputy <= .173){
+					String pretext = "";
 
-			if (inputx >= .39 && inputx <= .52 && inputy >= .092 && inputy <= .135) {
-
-				String pretext = "";
-
-				if (this.gameName == null || this.gameName.equals("") ||
-						this.gameName.length() > 28) {
-					pretext = Settings.getUsername() + "'s Game";
-				} else {
-					pretext = this.gameName;
-				}
-
-				Gdx.input.getTextInput(new TextInputListener() {
-					@Override
-					public void input (String text) {
-						if (text.equals("") || text.length() > 28) {
-							gameName = Settings.getUsername() + "'s Game";
-						} else {
-							gameName = text;
-						}
+					if (this.gameName == null || this.gameName.equals("") ||
+							this.gameName.length() > 28) {
+						pretext = Settings.getUsername() + "'s Game";
+					} else {
+						pretext = this.gameName;
 					}
-					@Override
-					public void canceled () {}
-				}, "Enter Game Name", pretext);	
-			}
 
-			// Game password text
-
-			if (inputx >= .39 && inputx <= .52 && inputy >= .141 && inputy <= .177) {
-
-				String pretext = "";
-
-				Gdx.input.getTextInput(new TextInputListener() {
-					@Override
-					public void input (String text) {
-						if (text.equals("") || text.length() > 28) {
-							password = "";
-						} else {
-							password = text;
+					Gdx.input.getTextInput(new TextInputListener() {
+						@Override
+						public void input (String text) {
+							if (text.equals("") || text.length() > 28) {
+								gameName = Settings.getUsername() + "'s Game";
+							} else {
+								gameName = text;
+							}
 						}
+						@Override
+						public void canceled () {}
+					}, "Enter Game Name", pretext);	
+
+				}
+
+				// Game password text
+				if(inputy >= .246 && inputy <= .315){
+
+					String pretext = "";
+
+					Gdx.input.getTextInput(new TextInputListener() {
+						@Override
+						public void input (String text) {
+							if (text.equals("") || text.length() > 28) {
+								password = "";
+							} else {
+								password = text;
+							}
+						}
+						@Override
+						public void canceled () {}
+					}, "Enter Game Password", pretext);	
+				}
+				//world size
+				if(inputy >= .394 && inputy <= .470){
+					worldSize = (worldSize + 1)%3;
+					switch(worldSize){
+
+					case 0:	gameSize = "Small";
+					break;
+
+					case 1:	gameSize = "Medium";
+					break;
+
+					case 2:	gameSize = "Large";
+					break;
+
 					}
-					@Override
-					public void canceled () {}
-				}, "Enter Game Password", pretext);	
+				}
+
+				//diff
+				if(inputy >= .543 && inputy <= .616){
+					Settings.setDifficulty((Settings.getDifficulty() + 1)%3);
+
+					switch(Settings.getDifficulty()){
+
+					case 0:	gameDiff = "Easy";
+					break;
+
+					case 1:	gameDiff = "Medium";
+					break;
+
+					case 2:	gameDiff = "Hard";
+					break;
+
+					}
+				}
+
 			}
 
+
+
+			//play Button
 			if (inputy > .09 && inputy < .173) {
 				if (inputx > .795 && inputx < .863) {
 					myGame.gameSize = worldSize;
@@ -234,7 +253,7 @@ public class MultiHost implements Screen {
 
 	@Override
 	public void pause() {
-	
+
 	}
 
 	@Override

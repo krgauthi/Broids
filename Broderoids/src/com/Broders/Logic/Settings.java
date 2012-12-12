@@ -35,6 +35,7 @@ public class Settings {
 	private static int difficulty;
 	private static boolean epileptic;
 	private static boolean retro;
+	
 
 	private static String[] defaultUsernames = {
 		"Bro",
@@ -91,10 +92,11 @@ public class Settings {
 		}
 		soundVol = prefs.getInteger("soundVol", 5);
 		musicVol = prefs.getInteger("musicVol", 5);
-		difficulty = prefs.getInteger("difficulty", 0);
+		difficulty = prefs.getInteger("difficulty", 1);
 		debug = prefs.getBoolean("debug", false);
 		epileptic = prefs.getBoolean("epileptic", false);
 		retro = prefs.getBoolean("retro", false);
+		
 	}
 
 	public static boolean getRetro() {
@@ -255,4 +257,5 @@ public class Settings {
 
 		return colorFromHex(Long.parseLong(s, 16));
 	}
+
 }

@@ -181,6 +181,7 @@ public class CoreLogic {
 	 * @param delta
 	 */
 	public static void update(float delta) {
+	
 		bulletCooldown += Gdx.graphics.getDeltaTime();
 
 		Player local = getLocal();

@@ -189,7 +189,7 @@ public class CoreLogic {
 		//Respawn
 		if (respawnTimer < 1f && !respawnSound && local != null && getLocal().getLives() < 3
 				&& getLocal().getLives() > 0) {
-			SoundManager.play("respawn");
+			SoundManager.play("respawn", 0.5f);
 			respawnSound = true;
 		}
 

@@ -26,8 +26,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
  */
 public class Ship extends Entity {
 
-	private Boolean thrust;
-	private Boolean shooting;
+	private boolean thrust;
+	private boolean shooting;
 	private boolean invincible;
 
 	private boolean thrustLast;
@@ -251,7 +251,7 @@ public class Ship extends Entity {
 		zoom.stop();
 		float temp = (float) (10+Math.random()%10);
 		setThrust(false);
-		SoundManager.play("death", 1f, 0.85f);
+		SoundManager.play("death", 1f, 0.75f);
 		for(int i = 0; i < temp;i++){
 			temp = 360/temp;
 

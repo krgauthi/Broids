@@ -45,11 +45,7 @@ public class SoundManager {
 		}
 
 		update();
-<<<<<<< HEAD
-		// if android
-=======
 
->>>>>>> dee60836b21198f5f69c516408b38570128cd5aa
 		if (android == 1) {
 			music = Gdx.audio.newMusic(Gdx.files.internal("data/broderoids.mp3"));
 			music.play();

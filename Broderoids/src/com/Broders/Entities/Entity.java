@@ -27,30 +27,20 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
  */
 public abstract class Entity {
 
-<<<<<<< HEAD
 	// The physical object that interacts in the physics engine.
-=======
-	// private String ent;
-	// private String type;
->>>>>>> dee60836b21198f5f69c516408b38570128cd5aa
 	protected Body body;
 		
 	// This is needed by networking.
 	private boolean dead;
 
-<<<<<<< HEAD
 	// These are properties used by the Sprite.
 	private String spriteID;
-=======
-	// Extras
->>>>>>> dee60836b21198f5f69c516408b38570128cd5aa
 	private float size;
 	private Color color;
 	
 	// The point value of the Entity.
 	private int points;
 
-<<<<<<< HEAD
 	// These are needed for teleporting the Entity. Don't delete.
 	// TODO Do we still need these?
 	private BodyDef bodDef;
@@ -58,8 +48,6 @@ public abstract class Entity {
 
 	// The ID is unique among Entities owned by the Player. Together will
 	// Player ID gives a completely unique ID.
-=======
->>>>>>> dee60836b21198f5f69c516408b38570128cd5aa
 	protected String id;
 	protected Player owner;
 

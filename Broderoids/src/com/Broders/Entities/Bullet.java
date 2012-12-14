@@ -65,23 +65,12 @@ public class Bullet extends Entity {
 		// Defines the ratio between the game and screen size. Used for graphics.
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
-<<<<<<< HEAD
 		// Setting the properties of the Sprite to be displayed.
-		super.getSprite().setOrigin((meter * this.getSize()) / 2,
-				(meter * this.getSize()) / 2);
-		super.getSprite().setSize(meter * this.getSize(),
-				meter * this.getSize());
-		super.getSprite().setColor(super.getColor());
-
-		// Defining the Body and its physical properties.
-=======
-		super.setSprite("bullet");
 		super.getSprite().setOrigin((meter * this.getSize()) / 2, (meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
 		super.getSprite().setColor(super.getColor());
 
-		// BodyDef
->>>>>>> dee60836b21198f5f69c516408b38570128cd5aa
+		// Defining the Body and its physical properties.
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.KinematicBody;
 		bodDef.linearDamping = 0.0f;
@@ -99,28 +88,15 @@ public class Bullet extends Entity {
 		// Giving both Definitions to the World to create and track.
 		super.createBody(bodDef, fixDef);
 
-<<<<<<< HEAD
 		// Setting the x and y velocities of the Bullet.
-		float vX = (float) (70 * Math.cos(Math.toRadians(dir)) +
-				super.getOwner().getShip().getLinearVelocity().x);
-		float vY = (float) (70 * Math.sin(Math.toRadians(dir)) +
-				super.getOwner().getShip().getLinearVelocity().y);
+		float vX = (float) (70 * Math.cos(Math.toRadians(dir)) + super.getOwner().getShip().getLinearVelocity().x);
+		float vY = (float) (70 * Math.sin(Math.toRadians(dir)) + super.getOwner().getShip().getLinearVelocity().y);
 		super.body.setLinearVelocity(vX, vY);
 
 		// Allowing the Body to reference the Entity.
 		super.getBody().setUserData(this);
 		
 		// Pew-Pew!
-=======
-		// Set the velocity
-		float vX = (float) (70 * Math.cos(Math.toRadians(dir)) + super.getOwner().getShip().getLinearVelocity().x);
-		float vY = (float) (70 * Math.sin(Math.toRadians(dir)) + super.getOwner().getShip().getLinearVelocity().y);
-		super.body.setLinearVelocity(vX, vY);
-
-		// Set type data
-		super.getBody().setUserData(this);
-
->>>>>>> dee60836b21198f5f69c516408b38570128cd5aa
 		SoundManager.play("pew", 1f, (float) (0.85f + Math.random() * 0.3));
 	}
 

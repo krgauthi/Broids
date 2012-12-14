@@ -293,11 +293,6 @@ public class Net extends Thread {
 		return ret;
 	}
 
-	// TODO: Do we actually want this?
-	/*private static void invalidFrame() throws NetException {
-		throw new NetException(0, "Invalid frame recieved");
-	}*/
-
 	public static void lock() {
 		Net.l.lock();
 	}
@@ -305,19 +300,6 @@ public class Net extends Thread {
 	public static void unlock() {
 		Net.l.unlock();
 	}
-
-	/*private static void handleErrorFrame(JsonObject o) throws Exception {
-		int command = o.get("c").getAsInt();
-		if (command != Net.FRAME_ERROR) {
-			SoundManager.play("error");
-			invalidFrame();
-			return;
-		}
-
-		String text = o.get("d").getAsString();
-		SoundManager.play("error");
-		throw new Exception(text);
-	}*/
 
 	public static void handleGame() {
 		cur = new Net();

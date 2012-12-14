@@ -25,8 +25,6 @@ public class SettingsScreen implements Screen {
 
 	private SpriteBatch spriteBatch;
 
-	private int screenResSelection;
-
 	private BitmapFont font;
 
 	private double perc_X;

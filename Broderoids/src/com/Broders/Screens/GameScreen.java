@@ -277,8 +277,8 @@ public class GameScreen implements Screen {
 			dpi = Gdx.graphics.getDensity()*160f;
 			inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
 			myGame.font.setScale(4.0f*dpi*(inchHeight/22f)/72f);
-			String out;
-			out = String.format("Game Over!");
+			//String out;
+			//out = String.format("Game Over!");
 			dpi = Gdx.graphics.getDensity()*160f;
 			inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
 			myGame.font.setScale(0.5f*dpi*(inchHeight/22f)/72f);

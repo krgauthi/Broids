@@ -33,10 +33,6 @@ public abstract class Entity {
 	private Color color;
 	private int points;
 
-	// save these for teleportation
-	private BodyDef bodDef;
-	private FixtureDef fixDef;
-
 	protected String id;
 	protected Player owner;
 	
@@ -91,8 +87,6 @@ public abstract class Entity {
 	 *            The fixture definition for the body to be created
 	 */
 	protected void createBody(BodyDef bodDef, FixtureDef fixDef) {
-		this.bodDef = bodDef;
-		this.fixDef = fixDef;
 		this.body = CoreLogic.getWorld().createBody(bodDef);
 		this.body.createFixture(fixDef);
 	}

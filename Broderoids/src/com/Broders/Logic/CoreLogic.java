@@ -4,11 +4,7 @@ import java.util.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
-import com.Broders.Entities.Asteroid;
-import com.Broders.Entities.Bullet;
-import com.Broders.Entities.Dust;
-import com.Broders.Entities.Entity;
-import com.Broders.Entities.Ship;
+import com.Broders.Entities.*;
 import com.Broders.mygdxgame.BaseGame;
 import com.Broders.mygdxgame.SoundManager;
 import com.badlogic.gdx.graphics.Color;

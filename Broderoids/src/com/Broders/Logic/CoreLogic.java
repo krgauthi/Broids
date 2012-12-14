@@ -12,11 +12,6 @@ import com.Broders.mygdxgame.ScoresManager;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
-/**
- * 
- * @author ntpeters
- * 
- */
 public class CoreLogic {
 
 	public static Boolean multiplayer;

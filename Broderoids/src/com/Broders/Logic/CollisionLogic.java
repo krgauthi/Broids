@@ -13,7 +13,8 @@ public class CollisionLogic implements ContactListener {
 	}
 
 	/**
-	 * This method gets called
+	 * This method gets called at the beginning of a contact, and deals with
+	 * getting the Entities involved in the collision.
 	 */
 	@Override
 	public void beginContact(Contact contact) {
@@ -31,6 +32,15 @@ public class CollisionLogic implements ContactListener {
 		CollisionLogic.entityContact(eA, eB);
 	}
 
+	/**
+	 * This method determines the types of the Entities involved in the collision, and
+	 * directs the logic flow to the appropriate methods.
+	 * 
+	 * @param eA
+	 * 			The first Entity
+	 * @param eB
+	 * 			The second Entity
+	 */
 	public static void entityContact(Entity eA, Entity eB) {
 		if (eA == null || eB == null) {
 			return;
@@ -63,11 +73,16 @@ public class CollisionLogic implements ContactListener {
 				CollisionLogic.bulletAsteroid(eB, eA.getPoints());
 				CollisionLogic.asteroidBullet(eA);
 			}
+			
+			// Ship-Ship
+			//	if (eA instanceof Ship && eB instanceof Ship) {
+			//		CollisionLogic.shipShip()
+			//	}
 		}
 	}
 
 	/**
-	 * 
+	 * This method is unused.
 	 */
 	@Override
 	public void endContact(Contact contact) {
@@ -75,7 +90,7 @@ public class CollisionLogic implements ContactListener {
 	}
 
 	/**
-	 * 
+	 * This method simply determines if the Entities in contact should collide or pass through each other.
 	 */
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
@@ -90,7 +105,7 @@ public class CollisionLogic implements ContactListener {
 			eB = (Entity) bB.getUserData();
 		}
 
-		// Collisions to ignore: invincible ships and bullets
+		// Collisions to ignore: invincible ships, bullets, and dust.
 		if ((eA instanceof Ship && ((Ship) eA).isInvincible()) || (eB instanceof Ship && ((Ship) eB).isInvincible()) || eA instanceof Bullet || eB instanceof Bullet || eA instanceof Dust || eB instanceof Dust) {
 
 			contact.setEnabled(false);
@@ -98,43 +113,76 @@ public class CollisionLogic implements ContactListener {
 	}
 
 	/**
-	 * 
+	 * This method is unused.
 	 */
 	@Override
 	public void postSolve(Contact contact, ContactImpulse impulse) {
 
 	}
 
+	/**
+	 * Called to remove Bullets in Bullet-Asteroid collisions.
+	 * 
+	 * @param bullet
+	 * 			The Bullet in question
+	 * @param score
+	 * 			The point value of the Asteroid
+	 */
 	public static void bulletAsteroid(Entity bullet, int score) {
 		bullet.getOwner().modScore(score);
 		CoreLogic.removeEntity(bullet);
 	}
 
+	/**
+	 * Called to remove Asteroids in Bullet-Asteroid collisions.
+	 * @param asteroid
+	 * 			The Asteroid in question
+	 */
 	public static void asteroidBullet(Entity asteroid) {
 		CoreLogic.removeEntity(asteroid);
 	}
 
+	/**
+	 * Determines damage in Ship collisions.
+	 * 
+	 * @param ship
+	 * 			The Ship being damaged.
+	 */
 	public static void shipDanger(Entity ship) {
 		if (CoreLogic.multiplayer) {
 
-			ship.getOwner().takeDamage(10);
+			ship.getOwner().takeDamage(20);
 			Net.modifyPlayer(ship.getOwner());
 		} else
 			CoreLogic.removeEntity(ship);
 	}
 
+//	public static void shipShip(Entity shipA, Entity shipB) {
+//		
+//	}
+	
+	/**
+	 * Removes the Bullet in Bullet-Ship collisions
+	 * 
+	 * @param bullet
+	 * 			The Bullet in question
+	 * @param score
+	 * 			The point value being awarded.
+	 */
 	public static void bulletShip(Entity bullet, int score) {
 		bullet.getOwner().modScore(score);
 		CoreLogic.removeEntity(bullet);
 	}
 
 	/**
-	 * Calculates damage done to each entity based on their relative velocities.
+	 * Calculates damage done to Entities based on their relative velocities.
 	 * 
 	 * @param A
+	 * 			The first Body
 	 * @param B
-	 * @return int[] Index 0 is damage to Entity A, Index 1 is damage to Entity
-	 *         B
+	 * 			The second Body
+	 * @return int
+	 * 			The damage to be dealt to each Entity.
 	 */
 	public static int calculateDamage(Body A, Body B) {
 		float x = A.getLinearVelocity().x - B.getLinearVelocity().x;

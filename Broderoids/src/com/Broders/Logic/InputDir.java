@@ -6,8 +6,6 @@ package com.Broders.Logic;
  * that never becomes the case, this can be removed in favor of simply using
  * Strings to denote direction.
  * 
- * @author ntpeters
- * 
  */
 public enum InputDir {
 

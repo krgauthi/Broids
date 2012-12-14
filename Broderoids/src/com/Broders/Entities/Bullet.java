@@ -16,6 +16,18 @@ public class Bullet extends Entity {
 	private float age;
 	private static float deathTime = 0.5f;
 
+	/**
+	 * @param id
+	 *            Entity id
+	 * @param owner
+	 *            Entity owner
+	 * @param dir
+	 *            Initial direction
+	 * @param x
+	 *            Initial X
+	 * @param y
+	 *            Initial Y
+	 */
 	public Bullet(String id, Player owner, float dir, float x, float y) {
 		super(id, owner);
 		// sprite

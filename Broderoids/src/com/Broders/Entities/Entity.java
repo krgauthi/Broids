@@ -19,6 +19,14 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
  * @author krgauthi
  * 
  */
+/**
+ * @author belak
+ * 
+ */
+/**
+ * @author belak
+ * 
+ */
 public abstract class Entity {
 
 	// private String ent;
@@ -35,6 +43,12 @@ public abstract class Entity {
 	protected String id;
 	protected Player owner;
 
+	/**
+	 * @param id
+	 *            Entity id
+	 * @param owner
+	 *            Entity owner
+	 */
 	public Entity(String id, Player owner) {
 		this.id = id;
 		this.owner = owner;
@@ -42,6 +56,9 @@ public abstract class Entity {
 		// System.out.println(id);
 	}
 
+	/**
+	 * @return the full id of the entity
+	 */
 	public String getId() {
 		return id;
 	}
@@ -55,6 +72,9 @@ public abstract class Entity {
 		return this.body;
 	}
 
+	/**
+	 * @return the owner of the entity
+	 */
 	public Player getOwner() {
 		return this.owner;
 	}
@@ -137,14 +157,24 @@ public abstract class Entity {
 		this.size = s;
 	}
 
+	/**
+	 * @return color of the entity
+	 */
 	public Color getColor() {
 		return this.color;
 	}
 
+	/**
+	 * Sets the color to the owner's color
+	 */
 	public void setColor() {
 		this.color = this.owner.getColor();
 	}
 
+	/**
+	 * @param color
+	 *            Color the entity should change to
+	 */
 	public void setColor(Color color) {
 		this.color = color;
 	}
@@ -181,27 +211,6 @@ public abstract class Entity {
 	}
 
 	/**
-	 * The same as getIdentity(). Entities should only ever be referenced using
-	 * their unique ID.
-	 * 
-	 * @see #getIdentity()
-	 */
-	// public String toString() {
-	// return this.type;
-	// }
-
-	/**
-	 * Determines the equality between this Entity and the given Entity
-	 * 
-	 * @param entity
-	 *            Type to compare against
-	 * @return True if entities are the same, false otherwise
-	 */
-	// public boolean equals(Entity entity) {
-	// return entity.toString().equals(this.type);
-	// }
-
-	/**
 	 * Teleports this entity to the specified coordinates on the screen. This is
 	 * used for screen wrapping.
 	 * 
@@ -214,10 +223,16 @@ public abstract class Entity {
 		this.body.setTransform(x, y, this.body.getAngle());
 	}
 
+	/**
+	 * @return angular velocity of the entity's body
+	 */
 	public float getAngularVelocity() {
 		return this.body.getAngularVelocity();
 	}
 
+	/**
+	 * @return linear velociry of the entity's body
+	 */
 	public Vector2 getLinearVelocity() {
 		return this.body.getLinearVelocity();
 	}
@@ -246,26 +261,49 @@ public abstract class Entity {
 		this.body.setLinearVelocity(new Vector2(vX, vY));
 	}
 
+	/**
+	 * This method is called every tick and can be used to update entities in
+	 * nonstandard ways.
+	 */
 	public abstract void update();
 
+	/**
+	 * @return any extra data needed for networking
+	 */
 	public int extra() {
 		return 0;
 	}
 
+	/**
+	 * Used when we no longer need the entity for cleaning up
+	 */
 	public abstract void destroy();
 
+	/**
+	 * @param v
+	 *            how many points the entity is worth
+	 */
 	public void setPoints(int v) {
 		points = v;
 	}
 
+	/**
+	 * @return number of points the entity is worth
+	 */
 	public int getPoints() {
 		return points;
 	}
 
+	/**
+	 * @return whether we have already tried to destroy this entity
+	 */
 	public boolean isDead() {
 		return this.dead;
 	}
 
+	/**
+	 * Mark this entity as destroyed
+	 */
 	public void setDead() {
 		this.dead = true;
 	}

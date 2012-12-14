@@ -20,10 +20,23 @@ public class Asteroid extends Entity {
 
 	private int type;
 
+	@Override
 	public int extra() {
 		return type;
 	}
 
+	/**
+	 * @param type
+	 *            For asteroid (see Asteroid.type())
+	 * @param id
+	 *            Entity id for storage
+	 * @param owner
+	 *            Owner id
+	 * @param x
+	 *            starting location
+	 * @param y
+	 *            starting location
+	 */
 	public Asteroid(int type, String id, Player owner, float x, float y) {
 		super(id, owner);
 
@@ -233,6 +246,10 @@ public class Asteroid extends Entity {
 		}
 	}
 
+	/**
+	 * @param pitch
+	 *            for the asteroid break sound
+	 */
 	private void sound(float pitch) {
 		int pick = (int) Math.floor(Math.random() * 3);
 		SoundManager.play("roidBreak" + Integer.toString(pick + 1), 1f, pitch);
@@ -241,7 +258,9 @@ public class Asteroid extends Entity {
 	/**
 	 * 0 = Large 1 = Medium 2 = Small
 	 * 
-	 * @return
+	 * See Asteroid.LARGE, Asteroid.MEDIUM, and Asteroid.SMALL
+	 * 
+	 * @return type of the asteroid
 	 */
 	public int getType() {
 		return type;

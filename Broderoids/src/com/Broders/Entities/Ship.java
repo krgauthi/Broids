@@ -38,14 +38,14 @@ public class Ship extends Entity {
 	private Sound zoom;
 
 	/**
-	 * Just pass in "classic" Initializes a Ship by creating the appropriate
-	 * physical body and sprite set.
-	 * 
 	 * @param id
-	 *            Used to uniquely identify this entity
-	 * @param type
-	 *            The type of this entity
-	 * @param playerColor
+	 *            entity id
+	 * @param owner
+	 *            entity owner
+	 * @param x
+	 *            initial x value
+	 * @param y
+	 *            initial y value
 	 */
 	public Ship(String id, Player owner, float x, float y) {
 		super(id, owner);

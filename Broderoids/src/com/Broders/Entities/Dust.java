@@ -14,6 +14,22 @@ public class Dust extends Entity {
 	private float age;
 	private static float deathTime = 0.3f;
 
+	/**
+	 * @param id
+	 *            Entity id
+	 * @param owner
+	 *            Entity owner
+	 * @param dir
+	 *            Initial direction
+	 * @param x
+	 *            Initial X
+	 * @param y
+	 *            Initial Y
+	 * @param vel
+	 *            Initial velocity
+	 * @param color
+	 *            Color of dust
+	 */
 	public Dust(String id, Player owner, float dir, float x, float y, float vel, Color color) {
 
 		super(id, owner);

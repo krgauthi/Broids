@@ -14,16 +14,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
  * Dust is an all-purpose particle effect. It gets spawned when Asteroids and Ships
  * are destroyed, and from Ships when they have taken a lot of damage. All Dust entities
  * are owned by the Scratch player.
- * 
- * @author krgauthi
- * @author rdbaumei
- * @author ???
  */
 public class Dust extends Entity{
 	
-	//The current age of the Dust
+	// The current age of the Dust
 	private float age;
-	//The age the dust will be when it dies.
+	// The age the dust will be when it dies.
 	private static float deathTime = 0.3f;
 	
 	/**
@@ -41,29 +37,29 @@ public class Dust extends Entity{
 	 */
 	public Dust(String id, Player owner, float dir, float x, float y, float vel, Color color) {
 
-		//Setting the unique ID and owner of the Dust. The owner should be Scratch.
+		// Setting the unique ID and owner of the Dust. The owner should be Scratch.
 		super(id, owner);
 
-		//Defines the ratio between the game and screen size. Used for graphics.
+		// Defines the ratio between the game and screen size. Used for graphics.
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
-		//Setting the image that will be shown on screen.
+		// Setting the image that will be shown on screen.
 		super.setSprite("bullet");
 		
-		//Setting the color of the image;
+		// Setting the color of the image;
 		super.setSize((float) Math.random() * 6 + 7f);
 		
-		//Setting the color of the image;
+		// Setting the color of the image;
 		super.setColor();
 
-		//Setting properties of the Sprite that will be displayed.
+		// Setting properties of the Sprite that will be displayed.
 		super.getSprite().setOrigin((meter * this.getSize()) / 2,
 				(meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(),
 				meter * this.getSize());
 		super.setColor(color);
 
-		//Defining the Body and its physical properties.
+		// Defining the Body and its physical properties.
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;
 		bodDef.linearDamping = 0.8f;
@@ -71,25 +67,25 @@ public class Dust extends Entity{
 		bodDef.angle = dir;
 		bodDef.allowSleep = false;
 
-		//Defining the Fixture, Shape, and their physical properties.
+		// Defining the Fixture, Shape, and their physical properties.
 		FixtureDef fixDef = new FixtureDef();
 		CircleShape shape = new CircleShape();
 		shape.setRadius(0.0f);
 		fixDef.shape = shape;
 		fixDef.density = 0f;
 
-		//Creating the Body with the Definitions, and adds it to the world.
+		// Creating the Body with the Definitions, and adds it to the world.
 		super.createBody(bodDef, fixDef);
 
-		//Adds a bit of variety to the velocity.
+		// Adds a bit of variety to the velocity.
 		vel = (float) ((vel*0.85f) + Math.random()*(vel*0.3f));
 		
-		//Sets the velocity in terms of x and y components.
+		// Sets the velocity in terms of x and y components.
 		float vX = (float) (vel * Math.cos(Math.toRadians(dir)));
 		float vY = (float) (vel * Math.sin(Math.toRadians(dir)));
 		super.body.setLinearVelocity(vX, vY);
 
-		//Allows the Body to reference the Entity.
+		// Allows the Body to reference the Entity.
 		super.getBody().setUserData(this);
 	}
 
@@ -101,10 +97,10 @@ public class Dust extends Entity{
 	@Override
 	public void update() {
 		
-		//Adding the time between updates to the age.
+		// Adding the time between updates to the age.
 		age += Gdx.graphics.getDeltaTime();
 
-		//This kills the Dust after the set amount of time.
+		// This kills the Dust after the set amount of time.
 		if (age >= deathTime) {
 			CoreLogic.removeEntity(this);
 		}

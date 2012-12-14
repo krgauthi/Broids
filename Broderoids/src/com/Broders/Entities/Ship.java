@@ -25,12 +25,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
  * the Ship is destroyed upon contact with an Asteroid. In multiplayer,
  * the Player takes damage when its Ship is hit by anything but Dust
  * and its own Bullets. 
- * 
- * @author ntpeters
- * @author krgauthi
- * @author ejrinkus
- * @author rdbaumei
- * 
  */
 public class Ship extends Entity {
 

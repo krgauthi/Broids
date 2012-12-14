@@ -16,17 +16,12 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
  * disappear. Hitting anything but other Bullets or Dust will cause the bullet to
  * disappear. Asteroids will be destroyed, and ships owned by other players will
  * take damage.
- * 
- * @author rdbaumei
- * @author ejrinkus
- * @author krgauthi
- * @author ntpeters
  */
 public class Bullet extends Entity {
 
-	//The current age of the bullet.
+	// The current age of the bullet.
 	private float age; 
-	//How old the bullet will be before it is destroyed.
+	// How old the bullet will be before it is destroyed.
 	private static float deathTime = 0.7f; 
 
 	/**
@@ -42,29 +37,29 @@ public class Bullet extends Entity {
 	 */
 	public Bullet(String id, Player owner, float dir, float x, float y) {
 		
-		//Setting unique ID and the player that owns the Bullet.
+		// Setting unique ID and the player that owns the Bullet.
 		super(id, owner);
 		
-		//Setting the image that shows up on screen.
+		// Setting the image that shows up on screen.
 		super.setSprite("bullet");
 		
-		//Setting the color of the image.
+		// Setting the color of the image.
 		super.setColor();
 		
-		//Setting the size of the image. Does not affect physical properties.
+		// Setting the size of the image. Does not affect physical properties.
 		super.setSize(6f);
 		
-		//Defines the ratio between the game and screen size. Used for graphics.
+		// Defines the ratio between the game and screen size. Used for graphics.
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
-		//Setting the properties of the Sprite to be displayed.
+		// Setting the properties of the Sprite to be displayed.
 		super.getSprite().setOrigin((meter * this.getSize()) / 2,
 				(meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(),
 				meter * this.getSize());
 		super.getSprite().setColor(super.getColor());
 
-		//Defining the Body and its physical properties.
+		// Defining the Body and its physical properties.
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.KinematicBody;
 		bodDef.linearDamping = 0.0f;
@@ -72,27 +67,27 @@ public class Bullet extends Entity {
 		bodDef.angle = dir;
 		bodDef.allowSleep = false;
 
-		//Define the Fixture, its shape, and their physical properties.
+		// Define the Fixture, its shape, and their physical properties.
 		FixtureDef fixDef = new FixtureDef();
 		CircleShape shape = new CircleShape();
 		shape.setRadius(0.5f);
 		fixDef.shape = shape;
 		fixDef.density = 0f;
 
-		//Giving both Definitions to the World to create and track.
+		// Giving both Definitions to the World to create and track.
 		super.createBody(bodDef, fixDef);
 
-		//Setting the x and y velocities of the Bullet.
+		// Setting the x and y velocities of the Bullet.
 		float vX = (float) (70 * Math.cos(Math.toRadians(dir)) +
 				super.getOwner().getShip().getLinearVelocity().x);
 		float vY = (float) (70 * Math.sin(Math.toRadians(dir)) +
 				super.getOwner().getShip().getLinearVelocity().y);
 		super.body.setLinearVelocity(vX, vY);
 
-		//Allowing the Body to reference the Entity.
+		// Allowing the Body to reference the Entity.
 		super.getBody().setUserData(this);
 		
-		//Pew-Pew!
+		// Pew-Pew!
 		SoundManager.play("pew", 1f, (float) (0.85f + Math.random() * 0.3));
 	}
 
@@ -103,15 +98,15 @@ public class Bullet extends Entity {
 	 */
 	@Override
 	public void update() {
-		//Adding the time between updates to the age.
+		// Adding the time between updates to the age.
 		age += Gdx.graphics.getDeltaTime();
 
-		//If the Bullet dies of old age, it is removed from the Map of Entities.
+		// If the Bullet dies of old age, it is removed from the Map of Entities.
 		if (age >= deathTime) {
 			if (!CoreLogic.multiplayer || this.getOwner() == CoreLogic.getLocal()) {
 				CoreLogic.removeEntity(this);
 			}
-			//You lose your bonus multiplier if you miss an asteroid.
+			// You lose your bonus multiplier if you miss an asteroid.
 			super.owner.modBonus(1.0f);
 		}
 	}

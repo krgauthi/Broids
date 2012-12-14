@@ -13,30 +13,33 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 /**
- * All entities will be derived from this class.
- * 
- * @author ntpeters
- * @author krgauthi
- * 
+ * All entities will be derived from this class. It contains data such
+ * as color, Sprite size, unique ID, owner, point worth, and the Body. It
+ * also contains methods that deal with drawing and wrapping.
  */
 public abstract class Entity {
 
-	//private String ent;
-	//private String type;
+	// The physical object that interacts in the physics engine.
 	protected Body body;
-	private String spriteID;
+		
+	// This is needed by networking.
 	private boolean dead;
 
-
-	// Extras
+	// These are properties used by the Sprite.
+	private String spriteID;
 	private float size;
 	private Color color;
+	
+	// The point value of the Entity.
 	private int points;
 
-	// save these for teleportation
+	// These are needed for teleporting the Entity. Don't delete.
+	// TODO Do we still need these?
 	private BodyDef bodDef;
 	private FixtureDef fixDef;
 
+	// The ID is unique among Entities owned by the Player. Together will
+	// Player ID gives a completely unique ID.
 	protected String id;
 	protected Player owner;
 	
@@ -44,7 +47,7 @@ public abstract class Entity {
 		this.id = id;
 		this.owner = owner;
 		dead = false;
-		//System.out.println(id);
+		// System.out.println(id);
 	}
 
 	public String getId() {
@@ -198,9 +201,9 @@ public abstract class Entity {
 	 * 
 	 * @see #getIdentity()
 	 */
-	//public String toString() {
-	//	return this.type;
-	//}
+	// public String toString() {
+	// 	return this.type;
+	// }
 
 	/**
 	 * Determines the equality between this Entity and the given Entity
@@ -209,9 +212,9 @@ public abstract class Entity {
 	 *            Type to compare against
 	 * @return True if entities are the same, false otherwise
 	 */
-	//public boolean equals(Entity entity) {
-	//	return entity.toString().equals(this.type);
-	//}
+	// public boolean equals(Entity entity) {
+	// return entity.toString().equals(this.type);
+	// }
 
 	/**
 	 * Teleports this entity to the specified coordinates on the screen. This is

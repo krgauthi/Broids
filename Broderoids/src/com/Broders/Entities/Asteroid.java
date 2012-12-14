@@ -20,20 +20,15 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
  * ship. When hit by a bullet, the Asteroid will spawn a bunch of
  * dust and two asteroids of the next size down. Small asteroids
  * simply spawn the dust.
- * 
- * @author rdbaumei
- * @author ejrinkus
- * @author krgauthi
- * @author ntpeters
  */
 public class Asteroid extends Entity {
 	
-	//Enumerating the Asteroid sizes
+	// Enumerating the Asteroid sizes
 	public static final int LARGE = 0;
 	public static final int MEDIUM = 1;
 	public static final int SMALL = 2;
 
-	//Holds the size of the asteroid, as indicated above.
+	// Holds the size of the asteroid, as indicated above.
 	private int type;
 	
 	/**
@@ -59,21 +54,21 @@ public class Asteroid extends Entity {
 	 */
 	public Asteroid(int type, String id, Player owner, float x, float y) {
 		
-		//Setting the unique ID and the owner of the Asteroid.
+		// Setting the unique ID and the owner of the Asteroid.
 		super(id, owner);
 		
-		//Setting the image that will be shown on screen.
+		// Setting the image that will be shown on screen.
 		super.setSprite("Broid");
 		
-		//Setting the color of the image;
+		// Setting the color of the image;
 		super.setColor();
 
-		//Defining the Fixture Definition and Shape.
+		// Defining the Fixture Definition and Shape.
 		FixtureDef fixDef = new FixtureDef();
 		CircleShape shape = new CircleShape();
 		
-		//Initializing the properties that depend upon the size of the
-		//Asteroid.
+		// Initializing the properties that depend upon the size of the
+		// Asteroid.
 		this.type = type;
 		if (this.type == SMALL) {
 			super.setSize(3.75f);
@@ -92,34 +87,34 @@ public class Asteroid extends Entity {
 			super.setPoints(20);
 		}
 
-		//Initializing physical properties used by all Asteroids
+		// Initializing physical properties used by all Asteroids
 		fixDef.shape = shape;
 		fixDef.restitution = 0.1f;
 
-		//Defining and initializing the Body and its physical properties.
+		// Defining and initializing the Body and its physical properties.
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;
 		bodDef.angularDamping = 0.0f;
 		bodDef.linearDamping = 0.0f;
 		bodDef.allowSleep = false;
 
-		//Giving it position and rotation, and creating the Body from
-		//the Definitions.
+		// Giving it position and rotation, and creating the Body from
+		// the Definitions.
 		bodDef.position.set(x, y);
 		bodDef.angle = (float) ((2 * MathUtils.PI) * Math.random());
 		super.createBody(bodDef, fixDef);
 		
-		//Defines the ratio between the game and screen size. Used for graphics.
+		// Defines the ratio between the game and screen size. Used for graphics.
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
-		//Setting properties of the Sprite that will be displayed.
+		// Setting properties of the Sprite that will be displayed.
 		super.getSprite().setOrigin(meter * (this.getSize() / 2),
 				meter * (this.getSize() / 2));
 		super.getSprite().setSize(meter * this.getSize(),
 				meter * this.getSize());
 		super.getSprite().setColor(this.getColor());
 
-		//Allows the Body to reference the Entity.
+		// Allows the Body to reference the Entity.
 		super.getBody().setUserData(this);
 	}
 
@@ -139,7 +134,7 @@ public class Asteroid extends Entity {
 	 */
 	@Override
 	public void destroy() {
-		//Defining the new Asteroids and their positions.
+		// Defining the new Asteroids and their positions.
 		Asteroid roid1;
 		Asteroid roid2;
 		float x1;
@@ -148,10 +143,10 @@ public class Asteroid extends Entity {
 		float y2;
 		float dir;
 		
-		//Spawning new Asteroids depending upon the size of this one.
+		// Spawning new Asteroids depending upon the size of this one.
 		if (this.type == LARGE) {
 			
-			//This loop creates particle effects for the exploding Asteroids
+			// This loop creates particle effects for the exploding Asteroids
 			float temp = (float) (10+Math.random()%10);
 			for(int i = 0; i < temp;i++){
 				temp = 360/temp;
@@ -162,8 +157,8 @@ public class Asteroid extends Entity {
 				CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
 			}
 			
-			//Only the player in control of the Asteroids (the Host, or in singleplayer) will
-			//spawn Asteroids.
+			// Only the player in control of the Asteroids (the Host, or in singleplayer) will
+			// spawn Asteroids.
 			if (!CoreLogic.multiplayer || CoreLogic.isHost()) {
 				dir = (float) Math.toRadians(this.getAngle());
 				x1 = (float) (this.getX() + 7.5 * Math.cos(dir));
@@ -171,66 +166,66 @@ public class Asteroid extends Entity {
 				y1 = (float) (this.getY() - 7.5 * Math.sin(dir));
 				y2 = (float) (this.getY() - 7.5 * Math.sin(dir));
 	
-//MEDIUM ASTEROID 1
+// MEDIUM ASTEROID 1
 				roid1 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, x1,
 						y1);
 	
-				//Initial position and force
+				// Initial position and force
 				float initForce = (float) (3200 + (3000 * Math.random()));
 				float x = (float) (initForce * Math.cos(dir));
 				float y = (float) (initForce * Math.sin(dir));
 	
-				//Get it moving by applying the force.
+				// Get it moving by applying the force.
 				Vector2 f = roid1.getBody().getWorldVector(new Vector2(x, y));
 				Vector2 p = roid1.getBody().getWorldPoint(
 						roid1.getBody().getLocalCenter());
 				roid1.getBody().applyForce(f, p);
 	
-				//Set it spinning.
+				// Set it spinning.
 				float spin = (float) (25 * Math.random());
 				if (Math.random() >= 0.5f)
 					spin *= -1;
 				roid1.getBody().setAngularVelocity(spin);
 				
-				//Put it in the entities map and make Networking aware of it.
+				// Put it in the entities map and make Networking aware of it.
 				String[] idParts = roid1.getId().split("-");
 				CoreLogic.getComp().getEntitiesMap().put(idParts[1], roid1);
 				if (CoreLogic.multiplayer && Net.ownedByLocal(roid1.getId())) {
 					Net.createEntity(roid1);
 				}
 	
-//MEDIUM ASTEROID 2
+// MEDIUM ASTEROID 2
 				roid2 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, x2, y2);
 	
-				//Initial position and force
+				// Initial position and force
 				initForce = (float) (3200 + (3000 * Math.random()));
 				x = (float) (initForce * Math.cos(dir));
 				y = (float) (initForce * Math.sin(dir));
 	
-				//Get it moving by applying the force.
+				// Get it moving by applying the force.
 				f = roid2.getBody().getWorldVector(new Vector2(x, y));
 				p = roid2.getBody().getWorldPoint(roid2.getBody().getLocalCenter());
 				roid2.getBody().applyForce(f, p);
 	
-				//Set it spinning.
+				// Set it spinning.
 				spin = (float) (25 * Math.random());
 				if (Math.random() >= 0.5f)
 					spin *= -1;
 				roid1.getBody().setAngularVelocity(spin);
 	
-				//Put it in the entities map and make Networking aware of it.
+				// Put it in the entities map and make Networking aware of it.
 				idParts = roid2.getId().split("-");
 				CoreLogic.getComp().getEntitiesMap().put(idParts[1], roid2);
 				if (CoreLogic.multiplayer && Net.ownedByLocal(roid2.getId())) {
 					Net.createEntity(roid2);
 				}
 				
-				//Play the destruction noise at a lower pitch.
+				// Play the destruction noise at a lower pitch.
 				sound(0.7f);
 			}
 		} else if (this.type == MEDIUM) {
 			
-			//This loop creates particle effects for the exploding Asteroids
+			// This loop creates particle effects for the exploding Asteroids
 			float temp = (float) (5+Math.random()%10);
 			for(int i = 0; i < temp;i++){
 				temp = 360/temp;
@@ -240,10 +235,10 @@ public class Asteroid extends Entity {
 				String[] idParts = D.getId().split("-");
 				CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
 			}
-			//this.getX();
+			// this.getX();
 			
-			//Only the player in control of the Asteroids (the Host, or in singleplayer) will
-			//spawn Asteroids.
+			// Only the player in control of the Asteroids (the Host, or in singleplayer) will
+			// spawn Asteroids.
 			if (!CoreLogic.multiplayer || CoreLogic.isHost()) {
 				dir = (float) Math.toRadians(this.getAngle());
 				x1 = (float) (this.getX() + 3.75 * Math.cos(dir));
@@ -251,53 +246,53 @@ public class Asteroid extends Entity {
 				y1 = (float) (this.getY() - 3.75 * Math.sin(dir));
 				y2 = (float) (this.getY() - 3.75 * Math.sin(dir));
 	
-//SMALL ASTEROID 1
+// SMALL ASTEROID 1
 				roid1 = new Asteroid(SMALL, this.owner.nextId(), this.owner, x1, y1);
 	
-				//Initial position and force
+				// Initial position and force
 				float initForce = (float) (440 + (230 * Math.random()));
 				float x = (float) (initForce * Math.cos(Math.random()*2*Math.PI));
 				float y = (float) (initForce * Math.sin(Math.random()*2*Math.PI));
 	
-				//Get it moving by applying the force.
+				// Get it moving by applying the force.
 				Vector2 f = roid1.getBody().getWorldVector(new Vector2(x, y));
 				Vector2 p = roid1.getBody().getWorldPoint(
 						roid1.getBody().getLocalCenter());
 				roid1.getBody().applyForce(f, p);
 	
-				//Set it spinning.
+				// Set it spinning.
 				float spin = (float) (20 * Math.random());
 				if (Math.random() >= 0.5f)
 					spin *= -1;
 				roid1.getBody().setAngularVelocity(spin);
 				
-				//Put it in the entities map and make Networking aware of it.
+				// Put it in the entities map and make Networking aware of it.
 				String[] idParts = roid1.getId().split("-");
 				CoreLogic.getComp().getEntitiesMap().put(idParts[1], roid1);
 				if (CoreLogic.multiplayer && Net.ownedByLocal(roid1.getId())) {
 					Net.createEntity(roid1);
 				}
 	
-//SMALL ASTEROID 2
+// SMALL ASTEROID 2
 				roid2 = new Asteroid(SMALL, this.owner.nextId(), this.owner, x2, y2);
 	
-				//Initial position and force
+				// Initial position and force
 				initForce = (float) (420 + (220 * Math.random()));
 				x = (float) (initForce * Math.cos(dir));
 				y = (float) (initForce * Math.sin(dir));
 	
-				//Get it moving by applying the force.
+				// Get it moving by applying the force.
 				f = roid2.getBody().getWorldVector(new Vector2(x, y));
 				p = roid2.getBody().getWorldPoint(roid2.getBody().getLocalCenter());
 				roid2.getBody().applyForce(f, p);
 	
-				//Set it spinning.
+				// Set it spinning.
 				spin = (float) (300 + (250 * Math.random()));
 				if (Math.random() >= 0.5f)
 					spin *= -1;
 				roid2.getBody().applyTorque(spin);
 				
-				//Put it in the entities map and make Networking aware of it.
+				// Put it in the entities map and make Networking aware of it.
 				idParts = roid2.getId().split("-");
 				CoreLogic.getComp().getEntitiesMap().put(idParts[1], roid2);
 	
@@ -305,15 +300,15 @@ public class Asteroid extends Entity {
 					Net.createEntity(roid2);
 				}
 				
-				//Play the destruction noise at a medium pitch.
+				// Play the destruction noise at a medium pitch.
 				sound(1f);
 			}
 			
-			//This executes if this Asteroid is small, and thus does not spawn any
-			//other Asteroids on destruction
+			// This executes if this Asteroid is small, and thus does not spawn any
+			// other Asteroids on destruction
 		} else {
 			
-			//This block creates particle effects for the exploding Asteroids
+			// This block creates particle effects for the exploding Asteroids
 			float temp = (float) (3+Math.random()%10);
 			for(int i = 0; i < temp;i++){
 				temp = 360/temp;
@@ -323,7 +318,7 @@ public class Asteroid extends Entity {
 				String[] idParts = D.getId().split("-");
 				CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
 			}
-			//Play the destruction noise at a higher pitch.
+			// Play the destruction noise at a higher pitch.
 			sound(1.3f);
 		}
 	}

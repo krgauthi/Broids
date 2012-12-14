@@ -17,14 +17,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
  * as color, Sprite size, unique ID, owner, point worth, and the Body. It
  * also contains methods that deal with drawing and wrapping.
  */
-/**
- * @author belak
- * 
- */
-/**
- * @author belak
- * 
- */
 public abstract class Entity {
 
 	// The physical object that interacts in the physics engine.
@@ -41,21 +33,19 @@ public abstract class Entity {
 	// The point value of the Entity.
 	private int points;
 
-	// These are needed for teleporting the Entity. Don't delete.
-	// TODO Do we still need these?
-	private BodyDef bodDef;
-	private FixtureDef fixDef;
-
 	// The ID is unique among Entities owned by the Player. Together will
 	// Player ID gives a completely unique ID.
 	protected String id;
 	protected Player owner;
 
 	/**
+	 * Constructor for the Entity class. The inherited classes do most of the work here,
+	 * but this sets the id and the owner.
+	 * 
 	 * @param id
-	 *            Entity id
+	 *            Entity id, get this from the owner.
 	 * @param owner
-	 *            Entity owner
+	 *            Entity owner.
 	 */
 	public Entity(String id, Player owner) {
 		this.id = id;
@@ -65,30 +55,28 @@ public abstract class Entity {
 	}
 
 	/**
-	 * @return the full id of the entity
+	 * @return the full id of the Entity
 	 */
 	public String getId() {
 		return id;
 	}
 
 	/**
-	 * Returns the physical body of this entity
-	 * 
-	 * @return This entity's body
+	 * @return This Entity's physical Body
 	 */
 	public Body getBody() {
 		return this.body;
 	}
 
 	/**
-	 * @return the owner of the entity
+	 * @return the owner of the Entity
 	 */
 	public Player getOwner() {
 		return this.owner;
 	}
 
 	/**
-	 * Gets the current X-Coordinate of the body (meters)
+	 * Gets the current X-Coordinate of the Body (meters).
 	 * 
 	 * @return Body X-Coordinate in meters
 	 */
@@ -97,7 +85,7 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Gets the current Y-Coordinate of the body (meters)
+	 * Gets the current Y-Coordinate of the Body (meters).
 	 * 
 	 * @return Body Y-Coordinate in meters
 	 */
@@ -106,12 +94,13 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Creates the entity's body.
+	 * Creates the Entity's Body from the Body Definition and Fixture Definition.
+	 * They are then added to the World to be handled.
 	 * 
 	 * @param bodDef
-	 *            The body definition for the body to be created
+	 *            The Body Definition for the Body to be created
 	 * @param fixDef
-	 *            The fixture definition for the body to be created
+	 *            The Fixture Definition for the Body to be created
 	 */
 	protected void createBody(BodyDef bodDef, FixtureDef fixDef) {
 		this.body = CoreLogic.getWorld().createBody(bodDef);
@@ -119,7 +108,7 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Returns the angle of the body in degrees.
+	 * Returns the angle of the Body in degrees.
 	 * 
 	 * @return Body angle in degrees
 	 */
@@ -128,26 +117,27 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Returns the sprite for this entity.
+	 * Returns the Sprite for this Entity.
 	 * 
-	 * @return This Entity's sprite
+	 * @return This Entity's Sprite
 	 */
 	public Sprite getSprite() {
 		return TextureManager.getSprites(this.spriteID);
 	}
 
 	/**
-	 * Sets the sprite for this entity.
+	 * Sets the Sprite for this Entity.
 	 * 
 	 * @param sp
-	 *            The file path to the sprite
+	 *            The file path to the Sprite
 	 */
 	protected void setSprite(String sp) {
 		this.spriteID = sp;
 	}
 
 	/**
-	 * returns the size of the Entity in meters
+	 * Returns the size of the Entity in meters. Size is used
+	 * for Sprite rendering.
 	 * 
 	 * @return size in meters
 	 */
@@ -156,7 +146,8 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Sets the size of the Entity in meters
+	 * Sets the size of the Entity in Meters. Size is used for
+	 * Sprite rendering.
 	 * 
 	 * @param s
 	 *            size of Entity in meters
@@ -166,14 +157,14 @@ public abstract class Entity {
 	}
 
 	/**
-	 * @return color of the entity
+	 * @return color of the Entity
 	 */
 	public Color getColor() {
 		return this.color;
 	}
 
 	/**
-	 * Sets the color to the owner's color
+	 * Sets the color of the Entity to the owner's color.
 	 */
 	public void setColor() {
 		this.color = this.owner.getColor();
@@ -181,16 +172,18 @@ public abstract class Entity {
 
 	/**
 	 * @param color
-	 *            Color the entity should change to
+	 *            Color to make the Entity change to.
 	 */
 	public void setColor(Color color) {
 		this.color = color;
 	}
 
 	/**
-	 * Draws this Entity on the screen
+	 * Draws this Entity on the screen. Gets the position and rotation of the Body, and
+	 * the color and size from this Entity, then draw the Sprite on top of the Body.
 	 * 
 	 * @param sb
+	 * 			Things to be drawn are sent to the SpriteBatch
 	 */
 	public void Draw(SpriteBatch sb) {
 		float screenWidth = Gdx.graphics.getWidth();
@@ -219,37 +212,13 @@ public abstract class Entity {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * The same as getIdentity(). Entities should only ever be referenced using
-	 * their unique ID.
-	 * 
-	 * @see #getIdentity()
-	 */
-	// public String toString() {
-	// 	return this.type;
-	// }
-
-	/**
-	 * Determines the equality between this Entity and the given Entity
-	 * 
-	 * @param entity
-	 *            Type to compare against
-	 * @return True if entities are the same, false otherwise
-	 */
-	// public boolean equals(Entity entity) {
-	// return entity.toString().equals(this.type);
-	// }
-
-	/**
-=======
->>>>>>> dee60836b21198f5f69c516408b38570128cd5aa
 	 * Teleports this entity to the specified coordinates on the screen. This is
 	 * used for screen wrapping.
 	 * 
 	 * @param x
-	 *            X-Coordinate in the world (meters)
+	 *            X-Coordinate to teleport to (meters)
 	 * @param y
-	 *            Y-Coordinate in the world (meters)
+	 *            Y-Coordinate to teleport to (meters)
 	 */
 	public void teleport(float x, float y) {
 		this.body.setTransform(x, y, this.body.getAngle());
@@ -263,27 +232,27 @@ public abstract class Entity {
 	}
 
 	/**
-	 * @return linear velociry of the entity's body
+	 * @return linear velocity of the entity's body
 	 */
 	public Vector2 getLinearVelocity() {
 		return this.body.getLinearVelocity();
 	}
 
 	/**
-	 * Advanced teleport for server use
+	 * Advanced teleport for server use.
 	 * 
 	 * @param x
-	 *            x-position of the entity
+	 *            X position to teleport to
 	 * @param y
-	 *            y-position of the entity
+	 *            Y position to teleport to
 	 * @param angle
-	 *            angle of the entity
+	 *            angle of the Entity
 	 * @param angleVel
-	 *            angular velocity of the entity's rotation
+	 *            angular velocity of the Entity's rotation
 	 * @param vX
-	 *            x-component of the entity's velocity
+	 *            x-component of the Entity's velocity
 	 * @param vY
-	 *            y-component of the entity's velocity
+	 *            y-component of the Entity's velocity
 	 */
 	public void teleport(float x, float y, float angle, float angleVel, float vX, float vY) {
 
@@ -295,11 +264,13 @@ public abstract class Entity {
 
 	/**
 	 * This method is called every tick and can be used to update entities in
-	 * nonstandard ways.
+	 * nonstandard ways. Must be overridden.
 	 */
 	public abstract void update();
 
 	/**
+	 * This is used by the server.
+	 * 
 	 * @return any extra data needed for networking
 	 */
 	public int extra() {
@@ -307,13 +278,16 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Used when we no longer need the entity for cleaning up
+	 * This is called when an Entity dies, in order to clean up and initiate death-events.
+	 * Must be overriden.
 	 */
 	public abstract void destroy();
 
 	/**
+	 * Sets the point value of the Entity.
+	 * 
 	 * @param v
-	 *            how many points the entity is worth
+	 *            How many points the entity is worth
 	 */
 	public void setPoints(int v) {
 		points = v;

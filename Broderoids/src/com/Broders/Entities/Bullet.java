@@ -25,28 +25,20 @@ public class Bullet extends Entity {
 	private static float deathTime = 0.7f; 
 
 	/**
-<<<<<<< HEAD
 	 * Constructor for the Bullet class. Defines the Body and its
 	 * Fixtures for the physics World. Also defines the Sprite to be used
 	 * by the Ship.
 	 * 
-	 * @param The entity's unique ID. Get this from the player.
-	 * @param The player that owns the Bullet.
-	 * @param The direction of movement of the Bullet.
-	 * @param The x-coordinate of the tip of the spawning ship.
-	 * @param The y-coordinate of the tip of the spawning ship.
-=======
 	 * @param id
-	 *            Entity id
+	 *            Entity id. Get this from the owner.
 	 * @param owner
-	 *            Entity owner
+	 *            Entity owner, should be Local Player.
 	 * @param dir
 	 *            Initial direction
 	 * @param x
-	 *            Initial X
+	 *            Initial X position
 	 * @param y
-	 *            Initial Y
->>>>>>> dee60836b21198f5f69c516408b38570128cd5aa
+	 *            Initial Y position
 	 */
 	public Bullet(String id, Player owner, float dir, float x, float y) {
 		

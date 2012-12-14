@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 /**
+ * Inherited from the Entity Class.
  * Asteroids are the floating hunks of rock that act as both target
  * and hazard to the player. In singleplayer, contact with the ship
  * will destroy it instantly. In multiplayer, Asteroids will damage
@@ -20,7 +21,10 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
  * dust and two asteroids of the next size down. Small asteroids
  * simply spawn the dust.
  * 
- * @author rdbaumei, ejrinkus, krgauthi, ntpeters
+ * @author rdbaumei
+ * @author ejrinkus
+ * @author krgauthi
+ * @author ntpeters
  */
 public class Asteroid extends Entity {
 	
@@ -42,8 +46,8 @@ public class Asteroid extends Entity {
 	}
 
 	/**
-	 * Constructor for the asteroid class. Defines the Body and its
-	 * Fixtures for the physics World. Also defines the sprite to be used
+	 * Constructor for the Asteroid class. Defines the Body and its
+	 * Fixtures for the physics World. Also defines the Sprite to be used
 	 * by the Asteroid. The size of the Asteroid is passed in as the first
 	 * parameter. Large = 0, Medium = 1, Small = 2;
 	 * 
@@ -55,10 +59,14 @@ public class Asteroid extends Entity {
 	 */
 	public Asteroid(int type, String id, Player owner, float x, float y) {
 		
-		//Setting the properties that all entities share.
+		//Setting the unique ID and the owner of the Asteroid.
 		super(id, owner);
-		super.setColor();
+		
+		//Setting the image that will be shown on screen.
 		super.setSprite("Broid");
+		
+		//Setting the color of the image;
+		super.setColor();
 
 		//Defining the Fixture Definition and Shape.
 		FixtureDef fixDef = new FixtureDef();
@@ -101,8 +109,7 @@ public class Asteroid extends Entity {
 		bodDef.angle = (float) ((2 * MathUtils.PI) * Math.random());
 		super.createBody(bodDef, fixDef);
 		
-		//This meter holds a ratio between game and screen sizes that is
-		//critical to the graphics.
+		//Defines the ratio between the game and screen size. Used for graphics.
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
 		//Setting properties of the Sprite that will be displayed.
@@ -124,6 +131,7 @@ public class Asteroid extends Entity {
 	}
 
 	/**
+	 * Overridden from Entity class.
 	 * Called when the Asteroid is to be destroyed. If it is a
 	 * Large or Medium Asteroid, then it will spawn two Asteroids
 	 * of the next size down. It also spawns some Dust as particle

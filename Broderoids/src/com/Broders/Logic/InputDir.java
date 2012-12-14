@@ -11,13 +11,13 @@ package com.Broders.Logic;
  */
 public enum InputDir {
 
-	FORWARD ("forward"),
-	BACKWARD ("backward"),
-	LEFT ("left"),
-	RIGHT ("right"),
-	SHOOT ("shoot"),
-	NOSHOOT ("noshoot"),
-	NULL ("");
+	FORWARD("forward"),
+	BACKWARD("backward"),
+	LEFT("left"),
+	RIGHT("right"),
+	SHOOT("shoot"),
+	NOSHOOT("noshoot"),
+	NULL("");
 
 	private String dir;
 

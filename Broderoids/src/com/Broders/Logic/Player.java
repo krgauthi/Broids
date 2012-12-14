@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 
 public class Player {
 	private int id;
-	
+
 	private Color playerColor;
 	protected HashMap<String, Entity> entities;
 	private Ship playerShip;
@@ -42,12 +42,12 @@ public class Player {
 		lives = 3;
 		bonus = 1.0f;
 		score = 0;
-		
+
 		if (local) {
 			playerColor = Settings.getShipColor();
-			
+
 			String sid = this.nextId();
-			
+
 			String[] idParts = sid.split("-");
 			playerShip = new Ship(sid, this, CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
 			entities.put(idParts[1], playerShip);
@@ -111,9 +111,14 @@ public class Player {
 		lives += s;
 		if (Gdx.app.getVersion() <= 0) {
 			switch (lives) {
-			case 2:	SoundManager.setMusicPitch(1.1f); break;
-			case 1: SoundManager.setMusicPitch(1.5f); break;
-			default: SoundManager.setMusicPitch(1f);
+			case 2:
+				SoundManager.setMusicPitch(1.1f);
+				break;
+			case 1:
+				SoundManager.setMusicPitch(1.5f);
+				break;
+			default:
+				SoundManager.setMusicPitch(1f);
 			}
 		}
 	}

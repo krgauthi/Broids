@@ -47,10 +47,14 @@ public class Ship extends Entity {
 	 * Fixtures for the physics World. Also defines the Sprites to be used
 	 * by the Ship.
 	 * 
-	 * @param The entity's unique ID. Get this from the player.
-	 * @param The player that owns the Ship (should be the local Player).
-	 * @param The x-coordinate where it will spawn.
-	 * @param The y-coordinate where it will spawn.
+	 * @param id
+	 *            Entity id. Get this from the owner.
+	 * @param owner
+	 *           The owner. Should be the Local Player.
+	 * @param x
+	 *           Initial X Position
+	 * @param y
+	 *           Initial Y Position
 	 */
 	public Ship(String id, Player owner, float x, float y) {
 
@@ -99,7 +103,7 @@ public class Ship extends Entity {
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
 		//Setting the properties of the Sprite that displays when the Ship is still.
-		super.getSprite().setOrigin((meter * this.getSize()) / 2,(meter * this.getSize()) / 2);
+		super.getSprite().setOrigin((meter * this.getSize()) / 2, (meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
 		super.getSprite().setColor(super.getColor());
 
@@ -146,7 +150,7 @@ public class Ship extends Entity {
 			zoomId = zoom.play();
 			zoom.setVolume(zoomId, Settings.getSoundVol());
 			zoom.setLooping(zoomId, true);
-		} else if(!this.thrustLast && !this.thrust && !bool){
+		} else if (!this.thrustLast && !this.thrust && !bool) {
 			zoom.stop();
 		}
 
@@ -197,8 +201,8 @@ public class Ship extends Entity {
 	 *
 	 * @see Entity#Draw(SpriteBatch)
 	 * 
-	 * @param Spritebatch, which is something magic involving graphics.
-	 * TODO @krgauthi: define the Spritebatch for our audience please.
+	 * @param Spritebatch
+	 * 				Things are sent to this to be drawn.
 	 */
 	@Override
 	public void Draw(SpriteBatch sb) {
@@ -215,17 +219,14 @@ public class Ship extends Entity {
 		float posX;
 		float posY;
 
-		posX = screenWidth
-				* ((x - CoreLogic.getViewPortX()) / CoreLogic.getWidthScreen());
-		posY = screenHeight
-				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
+		posX = screenWidth * ((x - CoreLogic.getViewPortX()) / CoreLogic.getWidthScreen());
+		posY = screenHeight * ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
 
 		//Defines the ratio between the game and screen size. Used for graphics.
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
-		//TODO @krgauthi: Kriiiiiiiiiis? What does this dooooooo....?
-		if(posX > -this.getSize()*8 && posX < (screenWidth+this.getSize()*8) 
-				&& posY > -this.getSize()*8 && posY < (screenHeight+this.getSize()*8)){
+		//Determines if the Ship is within the edges of the screen.
+		if (posX > -this.getSize() * 8 && posX < (screenWidth + this.getSize() * 8) && posY > -this.getSize() * 8 && posY < (screenHeight + this.getSize() * 8)) {
 
 			Sprite image;
 			//Sets the properties of the Sprite to be drawn, depending upon the thrusting
@@ -284,7 +285,7 @@ public class Ship extends Entity {
 				smoke = 0.05f;
 
 			//Holds the time since the last Dust entity spawned.
-			smokeInterval +=  Gdx.graphics.getDeltaTime();
+			smokeInterval += Gdx.graphics.getDeltaTime();
 
 			//Spawns a new Dust entity once the smokeInterval times out.
 			if (smokeInterval >= smoke) {
@@ -301,8 +302,7 @@ public class Ship extends Entity {
 
 				//Making a new Dust entity with parameters defined from the ship and the
 				//Scratch Player.
-				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), dir ,
-						this.getX(), this.getY(), 4, color);
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), dir , this.getX(), this.getY(), 4, color);
 				
 				//Identifying the Dust object and adding it to the Scratch Player's Entity Map.
 				String[] idParts = D.getId().split("-");
@@ -324,7 +324,7 @@ public class Ship extends Entity {
 	public void destroy() {
 		
 		//The Player loses points if the ship dies.
-		if(CoreLogic.multiplayer){ 
+		if (CoreLogic.multiplayer){ 
 			this.getOwner().modScore(-500);
 		}
 		
@@ -343,8 +343,7 @@ public class Ship extends Entity {
 		for(int i = 0; i < temp;i++){
 			temp = 360/temp;
 
-			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), 
-					(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 30, super.getColor());
+			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float) (Math.random() % 10) + (temp * i), this.getX(), this.getY(), 30, super.getColor());
 			String[] idParts = D.getId().split("-");
 			CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
 		}
@@ -373,6 +372,7 @@ public class Ship extends Entity {
 	 * Allows the sound of the thrusting to be shut off if the game exits when the
 	 * Ship isn't dead.
 	 */
+
 	public void killZoom() {
 		zoom.stop();
 	}

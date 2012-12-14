@@ -70,9 +70,9 @@ public class GameScreen implements Screen {
 
 		CoreLogic.initCore(myGame, width2, height2, h2, multiplayer);
 
-		float dpi = Gdx.graphics.getDensity()*160f;
-		float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
-		myGame.font.setScale(0.5f*dpi*(inchHeight/22f)/72f);
+		float dpi = Gdx.graphics.getDensity() * 160f;
+		float inchHeight = ((float) Gdx.graphics.getHeight()) / dpi;
+		myGame.font.setScale(0.5f * dpi * (inchHeight / 22f) / 72f);
 
 		myGame.multiplayer = this.multiplayer;
 
@@ -90,7 +90,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		delta = (float) (1.0/30.0);
+		delta = (float) (1.0 / 30.0);
 
 		Net.lock();
 		// Update stuff
@@ -117,14 +117,13 @@ public class GameScreen implements Screen {
 	private void paint(float delta) {
 		GL10 g1 = Gdx.graphics.getGL10();
 		if (Settings.getEpileptic()) {
-			Gdx.gl.glClearColor((rand.nextInt() % 200), rand.nextInt() % 200,
-					rand.nextInt() % 200, 1);
-		} else if(Settings.getRetro()){
+			Gdx.gl.glClearColor((rand.nextInt() % 200), rand.nextInt() % 200, rand.nextInt() % 200, 1);
+		} else if (Settings.getRetro()) {
 			Gdx.gl.glClearColor(0, 0, 0, 1);
-		}else{
+		} else {
 
 			Gdx.gl.glClearColor(.19f, .19f, .19f, 19f);
-			//Gdx.gl.glClearColor(0, 0, 0, 1f);
+			// Gdx.gl.glClearColor(0, 0, 0, 1f);
 		}
 		g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -139,24 +138,23 @@ public class GameScreen implements Screen {
 
 		// If Android
 		if (Gdx.app.getVersion() > 0) {
-			TextureManager.getSprites("dPad").draw(spriteBatch, .45f); // TODO @mike .45f make this a setting
+			// TODO @mike .45f make this a setting
+			TextureManager.getSprites("dPad").draw(spriteBatch, .45f);
 			// for how transparent to have
 			// android controls
 			TextureManager.getSprites("fireButton").draw(spriteBatch, .45f);
 			TextureManager.getSprites("thrustButton").draw(spriteBatch, .45f);
 		}
 
-		
-		float dpi = Gdx.graphics.getDensity()*160f;
-		float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
-		myGame.font.setScale(0.55f*dpi*(inchHeight/22f)/72f);
-		
+		float dpi = Gdx.graphics.getDensity() * 160f;
+		float inchHeight = ((float) Gdx.graphics.getHeight()) / dpi;
+		myGame.font.setScale(0.55f * dpi * (inchHeight / 22f) / 72f);
+
 		if (multiplayer) {
 			// Draw HUD
 			TextureManager.getSprites("healthBar").draw(spriteBatch);
 
 			TextureManager.getSprites("shieldBar").draw(spriteBatch);
-
 
 			int health = 0;
 			int shield = 0;
@@ -167,26 +165,28 @@ public class GameScreen implements Screen {
 				score = CoreLogic.getLocal().getScore();
 			}
 
-			spriteBatch.draw(TextureManager.getTexture("healthBlock"), xx * .01f, yy * .5f,
-					((yy * .5f) * .88f) * health / 100, yy * .5f, 0, 0,
-					(int) ((512f * .88f) * health / 100), 512, false, false);
-			spriteBatch.draw(TextureManager.getTexture("shieldBlock"), xx * .01f, yy * .5f,
-					(yy * .5f) * shield / 100, yy * .5f, 0, 0, (int) (512f * shield / 100),
-					512, false, false);
+			spriteBatch.draw(TextureManager.getTexture("healthBlock"), xx * .01f, yy * .5f, ((yy * .5f) * .88f) * health / 100, yy * .5f, 0, 0, (int) ((512f * .88f) * health / 100), 512, false, false);
+			spriteBatch.draw(TextureManager.getTexture("shieldBlock"), xx * .01f, yy * .5f, (yy * .5f) * shield / 100, yy * .5f, 0, 0, (int) (512f * shield / 100), 512, false, false);
 
+			// String healthText = "HEALTH: " + health + " / 100";
+			// String shieldText = "SHIELD: " + shield + " / 100";
 
-			//String healthText = "HEALTH: " + health + " / 100";
-			//String shieldText = "SHIELD: " + shield + " / 100";
-
-
-			String healthText = "HEALTH: " + CoreLogic.getLocal().getHealth() + " / 100";		//lol Ive never written in C before I swear
-			String shieldText = "SHIELD: " + CoreLogic.getLocal().getShield() + " / 100";		//Sprintf(shieldText,"SHIELD: %d / 100",getShield);
+			String healthText = "HEALTH: " + CoreLogic.getLocal().getHealth() + " / 100"; // lol
+																							// Ive
+																							// never
+																							// written
+																							// in
+																							// C
+																							// before
+																							// I
+																							// swear
+			String shieldText = "SHIELD: " + CoreLogic.getLocal().getShield() + " / 100"; // Sprintf(shieldText,"SHIELD: %d / 100",getShield);
 
 			myGame.font.draw(spriteBatch, healthText, xx * .05f, yy * .92f);
 			myGame.font.draw(spriteBatch, shieldText, xx * .08f, yy * .975f);
 
 			String out;
-			out = String.format("Score: %d ", score); 
+			out = String.format("Score: %d ", score);
 			// player
 			myGame.font.draw(spriteBatch, out, xx * .01f, yy * .87f);
 
@@ -199,7 +199,7 @@ public class GameScreen implements Screen {
 				// player
 				myGame.font.draw(spriteBatch, out, xx * .01f, yy * .98f);
 
-				String out2 = String.format("Bonus: x%d ", (int)Math.floor(CoreLogic.getLocal().getBonus()));
+				String out2 = String.format("Bonus: x%d ", (int) Math.floor(CoreLogic.getLocal().getBonus()));
 				myGame.font.draw(spriteBatch, out2, xx * .01f, yy * .94f);
 
 				int heartcount = CoreLogic.getLocal().getLives();
@@ -212,19 +212,16 @@ public class GameScreen implements Screen {
 		}
 
 		if (Settings.getDebug()) {
-			dpi = Gdx.graphics.getDensity()*160f;
-			inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
-			myGame.font.setScale(0.5f*dpi*(inchHeight/22f)/72f);
+			dpi = Gdx.graphics.getDensity() * 160f;
+			inchHeight = ((float) Gdx.graphics.getHeight()) / dpi;
+			myGame.font.setScale(0.5f * dpi * (inchHeight / 22f) / 72f);
 			String out;
 			if (CoreLogic.getLocalShip() != null) {
-				out = String.format("Ship Pos in Meters: (%f,%f) ", CoreLogic
-						.getLocalShip().getX(), CoreLogic.getLocalShip().getY());
+				out = String.format("Ship Pos in Meters: (%f,%f) ", CoreLogic.getLocalShip().getX(), CoreLogic.getLocalShip().getY());
 				myGame.font.draw(spriteBatch, out, xx * .01f, yy - (yy * .21f));
-				out = String.format("ViewPort Pos in Meters: (%f,%f) ",
-						CoreLogic.getViewPortX(), CoreLogic.getViewPortY());
+				out = String.format("ViewPort Pos in Meters: (%f,%f) ", CoreLogic.getViewPortX(), CoreLogic.getViewPortY());
 				myGame.font.draw(spriteBatch, out, xx * .01f, yy - (yy * .25f));
-				out = String.format("Ship angle in Radians: %f", CoreLogic
-						.getLocalShip().getBody().getAngle());
+				out = String.format("Ship angle in Radians: %f", CoreLogic.getLocalShip().getBody().getAngle());
 				myGame.font.draw(spriteBatch, out, xx * .01f, yy - (yy * .29f));
 				out = String.format("FPS: %d", Gdx.graphics.getFramesPerSecond());
 				myGame.font.draw(spriteBatch, out, xx * .01f, yy - (yy * .33f));
@@ -242,54 +239,49 @@ public class GameScreen implements Screen {
 
 			TextureManager.getSprites("whitePixel").setSize(xx, 1);
 			for (int i = 0; i <= CoreLogic.getHeightScreen(); i = i + 10) {
-				TextureManager.getSprites("whitePixel").setPosition(0,
-						yy * ((i - offsetY) / CoreLogic.getHeightScreen()));
+				TextureManager.getSprites("whitePixel").setPosition(0, yy * ((i - offsetY) / CoreLogic.getHeightScreen()));
 				TextureManager.getSprites("whitePixel").draw(spriteBatch);
 			}
 			TextureManager.getSprites("whitePixel").setSize(1, yy);
 			for (int i = 0; i <= CoreLogic.getWidthScreen(); i = i + 10) {
-				TextureManager.getSprites("whitePixel").setPosition(
-						xx * ((i - offsetX) / CoreLogic.getWidthScreen()), 0);
+				TextureManager.getSprites("whitePixel").setPosition(xx * ((i - offsetX) / CoreLogic.getWidthScreen()), 0);
 				TextureManager.getSprites("whitePixel").draw(spriteBatch);
 			}
 		}
 
-
-		if(Gdx.input.isKeyPressed(Keys.F1)){
-			double x = ((float)Gdx.input.getX()/(float)Gdx.graphics.getWidth());
-			double y = ((float)Gdx.input.getY()/(float)Gdx.graphics.getHeight());
+		if (Gdx.input.isKeyPressed(Keys.F1)) {
+			double x = ((float) Gdx.input.getX() / (float) Gdx.graphics.getWidth());
+			double y = ((float) Gdx.input.getY() / (float) Gdx.graphics.getHeight());
 			System.out.println("Mouse Pos: " + x + " " + y);
 		}
 
-		if(CoreLogic.getRoundBool() && !CoreLogic.multiplayer){
-			dpi = Gdx.graphics.getDensity()*160f;
-			inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
-			myGame.font.setScale(4.0f*dpi*(inchHeight/22f)/72f);
+		if (CoreLogic.getRoundBool() && !CoreLogic.multiplayer) {
+			dpi = Gdx.graphics.getDensity() * 160f;
+			inchHeight = ((float) Gdx.graphics.getHeight()) / dpi;
+			myGame.font.setScale(4.0f * dpi * (inchHeight / 22f) / 72f);
 			String out;
-			out = String.format("Round: %d! ", CoreLogic.getRound()+2); 
-			myGame.font.draw(spriteBatch, out, xx*.25f, yy*.65f);
-			dpi = Gdx.graphics.getDensity()*160f;
-			inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
-			myGame.font.setScale(0.5f*dpi*(inchHeight/22f)/72f);
+			out = String.format("Round: %d! ", CoreLogic.getRound() + 2);
+			myGame.font.draw(spriteBatch, out, xx * .25f, yy * .65f);
+			dpi = Gdx.graphics.getDensity() * 160f;
+			inchHeight = ((float) Gdx.graphics.getHeight()) / dpi;
+			myGame.font.setScale(0.5f * dpi * (inchHeight / 22f) / 72f);
 		}
 
 		if (!CoreLogic.multiplayer && CoreLogic.getLocal().getLives() == 0) {
-			dpi = Gdx.graphics.getDensity()*160f;
-			inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
-			myGame.font.setScale(4.0f*dpi*(inchHeight/22f)/72f);
-			String out;
-			out = String.format("Game Over!");
-			dpi = Gdx.graphics.getDensity()*160f;
-			inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
-			myGame.font.setScale(0.5f*dpi*(inchHeight/22f)/72f);
+			dpi = Gdx.graphics.getDensity() * 160f;
+			inchHeight = ((float) Gdx.graphics.getHeight()) / dpi;
+			myGame.font.setScale(4.0f * dpi * (inchHeight / 22f) / 72f);
+			// String out;
+			// out = String.format("Game Over!");
+			dpi = Gdx.graphics.getDensity() * 160f;
+			inchHeight = ((float) Gdx.graphics.getHeight()) / dpi;
+			myGame.font.setScale(0.5f * dpi * (inchHeight / 22f) / 72f);
 		}
-
-
 
 		if (paused) {
 
 			TextureManager.getSprites("whitePixel").setSize(xx * .5f, yy * .5f);
-			TextureManager.getSprites("whitePixel").setPosition((xx * .5f)-((xx * .5f)/2), (yy * .5f)-((yy * .5f)/2));
+			TextureManager.getSprites("whitePixel").setPosition((xx * .5f) - ((xx * .5f) / 2), (yy * .5f) - ((yy * .5f) / 2));
 			TextureManager.getSprites("whitePixel").setColor(.1f, .1f, .1f, .7f);
 			TextureManager.getSprites("whitePixel").draw(spriteBatch);
 
@@ -302,7 +294,7 @@ public class GameScreen implements Screen {
 			TextureManager.getSprites("mainMenu").draw(spriteBatch);
 
 			TextureManager.getSprites("resume").setSize(yy * .75f, yy * .75f);
-			TextureManager.getSprites("resume").setPosition((xx * .5f) - (yy * .375f),0);
+			TextureManager.getSprites("resume").setPosition((xx * .5f) - (yy * .375f), 0);
 			TextureManager.getSprites("resume").draw(spriteBatch);
 
 		}
@@ -337,22 +329,18 @@ public class GameScreen implements Screen {
 		if (Settings.getDebug()) {
 			// Special Debug keys
 			if (Gdx.input.isKeyPressed(Keys.F1)) {
-				double x = ((float) Gdx.input.getX() / (float) Gdx.graphics
-						.getWidth());
-				double y = ((float) Gdx.input.getY() / (float) Gdx.graphics
-						.getHeight());
+				double x = ((float) Gdx.input.getX() / (float) Gdx.graphics.getWidth());
+				double y = ((float) Gdx.input.getY() / (float) Gdx.graphics.getHeight());
 				System.out.println("Mouse Pos: " + x + " " + y);
 			}
 
 			if (Gdx.input.isKeyPressed(Keys.F2)) {
 
-				System.out.println("Mouse Pos: " + Gdx.input.getX() + " "
-						+ Gdx.input.getY());
+				System.out.println("Mouse Pos: " + Gdx.input.getX() + " " + Gdx.input.getY());
 			}
 
 			if (Gdx.input.isKeyPressed(Keys.F3)) {
-				System.out.println("Resize: " + Gdx.graphics.getWidth() + " "
-						+ Gdx.graphics.getHeight());
+				System.out.println("Resize: " + Gdx.graphics.getWidth() + " " + Gdx.graphics.getHeight());
 			}
 
 			if (Gdx.input.isTouched(0)) {
@@ -387,13 +375,11 @@ public class GameScreen implements Screen {
 
 		if (!paused) {
 			// arrow keys
-			if (Gdx.input.isKeyPressed(Keys.LEFT)
-					&& !Gdx.input.isKeyPressed(Keys.RIGHT)) {
+			if (Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT)) {
 				CoreLogic.execute(delta, InputDir.LEFT);
 			}
 
-			if (Gdx.input.isKeyPressed(Keys.RIGHT)
-					&& !Gdx.input.isKeyPressed(Keys.LEFT)) {
+			if (Gdx.input.isKeyPressed(Keys.RIGHT) && !Gdx.input.isKeyPressed(Keys.LEFT)) {
 				CoreLogic.execute(delta, InputDir.RIGHT);
 			}
 
@@ -414,7 +400,7 @@ public class GameScreen implements Screen {
 				Net.leaveGame();
 			}
 
-			if(CoreLogic.getLocalShip() != null)
+			if (CoreLogic.getLocalShip() != null)
 				CoreLogic.getLocalShip().killZoom();
 
 			if (Gdx.app.getVersion() <= 0)
@@ -424,34 +410,33 @@ public class GameScreen implements Screen {
 		}
 
 		pauseWait += Gdx.graphics.getDeltaTime();
-		if ((Gdx.input.isKeyPressed(Keys.ESCAPE) ||
-				(Gdx.app.getVersion() > 0 && Gdx.input.isKeyPressed(Keys.BACK))) &&
-				pauseWait >= 0.2f) {
+		if ((Gdx.input.isKeyPressed(Keys.ESCAPE) || (Gdx.app.getVersion() > 0 && Gdx.input.isKeyPressed(Keys.BACK))) && pauseWait >= 0.2f) {
 			if (paused)
 				resume();
-			else pause();
+			else
+				pause();
 			pauseWait = 0;
 		}
 
-		if(paused){
-			if(Gdx.input.justTouched()){
-				double x = ((float)Gdx.input.getX()/xx);
-				double y = ((float)Gdx.input.getY()/yy);
+		if (paused) {
+			if (Gdx.input.justTouched()) {
+				double x = ((float) Gdx.input.getX() / xx);
+				double y = ((float) Gdx.input.getY() / yy);
 
-				if(x >= .326 && x <= .672){
+				if (x >= .326 && x <= .672) {
 
-					if(y >= .428 && y <= .519){
+					if (y >= .428 && y <= .519) {
 						if (multiplayer) {
 							Net.leaveGame();
 
 						}
 
 						SoundManager.setMusicPitch(1f);
-						if(CoreLogic.getLocalShip() != null)
+						if (CoreLogic.getLocalShip() != null)
 							CoreLogic.getLocalShip().killZoom();
 
 						myGame.setScreen(BaseGame.screens.get("main"));
-					}else if(y >= .578 && y <= .666){
+					} else if (y >= .578 && y <= .666) {
 						resume();
 					}
 				}
@@ -460,8 +445,7 @@ public class GameScreen implements Screen {
 
 		// if Android
 		if (Gdx.app.getVersion() > 0) {
-			if (Gdx.input.isTouched(0) || Gdx.input.isTouched(1)
-					|| Gdx.input.isTouched(2)) {
+			if (Gdx.input.isTouched(0) || Gdx.input.isTouched(1) || Gdx.input.isTouched(2)) {
 
 				float x1, x2, x3, y1, y2, y3;
 				if (Gdx.input.isTouched(0)) {
@@ -486,13 +470,9 @@ public class GameScreen implements Screen {
 					y3 = -1;
 				}
 
-				if ((.06 < x1 && x1 < .3 || .06 < x2 && x2 < .3 || .06 < x3
-						&& x3 < .3)
-						&& (.67 < y1 && y1 < .9 || .67 < y2 && y2 < .9 || .67 < y3
-								&& y3 < .9)) {
+				if ((.06 < x1 && x1 < .3 || .06 < x2 && x2 < .3 || .06 < x3 && x3 < .3) && (.67 < y1 && y1 < .9 || .67 < y2 && y2 < .9 || .67 < y3 && y3 < .9)) {
 					// hitbox for left dpad overall
-					if (.06 < x1 && x1 < .166 || .06 < x2 && x2 < .166
-							|| .06 < x3 && x3 < .166) {
+					if (.06 < x1 && x1 < .166 || .06 < x2 && x2 < .166 || .06 < x3 && x3 < .166) {
 
 						CoreLogic.execute(delta, InputDir.LEFT);
 
@@ -502,18 +482,12 @@ public class GameScreen implements Screen {
 				}
 
 				// check for button touch
-				if ((.7 < x1 && x1 < .85 || .7 < x2 && x2 < .85 || .7 < x3
-						&& x3 < .85)
-						&& (.72 < y1 && y1 < .98 || .72 < y2 && y2 < .98 || .72 < y3
-								&& y3 < .98)) {
+				if ((.7 < x1 && x1 < .85 || .7 < x2 && x2 < .85 || .7 < x3 && x3 < .85) && (.72 < y1 && y1 < .98 || .72 < y2 && y2 < .98 || .72 < y3 && y3 < .98)) {
 
 					CoreLogic.execute(delta, InputDir.FORWARD);
 
 				}
-				if ((.83 < x1 && x1 < .98 || .83 < x2 && x2 < .98 || .83 < x3
-						&& x3 < .98)
-						&& (.47 < y1 && y1 < .73 || .47 < y2 && y2 < .73 || .47 < y3
-								&& y3 < .73)) {
+				if ((.83 < x1 && x1 < .98 || .83 < x2 && x2 < .98 || .83 < x3 && x3 < .98) && (.47 < y1 && y1 < .73 || .47 < y2 && y2 < .73 || .47 < y3 && y3 < .73)) {
 					// pew pew
 					CoreLogic.execute(delta, InputDir.SHOOT);
 				}
@@ -548,16 +522,15 @@ public class GameScreen implements Screen {
 			TextureManager.getSprites("dPad").setPosition(xx * (0), yy * (-.1f));
 			TextureManager.getSprites("dPad").setSize(yy * .6f, yy * .6f);
 
-
 			TextureManager.getSprites("fireButton").setPosition(xx * (.82f), yy * (.25f));
 			TextureManager.getSprites("fireButton").setSize(yy * .32f, yy * .32f);
 
 			TextureManager.getSprites("thrustButton").setPosition(xx * (.69f), yy * 0);
 			TextureManager.getSprites("thrustButton").setSize(yy * .32f, yy * .32f);
 		}
-		float dpi = Gdx.graphics.getDensity()*160f;
-		float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
-		myGame.font.setScale(0.5f*dpi*(inchHeight/22f)/72f);
+		float dpi = Gdx.graphics.getDensity() * 160f;
+		float inchHeight = ((float) Gdx.graphics.getHeight()) / dpi;
+		myGame.font.setScale(0.5f * dpi * (inchHeight / 22f) / 72f);
 
 		SoundManager.play("start");
 	}
@@ -581,7 +554,6 @@ public class GameScreen implements Screen {
 	@Override
 	public void dispose() {
 		this.spriteBatch.dispose();
-
 
 		CoreLogic.dispose();
 	}

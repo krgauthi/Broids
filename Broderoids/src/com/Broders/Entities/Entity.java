@@ -17,22 +17,40 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
  * as color, Sprite size, unique ID, owner, point worth, and the Body. It
  * also contains methods that deal with drawing and wrapping.
  */
+/**
+ * @author belak
+ * 
+ */
+/**
+ * @author belak
+ * 
+ */
 public abstract class Entity {
 
+<<<<<<< HEAD
 	// The physical object that interacts in the physics engine.
+=======
+	// private String ent;
+	// private String type;
+>>>>>>> dee60836b21198f5f69c516408b38570128cd5aa
 	protected Body body;
 		
 	// This is needed by networking.
 	private boolean dead;
 
+<<<<<<< HEAD
 	// These are properties used by the Sprite.
 	private String spriteID;
+=======
+	// Extras
+>>>>>>> dee60836b21198f5f69c516408b38570128cd5aa
 	private float size;
 	private Color color;
 	
 	// The point value of the Entity.
 	private int points;
 
+<<<<<<< HEAD
 	// These are needed for teleporting the Entity. Don't delete.
 	// TODO Do we still need these?
 	private BodyDef bodDef;
@@ -40,9 +58,17 @@ public abstract class Entity {
 
 	// The ID is unique among Entities owned by the Player. Together will
 	// Player ID gives a completely unique ID.
+=======
+>>>>>>> dee60836b21198f5f69c516408b38570128cd5aa
 	protected String id;
 	protected Player owner;
-	
+
+	/**
+	 * @param id
+	 *            Entity id
+	 * @param owner
+	 *            Entity owner
+	 */
 	public Entity(String id, Player owner) {
 		this.id = id;
 		this.owner = owner;
@@ -50,6 +76,9 @@ public abstract class Entity {
 		// System.out.println(id);
 	}
 
+	/**
+	 * @return the full id of the entity
+	 */
 	public String getId() {
 		return id;
 	}
@@ -62,7 +91,10 @@ public abstract class Entity {
 	public Body getBody() {
 		return this.body;
 	}
-	
+
+	/**
+	 * @return the owner of the entity
+	 */
 	public Player getOwner() {
 		return this.owner;
 	}
@@ -94,8 +126,6 @@ public abstract class Entity {
 	 *            The fixture definition for the body to be created
 	 */
 	protected void createBody(BodyDef bodDef, FixtureDef fixDef) {
-		this.bodDef = bodDef;
-		this.fixDef = fixDef;
 		this.body = CoreLogic.getWorld().createBody(bodDef);
 		this.body.createFixture(fixDef);
 	}
@@ -147,14 +177,24 @@ public abstract class Entity {
 		this.size = s;
 	}
 
+	/**
+	 * @return color of the entity
+	 */
 	public Color getColor() {
 		return this.color;
 	}
 
+	/**
+	 * Sets the color to the owner's color
+	 */
 	public void setColor() {
 		this.color = this.owner.getColor();
 	}
-	
+
+	/**
+	 * @param color
+	 *            Color the entity should change to
+	 */
 	public void setColor(Color color) {
 		this.color = color;
 	}
@@ -174,19 +214,14 @@ public abstract class Entity {
 		float posX;
 		float posY;
 
-		posX = screenWidth
-				* ((x - CoreLogic.getViewPortX()) / CoreLogic.getWidthScreen());
-		posY = screenHeight
-				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
-		
+		posX = screenWidth * ((x - CoreLogic.getViewPortX()) / CoreLogic.getWidthScreen());
+		posY = screenHeight * ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
+
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
-		if (posX > -(this.getSize() * 8)
-				&& posX < (screenWidth + (this.getSize() * 8))
-				&& posY > -(this.getSize() * 8)
-				&& posY < (screenHeight + (this.getSize() * 8))) {
-			this.getSprite().setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
-			this.getSprite().setSize(meter * this.getSize(),meter * this.getSize());
+		if (posX > -(this.getSize() * 8) && posX < (screenWidth + (this.getSize() * 8)) && posY > -(this.getSize() * 8) && posY < (screenHeight + (this.getSize() * 8))) {
+			this.getSprite().setOrigin((meter * this.getSize()) / 2, (meter * this.getSize()) / 2);
+			this.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
 			this.getSprite().setColor(this.getColor());
 			this.getSprite().setPosition(posX, posY);
 			this.getSprite().setRotation(this.getBody().getAngle());
@@ -196,6 +231,7 @@ public abstract class Entity {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * The same as getIdentity(). Entities should only ever be referenced using
 	 * their unique ID.
 	 * 
@@ -217,6 +253,8 @@ public abstract class Entity {
 	// }
 
 	/**
+=======
+>>>>>>> dee60836b21198f5f69c516408b38570128cd5aa
 	 * Teleports this entity to the specified coordinates on the screen. This is
 	 * used for screen wrapping.
 	 * 
@@ -225,14 +263,20 @@ public abstract class Entity {
 	 * @param y
 	 *            Y-Coordinate in the world (meters)
 	 */
-	public void teleport(float x, float y) {		
+	public void teleport(float x, float y) {
 		this.body.setTransform(x, y, this.body.getAngle());
 	}
-	
+
+	/**
+	 * @return angular velocity of the entity's body
+	 */
 	public float getAngularVelocity() {
 		return this.body.getAngularVelocity();
 	}
 
+	/**
+	 * @return linear velociry of the entity's body
+	 */
 	public Vector2 getLinearVelocity() {
 		return this.body.getLinearVelocity();
 	}
@@ -253,8 +297,7 @@ public abstract class Entity {
 	 * @param vY
 	 *            y-component of the entity's velocity
 	 */
-	public void teleport(float x, float y, float angle, float angleVel,
-			float vX, float vY) {
+	public void teleport(float x, float y, float angle, float angleVel, float vX, float vY) {
 
 		// Creates a new Body with the info in the given parameters
 		this.body.setTransform(x, y, this.body.getAngle());
@@ -262,26 +305,49 @@ public abstract class Entity {
 		this.body.setLinearVelocity(new Vector2(vX, vY));
 	}
 
+	/**
+	 * This method is called every tick and can be used to update entities in
+	 * nonstandard ways.
+	 */
 	public abstract void update();
-	
+
+	/**
+	 * @return any extra data needed for networking
+	 */
 	public int extra() {
 		return 0;
 	}
 
+	/**
+	 * Used when we no longer need the entity for cleaning up
+	 */
 	public abstract void destroy();
 
-	public void setPoints(int v){
+	/**
+	 * @param v
+	 *            how many points the entity is worth
+	 */
+	public void setPoints(int v) {
 		points = v;
 	}
-	
-	public int getPoints(){
+
+	/**
+	 * @return number of points the entity is worth
+	 */
+	public int getPoints() {
 		return points;
 	}
-	
+
+	/**
+	 * @return whether we have already tried to destroy this entity
+	 */
 	public boolean isDead() {
 		return this.dead;
 	}
-	
+
+	/**
+	 * Mark this entity as destroyed
+	 */
 	public void setDead() {
 		this.dead = true;
 	}

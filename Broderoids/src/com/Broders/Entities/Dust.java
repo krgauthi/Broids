@@ -27,13 +27,20 @@ public class Dust extends Entity{
 	 * Fixtures for the physics World. Also defines the Sprite to be used
 	 * by the Dust. This is just about all the code there is to it.
 	 * 
-	 * @param The entity's unique ID. Get this from the Scratch Player.
-	 * @param The player that owns the Asteroid (should be the Host).
-	 * @param The direction the Dust will move.
-	 * @param The x coordinate it will spawn from.
-	 * @param The y coordinate it will spawn from.
-	 * @param How fast the Dust will move initially.
-	 * @param The color of the Dust.
+	 * @param id
+	 *            Entity id (Get this from the owner)
+	 * @param owner
+	 *            The owner. Should be Scratch Player.
+	 * @param dir
+	 *            Initial direction
+	 * @param x
+	 *            Initial X position
+	 * @param y
+	 *            Initial Y position
+	 * @param vel
+	 *            Initial velocity
+	 * @param color
+	 *            Color of the Dust
 	 */
 	public Dust(String id, Player owner, float dir, float x, float y, float vel, Color color) {
 
@@ -52,11 +59,10 @@ public class Dust extends Entity{
 		// Setting the color of the image;
 		super.setColor();
 
+
 		// Setting properties of the Sprite that will be displayed.
-		super.getSprite().setOrigin((meter * this.getSize()) / 2,
-				(meter * this.getSize()) / 2);
-		super.getSprite().setSize(meter * this.getSize(),
-				meter * this.getSize());
+		super.getSprite().setOrigin((meter * this.getSize()) / 2, (meter * this.getSize()) / 2);
+		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
 		super.setColor(color);
 
 		// Defining the Body and its physical properties.
@@ -78,8 +84,8 @@ public class Dust extends Entity{
 		super.createBody(bodDef, fixDef);
 
 		// Adds a bit of variety to the velocity.
-		vel = (float) ((vel*0.85f) + Math.random()*(vel*0.3f));
-		
+		vel = (float) ((vel * 0.85f) + Math.random() * (vel * 0.3f));
+
 		// Sets the velocity in terms of x and y components.
 		float vX = (float) (vel * Math.cos(Math.toRadians(dir)));
 		float vY = (float) (vel * Math.sin(Math.toRadians(dir)));
@@ -111,6 +117,6 @@ public class Dust extends Entity{
 	 */
 	@Override
 	public void destroy() {
-		
+
 	}
 }

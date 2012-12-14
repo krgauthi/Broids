@@ -25,6 +25,7 @@ public class Bullet extends Entity {
 	private static float deathTime = 0.7f; 
 
 	/**
+<<<<<<< HEAD
 	 * Constructor for the Bullet class. Defines the Body and its
 	 * Fixtures for the physics World. Also defines the Sprite to be used
 	 * by the Ship.
@@ -34,6 +35,18 @@ public class Bullet extends Entity {
 	 * @param The direction of movement of the Bullet.
 	 * @param The x-coordinate of the tip of the spawning ship.
 	 * @param The y-coordinate of the tip of the spawning ship.
+=======
+	 * @param id
+	 *            Entity id
+	 * @param owner
+	 *            Entity owner
+	 * @param dir
+	 *            Initial direction
+	 * @param x
+	 *            Initial X
+	 * @param y
+	 *            Initial Y
+>>>>>>> dee60836b21198f5f69c516408b38570128cd5aa
 	 */
 	public Bullet(String id, Player owner, float dir, float x, float y) {
 		
@@ -52,6 +65,7 @@ public class Bullet extends Entity {
 		// Defines the ratio between the game and screen size. Used for graphics.
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
+<<<<<<< HEAD
 		// Setting the properties of the Sprite to be displayed.
 		super.getSprite().setOrigin((meter * this.getSize()) / 2,
 				(meter * this.getSize()) / 2);
@@ -60,6 +74,14 @@ public class Bullet extends Entity {
 		super.getSprite().setColor(super.getColor());
 
 		// Defining the Body and its physical properties.
+=======
+		super.setSprite("bullet");
+		super.getSprite().setOrigin((meter * this.getSize()) / 2, (meter * this.getSize()) / 2);
+		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
+		super.getSprite().setColor(super.getColor());
+
+		// BodyDef
+>>>>>>> dee60836b21198f5f69c516408b38570128cd5aa
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.KinematicBody;
 		bodDef.linearDamping = 0.0f;
@@ -77,6 +99,7 @@ public class Bullet extends Entity {
 		// Giving both Definitions to the World to create and track.
 		super.createBody(bodDef, fixDef);
 
+<<<<<<< HEAD
 		// Setting the x and y velocities of the Bullet.
 		float vX = (float) (70 * Math.cos(Math.toRadians(dir)) +
 				super.getOwner().getShip().getLinearVelocity().x);
@@ -88,6 +111,16 @@ public class Bullet extends Entity {
 		super.getBody().setUserData(this);
 		
 		// Pew-Pew!
+=======
+		// Set the velocity
+		float vX = (float) (70 * Math.cos(Math.toRadians(dir)) + super.getOwner().getShip().getLinearVelocity().x);
+		float vY = (float) (70 * Math.sin(Math.toRadians(dir)) + super.getOwner().getShip().getLinearVelocity().y);
+		super.body.setLinearVelocity(vX, vY);
+
+		// Set type data
+		super.getBody().setUserData(this);
+
+>>>>>>> dee60836b21198f5f69c516408b38570128cd5aa
 		SoundManager.play("pew", 1f, (float) (0.85f + Math.random() * 0.3));
 	}
 
@@ -116,6 +149,6 @@ public class Bullet extends Entity {
 	 */
 	@Override
 	public void destroy() {
-		
+
 	}
 }

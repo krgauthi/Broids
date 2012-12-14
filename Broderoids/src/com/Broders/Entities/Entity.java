@@ -17,14 +17,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
  * as color, Sprite size, unique ID, owner, point worth, and the Body. It
  * also contains methods that deal with drawing and wrapping.
  */
-/**
- * @author belak
- * 
- */
-/**
- * @author belak
- * 
- */
 public abstract class Entity {
 
 	// The physical object that interacts in the physics engine.
@@ -219,30 +211,6 @@ public abstract class Entity {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * The same as getIdentity(). Entities should only ever be referenced using
-	 * their unique ID.
-	 * 
-	 * @see #getIdentity()
-	 */
-	// public String toString() {
-	// 	return this.type;
-	// }
-
-	/**
-	 * Determines the equality between this Entity and the given Entity
-	 * 
-	 * @param entity
-	 *            Type to compare against
-	 * @return True if entities are the same, false otherwise
-	 */
-	// public boolean equals(Entity entity) {
-	// return entity.toString().equals(this.type);
-	// }
-
-	/**
-=======
->>>>>>> dee60836b21198f5f69c516408b38570128cd5aa
 	 * Teleports this entity to the specified coordinates on the screen. This is
 	 * used for screen wrapping.
 	 * 

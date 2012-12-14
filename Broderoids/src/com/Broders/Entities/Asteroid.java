@@ -13,13 +13,12 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 /**
- * Inherited from the Entity Class.
- * Asteroids are the floating hunks of rock that act as both target
- * and hazard to the player. In singleplayer, contact with the ship
- * will destroy it instantly. In multiplayer, Asteroids will damage
- * ship. When hit by a bullet, the Asteroid will spawn a bunch of
- * dust and two asteroids of the next size down. Small asteroids
- * simply spawn the dust.
+ * Inherited from the Entity Class. Asteroids are the floating hunks of rock
+ * that act as both target and hazard to the player. In singleplayer, contact
+ * with the ship will destroy it instantly. In multiplayer, Asteroids will
+ * damage ship. When hit by a bullet, the Asteroid will spawn a bunch of dust
+ * and two asteroids of the next size down. Small asteroids simply spawn the
+ * dust.
  */
 public class Asteroid extends Entity {
 
@@ -42,11 +41,11 @@ public class Asteroid extends Entity {
 	}
 
 	/**
-	 * Constructor for the Asteroid class. Defines the Body and its
-	 * Fixtures for the physics World. Also defines the Sprite to be used
-	 * by the Asteroid. The size of the Asteroid is passed in as the first
-	 * parameter. Large = 0, Medium = 1, Small = 2;
-	 *
+	 * Constructor for the Asteroid class. Defines the Body and its Fixtures for
+	 * the physics World. Also defines the Sprite to be used by the Asteroid.
+	 * The size of the Asteroid is passed in as the first parameter. Large = 0,
+	 * Medium = 1, Small = 2;
+	 * 
 	 * @param type
 	 *            The enumerated size of the Asteroid. (see Asteroid.type())
 	 * @param id
@@ -109,7 +108,8 @@ public class Asteroid extends Entity {
 		bodDef.angle = (float) ((2 * MathUtils.PI) * Math.random());
 		super.createBody(bodDef, fixDef);
 
-		// Defines the ratio between the game and screen size. Used for graphics.
+		// Defines the ratio between the game and screen size. Used for
+		// graphics.
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
 		// Setting properties of the Sprite that will be displayed.
@@ -129,10 +129,9 @@ public class Asteroid extends Entity {
 	}
 
 	/**
-	 * Overridden from Entity class.
-	 * Called when the Asteroid is to be destroyed. If it is a
-	 * Large or Medium Asteroid, then it will spawn two Asteroids
-	 * of the next size down. It also spawns some Dust as particle
+	 * Overridden from Entity class. Called when the Asteroid is to be
+	 * destroyed. If it is a Large or Medium Asteroid, then it will spawn two
+	 * Asteroids of the next size down. It also spawns some Dust as particle
 	 * effect.
 	 */
 	@Override
@@ -149,17 +148,17 @@ public class Asteroid extends Entity {
 		// Spawning new Asteroids depending upon the size of this one.
 		if (this.type == LARGE) {
 			// This loop creates particle effects for the exploding Asteroids
-			float temp = (float) (10+Math.random()%10);
-			for(int i = 0; i < temp;i++){
-				temp = 360/temp;
+			float temp = (float) (10 + Math.random() % 10);
+			for (int i = 0; i < temp; i++) {
+				temp = 360 / temp;
 
-				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), 
-						(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 25, getColor());
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float) (Math.random() % 10) + (temp * i), this.getX(), this.getY(), 25, getColor());
 				String[] idParts = D.getId().split("-");
 				CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
 			}
 
-			// Only the player in control of the Asteroids (the Host, or in singleplayer) will
+			// Only the player in control of the Asteroids (the Host, or in
+			// singleplayer) will
 			// spawn Asteroids.
 			if (!CoreLogic.multiplayer || CoreLogic.isHost()) {
 				dir = (float) Math.toRadians(this.getAngle());
@@ -169,8 +168,7 @@ public class Asteroid extends Entity {
 				y2 = (float) (this.getY() - 7.5 * Math.sin(dir));
 
 				// MEDIUM ASTEROID 1
-				roid1 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, x1,
-						y1);
+				roid1 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, x1, y1);
 
 				// Initial position and force
 				float initForce = (float) (3200 + (3000 * Math.random()));
@@ -215,7 +213,6 @@ public class Asteroid extends Entity {
 					spin *= -1;
 				roid1.getBody().setAngularVelocity(spin);
 
-
 				// Put it in the entities map and make Networking aware of it.
 				idParts = roid2.getId().split("-");
 				CoreLogic.getComp().getEntitiesMap().put(idParts[1], roid2);
@@ -227,7 +224,6 @@ public class Asteroid extends Entity {
 				sound(0.7f);
 			}
 		} else if (this.type == MEDIUM) {
-
 			// This loop creates particle effects for the exploding Asteroids
 			float temp = (float) (5 + Math.random() % 10);
 			for (int i = 0; i < temp; i++) {
@@ -238,7 +234,8 @@ public class Asteroid extends Entity {
 				CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
 			}
 
-			// Only the player in control of the Asteroids (the Host, or in singleplayer) will
+			// Only the player in control of the Asteroids (the Host, or in
+			// singleplayer) will
 			// spawn Asteroids.
 
 			if (!CoreLogic.multiplayer || CoreLogic.isHost()) {
@@ -253,8 +250,8 @@ public class Asteroid extends Entity {
 
 				// Initial position and force
 				float initForce = (float) (440 + (230 * Math.random()));
-				float x = (float) (initForce * Math.cos(Math.random()*2*Math.PI));
-				float y = (float) (initForce * Math.sin(Math.random()*2*Math.PI));
+				float x = (float) (initForce * Math.cos(Math.random() * 2 * Math.PI));
+				float y = (float) (initForce * Math.sin(Math.random() * 2 * Math.PI));
 
 				// Get it moving by applying the force.
 				Vector2 f = roid1.getBody().getWorldVector(new Vector2(x, y));
@@ -305,10 +302,10 @@ public class Asteroid extends Entity {
 				sound(1f);
 			}
 
-			// This executes if this Asteroid is small, and thus does not spawn any
+			// This executes if this Asteroid is small, and thus does not spawn
+			// any
 			// other Asteroids on destruction
 		} else {
-
 			// This block creates particle effects for the exploding Asteroids
 			float temp = (float) (3 + Math.random() % 10);
 			for (int i = 0; i < temp; i++) {
@@ -323,10 +320,9 @@ public class Asteroid extends Entity {
 		}
 	}
 
-
 	/**
-	 * This method takes a pitch and plays a random Asteroid-destruction noise at
-	 * that pitch.
+	 * This method takes a pitch and plays a random Asteroid-destruction noise
+	 * at that pitch.
 	 * 
 	 * @param pitch
 	 *            Must be between 0.5f and 2.0f.
@@ -337,10 +333,8 @@ public class Asteroid extends Entity {
 	}
 
 	/**
-	 * Returns the enumerated size of the Asteroid.
-	 * 0 = Large
-	 * 1 = Medium
-	 * 2 = Small
+	 * Returns the enumerated size of the Asteroid. 0 = Large 1 = Medium 2 =
+	 * Small
 	 * 
 	 * @return size in int.
 	 */

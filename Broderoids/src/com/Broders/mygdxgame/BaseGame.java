@@ -12,21 +12,19 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import java.util.HashMap;
 
 public class BaseGame extends Game {
-
 	SettingsScreen settingsScreen;
 	public Settings settings;
 
 	public static HashMap<String,Screen> screens;
 
-	public BitmapFont font;	
-
-	public double exitBuffer;		//TODO Ref in Settings
-	public boolean godMode;			//TODO Ref in Settings
+	public BitmapFont font;
+	
+	public double exitBuffer;
 
 	public boolean multiplayer;
 
 	public float bounds;
-	public int gameSize; // multi only
+	public int gameSize;
 	public boolean connected;
 
 	public int asteroidsCount;
@@ -42,14 +40,15 @@ public class BaseGame extends Game {
 		// TODO: Put this in a better place, remove the method
 		CoreLogic.setGame(this);
 
-		exitBuffer = 1;
 		multiplayer = false;
 		bounds = .25f; // max of .5
 		gameSize = 0;
+		exitBuffer= 1;
 
-		font = new BitmapFont(Gdx.files.internal(Settings.data_path
-				+ "smallfonts.fnt"), Gdx.files.internal(Settings.data_path
-						+ "smallfonts_0.png"), false);
+		font = new BitmapFont(Gdx.files.internal(
+				Settings.data_path + "smallfonts.fnt"),
+				Gdx.files.internal(Settings.data_path + "smallfonts_0.png"),
+				false);
 
 		Gdx.input.setCatchBackKey(true);
 
@@ -68,6 +67,7 @@ public class BaseGame extends Game {
 		screens.put("main", new MainMenu(this));
 		screens.put("settings", new SettingsScreen(this));
 		screens.put("scores", new ScoresScreen(this));
+
 		if (connected) {
 			screens.put("host", new MultiHost(this));
 			screens.put("lobby", new MultiLobby(this));

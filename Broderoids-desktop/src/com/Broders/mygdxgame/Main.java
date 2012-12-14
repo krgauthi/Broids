@@ -10,7 +10,7 @@ public class Main {
 		cfg.title = "Broderoids";
 		cfg.useGL20 = false;
 		cfg.samples = 16;
-		cfg.width = 1024;	//1280, 720  1024  576 load resolution from file or settings manager?
+		cfg.width = 1024;
 		cfg.height = 576;
 		
 		

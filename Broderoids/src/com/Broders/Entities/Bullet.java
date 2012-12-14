@@ -25,13 +25,11 @@ public class Bullet extends Entity {
 		super.setColor();
 
 		super.setSprite("bullet");
-		super.getSprite().setOrigin((meter * this.getSize()) / 2,
-				(meter * this.getSize()) / 2);
-		super.getSprite().setSize(meter * this.getSize(),
-				meter * this.getSize());
+		super.getSprite().setOrigin((meter * this.getSize()) / 2, (meter * this.getSize()) / 2);
+		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
 		super.getSprite().setColor(super.getColor());
 
-		//BodyDef
+		// BodyDef
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.KinematicBody;
 		bodDef.linearDamping = 0.0f;
@@ -48,15 +46,13 @@ public class Bullet extends Entity {
 		super.createBody(bodDef, fixDef);
 
 		// Set the velocity
-		float vX = (float) (70 * Math.cos(Math.toRadians(dir)) +
-				super.getOwner().getShip().getLinearVelocity().x);
-		float vY = (float) (70 * Math.sin(Math.toRadians(dir)) +
-				super.getOwner().getShip().getLinearVelocity().y);
+		float vX = (float) (70 * Math.cos(Math.toRadians(dir)) + super.getOwner().getShip().getLinearVelocity().x);
+		float vY = (float) (70 * Math.sin(Math.toRadians(dir)) + super.getOwner().getShip().getLinearVelocity().y);
 		super.body.setLinearVelocity(vX, vY);
 
-		//Set type data
+		// Set type data
 		super.getBody().setUserData(this);
-		
+
 		SoundManager.play("pew", 1f, (float) (0.85f + Math.random() * 0.3));
 	}
 
@@ -74,6 +70,6 @@ public class Bullet extends Entity {
 
 	@Override
 	public void destroy() {
-		
+
 	}
 }

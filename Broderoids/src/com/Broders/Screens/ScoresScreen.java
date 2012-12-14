@@ -16,7 +16,7 @@ public class ScoresScreen implements Screen {
 
 	private SpriteBatch spriteBatch;
 	private BaseGame myGame;
-	private String scores [][];
+	private String scores[][];
 	private BitmapFont font;
 	private float xx;
 	private float yy;
@@ -38,35 +38,34 @@ public class ScoresScreen implements Screen {
 			return;
 		}
 
-		//Make a black background
-		if(Settings.getRetro()){
+		// Make a black background
+		if (Settings.getRetro()) {
 			GL10 g1 = Gdx.graphics.getGL10();
 			Gdx.gl.glClearColor(0, 0, 0, 1);
 			g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		}else{
+		} else {
 			GL10 g1 = Gdx.graphics.getGL10();
-			Gdx.gl.glClearColor(.19f, .19f, .19f, 1f);	 
+			Gdx.gl.glClearColor(.19f, .19f, .19f, 1f);
 			g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		}
 
-		float dpi = Gdx.graphics.getDensity()*160f;
-		float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
-		
+		float dpi = Gdx.graphics.getDensity() * 160f;
+		float inchHeight = ((float) Gdx.graphics.getHeight()) / dpi;
+
 		spriteBatch.begin();
-		font.setScale(2*dpi*(inchHeight/22f)/72f);
+		font.setScale(2 * dpi * (inchHeight / 22f) / 72f);
 		font.draw(spriteBatch, "High Scores", xx * .40f, yy * .98f);
-		font.setScale(dpi*(inchHeight/22f)/72f);
-		for(int i = 0; i < 10; i++){
-			font.draw(spriteBatch, scores[i][0], xx * .05f, yy * (.85f - i*.08f));
-			font.draw(spriteBatch, scores[i][1], xx * .20f, yy * (.85f - i*.08f));
-			font.draw(spriteBatch, scores[i][2], xx * .70f, yy * (.85f - i*.08f));
+		font.setScale(dpi * (inchHeight / 22f) / 72f);
+		for (int i = 0; i < 10; i++) {
+			font.draw(spriteBatch, scores[i][0], xx * .05f, yy * (.85f - i * .08f));
+			font.draw(spriteBatch, scores[i][1], xx * .20f, yy * (.85f - i * .08f));
+			font.draw(spriteBatch, scores[i][2], xx * .70f, yy * (.85f - i * .08f));
 		}
 		spriteBatch.end();
 	}
 
 	public boolean handleInput(float delta) {
-		if (Gdx.input.justTouched() || Gdx.input.isKeyPressed(Keys.BACK) ||
-			Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACKSPACE)) {
+		if (Gdx.input.justTouched() || Gdx.input.isKeyPressed(Keys.BACK) || Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACKSPACE)) {
 			SoundManager.get("click").play(Settings.getSoundVol() * 0.1f);
 			return true;
 		}
@@ -92,7 +91,7 @@ public class ScoresScreen implements Screen {
 
 	@Override
 	public void resume() {
-		
+
 	}
 
 	@Override
@@ -102,7 +101,7 @@ public class ScoresScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-	
+
 	}
 
 }

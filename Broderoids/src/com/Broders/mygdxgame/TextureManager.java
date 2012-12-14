@@ -1,6 +1,5 @@
 package com.Broders.mygdxgame;
 
-
 import java.util.HashMap;
 
 import com.Broders.Logic.Settings;
@@ -16,45 +15,45 @@ public class TextureManager {
 		textures = new HashMap<String, Texture>();
 		sprites = new HashMap<String, Sprite>();
 
-		if(Settings.getRetro()){
+		if (Settings.getRetro()) {
 			String[][] defaultTextures = {
-					//Hud
-					{"healthBar", "data/healthbracket.png"},
-					{"healthBlock", "data/healthbar.png"},
-					{"shieldBar", "data/shieldbracket.png"},
-					{"shieldBlock", "data/shieldbar.png"},
-					{"lives", "data/ship1.png"},
-					{"white", "data/whitebox.png"},
-					{"whitePixel", "data/whitepixel.png"},
+				// Hud
+				{ "healthBar", "data/healthbracket.png" },
+				{ "healthBlock", "data/healthbar.png" },
+				{ "shieldBar", "data/shieldbracket.png" },
+				{ "shieldBlock", "data/shieldbar.png" },
+				{ "lives", "data/ship1.png" },
+				{ "white", "data/whitebox.png" },
+				{ "whitePixel", "data/whitepixel.png" },
 
-					// Android only
-					{"dPad", "data/leftrightpad.png"},
-					{"fireButton", "data/firebutton.png"},
-					{"thrustButton", "data/thrustbutton.png"},
+				// Android only
+				{ "dPad", "data/leftrightpad.png" },
+				{ "fireButton", "data/firebutton.png" },
+				{ "thrustButton", "data/thrustbutton.png" },
 
-					//Menu
-					{"hostGame","data/bttn_host.png"},
-					{"joinGame","data/bttn_join.png"},
-					{"refresh","data/bttn_refresh.png"},
-					{"singlePlayer","data/bttn_singleplayer.png"},
-					{"multiplayer","data/bttn_multiplayer.png"},
-					{"highScores","data/bttn_highscore.png"},
-					{"mainMenu","data/bttn_mainmenu.png"},
-					{"pause","data/bttn_pause.png"},
-					{"quit","data/bttn_quit.png"},
-					{"settings","data/bttn_settings.png"},
-					{"resume","data/bttn_resume.png"},
+				// Menu
+				{ "hostGame", "data/bttn_host.png" },
+				{ "joinGame", "data/bttn_join.png" },
+				{ "refresh", "data/bttn_refresh.png" },
+				{ "singlePlayer", "data/bttn_singleplayer.png" },
+				{ "multiplayer", "data/bttn_multiplayer.png" },
+				{ "highScores", "data/bttn_highscore.png" },
+				{ "mainMenu", "data/bttn_mainmenu.png" },
+				{ "pause", "data/bttn_pause.png" },
+				{ "quit", "data/bttn_quit.png" },
+				{ "settings", "data/bttn_settings.png" },
+				{ "resume", "data/bttn_resume.png" },
 
-					//Title
-					{"titleLeft","data/menu_title1.png"},
-					{"titleRight","data/menu_title2.png"},
-					{"splash","data/brocoders.png"},
+				// Title
+				{ "titleLeft", "data/menu_title1.png" },
+				{ "titleRight", "data/menu_title2.png" },
+				{ "splash", "data/brocoders.png" },
 
-					//Retro Textures
-					{"Ship1","data/retroship1.png"},
-					{"Ship2","data/retroship2.png"},
-					{"Broid","data/retrobroid.png"},
-					{"bullet","data/bullet.png"},
+				// Retro Textures
+				{ "Ship1", "data/retroship1.png" },
+				{ "Ship2", "data/retroship2.png" },
+				{ "Broid", "data/retrobroid.png" },
+				{ "bullet", "data/bullet.png" }
 			};
 
 			for (String[] tex : defaultTextures) {
@@ -62,46 +61,45 @@ public class TextureManager {
 				loadSprite(tex[0]);
 			}
 
-		}else{
+		} else {
 			String[][] defaultTextures = {
-					//Hud
-					{"healthBar", "data/healthbracket.png"},
-					{"healthBlock", "data/healthbar.png"},
-					{"shieldBar", "data/shieldbracket.png"},
-					{"shieldBlock", "data/shieldbar.png"},
-					{"lives", "data/ship1.png"},
-					{"white", "data/whitebox.png"},
-					{"whitePixel", "data/whitepixel.png"},
+				// Hud
+				{ "healthBar", "data/healthbracket.png" },
+				{ "healthBlock", "data/healthbar.png" },
+				{ "shieldBar", "data/shieldbracket.png" },
+				{ "shieldBlock", "data/shieldbar.png" },
+				{ "lives", "data/ship1.png" },
+				{ "white", "data/whitebox.png" },
+				{ "whitePixel", "data/whitepixel.png" },
 
-					// Android only
-					{"dPad", "data/leftrightpad.png"},
-					{"fireButton", "data/firebutton.png"},
-					{"thrustButton", "data/thrustbutton.png"},
+				// Android only
+				{ "dPad", "data/leftrightpad.png" },
+				{ "fireButton", "data/firebutton.png" },
+				{ "thrustButton", "data/thrustbutton.png" },
 
-					//Menu
-					{"hostGame","data/bttn_host.png"},
-					{"joinGame","data/bttn_join.png"},
-					{"refresh","data/bttn_refresh.png"},
-					{"singlePlayer","data/bttn_singleplayer.png"},
-					{"multiplayer","data/bttn_multiplayer.png"},
-					{"highScores","data/bttn_highscore.png"},
-					{"mainMenu","data/bttn_mainmenu.png"},
-					{"pause","data/bttn_pause.png"},
-					{"quit","data/bttn_quit.png"},
-					{"settings","data/bttn_settings.png"},
-					{"resume","data/bttn_resume.png"},
+				// Menu
+				{ "hostGame", "data/bttn_host.png" },
+				{ "joinGame", "data/bttn_join.png" },
+				{ "refresh", "data/bttn_refresh.png" },
+				{ "singlePlayer", "data/bttn_singleplayer.png" },
+				{ "multiplayer", "data/bttn_multiplayer.png" },
+				{ "highScores", "data/bttn_highscore.png" },
+				{ "mainMenu", "data/bttn_mainmenu.png" },
+				{ "pause", "data/bttn_pause.png" },
+				{ "quit", "data/bttn_quit.png" },
+				{ "settings", "data/bttn_settings.png" },
+				{ "resume", "data/bttn_resume.png" },
 
-					//Title
-					{"titleLeft","data/menu_title1.png"},
-					{"titleRight","data/menu_title2.png"},
-					{"splash","data/brocoders.png"},
-					
+				// Title
+				{ "titleLeft", "data/menu_title1.png" },
+				{ "titleRight", "data/menu_title2.png" },
+				{ "splash", "data/brocoders.png" },
 
-					//Game Textures
-					{"Ship1","data/ship1.png"},
-					{"Ship2","data/ship2.png"},
-					{"Broid","data/broid.png"},
-					{"bullet","data/bullet.png"},
+				// Game Textures
+				{ "Ship1", "data/ship1.png" },
+				{ "Ship2", "data/ship2.png" },
+				{ "Broid", "data/broid.png" },
+				{ "bullet", "data/bullet.png" }
 			};
 
 			for (String[] tex : defaultTextures) {
@@ -128,13 +126,13 @@ public class TextureManager {
 		Sprite temp = new Sprite(textures.get(key));
 		sprites.put(key, temp);
 	}
-	
-	public static void reload(BaseGame g){
-		for(String temp : textures.keySet()){
+
+	public static void reload(BaseGame g) {
+		for (String temp : textures.keySet()) {
 			textures.get(temp).dispose();
 			textures.remove(temp);
 		}
-		
+
 		init();
 	}
 

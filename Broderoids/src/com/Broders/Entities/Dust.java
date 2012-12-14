@@ -9,11 +9,11 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
-public class Dust extends Entity{
-	
+public class Dust extends Entity {
+
 	private float age;
 	private static float deathTime = 0.3f;
-	
+
 	public Dust(String id, Player owner, float dir, float x, float y, float vel, Color color) {
 
 		super(id, owner);
@@ -25,14 +25,12 @@ public class Dust extends Entity{
 		super.setColor();
 
 		super.setSprite("bullet");
-		super.getSprite().setOrigin((meter * this.getSize()) / 2,
-				(meter * this.getSize()) / 2);
-		super.getSprite().setSize(meter * this.getSize(),
-				meter * this.getSize());
-		//Trying to add a bit of variety to the color scheme.
+		super.getSprite().setOrigin((meter * this.getSize()) / 2, (meter * this.getSize()) / 2);
+		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
+		// Trying to add a bit of variety to the color scheme.
 		super.setColor(color);
 
-		//BodyDef
+		// BodyDef
 		BodyDef bodDef = new BodyDef();
 		bodDef.type = BodyType.DynamicBody;
 		bodDef.linearDamping = 0.8f;
@@ -48,14 +46,14 @@ public class Dust extends Entity{
 
 		super.createBody(bodDef, fixDef);
 
-		vel = (float) ((vel*0.85f) + Math.random()*(vel*0.3f));
-		
+		vel = (float) ((vel * 0.85f) + Math.random() * (vel * 0.3f));
+
 		// Set the velocity
 		float vX = (float) (vel * Math.cos(Math.toRadians(dir)));
 		float vY = (float) (vel * Math.sin(Math.toRadians(dir)));
 		super.body.setLinearVelocity(vX, vY);
 
-		//Set type data
+		// Set type data
 		super.getBody().setUserData(this);
 	}
 
@@ -66,11 +64,11 @@ public class Dust extends Entity{
 		if (age >= deathTime) {
 			CoreLogic.removeEntity(this);
 		}
-		
+
 	}
 
 	@Override
 	public void destroy() {
-		
+
 	}
 }

@@ -1,4 +1,5 @@
 package com.Broders.mygdxgame;
+
 import java.util.HashMap;
 
 import com.Broders.Logic.Settings;
@@ -17,25 +18,25 @@ public class SoundManager {
 	private static float sv;
 	private static float mv;
 	private static int android;
+
 	public static void init() {
 
-
-		if(Gdx.app.getVersion() > 0)
+		if (Gdx.app.getVersion() > 0)
 			android = 1;
 
 		sounds = new HashMap<String, Sound>();
 
 		String[][] defaultSounds = {
-				{"death","data/shipboom.mp3"},
-				{"roidBreak1", "data/asteroidboom1.wav"},
-				{"roidBreak2", "data/asteroidboom2.wav"},
-				{"roidBreak3", "data/asteroidboom3.wav"},
-				{"pew","data/shot.mp3"},
-				{"zoom", "data/thrust.mp3"},
-				{"click", "data/menushift.mp3"},
-				{"respawn", "data/shiprespawn.mp3"},
-				{"start", "data/roundstart.wav"},
-				{"error", "data/error.wav"}
+			{ "death", "data/shipboom.mp3" },
+			{ "roidBreak1", "data/asteroidboom1.wav" },
+			{ "roidBreak2", "data/asteroidboom2.wav" },
+			{ "roidBreak3", "data/asteroidboom3.wav" },
+			{ "pew", "data/shot.mp3" },
+			{ "zoom", "data/thrust.mp3" },
+			{ "click", "data/menushift.mp3" },
+			{ "respawn", "data/shiprespawn.mp3" },
+			{ "start", "data/roundstart.wav" },
+			{ "error", "data/error.wav" }
 		};
 
 		for (String[] noise : defaultSounds) {
@@ -44,7 +45,7 @@ public class SoundManager {
 		}
 
 		update();
-		//if android
+
 		if (android == 1) {
 			music = Gdx.audio.newMusic(Gdx.files.internal("data/broderoids.mp3"));
 			music.play();
@@ -96,7 +97,7 @@ public class SoundManager {
 		if (android == 1) {
 			music.stop();
 			music.dispose();
-		} else { 
+		} else {
 			muzak.stop();
 			muzak.dispose();
 		}
@@ -117,7 +118,7 @@ public class SoundManager {
 
 	public static void setMusicPitch(float pitch) {
 		update();
-		if (android != 1){
+		if (android != 1) {
 			muzak.setPitch(muzakId, pitch);
 		}
 	}

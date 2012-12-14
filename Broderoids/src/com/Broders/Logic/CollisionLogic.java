@@ -36,12 +36,12 @@ public class CollisionLogic implements ContactListener {
 			return;
 		}
 
-		//Multiplayer
+		// Multiplayer
 		if (CoreLogic.multiplayer && CoreLogic.isHost()) {
 			Net.collision(eA, eB);
 		}
 
-		//Single Player
+		// Single Player
 		else if (!CoreLogic.getGame().multiplayer) {
 			// Ship-Asteroid
 			if (eA instanceof Ship && eB instanceof Asteroid && !((Ship) eA).isInvincible()) {
@@ -90,12 +90,8 @@ public class CollisionLogic implements ContactListener {
 			eB = (Entity) bB.getUserData();
 		}
 
-		//Collisions to ignore: invincible ships and bullets
-		if ((eA instanceof Ship && ((Ship)eA).isInvincible()) ||
-				(eB instanceof Ship && ((Ship)eB).isInvincible()) ||
-				eA instanceof Bullet || eB instanceof Bullet	||
-				eA instanceof Dust 	 || eB instanceof Dust)
-		{
+		// Collisions to ignore: invincible ships and bullets
+		if ((eA instanceof Ship && ((Ship) eA).isInvincible()) || (eB instanceof Ship && ((Ship) eB).isInvincible()) || eA instanceof Bullet || eB instanceof Bullet || eA instanceof Dust || eB instanceof Dust) {
 
 			contact.setEnabled(false);
 		}
@@ -109,25 +105,24 @@ public class CollisionLogic implements ContactListener {
 
 	}
 
-	public static void bulletAsteroid(Entity bullet, int score){
+	public static void bulletAsteroid(Entity bullet, int score) {
 		bullet.getOwner().modScore(score);
 		CoreLogic.removeEntity(bullet);
 	}
 
-	public static void asteroidBullet(Entity asteroid){
+	public static void asteroidBullet(Entity asteroid) {
 		CoreLogic.removeEntity(asteroid);
 	}
 
 	public static void shipDanger(Entity ship) {
-		if (CoreLogic.multiplayer){
-			
+		if (CoreLogic.multiplayer) {
+
 			ship.getOwner().takeDamage(10);
 			Net.modifyPlayer(ship.getOwner());
-		}
-		else
+		} else
 			CoreLogic.removeEntity(ship);
 	}
-	
+
 	public static void bulletShip(Entity bullet, int score) {
 		bullet.getOwner().modScore(score);
 		CoreLogic.removeEntity(bullet);
@@ -138,18 +133,18 @@ public class CollisionLogic implements ContactListener {
 	 * 
 	 * @param A
 	 * @param B
-	 * @return int[]
-	 * 			Index 0 is damage to Entity A, Index 1 is damage to Entity B
+	 * @return int[] Index 0 is damage to Entity A, Index 1 is damage to Entity
+	 *         B
 	 */
 	public static int calculateDamage(Body A, Body B) {
 		float x = A.getLinearVelocity().x - B.getLinearVelocity().x;
 		float y = A.getLinearVelocity().y - B.getLinearVelocity().y;
-		float vel = (float) Math.sqrt(x*x + y*y);
-		int damages = (int) Math.round(vel*vel);
-		damages = (int) Math.round(Math.pow(damages, 0.48) * Math.log10(B.getMass()*10)/2);
+		float vel = (float) Math.sqrt(x * x + y * y);
+		int damages = (int) Math.round(vel * vel);
+		damages = (int) Math.round(Math.pow(damages, 0.48) * Math.log10(B.getMass() * 10) / 2);
 
-		//int[] damages = {Math.round((B.getMass() * vel*vel)/2),
-		//				Math.round((A.getMass() * vel*vel)/2)};
+		// int[] damages = {Math.round((B.getMass() * vel*vel)/2),
+		// Math.round((A.getMass() * vel*vel)/2)};
 
 		return damages;
 	}

@@ -13,13 +13,13 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class Asteroid extends Entity {
-	
+
 	public static final int LARGE = 0;
 	public static final int MEDIUM = 1;
 	public static final int SMALL = 2;
 
 	private int type;
-	
+
 	public int extra() {
 		return type;
 	}
@@ -33,7 +33,7 @@ public class Asteroid extends Entity {
 
 		FixtureDef fixDef = new FixtureDef();
 		CircleShape shape = new CircleShape();
-		
+
 		this.type = type;
 		if (this.type == SMALL) {
 			super.setSize(3.75f);
@@ -64,21 +64,17 @@ public class Asteroid extends Entity {
 		bodDef.angle = (float) ((2 * MathUtils.PI) * Math.random());
 		bodDef.allowSleep = false;
 		super.createBody(bodDef, fixDef);
-		
+
 		// sprite
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
-		super.getSprite().setOrigin(meter * (this.getSize() / 2),
-				meter * (this.getSize() / 2));
-		super.getSprite().setSize(meter * this.getSize(),
-				meter * this.getSize());
+		super.getSprite().setOrigin(meter * (this.getSize() / 2), meter * (this.getSize() / 2));
+		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
 		super.getSprite().setColor(this.getColor());
 
 		// Set type data
 		super.getBody().setUserData(this);
 	}
-
-	
 
 	@Override
 	public void update() {
@@ -94,16 +90,15 @@ public class Asteroid extends Entity {
 		float y2;
 		float dir;
 		if (this.type == LARGE) {
-			float temp = (float) (10+Math.random()%10);
-			for(int i = 0; i < temp;i++){
-				temp = 360/temp;
-				
-				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), 
-						(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 25, getColor());
+			float temp = (float) (10 + Math.random() % 10);
+			for (int i = 0; i < temp; i++) {
+				temp = 360 / temp;
+
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float) (Math.random() % 10) + (temp * i), this.getX(), this.getY(), 25, getColor());
 				String[] idParts = D.getId().split("-");
 				CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
 			}
-			
+
 			sound(1f);
 			if (!CoreLogic.multiplayer || CoreLogic.isHost()) {
 				dir = (float) Math.toRadians(this.getAngle());
@@ -111,47 +106,45 @@ public class Asteroid extends Entity {
 				x2 = (float) (this.getX() + 7.5 * Math.cos(dir));
 				y1 = (float) (this.getY() - 7.5 * Math.sin(dir));
 				y2 = (float) (this.getY() - 7.5 * Math.sin(dir));
-	
-	//Medium Roid1
-				roid1 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, x1,
-						y1);
-	
+
+				// Medium Roid1
+				roid1 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, x1, y1);
+
 				float initForce = (float) (3200 + (3000 * Math.random()));
 				float x = (float) (initForce * Math.cos(dir));
 				float y = (float) (initForce * Math.sin(dir));
-	
+
 				Vector2 f = roid1.getBody().getWorldVector(new Vector2(x, y));
-				Vector2 p = roid1.getBody().getWorldPoint(
-						roid1.getBody().getLocalCenter());
+				Vector2 p = roid1.getBody().getWorldPoint(roid1.getBody().getLocalCenter());
 				roid1.getBody().applyForce(f, p);
-	
+
 				float spin = (float) (25 * Math.random());
 				if (Math.random() >= 0.5f)
 					spin *= -1;
 				roid1.getBody().setAngularVelocity(spin);
-				
+
 				String[] idParts = roid1.getId().split("-");
 				CoreLogic.getComp().getEntitiesMap().put(idParts[1], roid1);
 				if (CoreLogic.multiplayer && Net.ownedByLocal(roid1.getId())) {
 					Net.createEntity(roid1);
 				}
-	
-	//Medium Roid2
+
+				// Medium Roid2
 				roid2 = new Asteroid(MEDIUM, this.owner.nextId(), this.owner, x2, y2);
-	
+
 				initForce = (float) (3200 + (3000 * Math.random()));
 				x = (float) (initForce * Math.cos(dir));
 				y = (float) (initForce * Math.sin(dir));
-	
+
 				f = roid2.getBody().getWorldVector(new Vector2(x, y));
 				p = roid2.getBody().getWorldPoint(roid2.getBody().getLocalCenter());
 				roid2.getBody().applyForce(f, p);
-	
+
 				spin = (float) (25 * Math.random());
 				if (Math.random() >= 0.5f)
 					spin *= -1;
 				roid1.getBody().setAngularVelocity(spin);
-	
+
 				idParts = roid2.getId().split("-");
 				CoreLogic.getComp().getEntitiesMap().put(idParts[1], roid2);
 				if (CoreLogic.multiplayer && Net.ownedByLocal(roid2.getId())) {
@@ -159,99 +152,95 @@ public class Asteroid extends Entity {
 				}
 			}
 		} else if (this.type == MEDIUM) {
-			
-			sound(1);
-			
-			float temp = (float) (5+Math.random()%10);
-			for(int i = 0; i < temp;i++){
-				temp = 360/temp;
 
-				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(),
-						(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 20, getColor());
+			sound(1);
+
+			float temp = (float) (5 + Math.random() % 10);
+			for (int i = 0; i < temp; i++) {
+				temp = 360 / temp;
+
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float) (Math.random() % 10) + (temp * i), this.getX(), this.getY(), 20, getColor());
 				String[] idParts = D.getId().split("-");
 				CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
 			}
 			this.getX();
-			
+
 			if (!CoreLogic.multiplayer || CoreLogic.isHost()) {
 				dir = (float) Math.toRadians(this.getAngle());
 				x1 = (float) (this.getX() + 3.75 * Math.cos(dir));
 				x2 = (float) (this.getX() + 3.75 * Math.cos(dir));
 				y1 = (float) (this.getY() - 3.75 * Math.sin(dir));
 				y2 = (float) (this.getY() - 3.75 * Math.sin(dir));
-	
-	//Small roid1
+
+				// Small roid1
 				roid1 = new Asteroid(SMALL, this.owner.nextId(), this.owner, x1, y1);
-	
+
 				float initForce = (float) (440 + (230 * Math.random()));
-				float x = (float) (initForce * Math.cos(Math.random()*2*Math.PI));
-				float y = (float) (initForce * Math.sin(Math.random()*2*Math.PI));
-	
+				float x = (float) (initForce * Math.cos(Math.random() * 2 * Math.PI));
+				float y = (float) (initForce * Math.sin(Math.random() * 2 * Math.PI));
+
 				Vector2 f = roid1.getBody().getWorldVector(new Vector2(x, y));
-				Vector2 p = roid1.getBody().getWorldPoint(
-						roid1.getBody().getLocalCenter());
+				Vector2 p = roid1.getBody().getWorldPoint(roid1.getBody().getLocalCenter());
 				roid1.getBody().applyForce(f, p);
-	
+
 				float spin = (float) (20 * Math.random());
 				if (Math.random() >= 0.5f)
 					spin *= -1;
 				roid1.getBody().setAngularVelocity(spin);
-				
+
 				String[] idParts = roid1.getId().split("-");
 				CoreLogic.getComp().getEntitiesMap().put(idParts[1], roid1);
 				if (CoreLogic.multiplayer && Net.ownedByLocal(roid1.getId())) {
 					Net.createEntity(roid1);
 				}
-	
-	//Small Roid2	
+
+				// Small Roid2
 				roid2 = new Asteroid(SMALL, this.owner.nextId(), this.owner, x2, y2);
-	
+
 				initForce = (float) (420 + (220 * Math.random()));
 				x = (float) (initForce * Math.cos(dir));
 				y = (float) (initForce * Math.sin(dir));
-	
+
 				f = roid2.getBody().getWorldVector(new Vector2(x, y));
 				p = roid2.getBody().getWorldPoint(roid2.getBody().getLocalCenter());
 				roid2.getBody().applyForce(f, p);
-	
+
 				spin = (float) (300 + (250 * Math.random()));
 				if (Math.random() >= 0.5f)
 					spin *= -1;
 				roid2.getBody().applyTorque(spin);
-				
+
 				idParts = roid2.getId().split("-");
 				CoreLogic.getComp().getEntitiesMap().put(idParts[1], roid2);
-				
+
 				if (CoreLogic.multiplayer && Net.ownedByLocal(roid2.getId())) {
 					Net.createEntity(roid2);
 				}
 			}
 		} else {
-			
-			sound(1.6f);
-			
-			float temp = (float) (3+Math.random()%10);
-			for(int i = 0; i < temp;i++){
-				temp = 360/temp;
 
-				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(),
-						(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 15, getColor());
+			sound(1.6f);
+
+			float temp = (float) (3 + Math.random() % 10);
+			for (int i = 0; i < temp; i++) {
+				temp = 360 / temp;
+
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float) (Math.random() % 10) + (temp * i), this.getX(), this.getY(), 15, getColor());
 				String[] idParts = D.getId().split("-");
 				CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
 
 			}
 		}
 	}
-	
+
 	private void sound(float pitch) {
 		int pick = (int) Math.floor(Math.random() * 3);
 		SoundManager.play("roidBreak" + Integer.toString(pick + 1), 1f, pitch);
 	}
-	
+
 	/**
-	 * 0 = Large
-	 * 1 = Medium
-	 * 2 = Small
+	 * 0 = Large 1 = Medium 2 = Small
+	 * 
 	 * @return
 	 */
 	public int getType() {

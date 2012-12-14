@@ -21,12 +21,11 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
  */
 public abstract class Entity {
 
-	//private String ent;
-	//private String type;
+	// private String ent;
+	// private String type;
 	protected Body body;
 	private String spriteID;
 	private boolean dead;
-
 
 	// Extras
 	private float size;
@@ -35,12 +34,12 @@ public abstract class Entity {
 
 	protected String id;
 	protected Player owner;
-	
+
 	public Entity(String id, Player owner) {
 		this.id = id;
 		this.owner = owner;
 		dead = false;
-		//System.out.println(id);
+		// System.out.println(id);
 	}
 
 	public String getId() {
@@ -55,7 +54,7 @@ public abstract class Entity {
 	public Body getBody() {
 		return this.body;
 	}
-	
+
 	public Player getOwner() {
 		return this.owner;
 	}
@@ -145,7 +144,7 @@ public abstract class Entity {
 	public void setColor() {
 		this.color = this.owner.getColor();
 	}
-	
+
 	public void setColor(Color color) {
 		this.color = color;
 	}
@@ -165,19 +164,14 @@ public abstract class Entity {
 		float posX;
 		float posY;
 
-		posX = screenWidth
-				* ((x - CoreLogic.getViewPortX()) / CoreLogic.getWidthScreen());
-		posY = screenHeight
-				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
-		
+		posX = screenWidth * ((x - CoreLogic.getViewPortX()) / CoreLogic.getWidthScreen());
+		posY = screenHeight * ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
+
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
-		if (posX > -(this.getSize() * 8)
-				&& posX < (screenWidth + (this.getSize() * 8))
-				&& posY > -(this.getSize() * 8)
-				&& posY < (screenHeight + (this.getSize() * 8))) {
-			this.getSprite().setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
-			this.getSprite().setSize(meter * this.getSize(),meter * this.getSize());
+		if (posX > -(this.getSize() * 8) && posX < (screenWidth + (this.getSize() * 8)) && posY > -(this.getSize() * 8) && posY < (screenHeight + (this.getSize() * 8))) {
+			this.getSprite().setOrigin((meter * this.getSize()) / 2, (meter * this.getSize()) / 2);
+			this.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
 			this.getSprite().setColor(this.getColor());
 			this.getSprite().setPosition(posX, posY);
 			this.getSprite().setRotation(this.getBody().getAngle());
@@ -192,9 +186,9 @@ public abstract class Entity {
 	 * 
 	 * @see #getIdentity()
 	 */
-	//public String toString() {
-	//	return this.type;
-	//}
+	// public String toString() {
+	// return this.type;
+	// }
 
 	/**
 	 * Determines the equality between this Entity and the given Entity
@@ -203,9 +197,9 @@ public abstract class Entity {
 	 *            Type to compare against
 	 * @return True if entities are the same, false otherwise
 	 */
-	//public boolean equals(Entity entity) {
-	//	return entity.toString().equals(this.type);
-	//}
+	// public boolean equals(Entity entity) {
+	// return entity.toString().equals(this.type);
+	// }
 
 	/**
 	 * Teleports this entity to the specified coordinates on the screen. This is
@@ -216,10 +210,10 @@ public abstract class Entity {
 	 * @param y
 	 *            Y-Coordinate in the world (meters)
 	 */
-	public void teleport(float x, float y) {		
+	public void teleport(float x, float y) {
 		this.body.setTransform(x, y, this.body.getAngle());
 	}
-	
+
 	public float getAngularVelocity() {
 		return this.body.getAngularVelocity();
 	}
@@ -244,8 +238,7 @@ public abstract class Entity {
 	 * @param vY
 	 *            y-component of the entity's velocity
 	 */
-	public void teleport(float x, float y, float angle, float angleVel,
-			float vX, float vY) {
+	public void teleport(float x, float y, float angle, float angleVel, float vX, float vY) {
 
 		// Creates a new Body with the info in the given parameters
 		this.body.setTransform(x, y, this.body.getAngle());
@@ -254,25 +247,25 @@ public abstract class Entity {
 	}
 
 	public abstract void update();
-	
+
 	public int extra() {
 		return 0;
 	}
 
 	public abstract void destroy();
 
-	public void setPoints(int v){
+	public void setPoints(int v) {
 		points = v;
 	}
-	
-	public int getPoints(){
+
+	public int getPoints() {
 		return points;
 	}
-	
+
 	public boolean isDead() {
 		return this.dead;
 	}
-	
+
 	public void setDead() {
 		this.dead = true;
 	}

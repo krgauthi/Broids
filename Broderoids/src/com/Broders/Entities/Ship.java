@@ -80,8 +80,8 @@ public class Ship extends Entity {
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
 		super.setSprite("Ship1");
-		//super.getSprite().flip(false, true);
-		super.getSprite().setOrigin((meter * this.getSize()) / 2,(meter * this.getSize()) / 2);
+		// super.getSprite().flip(false, true);
+		super.getSprite().setOrigin((meter * this.getSize()) / 2, (meter * this.getSize()) / 2);
 		super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
 		super.getSprite().setColor(super.getColor());
 
@@ -90,12 +90,12 @@ public class Ship extends Entity {
 		this.smokeInterval = 0;
 		this.shieldRegen = 0;
 
-		//TextureManager.getSprites("Ship2").flip(false, true);
+		// TextureManager.getSprites("Ship2").flip(false, true);
 
-		TextureManager.getSprites("Ship2").setOrigin((meter * this.getSize()) / 2,	(meter * this.getSize()) / 2);
+		TextureManager.getSprites("Ship2").setOrigin((meter * this.getSize()) / 2, (meter * this.getSize()) / 2);
 		TextureManager.getSprites("Ship2").setSize(meter * this.getSize(), meter * this.getSize());
 
-		//Set type data
+		// Set type data
 		super.getBody().setUserData(this);
 		zoom = SoundManager.get("zoom");
 	}
@@ -116,15 +116,15 @@ public class Ship extends Entity {
 	 *            True to enable, false to disable
 	 */
 	public void setThrust(boolean bool) {
-		
+
 		if (!this.thrustLast && !this.thrust && bool) {
 			zoomId = zoom.play();
 			zoom.setVolume(zoomId, Settings.getSoundVol());
 			zoom.setLooping(zoomId, true);
-		} else if(!this.thrustLast && !this.thrust && !bool){
+		} else if (!this.thrustLast && !this.thrust && !bool) {
 			zoom.stop();
 		}
-		
+
 		this.thrustLast = this.thrust;
 		this.thrust = bool;
 
@@ -172,27 +172,24 @@ public class Ship extends Entity {
 		float posX;
 		float posY;
 
-		posX = screenWidth
-				* ((x - CoreLogic.getViewPortX()) / CoreLogic.getWidthScreen());
-		posY = screenHeight
-				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
+		posX = screenWidth * ((x - CoreLogic.getViewPortX()) / CoreLogic.getWidthScreen());
+		posY = screenHeight * ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
 
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
-		if(posX > -this.getSize()*8 && posX < (screenWidth+this.getSize()*8) 
-				&& posY > -this.getSize()*8 && posY < (screenHeight+this.getSize()*8)){
+		if (posX > -this.getSize() * 8 && posX < (screenWidth + this.getSize() * 8) && posY > -this.getSize() * 8 && posY < (screenHeight + this.getSize() * 8)) {
 
 			if (this.getThrust()) {
 				TextureManager.getSprites("Ship2").setSize(meter * this.getSize(), meter * this.getSize());
-				TextureManager.getSprites("Ship2").setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
+				TextureManager.getSprites("Ship2").setOrigin((meter * this.getSize()) / 2, (meter * this.getSize()) / 2);
 				TextureManager.getSprites("Ship2").setColor(this.getColor());
 				TextureManager.getSprites("Ship2").setPosition(posX, posY);
-				TextureManager.getSprites("Ship2").setRotation((float) super.getAngle()+180f);
+				TextureManager.getSprites("Ship2").setRotation((float) super.getAngle() + 180f);
 				TextureManager.getSprites("Ship2").draw(sb);
 
 			} else {
-				super.getSprite().setSize(meter * this.getSize(),meter * this.getSize());
-				super.getSprite().setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
+				super.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
+				super.getSprite().setOrigin((meter * this.getSize()) / 2, (meter * this.getSize()) / 2);
 				super.getSprite().setColor(super.getColor());
 				super.getSprite().setPosition(posX, posY);
 				super.getSprite().setRotation((float) super.getAngle() + 180);
@@ -218,7 +215,7 @@ public class Ship extends Entity {
 			if (health <= 5)
 				smoke = 0.05f;
 
-			smokeInterval +=  Gdx.graphics.getDeltaTime();
+			smokeInterval += Gdx.graphics.getDeltaTime();
 
 			if (smokeInterval >= smoke) {
 				float dir = (float) ((super.getAngle() + 90) + (Math.random() * 30 - 15));
@@ -229,8 +226,7 @@ public class Ship extends Entity {
 				if (fire > 0.15 && fire < 0.3)
 					color.set(Color.RED);
 
-				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), dir ,
-						this.getX(), this.getY(), 5, color);
+				Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), dir, this.getX(), this.getY(), 5, color);
 				String[] idParts = D.getId().split("-");
 				CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
 
@@ -241,7 +237,7 @@ public class Ship extends Entity {
 
 	@Override
 	public void destroy() {
-		if(CoreLogic.multiplayer){ 
+		if (CoreLogic.multiplayer) {
 			this.getOwner().modScore(-500);
 			this.getOwner().modBonus(1.0f);
 		}
@@ -249,27 +245,26 @@ public class Ship extends Entity {
 
 		SoundManager.play("death", 1f, 0.85f);
 		zoom.stop();
-		float temp = (float) (10+Math.random()%10);
+		float temp = (float) (10 + Math.random() % 10);
 		setThrust(false);
 		SoundManager.play("death", 1f, 0.85f);
-		for(int i = 0; i < temp;i++){
-			temp = 360/temp;
+		for (int i = 0; i < temp; i++) {
+			temp = 360 / temp;
 
-			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), 
-					(float)(Math.random()%10)+(temp*i), this.getX(), this.getY(), 30, super.getColor());
+			Dust D = new Dust(CoreLogic.getScratch().nextId(), CoreLogic.getScratch(), (float) (Math.random() % 10) + (temp * i), this.getX(), this.getY(), 30, super.getColor());
 			String[] idParts = D.getId().split("-");
 			CoreLogic.getScratch().getEntitiesMap().put(idParts[1], D);
 		}
 	}
 
-	public void setInvincible(boolean b){
+	public void setInvincible(boolean b) {
 		invincible = b;
 	}
 
-	public boolean isInvincible(){
+	public boolean isInvincible() {
 		return invincible;
 	}
-	
+
 	public void killZoom() {
 		zoom.stop();
 	}

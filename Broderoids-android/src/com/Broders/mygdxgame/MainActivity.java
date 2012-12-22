@@ -12,7 +12,6 @@ public class MainActivity extends AndroidApplication {
         
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
         cfg.useGL20 = false;
-        cfg.numSamples = 16;
         
         initialize(new BaseGame(), cfg);
     }

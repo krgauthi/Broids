@@ -241,14 +241,14 @@ public class MultiHost implements Screen {
 					int x;
 					int y;
 					if (worldSize == 0) {
-						x = 160;
-						y = (int) ((160f) * (((float) Settings.getHeight()) / ((float) Settings.getWidth())));
+						x = 256;
+						y = 256;
 					} else if (worldSize == 1) {
-						x = 500;
-						y = 500;
+						x = 512;
+						y = 512;
 					} else {
-						x = 1000;
-						y = 1000;
+						x = 1024;
+						y = 1024;
 					}
 					// TODO: Pass the right values
 					Screen s = Net.newGame(this.gameName, limit, x, y, this.password);

@@ -45,8 +45,8 @@ public class Settings {
 	public static void load() {
 		int bro = (int) (defaultUsernames.length * Math.random());
 		username = prefs.getString("username", defaultUsernames[bro]);
-		shipColor = colorFromHexString("FF" + prefs.getString("shipColor", "00FF00"));
-		worldColor = colorFromHexString("FF" + prefs.getString("worldColor", "44DDEE"));
+		shipColor = colorFromHexString("FF" + prefs.getString("shipColor", "FFFFFF"));
+		worldColor = colorFromHexString("FF" + prefs.getString("worldColor", "FFFFFF"));
 		if (Gdx.app.getVersion() > 0) {
 			width = prefs.getInteger("width", Gdx.graphics.getWidth());
 			height = prefs.getInteger("height", Gdx.graphics.getHeight());
@@ -61,7 +61,7 @@ public class Settings {
 		epileptic = prefs.getBoolean("epileptic", false);
 		retro = prefs.getBoolean("retro", false);
 		
-		setNameDis(true);
+		setNameDis(false);
 
 	}
 

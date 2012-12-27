@@ -121,8 +121,8 @@ public class CoreLogic {
 		invulnFlash = 0;
 		flashing = false;
 
-		widthScreen = 160;
-		heightScreen = (160f) * (((float) Settings.getHeight()) / ((float) Settings.getWidth()));
+		widthScreen = 100;
+		heightScreen = (100) * (((float) Settings.getHeight()) / ((float) Settings.getWidth()));
 
 		if (widthIn != 0.0) {
 			width = widthIn;

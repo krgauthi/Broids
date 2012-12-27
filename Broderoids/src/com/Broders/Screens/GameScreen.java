@@ -78,6 +78,8 @@ public class GameScreen implements Screen {
 
 		xx = Settings.getWidth();
 		yy = Settings.getHeight();
+		
+
 
 		// this.myGame.epileptic = false;
 		rand = new Random();

@@ -206,6 +206,8 @@ public class Ship extends Entity {
 	 */
 	@Override
 	public void Draw(SpriteBatch sb) {
+		
+		
 
 		//Dimensions of the game area.
 		float screenWidth = Gdx.graphics.getWidth();
@@ -228,6 +230,14 @@ public class Ship extends Entity {
 		//Determines if the Ship is within the edges of the screen.
 		if (posX > -this.getSize() * 8 && posX < (screenWidth + this.getSize() * 8) && posY > -this.getSize() * 8 && posY < (screenHeight + this.getSize() * 8)) {
 
+			if(Settings.isNameDis()){
+				CoreLogic.getGame().font.setColor(this.getOwner().getColor());
+				float dpi = Gdx.graphics.getDensity() * 160f;
+				float inchHeight = ((float) Gdx.graphics.getHeight()) / dpi;
+				CoreLogic.getGame().font.setScale(0.50f * dpi * (inchHeight / 22f) / 72f);
+				CoreLogic.getGame().font.draw(sb, this.getOwner().getName(), posX, posY+(meter*10));
+			}
+			
 			Sprite image;
 			//Sets the properties of the Sprite to be drawn, depending upon the thrusting
 			//state of the Ship.			

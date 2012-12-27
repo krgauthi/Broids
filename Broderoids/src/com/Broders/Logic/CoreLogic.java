@@ -37,7 +37,7 @@ public class CoreLogic {
 	protected static int clientId;
 
 	private static int round;
-	// private static boolean paused;
+	private static int oneUp;
 
 	private static boolean host;
 	private static float delay;
@@ -112,6 +112,7 @@ public class CoreLogic {
 
 		bulletCooldown = 0;
 		round = -1;
+		oneUp = 10000;
 
 		respawnTimer = -10f;
 		invincibleTimer = -10f;
@@ -329,6 +330,16 @@ public class CoreLogic {
 			}
 
 		}
+		
+		//1up
+		if(local.getScore() >= oneUp){
+			oneUp += 10000;
+			local.modLives(1);
+		}
+		
+		
+		
+		//Cleanup
 		createPlayerQueue();
 		createEntityQueue();
 		cleanEntities();

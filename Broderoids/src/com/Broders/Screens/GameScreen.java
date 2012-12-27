@@ -31,6 +31,7 @@ public class GameScreen implements Screen {
 
 	private float gameOver;
 
+
 	private SpriteBatch spriteBatch;
 
 	private Tail debug1;
@@ -55,12 +56,6 @@ public class GameScreen implements Screen {
 		this.pauseWait = 0;
 
 		this.gameOver = 0;
-
-		if (this.multiplayer) {
-			System.out.println("Multi");
-		} else {
-			System.out.println("Single");
-		}
 
 		if (this.multiplayer) {
 			CoreLogic.setClientId(id2);
@@ -149,7 +144,7 @@ public class GameScreen implements Screen {
 		float dpi = Gdx.graphics.getDensity() * 160f;
 		float inchHeight = ((float) Gdx.graphics.getHeight()) / dpi;
 		myGame.font.setScale(0.55f * dpi * (inchHeight / 22f) / 72f);
-
+		myGame.font.setColor(Color.WHITE);
 		if (multiplayer) {
 			// Draw HUD
 			TextureManager.getSprites("healthBar").draw(spriteBatch);

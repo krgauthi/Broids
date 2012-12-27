@@ -31,6 +31,7 @@ public class Settings {
 	private static int difficulty;
 	private static boolean epileptic;
 	private static boolean retro;
+	private static boolean nameDis; 		//TODO option to change
 
 	private static String[] defaultUsernames = {
 	"Bro", "Broski", "Bromo", "Brotien", "Brodeo", "Broku", "Brohan", "Brochill", "Brosicle", "Broseph", "Brocean", "Brotastic", "Brofessor", "Han Brolo", "Brosideon", "Broba Fett", "Brohemian", "Brotato Chip", "Brohammad", "Brohan Solo", "Bro Montana", "Bromosexual", "Bromosapien", "Brotien Shake", "Brorontosaurus", "Broseph Stalin", "Abroham Lincoln", "Brorack Brobama", "Broseph Goebbels", "Brorannasarus Rex", "Edgar Allen Bro", "Luke Browalker", "Brolbo Baggins", "Brodo Baggins", "Tron: Brogacy", "Doctor Bro", "Darth Broder", "BroNotFoundException", };
@@ -59,6 +60,8 @@ public class Settings {
 		debug = prefs.getBoolean("debug", false);
 		epileptic = prefs.getBoolean("epileptic", false);
 		retro = prefs.getBoolean("retro", false);
+		
+		setNameDis(true);
 
 	}
 
@@ -219,6 +222,14 @@ public class Settings {
 		}
 
 		return colorFromHex(Long.parseLong(s, 16));
+	}
+
+	public static boolean isNameDis() {
+		return nameDis;
+	}
+
+	public static void setNameDis(boolean nameDis) {
+		Settings.nameDis = nameDis;
 	}
 
 }

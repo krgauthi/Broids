@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Color;
 public class Player {
 	private int id;
 
+	private String userName;
 	private Color playerColor;
 	protected HashMap<String, Entity> entities;
 	private Ship playerShip;
@@ -42,6 +43,8 @@ public class Player {
 		lives = 3;
 		bonus = 1.0f;
 		score = 0;
+		
+		
 
 		if (local) {
 			playerColor = Settings.getShipColor();
@@ -51,6 +54,7 @@ public class Player {
 			String[] idParts = sid.split("-");
 			playerShip = new Ship(sid, this, CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
 			entities.put(idParts[1], playerShip);
+			userName = Settings.getUsername();
 
 			if (CoreLogic.multiplayer) {
 				Net.createEntity(playerShip);
@@ -166,5 +170,13 @@ public class Player {
 		}
 		modShield(0 - damage);
 		System.out.println(shield + " " + health);
+	}
+
+	public String getName() {
+		return userName;
+	}
+
+	public void setName(String name) {
+		this.userName = name;
 	}
 }

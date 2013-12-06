@@ -25,121 +25,100 @@ public class SettingsScreen implements Screen {
 
 	private SpriteBatch spriteBatch;
 
-	private int screenResSelection;
-	private int[][] screenResOptions = {{1024, 768}, {1024, 576},
-			{640, 480}, {600, 800}}; // will be two separate integers
-
 	private BitmapFont font;
 
 	private double perc_X;
-	private double perc_Y;	
+	private double perc_Y;
 
 	public SettingsScreen(BaseGame g) {
 		this.game = g;
 		spriteBatch = new SpriteBatch();
-		font = new BitmapFont();	
+		font = new BitmapFont();
 	}
 
 	@Override
 	public void render(float delta) {
 		handleInput(delta);
 		update(delta);
-		paint(delta);		
+		paint(delta);
 	}
 
 	private void paint(float delta) {
 
 		spriteBatch.begin();
 
-		if(Settings.getRetro()){
+		if (Settings.getRetro()) {
 			GL10 gl = Gdx.graphics.getGL10();
 			Gdx.gl.glClearColor(0, 0, 0, 1);
 			gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		}else{
+		} else {
 			GL10 g1 = Gdx.graphics.getGL10();
-			Gdx.gl.glClearColor(.19f, .19f, .19f, 1f);	 
+			Gdx.gl.glClearColor(.19f, .19f, .19f, 1f);
 			g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		}
 
 		// Debug Text
 
 		if (Settings.getDebug()) {
-			font.draw(spriteBatch, Settings.getWidth() + " x " + Settings.getHeight(), Settings.getWidth() * .01f,
-					Settings.getHeight() * .94f);
-			font.draw(spriteBatch, perc_X + " " + perc_Y, Settings.getWidth() * .01f,
-					Settings.getHeight() * .99f);
+			font.draw(spriteBatch, Settings.getWidth() + " x " + Settings.getHeight(), Settings.getWidth() * .01f, Settings.getHeight() * .94f);
+			font.draw(spriteBatch, perc_X + " " + perc_Y, Settings.getWidth() * .01f, Settings.getHeight() * .99f);
 		}
 
 		// Option Texts
 
 		// Title
-		float dpi = Gdx.graphics.getDensity()*160f;
-		float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
-		font.setScale(1.5f*dpi*(inchHeight/22f)/72f);
+		float dpi = Gdx.graphics.getDensity() * 160f;
+		float inchHeight = ((float) Gdx.graphics.getHeight()) / dpi;
+		font.setScale(1.5f * dpi * (inchHeight / 22f) / 72f);
 		font.draw(spriteBatch, "Settings", (float) (Settings.getWidth() * .4), (float) (Settings.getHeight() * .95));
-		game.font.setScale(dpi*(inchHeight/22f)/72f);
+		game.font.setScale(dpi * (inchHeight / 22f) / 72f);
 
 		// Music
-		font.draw(spriteBatch, "Music: " + Settings.getMusicVol(), (float) (Settings.getWidth() * .08),
-				(float) (Settings.getHeight() * .2));
+		font.draw(spriteBatch, "Music: " + Settings.getMusicVol(), (float) (Settings.getWidth() * .08), (float) (Settings.getHeight() * .2));
 
 		font.setColor(Color.WHITE);
 		// Sounds
-		font.draw(spriteBatch, "Sounds: " + Settings.getSoundVol(), (float) (Settings.getWidth() * .08),
-				(float) (Settings.getHeight() * .4));
+		font.draw(spriteBatch, "Sounds: " + Settings.getSoundVol(), (float) (Settings.getWidth() * .08), (float) (Settings.getHeight() * .4));
 
 		// Volume
-		//		font.draw(spriteBatch, "Volume: " + volBool, (float) (Settings.getWidth() * .08),
-		//				(float) (Settings.getHeight() * .6));
+		// font.draw(spriteBatch, "Volume: " + volBool, (float)
+		// (Settings.getWidth() * .08),
+		// (float) (Settings.getHeight() * .6));
 
 		// Background Image
-		font.draw(spriteBatch, "Retro Mode: " + (Settings.getRetro() ? "On" : "Off"),
-				(float) (Settings.getWidth() * .08), (float) (Settings.getHeight() * .8));
-
-		// Screen Resolution
-		font.draw(spriteBatch, "Screen Resolution: " + screenResOptions[screenResSelection][0] + 
-				" x " + screenResOptions[screenResSelection][1],
-				(float) (Settings.getWidth() * .52), (float) (Settings.getHeight() * .8));
+		font.draw(spriteBatch, "Retro Mode: " + (Settings.getRetro() ? "On" : "Off"), (float) (Settings.getWidth() * .08), (float) (Settings.getHeight() * .8));
 
 		// Debug Text Option
-		font.draw(spriteBatch, "Debug Text: " + (Settings.getDebug() ? "On" : "Off"),
-				(float) (Settings.getWidth() * .52), (float) (Settings.getHeight() * .6));
+		font.draw(spriteBatch, "Debug Text: " + (Settings.getDebug() ? "On" : "Off"), (float) (Settings.getWidth() * .08), (float) (Settings.getHeight() * .6));
 
 		// Single Player Difficulty
-		font.draw(spriteBatch, "Single Player Difficulty: " + sPDiffString(Settings.getDifficulty()),
-				(float) (Settings.getWidth() * .52), (float) (Settings.getHeight() * .4));
+		font.draw(spriteBatch, "Single Player Difficulty: " + sPDiffString(Settings.getDifficulty()), (float) (Settings.getWidth() * .52), (float) (Settings.getHeight() * .4));
 
 		// Epileptic Mode
-		font.draw(spriteBatch, "Epileptic Mode: " + (Settings.getEpileptic() ? "On" : "Off"), 
-				(float) (Settings.getWidth() * .52), (float) (Settings.getHeight() * .2));
+		font.draw(spriteBatch, "Epileptic Mode: " + (Settings.getEpileptic() ? "On" : "Off"), (float) (Settings.getWidth() * .52), (float) (Settings.getHeight() * .2));
 
 		// User Name
-		font.setScale(.25f);
-		font.draw(spriteBatch, "Ship Color:", (float) (Settings.getWidth() * .70),
-				(float) (Settings.getHeight() * .98));
 
-		font.setScale(.25f);
-		font.draw(spriteBatch, "World Color:", Settings.getWidth() * .845f,
-				Settings.getHeight() * .98f);
+		font.draw(spriteBatch, "Ship Color:", (float) (Settings.getWidth() * .52), (float) (Settings.getHeight() * .6));
 
-		font.draw(spriteBatch, "Username: " + Settings.getUsername(), (float) (Settings.getWidth() * .70),
-				(float) (Settings.getHeight() * .93));
+		font.draw(spriteBatch, "World Color:", Settings.getWidth() * .685f, Settings.getHeight() * .6f);
 
-		// ShipColor		
+		font.draw(spriteBatch, "Username: " + Settings.getUsername(), (float) (Settings.getWidth() * .52), (float) (Settings.getHeight() * .8));
 
+		// ShipColor
 
 		TextureManager.getSprites("whitePixel").setSize(Settings.getWidth() * .06f, Settings.getHeight() * .05f);
-		TextureManager.getSprites("whitePixel").setPosition(Settings.getWidth() * .775f, Settings.getHeight() * .94f);
+		TextureManager.getSprites("whitePixel").setPosition(Settings.getWidth() * .624f, Settings.getHeight() * .6f - (Settings.getHeight() * .05f));
 		TextureManager.getSprites("whitePixel").setColor(Settings.getShipColor());
 		TextureManager.getSprites("whitePixel").draw(spriteBatch);
 
-		//World Color
+		// World Color
 		TextureManager.getSprites("whitePixel").setSize(Settings.getWidth() * .06f, Settings.getHeight() * .05f);
-		TextureManager.getSprites("whitePixel").setPosition(Settings.getWidth() * .93f, Settings.getHeight() * .94f);
+		TextureManager.getSprites("whitePixel").setPosition(Settings.getWidth() * .8f, Settings.getHeight() * .6f - (Settings.getHeight() * .05f));
 		TextureManager.getSprites("whitePixel").setColor(Settings.getWorldColor());
 		TextureManager.getSprites("whitePixel").draw(spriteBatch);
 
-		spriteBatch.end();		
+		spriteBatch.end();
 	}
 
 	private void update(float delta) {
@@ -147,21 +126,26 @@ public class SettingsScreen implements Screen {
 	}
 
 	private void handleInput(float delta) {
-		if(Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACKSPACE) ||
-				(Gdx.app.getVersion() > 0 && Gdx.input.isKeyPressed(Keys.BACK))){
+		if (Gdx.input.isKeyPressed(Keys.F1)) {
+			double x = ((float) Gdx.input.getX() / (float) Gdx.graphics.getWidth());
+			double y = ((float) Gdx.input.getY() / (float) Gdx.graphics.getHeight());
+			System.out.println("Mouse Pos: " + x + " " + y);
+		}
+
+		if (Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACKSPACE) || (Gdx.app.getVersion() > 0 && Gdx.input.isKeyPressed(Keys.BACK))) {
 			game.setScreen(BaseGame.screens.get("main"));
 		}
 
-		if(Gdx.input.justTouched()){
-			double x = ((float)Gdx.input.getX()/(float)Settings.getWidth());
-			double y = (1.00 - (float)Gdx.input.getY()/(float)Settings.getHeight());
+		if (Gdx.input.justTouched()) {
+			double x = ((float) Gdx.input.getX() / (float) Settings.getWidth());
+			double y = (1.00 - (float) Gdx.input.getY() / (float) Settings.getHeight());
 
 			DecimalFormat twoDForm = new DecimalFormat("##.##");
 
 			perc_X = Math.abs(Double.valueOf(twoDForm.format(x)));
 			perc_Y = Math.abs(Double.valueOf(twoDForm.format(y)));
 
-			if ( x >= .7 && x <= .83 && y <= .93 && y >= .89 ) {
+			if (x >= .51 && x <= .96 && y >= .75 && y <= .8) {
 
 				String pretext = "";
 
@@ -173,7 +157,7 @@ public class SettingsScreen implements Screen {
 
 				Gdx.input.getTextInput(new TextInputListener() {
 					@Override
-					public void input (String text) {
+					public void input(String text) {
 						if (text.equals("") || text.length() > 28) {
 							Settings.setUsername("New Bro");
 						} else {
@@ -182,8 +166,9 @@ public class SettingsScreen implements Screen {
 					}
 
 					@Override
-					public void canceled () {}
-				}, "Enter new username", pretext);	
+					public void canceled() {
+					}
+				}, "Enter new username", pretext);
 			}
 
 			if (x >= .08 && x <= .46 && y >= .12 && y <= .2) {
@@ -194,7 +179,8 @@ public class SettingsScreen implements Screen {
 					Settings.setMusicVol(Settings.getMusicVol() + 1);
 				}
 				SoundManager.setMusicVolume(Settings.getMusicVol());
-				//System.out.println("Music Option set to " + Settings.getMusicVol());
+				// System.out.println("Music Option set to " +
+				// Settings.getMusicVol());
 				SoundManager.play("click", 0.7f);
 
 			} else if (x >= .08 && x <= .46 && y >= .32 && y <= .4) {
@@ -204,45 +190,26 @@ public class SettingsScreen implements Screen {
 				} else {
 					Settings.setSoundVol(Settings.getSoundVol() + 1);
 				}
-				//System.out.println("Sound Option set to " + Settings.getSoundVol());
+				// System.out.println("Sound Option set to " +
+				// Settings.getSoundVol());
 				SoundManager.play("click", 0.7f);
 
-			} else if (x >= .08 && x <= .46 && y >= .52 && y <= .6) {
+			} // else if (x >= .08 && x <= .46 && y >= .52 && y <= .6) {
 
-				//				volBool = volBool ? false : true;
-				//				System.out.println("Volume Option set to " + volBool);
+			// volBool = volBool ? false : true;
+			// System.out.println("Volume Option set to " + volBool);
 
-			} else if (x >= .08 && x <= .46 && y >= .72 && y <= .8) {
+			/* } else */if (x >= .08 && x <= .46 && y >= .72 && y <= .8) {
 
 				if (Settings.getRetro()) {
 					Settings.setRetro(false);
 				} else {
 					Settings.setRetro(true);
 				}
-				System.out.println("Retro Mode Option set to " + (Settings.getRetro() ? "On" : "Off"));	
+				System.out.println("Retro Mode Option set to " + (Settings.getRetro() ? "On" : "Off"));
 				TextureManager.init();
-			} else if (x >= .51 && x <= .96 && y >= .72 && y <= .8) {
 
-				if (screenResSelection == (screenResOptions.length - 1)) {
-					screenResSelection = 0;
-				} else {
-					screenResSelection++;
-				}
-
-				// We need to set the BaseGame screen width + height to the new res so clicks will work correctly,
-				// as they are based off of a percentage of screen height + width, which are set statically.
-
-				if(Gdx.app.getVersion() <= 0){
-					Settings.setWidth(screenResOptions[screenResSelection][0]);
-					Settings.setHeight(screenResOptions[screenResSelection][1]);
-				}
-
-				Gdx.graphics.setDisplayMode(screenResOptions[screenResSelection][0],
-						screenResOptions[screenResSelection][1], false);
-				System.out.println("Screen Resolution Option set to " + Settings.getWidth() +
-						" x " + Settings.getHeight());
-
-			} else if (x >= .51 && x <= .96 && y >= .52 && y <= .6) {
+			} else if (x >= .08 && x <= .46 && y >= .52 && y <= .6) {
 
 				if (Settings.getDebug()) {
 					Settings.setDebug(false);
@@ -272,7 +239,7 @@ public class SettingsScreen implements Screen {
 
 				System.out.println("Epileptic Mode set to " + Settings.getEpileptic());
 
-			} else if (x >= .70 && x<= .84 && y >= .94 && y <= .98) {
+			} else if (x >= .51 && x <= .685 && y >= .55 && y <= .6) {
 
 				String pretext = "";
 
@@ -284,9 +251,8 @@ public class SettingsScreen implements Screen {
 
 				Gdx.input.getTextInput(new TextInputListener() {
 					@Override
-					public void input (String text) {
-						if (!Pattern.matches(hexColorPattern, text) &&
-								!Pattern.matches("#" + hexColorPattern, text)) {
+					public void input(String text) {
+						if (!Pattern.matches(hexColorPattern, text) && !Pattern.matches("#" + hexColorPattern, text)) {
 							text = "FFFFFF";
 						}
 						text = text.replaceAll("#", "").trim();
@@ -294,10 +260,11 @@ public class SettingsScreen implements Screen {
 					}
 
 					@Override
-					public void canceled () {}
-				}, "Enter new player color", pretext);	
+					public void canceled() {
+					}
+				}, "Enter new player color", pretext);
 
-			} else if (x >= .85 && x<= .99 && y >= .94 && y <= .98) {
+			} else if (x >= .69 && x <= .86 && y >= .55 && y <= .6) {
 				String pretext = "";
 
 				if (Settings.getWorldColor().equals("")) {
@@ -308,9 +275,8 @@ public class SettingsScreen implements Screen {
 
 				Gdx.input.getTextInput(new TextInputListener() {
 					@Override
-					public void input (String text) {
-						if (!Pattern.matches(hexColorPattern, text) &&
-								!Pattern.matches("#" + hexColorPattern, text)) {
+					public void input(String text) {
+						if (!Pattern.matches(hexColorPattern, text) && !Pattern.matches("#" + hexColorPattern, text)) {
 							text = "FFFFFF";
 						}
 						text = text.replaceAll("#", "").trim();
@@ -318,7 +284,8 @@ public class SettingsScreen implements Screen {
 					}
 
 					@Override
-					public void canceled () {}
+					public void canceled() {
+					}
 				}, "Enter new game color", pretext);
 
 			}
@@ -332,15 +299,15 @@ public class SettingsScreen implements Screen {
 	}
 
 	@Override
-	public void show() {		
+	public void show() {
 		spriteBatch = new SpriteBatch();
 
 		font = game.font;
 	}
 
 	@Override
-	public void hide() {}
-
+	public void hide() {
+	}
 
 	@Override
 	public void pause() {
@@ -359,10 +326,14 @@ public class SettingsScreen implements Screen {
 
 	public String sPDiffString(int sPDiff) {
 		switch (sPDiff) {
-		case 0: return "Easy";
-		case 1: return "Medium"; 
-		case 2: return "Hard";
-		default: return Integer.toString(sPDiff);
+		case 0:
+			return "Easy";
+		case 1:
+			return "Medium";
+		case 2:
+			return "Hard";
+		default:
+			return Integer.toString(sPDiff);
 		}
 	}
 

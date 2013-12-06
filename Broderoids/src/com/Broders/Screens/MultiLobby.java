@@ -49,7 +49,6 @@ public class MultiLobby implements Screen {
 
 		tail = new Tail(5, Color.WHITE);
 
-
 		xx = Gdx.graphics.getWidth();
 		yy = Gdx.graphics.getHeight();
 
@@ -77,13 +76,13 @@ public class MultiLobby implements Screen {
 
 	private void paint(float delta) {
 		// Make a black background
-		if(Settings.getRetro()){
+		if (Settings.getRetro()) {
 			GL10 g1 = Gdx.graphics.getGL10();
 			Gdx.gl.glClearColor(0, 0, 0, 1);
 			g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		}else{
+		} else {
 			GL10 g1 = Gdx.graphics.getGL10();
-			Gdx.gl.glClearColor(.19f, .19f, .19f, 1f);	 
+			Gdx.gl.glClearColor(.19f, .19f, .19f, 1f);
 			g1.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		}
 		spriteBatch.begin();
@@ -100,12 +99,11 @@ public class MultiLobby implements Screen {
 		TextureManager.getSprites("whitePixel").setPosition(xx * .15f, 0);
 		TextureManager.getSprites("whitePixel").draw(spriteBatch);
 
-
 		// tabs
 		if (page > 0) {
-			
+
 			TextureManager.getSprites("Ship1").setSize(yy * .25f, yy * .25f);
-			TextureManager.getSprites("Ship1").setOrigin((yy * .25f)/2f, (yy * .25f)/2f);			
+			TextureManager.getSprites("Ship1").setOrigin((yy * .25f) / 2f, (yy * .25f) / 2f);
 
 			if (curPage < page) { // Arrow Down
 				TextureManager.getSprites("Ship1").setColor(Color.WHITE);
@@ -116,45 +114,41 @@ public class MultiLobby implements Screen {
 				out = String.format("%d ", curPage + 1);
 
 				myGame.font.setColor(Color.BLACK);
-				float dpi = Gdx.graphics.getDensity()*160f;
-				float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
-				myGame.font.setScale(dpi*(inchHeight/22f)/72f);
+				float dpi = Gdx.graphics.getDensity() * 160f;
+				float inchHeight = ((float) Gdx.graphics.getHeight()) / dpi;
+				myGame.font.setScale(dpi * (inchHeight / 22f) / 72f);
 				myGame.font.draw(spriteBatch, out, xx * .073f, yy * .33f);
-				
+
 			}
 
-			if (curPage > 0) {			//Arrow Up
+			if (curPage > 0) { // Arrow Up
 				TextureManager.getSprites("Ship1").setColor(Color.WHITE);
 				TextureManager.getSprites("Ship1").setRotation(0);
 				TextureManager.getSprites("Ship1").setPosition(xx * .01f, yy * .48f);
 				TextureManager.getSprites("Ship1").draw(spriteBatch);
-				
+
 				out = String.format("%d ", curPage);
 
 				myGame.font.setColor(Color.BLACK);
-				float dpi = Gdx.graphics.getDensity()*160f;
-				float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
-				myGame.font.setScale(dpi*(inchHeight/22f)/72f);
+				float dpi = Gdx.graphics.getDensity() * 160f;
+				float inchHeight = ((float) Gdx.graphics.getHeight()) / dpi;
+				myGame.font.setScale(dpi * (inchHeight / 22f) / 72f);
 				myGame.font.draw(spriteBatch, out, xx * .073f, yy * .64f);
-				
+
 			}
 		}
-
-
 
 		TextureManager.getSprites("hostGame").draw(spriteBatch);
 		TextureManager.getSprites("joinGame").draw(spriteBatch);
 		TextureManager.getSprites("mainMenu").draw(spriteBatch);
 		TextureManager.getSprites("refresh").draw(spriteBatch);
 
-
 		// game list
 		TextureManager.getSprites("whitePixel").setSize(xx * .85f, yy * .01f);
 		for (int i = 0; i < 5 && (i + curPage * 5) < this.games.size(); i++) {
 			String[] temp = this.games.get(i + curPage * 5);
-			
-			TextureManager.getSprites("whitePixel").setPosition(xx * .15f, yy
-					* (.8f - (.16f * ((float) i + 1))));
+
+			TextureManager.getSprites("whitePixel").setPosition(xx * .15f, yy * (.8f - (.16f * ((float) i + 1))));
 			TextureManager.getSprites("whitePixel").draw(spriteBatch);
 
 			out = String.format("Total Players: %s / %s ", temp[2], temp[3]); // TODO
@@ -162,24 +156,27 @@ public class MultiLobby implements Screen {
 			// total
 			// players
 			myGame.font.setColor(Color.WHITE);
-			float dpi = Gdx.graphics.getDensity()*160f;
-			float inchHeight = ((float)Gdx.graphics.getHeight())/dpi;
-			myGame.font.setScale(dpi*(inchHeight/22f)/72f);
+			float dpi = Gdx.graphics.getDensity() * 160f;
+			float inchHeight = ((float) Gdx.graphics.getHeight()) / dpi;
+			myGame.font.setScale(dpi * (inchHeight / 22f) / 72f);
 			myGame.font.draw(spriteBatch, out, xx * .7f, yy * (.73f - (.16f * i)));
 			String priv = "";
 			if (temp[1].equals("true")) {
 				priv = " (p)";
 			}
 
-			myGame.font.draw(spriteBatch, temp[0] + priv, xx * .2f, yy
-					* (.73f - (.16f * i))); // TODO ref Name of Game
+			myGame.font.draw(spriteBatch, temp[0] + priv, xx * .2f, yy * (.73f - (.16f * i))); // TODO
+																								// ref
+																								// Name
+																								// of
+																								// Game
 
-			if(i == selectedGame){
-			//	System.out.println("Game Selected: "+selectedGame);
+			if (i == selectedGame) {
+				// System.out.println("Game Selected: "+selectedGame);
 				TextureManager.getSprites("Ship1").setSize(xx * .05f, xx * .05f);
-				TextureManager.getSprites("Ship1").setPosition( xx * .936f, yy* (.68f - (.16f * i)));
+				TextureManager.getSprites("Ship1").setPosition(xx * .936f, yy * (.68f - (.16f * i)));
 				TextureManager.getSprites("Ship1").setRotation(rotation);
-				TextureManager.getSprites("Ship1").setOrigin((xx * .05f)/2f	, (xx * .05f)/2f);
+				TextureManager.getSprites("Ship1").setOrigin((xx * .05f) / 2f, (xx * .05f) / 2f);
 				TextureManager.getSprites("Ship1").setColor(Settings.getShipColor());
 				TextureManager.getSprites("Ship1").draw(spriteBatch);
 			}
@@ -187,9 +184,6 @@ public class MultiLobby implements Screen {
 		}
 
 		tail.draw(spriteBatch);
-		
-		
-		
 
 		spriteBatch.end();
 
@@ -210,22 +204,24 @@ public class MultiLobby implements Screen {
 			// make hit boxes
 			if (y >= .0486 && y <= .104) {
 
-				// join 
+				// join
 				if (x >= .272 && x <= .476) {
 					if (selectedGame >= 0 && selectedGame < gameCount) {
-						
+
 						String[] name = this.games.get(selectedGame + curPage * 5);
 
 						if (Boolean.parseBoolean(name[1])) {
-							// Enter password					
+							// Enter password
 							Gdx.input.getTextInput(new TextInputListener() {
 								@Override
-								public void input (String text) {
+								public void input(String text) {
 									gamePassword = text;
 								}
+
 								@Override
-								public void canceled () {}
-							}, "Password for game:", "");	
+								public void canceled() {
+								}
+							}, "Password for game:", "");
 						} else {
 							gamePassword = "";
 						}
@@ -240,19 +236,19 @@ public class MultiLobby implements Screen {
 						} else {
 							System.out.println("Shit broke yo");
 						}
-						//host
+						// host
 					} else {
 						SoundManager.play("error", 1f, 1.5f);
 					}
-					//Join
+					// Join
 				} else if (x >= .0214 && x <= .225) {
 					SoundManager.play("click", 0.7f);
 					myGame.setScreen(BaseGame.screens.get("host"));
-					//Main Menu
-				}else if(x >= .520 && x <= .726){
+					// Main Menu
+				} else if (x >= .520 && x <= .726) {
 					myGame.setScreen(BaseGame.screens.get("main"));
-					//refresh
-				}else if(x >= .770 && x <= .975){
+					// refresh
+				} else if (x >= .770 && x <= .975) {
 					System.out.println("Refresh");
 					games.clear();
 					games = Net.listGames();
@@ -272,17 +268,17 @@ public class MultiLobby implements Screen {
 					}
 				}
 			}
-			//Game boxes
-			if(x >= .155 && x <= .996){
-				if(y >= .199 && y <=.343){
+			// Game boxes
+			if (x >= .155 && x <= .996) {
+				if (y >= .199 && y <= .343) {
 					selectedGame = 0;
-				} else if(y > .343 && y <= .519){
+				} else if (y > .343 && y <= .519) {
 					selectedGame = 1;
-				} else if(y > .519 && y <= .680){
+				} else if (y > .519 && y <= .680) {
 					selectedGame = 2;
-				} else if(y > .680 && y <= .838){
+				} else if (y > .680 && y <= .838) {
 					selectedGame = 3;
-				} else if(y > .838 && y <= .986){
+				} else if (y > .838 && y <= .986) {
 					selectedGame = 4;
 				}
 			}
@@ -307,19 +303,21 @@ public class MultiLobby implements Screen {
 
 		if (Gdx.input.isKeyPressed(Keys.ENTER)) {
 			if (selectedGame >= 0 && selectedGame < gameCount) {
-				
+
 				String[] name = this.games.get(selectedGame + curPage * 5);
 
 				if (Boolean.parseBoolean(name[1])) {
-					// Enter password					
+					// Enter password
 					Gdx.input.getTextInput(new TextInputListener() {
 						@Override
-						public void input (String text) {
+						public void input(String text) {
 							gamePassword = text;
 						}
+
 						@Override
-						public void canceled () {}
-					}, "Password for game:", "");	
+						public void canceled() {
+						}
+					}, "Password for game:", "");
 				}
 
 				System.out.println("Joining Game with password " + gamePassword);
@@ -338,17 +336,13 @@ public class MultiLobby implements Screen {
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.F1)) {
-			double x = ((float) Gdx.input.getX() / (float) Gdx.graphics
-					.getWidth());
-			double y = ((float) Gdx.input.getY() / (float) Gdx.graphics
-					.getHeight());
+			double x = ((float) Gdx.input.getX() / (float) Gdx.graphics.getWidth());
+			double y = ((float) Gdx.input.getY() / (float) Gdx.graphics.getHeight());
 			System.out.println("Mouse Pos: " + x + " " + y);
 		}
 
 		// Backout to main menu
-		if ((Gdx.input.isKeyPressed(Keys.ESCAPE) ||
-				Gdx.input.isKeyPressed(Keys.BACKSPACE)) && buff > myGame.exitBuffer || 
-				(Gdx.app.getVersion() > 0 && Gdx.input.isKeyPressed(Keys.BACK) && buff > myGame.exitBuffer)) {
+		if ((Gdx.input.isKeyPressed(Keys.ESCAPE) || Gdx.input.isKeyPressed(Keys.BACKSPACE)) && buff > myGame.exitBuffer || (Gdx.app.getVersion() > 0 && Gdx.input.isKeyPressed(Keys.BACK) && buff > myGame.exitBuffer)) {
 			myGame.setScreen(BaseGame.screens.get("main"));
 		} else {
 			if (buff < myGame.exitBuffer) {
@@ -369,7 +363,6 @@ public class MultiLobby implements Screen {
 
 		myGame.multiplayer = true;
 
-
 		TextureManager.getSprites("whitePixel").setColor(Color.WHITE);
 
 		TextureManager.getSprites("hostGame").setSize(xx * .25f, xx * .25f);
@@ -377,19 +370,19 @@ public class MultiLobby implements Screen {
 
 		TextureManager.getSprites("joinGame").setSize(xx * .25f, xx * .25f);
 		TextureManager.getSprites("joinGame").setPosition((xx * .25f), yy * .7f);
-		
+
 		TextureManager.getSprites("mainMenu").setSize(xx * .25f, xx * .25f);
-		TextureManager.getSprites("mainMenu").setPosition(((xx * .25f)*2), yy * .7f);
+		TextureManager.getSprites("mainMenu").setPosition(((xx * .25f) * 2), yy * .7f);
 
 		TextureManager.getSprites("refresh").setSize(xx * .25f, xx * .25f);
-		TextureManager.getSprites("refresh").setPosition(((xx * .25f)*3), yy * .7f);
+		TextureManager.getSprites("refresh").setPosition(((xx * .25f) * 3), yy * .7f);
 
 		spriteBatch = new SpriteBatch();
 	}
 
 	@Override
 	public void hide() {
-		//this.dispose();
+		// this.dispose();
 	}
 
 	@Override

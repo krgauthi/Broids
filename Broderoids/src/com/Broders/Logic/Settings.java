@@ -1,4 +1,5 @@
 package com.Broders.Logic;
+
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 
@@ -30,47 +31,10 @@ public class Settings {
 	private static int difficulty;
 	private static boolean epileptic;
 	private static boolean retro;
-	
+	private static boolean nameDis; 		//TODO option to change
+
 	private static String[] defaultUsernames = {
-		"Bro",
-		"Broski",
-		"Bromo",
-		"Brotien",
-		"Brodeo",
-		"Broku",
-		"Brohan",
-		"Brochill",
-		"Brosicle",
-		"Broseph",
-		"Brocean",
-		"Brotastic",
-		"Brofessor",
-		"Han Brolo",
-		"Brosideon",
-		"Broba Fett",
-		"Brohemian",
-		"Brotato Chip",
-		"Brohammad",
-		"Brohan Solo",
-		"Bro Montana",
-		"Bromosexual",
-		"Bromosapien",
-		"Brotien Shake",
-		"Brorontosaurus",
-		"Broseph Stalin",
-		"Abroham Lincoln",
-		"Brorack Brobama",
-		"Broseph Goebbels",
-		"Brorannasarus Rex",
-		"Edgar Allen Bro",
-		"Luke Browalker",
-		"Brolbo Baggins",
-		"Brodo Baggins",
-		"Tron: Brogacy",
-		"Doctor Bro",
-		"Darth Broder",
-		"BroNotFoundException",
-	};
+	"Bro", "Broski", "Bromo", "Brotien", "Brodeo", "Broku", "Brohan", "Brochill", "Brosicle", "Broseph", "Brocean", "Brotastic", "Brofessor", "Han Brolo", "Brosideon", "Broba Fett", "Brohemian", "Brotato Chip", "Brohammad", "Brohan Solo", "Bro Montana", "Bromosexual", "Bromosapien", "Brotien Shake", "Brorontosaurus", "Broseph Stalin", "Abroham Lincoln", "Brorack Brobama", "Broseph Goebbels", "Brorannasarus Rex", "Edgar Allen Bro", "Luke Browalker", "Brolbo Baggins", "Brodo Baggins", "Tron: Brogacy", "Doctor Bro", "Darth Broder", "BroNotFoundException", };
 
 	public static void init() {
 		prefs = Gdx.app.getPreferences("broids-prefs");
@@ -81,13 +45,12 @@ public class Settings {
 	public static void load() {
 		int bro = (int) (defaultUsernames.length * Math.random());
 		username = prefs.getString("username", defaultUsernames[bro]);
-		shipColor = colorFromHexString("FF" + prefs.getString("shipColor", "00FF00"));
-		worldColor = colorFromHexString("FF" + prefs.getString("worldColor", "44DDEE"));
-		if(Gdx.app.getVersion() > 0){
+		shipColor = colorFromHexString("FF" + prefs.getString("shipColor", "FFFFFF"));
+		worldColor = colorFromHexString("FF" + prefs.getString("worldColor", "FFFFFF"));
+		if (Gdx.app.getVersion() > 0) {
 			width = prefs.getInteger("width", Gdx.graphics.getWidth());
 			height = prefs.getInteger("height", Gdx.graphics.getHeight());
-		}
-		else{
+		} else {
 			width = prefs.getInteger("width", 1024);
 			height = prefs.getInteger("height", 576);
 		}
@@ -98,6 +61,8 @@ public class Settings {
 		epileptic = prefs.getBoolean("epileptic", false);
 		retro = prefs.getBoolean("retro", false);
 		
+		setNameDis(false);
+
 	}
 
 	public static boolean getRetro() {
@@ -215,6 +180,7 @@ public class Settings {
 	public static int getHeight() {
 		return height;
 	}
+
 	// Mikes stuff (OLD)
 
 	public static String swapHex(String hex) {
@@ -231,32 +197,39 @@ public class Settings {
 
 	// Expects a hex value as integer and returns the appropriate Color object.
 	// @param hex
-	//            Must be of the form 0xAARRGGBB
+	// Must be of the form 0xAARRGGBB
 	// @return the generated Color object
-	private static Color colorFromHex(long hex)
-	{
+	private static Color colorFromHex(long hex) {
 		float a = (hex & 0xFF000000L) >> 24;
 		float r = (hex & 0xFF0000L) >> 16;
 		float g = (hex & 0xFF00L) >> 8;
 		float b = (hex & 0xFFL);
 
-		return new Color(r/255f, g/255f, b/255f, a/255f);
+		return new Color(r / 255f, g / 255f, b / 255f, a / 255f);
 	}
-
 
 	// Expects a hex value as String and returns the appropriate Color object
 	// @param s The hex string to create the Color object from
 	// @return
 
-	public static Color colorFromHexString(String s)
-	{               
-		if(s.startsWith("0x"))
+	public static Color colorFromHexString(String s) {
+		if (s.startsWith("0x")) {
 			s = s.substring(2);
+		}
 
-		if(s.length() != 8) // AARRGGBB
+		if (s.length() != 8) { // AARRGGBB
 			throw new IllegalArgumentException("String must have the form AARRGGBB");
+		}
 
 		return colorFromHex(Long.parseLong(s, 16));
+	}
+
+	public static boolean isNameDis() {
+		return nameDis;
+	}
+
+	public static void setNameDis(boolean nameDis) {
+		Settings.nameDis = nameDis;
 	}
 
 }

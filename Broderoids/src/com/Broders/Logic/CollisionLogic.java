@@ -13,7 +13,8 @@ public class CollisionLogic implements ContactListener {
 	}
 
 	/**
-	 * This method gets called
+	 * This method gets called at the beginning of a contact, and deals with
+	 * getting the Entities involved in the collision.
 	 */
 	@Override
 	public void beginContact(Contact contact) {
@@ -31,54 +32,57 @@ public class CollisionLogic implements ContactListener {
 		CollisionLogic.entityContact(eA, eB);
 	}
 
+	/**
+	 * This method determines the types of the Entities involved in the collision, and
+	 * directs the logic flow to the appropriate methods.
+	 * 
+	 * @param eA
+	 * 			The first Entity
+	 * @param eB
+	 * 			The second Entity
+	 */
 	public static void entityContact(Entity eA, Entity eB) {
 		if (eA == null || eB == null) {
 			return;
 		}
 
-		if (CoreLogic.getGame().multiplayer && CoreLogic.getHost()) {
+		// Multiplayer
+		if (CoreLogic.multiplayer && CoreLogic.isHost()) {
 			Net.collision(eA, eB);
 		}
 
-		if (!CoreLogic.getGame().multiplayer || CoreLogic.getHost()) {
+		// Single Player
+		else if (!CoreLogic.getGame().multiplayer) {
 			// Ship-Asteroid
 			if (eA instanceof Ship && eB instanceof Asteroid && !((Ship) eA).isInvincible()) {
-				CollisionLogic.shipAsteroid(eA, eB);
+				CollisionLogic.shipDanger(eA);
 			}
 			// Asteroid-Ship
 			if (eA instanceof Asteroid && eB instanceof Ship && !((Ship) eB).isInvincible()) {
-				CollisionLogic.shipAsteroid(eB, eA);
+				CollisionLogic.shipDanger(eB);
 			}
 
 			// Bullet-Asteroid
 			if (eA instanceof Bullet && eB instanceof Asteroid) {
-				CollisionLogic.bulletAsteroid(eA, eB);
+				CollisionLogic.bulletAsteroid(eA, eB.getPoints());
+				CollisionLogic.asteroidBullet(eB);
 			}
 
 			// Asteroid-Bullet
 			if (eA instanceof Asteroid && eB instanceof Bullet) {
-				CollisionLogic.bulletAsteroid(eB, eA);
+				CollisionLogic.bulletAsteroid(eB, eA.getPoints());
+				CollisionLogic.asteroidBullet(eA);
 			}
-
-			// Ship-Bullet
-			if (eA instanceof Bullet && eB instanceof Ship) {
-				CollisionLogic.shipBullet(eB, eA);
-			}
-
-			// Bullet-Ship
-			if (eA instanceof Ship && eB instanceof Bullet) {
-				CollisionLogic.shipBullet(eA, eB);
-			}
-
-			//Ship-Ship, for multiplayer
-			if (eA instanceof Ship && eB instanceof Ship) {
-				CollisionLogic.shipShip(eA, eB);
-			}
+			
+			// Ship-Ship
+			//	if (eA instanceof Ship && eB instanceof Ship) {
+			//		CollisionLogic.shipShip()
+			//	}
 		}
 	}
 
 	/**
-	 * 
+	 * This method is unused.
 	 */
 	@Override
 	public void endContact(Contact contact) {
@@ -86,7 +90,7 @@ public class CollisionLogic implements ContactListener {
 	}
 
 	/**
-	 * 
+	 * This method simply determines if the Entities in contact should collide or pass through each other.
 	 */
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
@@ -101,87 +105,95 @@ public class CollisionLogic implements ContactListener {
 			eB = (Entity) bB.getUserData();
 		}
 
-		//Collisions to ignore: invincible ships and bullets
-		if ((eA instanceof Ship && ((Ship)eA).isInvincible()) ||
-			(eB instanceof Ship && ((Ship)eB).isInvincible()) ||
-			eA instanceof Bullet || eB instanceof Bullet	||
-			eA instanceof Dust 	 || eB instanceof Dust)
-			{
+		// Collisions to ignore: invincible ships, bullets, and dust.
+		if ((eA instanceof Ship && ((Ship) eA).isInvincible()) || (eB instanceof Ship && ((Ship) eB).isInvincible()) || eA instanceof Bullet || eB instanceof Bullet || eA instanceof Dust || eB instanceof Dust) {
 
 			contact.setEnabled(false);
 		}
 	}
 
 	/**
-	 * 
+	 * This method is unused.
 	 */
 	@Override
 	public void postSolve(Contact contact, ContactImpulse impulse) {
 
 	}
 
-	public static void shipAsteroid(Entity ship, Entity asteroid){
-
-		if (CoreLogic.getGame().multiplayer) {
-			Ship craft = (Ship) ship;
-
-			//This is how the ship gets damage from asteroids. If you can think of a better way to
-			//calculate it, please tell me, because this is bloody awful. -R
-			int damages = calculateDamage(ship.getBody(), asteroid.getBody());
-			damages = (int) Math.round(Math.pow(damages, 0.48) * Math.log10(asteroid.getBody().getMass()*10)/2);
-			craft.getOwner().takeDamage(damages);
-			if (craft.getOwner() == CoreLogic.getLocal()) {
-				Net.modifyPlayer(craft.getOwner());
-			}
-		} else {
-			CoreLogic.removeEntity(ship);
-		}
-	}
-
-	public static void bulletAsteroid(Entity bullet, Entity asteroid){
-		if (!CoreLogic.multiplayer) {
-			CoreLogic.removeEntity(bullet);
-			CoreLogic.removeEntity(asteroid);
-		} else if (CoreLogic.getHost()) {
-			Net.collision(bullet, asteroid);
-			
-			// TODO: Put this in the right place
-			CoreLogic.removeEntity(bullet);
-			CoreLogic.removeEntity(asteroid);
-		}
-
-		// Call score method for the player here
-		bullet.getOwner().modScore(asteroid.getPoints());
-	}
-
-	public static void shipBullet(Entity ship, Entity bullet) {
-		if (CoreLogic.getGame().multiplayer && !(ship.getOwner().equals(bullet.getOwner())))
-			ship.getOwner().modHealth(-10);
-	}
-	
-	public static void shipShip(Entity shipA, Entity shipB) {
-		/*int damages = calculateDamage(shipA.getBody(), shipB.getBody());
-		damages = 0 - (int) Math.round(Math.pow(damages, 0.55));
-		shipA.getOwner().modHealth(damages);
-		shipB.getOwner().modHealth(damages);*/
+	/**
+	 * Called to remove Bullets in Bullet-Asteroid collisions.
+	 * 
+	 * @param bullet
+	 * 			The Bullet in question
+	 * @param score
+	 * 			The point value of the Asteroid
+	 */
+	public static void bulletAsteroid(Entity bullet, int score) {
+		bullet.getOwner().modScore(score);
+		CoreLogic.removeEntity(bullet);
 	}
 
 	/**
-	 * Calculates damage done to each entity based on their relative velocities.
+	 * Called to remove Asteroids in Bullet-Asteroid collisions.
+	 * @param asteroid
+	 * 			The Asteroid in question
+	 */
+	public static void asteroidBullet(Entity asteroid) {
+		CoreLogic.removeEntity(asteroid);
+	}
+
+	/**
+	 * Determines damage in Ship collisions.
+	 * 
+	 * @param ship
+	 * 			The Ship being damaged.
+	 */
+	public static void shipDanger(Entity ship) {
+		if (CoreLogic.multiplayer) {
+
+			ship.getOwner().takeDamage(20);
+			Net.modifyPlayer(ship.getOwner());
+		} else
+			CoreLogic.removeEntity(ship);
+	}
+
+//	public static void shipShip(Entity shipA, Entity shipB) {
+//		
+//	}
+	
+	/**
+	 * Removes the Bullet in Bullet-Ship collisions
+	 * 
+	 * @param bullet
+	 * 			The Bullet in question
+	 * @param score
+	 * 			The point value being awarded.
+	 */
+	public static void bulletShip(Entity bullet, int score) {
+		bullet.getOwner().modScore(score);
+		CoreLogic.removeEntity(bullet);
+	}
+
+	/**
+	 * Calculates damage done to Entities based on their relative velocities.
 	 * 
 	 * @param A
+	 * 			The first Body
 	 * @param B
-	 * @return int[]
-	 * 			Index 0 is damage to Entity A, Index 1 is damage to Entity B
+	 * 			The second Body
+	 * @return int
+	 * 			The damage to be dealt to each Entity.
 	 */
 	public static int calculateDamage(Body A, Body B) {
 		float x = A.getLinearVelocity().x - B.getLinearVelocity().x;
 		float y = A.getLinearVelocity().y - B.getLinearVelocity().y;
-		float vel = (float) Math.sqrt(x*x + y*y);
+		float vel = (float) Math.sqrt(x * x + y * y);
+		int damages = (int) Math.round(vel * vel);
+		damages = (int) Math.round(Math.pow(damages, 0.48) * Math.log10(B.getMass() * 10) / 2);
 
-		//int[] damages = {Math.round((B.getMass() * vel*vel)/2),
-		//				Math.round((A.getMass() * vel*vel)/2)};
+		// int[] damages = {Math.round((B.getMass() * vel*vel)/2),
+		// Math.round((A.getMass() * vel*vel)/2)};
 
-		return Math.round(vel*vel);
+		return damages;
 	}
 }

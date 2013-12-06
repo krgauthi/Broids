@@ -6,18 +6,16 @@ package com.Broders.Logic;
  * that never becomes the case, this can be removed in favor of simply using
  * Strings to denote direction.
  * 
- * @author ntpeters
- * 
  */
 public enum InputDir {
 
-	FORWARD ("forward"),
-	BACKWARD ("backward"),
-	LEFT ("left"),
-	RIGHT ("right"),
-	SHOOT ("shoot"),
-	NOSHOOT ("noshoot"),
-	NULL ("");
+	FORWARD("forward"),
+	BACKWARD("backward"),
+	LEFT("left"),
+	RIGHT("right"),
+	SHOOT("shoot"),
+	NOSHOOT("noshoot"),
+	NULL("");
 
 	private String dir;
 

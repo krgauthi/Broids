@@ -44,8 +44,7 @@ public class Tail extends LinkedList<Pos> {
 
 		for (Pos xy : this) {
 			// Tailsprite.setPosition(xy.Getx(),yy-xy.Gety());
-			Tailsprite.setPosition((xx * (xy.getX() - .01f)),
-					yy - (yy * (xy.getY() + .05f)));
+			Tailsprite.setPosition((xx * (xy.getX() - .01f)), yy - (yy * (xy.getY() + .05f)));
 			Tailsprite.draw(spriteBatch);
 
 		}

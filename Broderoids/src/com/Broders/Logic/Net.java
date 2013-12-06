@@ -15,10 +15,10 @@ import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Net extends Thread {
-	public static int protocol_version = 1;
-	
+	public static int protocol_version = 2;
+
 	private static Thread cur;
-	
+
 	// Server -> Client communication;
 	public static final int FRAME_ERROR = -1;
 	public static final int FRAME_GAME_LEAVE = 0;
@@ -72,23 +72,21 @@ public class Net extends Thread {
 		main = game;
 
 		main.setConnected(false);
-		
+
 		// Open the network connection
 		try {
 			g = new Gson();
 			s = new Socket("sekhmet.lug.mtu.edu", 9988);
-			//s = new Socket("localhost", 9988);
-			out = new JsonWriter(new BufferedWriter(new OutputStreamWriter(
-					s.getOutputStream())));
-			parser = new JsonStreamParser(new BufferedReader(
-					new InputStreamReader(s.getInputStream())));
-			
+			// s = new Socket("localhost", 9988);
+			out = new JsonWriter(new BufferedWriter(new OutputStreamWriter(s.getOutputStream())));
+			parser = new JsonStreamParser(new BufferedReader(new InputStreamReader(s.getInputStream())));
+
 			JsonObject o = new JsonObject();
 			o.addProperty("c", COMMAND_PROTOCOL);
 			o.addProperty("d", protocol_version);
-			
+
 			Net.send(o);
-			
+
 			JsonElement e = parser.next();
 			o = e.getAsJsonObject();
 			int success = o.get("d").getAsInt();
@@ -107,16 +105,16 @@ public class Net extends Thread {
 		JsonObject o = new JsonObject();
 		o.addProperty("c", COMMAND_GAME_LEAVE);
 		Net.send(o);
-		
+
 		Net.unlock();
-		
+
 		try {
 			cur.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void modifyPlayer(Player p) {
 		JsonObject o = new JsonObject();
 		o.addProperty("c", COMMAND_GAME_PLAYER_MODIFY);
@@ -125,7 +123,7 @@ public class Net extends Thread {
 		d.addProperty("n", Settings.getUsername());
 		d.addProperty("s", p.getScore());
 		d.addProperty("c", p.getColor().toString());
-		//d.addProperty("h", ) // Host
+		// d.addProperty("h", ) // Host
 		o.add("d", d);
 	}
 
@@ -160,12 +158,18 @@ public class Net extends Thread {
 	}
 
 	public static void collision(Entity eA, Entity eB) {
+
 		JsonObject o = new JsonObject();
-		o.addProperty("c", COMMAND_GAME_ENTITY_REMOVE);
+		o.addProperty("c", COMMAND_GAME_COLLISION);
 		JsonObject d = new JsonObject();
 		d.addProperty("a", eA.getId());
+		d.addProperty("ap", eA.getPoints());
+		d.addProperty("at", Net.entityType(eA));
 		d.addProperty("b", eB.getId());
+		d.addProperty("bp", eB.getPoints());
+		d.addProperty("bt", Net.entityType(eB));
 		o.add("d", d);
+		Net.send(o);
 	}
 
 	private static void entitySend(JsonObject o, Entity e) {
@@ -220,8 +224,7 @@ public class Net extends Thread {
 		return new GameScreen(CoreLogic.getGame(), id, x, y, hosting);
 	}
 
-	public static Screen newGame(String name, int limit, float x, float y,
-			String pass) {
+	public static Screen newGame(String name, int limit, float x, float y, String pass) {
 		JsonObject o = new JsonObject();
 		o.addProperty("c", COMMAND_LOBBY_CREATE);
 
@@ -253,8 +256,6 @@ public class Net extends Thread {
 		// float y = inner.get("y").getAsFloat();
 		boolean hosting = inner.get("h").getAsBoolean();
 		int id = inner.get("i").getAsInt();
-
-		System.out.println(inner);
 
 		return new GameScreen(CoreLogic.getGame(), id, x, y, hosting);
 	}
@@ -289,11 +290,6 @@ public class Net extends Thread {
 		return ret;
 	}
 
-	// TODO: Do we actually want this?
-	/*private static void invalidFrame() throws NetException {
-		throw new NetException(0, "Invalid frame recieved");
-	}*/
-
 	public static void lock() {
 		Net.l.lock();
 	}
@@ -302,24 +298,10 @@ public class Net extends Thread {
 		Net.l.unlock();
 	}
 
-	/*private static void handleErrorFrame(JsonObject o) throws Exception {
-		int command = o.get("c").getAsInt();
-		if (command != Net.FRAME_ERROR) {
-			SoundManager.play("error");
-			invalidFrame();
-			return;
-		}
-
-		String text = o.get("d").getAsString();
-		SoundManager.play("error");
-		throw new Exception(text);
-	}*/
-
 	public static void handleGame() {
 		cur = new Net();
 		cur.start();
 	}
-
 
 	public static void send(JsonObject o) {
 		try {
@@ -327,6 +309,7 @@ public class Net extends Thread {
 			Net.out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 
@@ -334,15 +317,45 @@ public class Net extends Thread {
 
 	public Net() {
 	}
-	
+
 	public static boolean ownedByLocal(String id) {
 		String[] idParts = id.split("-");
-		if (idParts[0].equals(Integer.toString(CoreLogic.clientId)) || 
-				(CoreLogic.getHost() && idParts[0].equals("1"))) {
+		if (idParts[0].equals(Integer.toString(CoreLogic.clientId)) || (CoreLogic.isHost() && idParts[0].equals("1"))) {
 			return true;
 		}
-		
+
 		return false;
+	}
+
+	private static void handleCollision(String eS, int points, int type) {
+		Entity e = CoreLogic.findEntity(eS);
+
+		if (e instanceof Ship) {
+			if (type == Net.ENTITY_SHIP) {
+				// Not used
+			} else if (type == Net.ENTITY_ASTEROID) {
+				CollisionLogic.shipDanger(e);
+			} else if (type == Net.ENTITY_BULLET) {
+				CollisionLogic.shipDanger(e);
+			}
+		} else if (e instanceof Asteroid) {
+			if (type == Net.ENTITY_SHIP) {
+				// Not used
+			} else if (type == Net.ENTITY_ASTEROID) {
+				// Not used
+			} else if (type == Net.ENTITY_BULLET) {
+
+				CollisionLogic.asteroidBullet(e);
+			}
+		} else if (e instanceof Bullet) {
+			if (type == Net.ENTITY_SHIP) {
+				CollisionLogic.bulletShip(e, points);
+			} else if (type == Net.ENTITY_ASTEROID) {
+				CollisionLogic.bulletAsteroid(e, points);
+			} else if (type == Net.ENTITY_BULLET) {
+				// Not used
+			}
+		}
 	}
 
 	@Override
@@ -354,7 +367,7 @@ public class Net extends Thread {
 			element = parser.next();
 
 			Net.lock();
-			
+
 			// Since we know we have an object,
 			// lets do what we need to with it
 			JsonObject obj = element.getAsJsonObject();
@@ -362,29 +375,35 @@ public class Net extends Thread {
 			JsonElement e;
 
 			e = obj.get("c");
-			int frameType = e.getAsInt();
-			if (!CoreLogic.getHost()) {
-				if (frameType == FRAME_GAME_COLLISION) {
-					System.out.println("Collision");
-					
-					JsonObject o = obj.get("d").getAsJsonObject();
-					String A = o.get("a").getAsString();
-					Entity eA = CoreLogic.findEntity(A);
-					String B = o.get("b").getAsString();
-					Entity eB = CoreLogic.findEntity(B);
-					CollisionLogic.entityContact(eA, eB);
-				} else if (frameType == FRAME_GAME_ROUND_OVER) {
-					CoreLogic.setRoundOver();
-				}
-			}
 
-			if (frameType == FRAME_GAME_SYNC) {
+			int frameType = e.getAsInt();
+			if (frameType == FRAME_GAME_COLLISION) {
+				System.out.println("Collision");
+
+				JsonObject o = obj.get("d").getAsJsonObject();
+
+				String A = o.get("a").getAsString();
+				int ap = o.get("ap").getAsInt();
+				int at = o.get("at").getAsInt();
+				String B = o.get("b").getAsString();
+				int bp = o.get("bp").getAsInt();
+				int bt = o.get("bt").getAsInt();
+
+				if (ownedByLocal(A)) {
+					Net.handleCollision(A, bp, bt);
+				}
+				if (ownedByLocal(B)) {
+					Net.handleCollision(B, ap, at);
+				}
+			} else if (frameType == FRAME_GAME_ROUND_OVER) {
+				CoreLogic.setRoundOver();
+			} else if (frameType == FRAME_GAME_SYNC) {
 				System.out.println("Sync");
-				
+
 				// NOTE: This should be the first thing the client gets,
 				// so we can assume that there's nothing else in here.
 				// In other words, just add all the objects
-				
+
 				JsonObject inn = obj.get("d").getAsJsonObject();
 
 				JsonElement pla = inn.get("p");
@@ -426,7 +445,7 @@ public class Net extends Thread {
 					System.out.println("Create Player");
 					CoreLogic.createPlayer(id, name, score);
 				}
-			} else if (frameType == FRAME_GAME_PLAYER_MODIFY) {					
+			} else if (frameType == FRAME_GAME_PLAYER_MODIFY) {
 				JsonObject o = obj.get("d").getAsJsonObject();
 				int id = o.get("i").getAsInt();
 				int score = o.get("s").getAsInt();
@@ -435,9 +454,9 @@ public class Net extends Thread {
 				p.setScore(score);
 			} else if (frameType == FRAME_GAME_PLAYER_REMOVE) {
 				System.out.println("Remove Player");
-				
-				int id = obj.get("d").getAsInt();
-				CoreLogic.removePlayer(Integer.toString(id));
+
+				String id = obj.get("d").getAsString();
+				CoreLogic.removePlayer(id);
 			} else if (frameType == FRAME_GAME_ENTITY_CREATE) {
 				JsonObject o = obj.get("d").getAsJsonObject();
 				EntityData ed = new EntityData();
@@ -453,7 +472,7 @@ public class Net extends Thread {
 
 				if (!ownedByLocal(ed.id)) {
 					System.out.println("Create Entity");
-					CoreLogic.createEntity(ed);	
+					CoreLogic.createEntity(ed);
 				}
 			} else if (frameType == FRAME_GAME_ENTITY_MODIFY) {
 				JsonObject o = obj.get("d").getAsJsonObject();
@@ -466,16 +485,15 @@ public class Net extends Thread {
 				float av = o.get("av").getAsFloat();
 
 				Entity ent = CoreLogic.findEntity(id);
-				System.out.println(id);
-				//if (!ownedByLocal(id)) {
+				if (!ownedByLocal(id)) {
 					// NOTE: Hacky work around
 					if (ent != null) {
 						ent.teleport(x, y, a, av, xv, yv);
 					}
-				//}
+				}
 			} else if (frameType == FRAME_GAME_ENTITY_REMOVE) {
 				System.out.println("Remove Entity");
-				
+
 				String id = obj.get("d").getAsString();
 
 				if (!ownedByLocal(id)) {

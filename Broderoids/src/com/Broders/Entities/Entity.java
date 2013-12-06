@@ -13,59 +13,70 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 /**
- * All entities will be derived from this class.
- * 
- * @author ntpeters
- * @author krgauthi
- * 
+ * All entities will be derived from this class. It contains data such
+ * as color, Sprite size, unique ID, owner, point worth, and the Body. It
+ * also contains methods that deal with drawing and wrapping.
  */
 public abstract class Entity {
 
-	//private String ent;
-	//private String type;
+	// The physical object that interacts in the physics engine.
 	protected Body body;
-	private String spriteID;
+		
+	// This is needed by networking.
 	private boolean dead;
 
-
-	// Extras
+	// These are properties used by the Sprite.
+	private String spriteID;
 	private float size;
 	private Color color;
+	
+	// The point value of the Entity.
 	private int points;
 
-	// save these for teleportation
-	private BodyDef bodDef;
-	private FixtureDef fixDef;
-
+	// The ID is unique among Entities owned by the Player. Together will
+	// Player ID gives a completely unique ID.
 	protected String id;
 	protected Player owner;
-	
+
+	/**
+	 * Constructor for the Entity class. The inherited classes do most of the work here,
+	 * but this sets the id and the owner.
+	 * 
+	 * @param id
+	 *            Entity id, get this from the owner.
+	 * @param owner
+	 *            Entity owner.
+	 */
 	public Entity(String id, Player owner) {
 		this.id = id;
 		this.owner = owner;
 		dead = false;
-		//System.out.println(id);
+		// System.out.println(id);
 	}
 
+	/**
+	 * @return the full id of the Entity
+	 */
 	public String getId() {
 		return id;
 	}
 
 	/**
-	 * Returns the physical body of this entity
-	 * 
-	 * @return This entity's body
+	 * @return This Entity's physical Body
 	 */
 	public Body getBody() {
 		return this.body;
 	}
-	
+
+	/**
+	 * @return the owner of the Entity
+	 */
 	public Player getOwner() {
 		return this.owner;
 	}
 
 	/**
-	 * Gets the current X-Coordinate of the body (meters)
+	 * Gets the current X-Coordinate of the Body (meters).
 	 * 
 	 * @return Body X-Coordinate in meters
 	 */
@@ -74,7 +85,7 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Gets the current Y-Coordinate of the body (meters)
+	 * Gets the current Y-Coordinate of the Body (meters).
 	 * 
 	 * @return Body Y-Coordinate in meters
 	 */
@@ -83,22 +94,21 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Creates the entity's body.
+	 * Creates the Entity's Body from the Body Definition and Fixture Definition.
+	 * They are then added to the World to be handled.
 	 * 
 	 * @param bodDef
-	 *            The body definition for the body to be created
+	 *            The Body Definition for the Body to be created
 	 * @param fixDef
-	 *            The fixture definition for the body to be created
+	 *            The Fixture Definition for the Body to be created
 	 */
 	protected void createBody(BodyDef bodDef, FixtureDef fixDef) {
-		this.bodDef = bodDef;
-		this.fixDef = fixDef;
 		this.body = CoreLogic.getWorld().createBody(bodDef);
 		this.body.createFixture(fixDef);
 	}
 
 	/**
-	 * Returns the angle of the body in degrees.
+	 * Returns the angle of the Body in degrees.
 	 * 
 	 * @return Body angle in degrees
 	 */
@@ -107,26 +117,27 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Returns the sprite for this entity.
+	 * Returns the Sprite for this Entity.
 	 * 
-	 * @return This Entity's sprite
+	 * @return This Entity's Sprite
 	 */
 	public Sprite getSprite() {
 		return TextureManager.getSprites(this.spriteID);
 	}
 
 	/**
-	 * Sets the sprite for this entity.
+	 * Sets the Sprite for this Entity.
 	 * 
 	 * @param sp
-	 *            The file path to the sprite
+	 *            The file path to the Sprite
 	 */
 	protected void setSprite(String sp) {
 		this.spriteID = sp;
 	}
 
 	/**
-	 * returns the size of the Entity in meters
+	 * Returns the size of the Entity in meters. Size is used
+	 * for Sprite rendering.
 	 * 
 	 * @return size in meters
 	 */
@@ -135,7 +146,8 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Sets the size of the Entity in meters
+	 * Sets the size of the Entity in Meters. Size is used for
+	 * Sprite rendering.
 	 * 
 	 * @param s
 	 *            size of Entity in meters
@@ -144,22 +156,34 @@ public abstract class Entity {
 		this.size = s;
 	}
 
+	/**
+	 * @return color of the Entity
+	 */
 	public Color getColor() {
 		return this.color;
 	}
 
+	/**
+	 * Sets the color of the Entity to the owner's color.
+	 */
 	public void setColor() {
 		this.color = this.owner.getColor();
 	}
-	
+
+	/**
+	 * @param color
+	 *            Color to make the Entity change to.
+	 */
 	public void setColor(Color color) {
 		this.color = color;
 	}
 
 	/**
-	 * Draws this Entity on the screen
+	 * Draws this Entity on the screen. Gets the position and rotation of the Body, and
+	 * the color and size from this Entity, then draw the Sprite on top of the Body.
 	 * 
 	 * @param sb
+	 * 			Things to be drawn are sent to the SpriteBatch
 	 */
 	public void Draw(SpriteBatch sb) {
 		float screenWidth = Gdx.graphics.getWidth();
@@ -171,19 +195,14 @@ public abstract class Entity {
 		float posX;
 		float posY;
 
-		posX = screenWidth
-				* ((x - CoreLogic.getViewPortX()) / CoreLogic.getWidthScreen());
-		posY = screenHeight
-				* ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
-		
+		posX = screenWidth * ((x - CoreLogic.getViewPortX()) / CoreLogic.getWidthScreen());
+		posY = screenHeight * ((y - CoreLogic.getViewPortY()) / CoreLogic.getHeightScreen());
+
 		float meter = Gdx.graphics.getHeight() / CoreLogic.getHeightScreen();
 
-		if (posX > -(this.getSize() * 8)
-				&& posX < (screenWidth + (this.getSize() * 8))
-				&& posY > -(this.getSize() * 8)
-				&& posY < (screenHeight + (this.getSize() * 8))) {
-			this.getSprite().setOrigin((meter*this.getSize())/2, (meter*this.getSize())/2);
-			this.getSprite().setSize(meter * this.getSize(),meter * this.getSize());
+		if (posX > -(this.getSize() * 8) && posX < (screenWidth + (this.getSize() * 8)) && posY > -(this.getSize() * 8) && posY < (screenHeight + (this.getSize() * 8))) {
+			this.getSprite().setOrigin((meter * this.getSize()) / 2, (meter * this.getSize()) / 2);
+			this.getSprite().setSize(meter * this.getSize(), meter * this.getSize());
 			this.getSprite().setColor(this.getColor());
 			this.getSprite().setPosition(posX, posY);
 			this.getSprite().setRotation(this.getBody().getAngle());
@@ -193,113 +212,104 @@ public abstract class Entity {
 	}
 
 	/**
-	 * The same as getIdentity(). Entities should only ever be referenced using
-	 * their unique ID.
-	 * 
-	 * @see #getIdentity()
-	 */
-	//public String toString() {
-	//	return this.type;
-	//}
-
-	/**
-	 * Determines the equality between this Entity and the given Entity
-	 * 
-	 * @param entity
-	 *            Type to compare against
-	 * @return True if entities are the same, false otherwise
-	 */
-	//public boolean equals(Entity entity) {
-	//	return entity.toString().equals(this.type);
-	//}
-
-	/**
 	 * Teleports this entity to the specified coordinates on the screen. This is
 	 * used for screen wrapping.
 	 * 
 	 * @param x
-	 *            X-Coordinate in the world (meters)
+	 *            X-Coordinate to teleport to (meters)
 	 * @param y
-	 *            Y-Coordinate in the world (meters)
+	 *            Y-Coordinate to teleport to (meters)
 	 */
 	public void teleport(float x, float y) {
-		Vector2 linV = this.body.getLinearVelocity();
-		float angV = this.body.getAngularVelocity();
-		float angle = this.body.getAngle();
-
-		CoreLogic.getWorld().destroyBody(this.body);
-
-		this.bodDef.position.set(x, y);
-		this.bodDef.angle = angle;
-		this.body = CoreLogic.getWorld().createBody(bodDef);
-		this.body.createFixture(this.fixDef);
-		this.body.setAngularVelocity(angV);
-		this.body.setLinearVelocity(linV);
-
-		this.body.setUserData(this);
+		this.body.setTransform(x, y, this.body.getAngle());
 	}
-	
+
+	/**
+	 * @return angular velocity of the entity's body
+	 */
 	public float getAngularVelocity() {
 		return this.body.getAngularVelocity();
 	}
 
+	/**
+	 * @return linear velocity of the entity's body
+	 */
 	public Vector2 getLinearVelocity() {
 		return this.body.getLinearVelocity();
 	}
 
 	/**
-	 * Advanced teleport for server use
+	 * Advanced teleport for server use.
 	 * 
 	 * @param x
-	 *            x-position of the entity
+	 *            X position to teleport to
 	 * @param y
-	 *            y-position of the entity
+	 *            Y position to teleport to
 	 * @param angle
-	 *            angle of the entity
+	 *            angle of the Entity
 	 * @param angleVel
-	 *            angular velocity of the entity's rotation
+	 *            angular velocity of the Entity's rotation
 	 * @param vX
-	 *            x-component of the entity's velocity
+	 *            x-component of the Entity's velocity
 	 * @param vY
-	 *            y-component of the entity's velocity
+	 *            y-component of the Entity's velocity
 	 */
-	public void teleport(float x, float y, float angle, float angleVel,
-			float vX, float vY) {
-
-		// Destroys the physical body of this Entity
-		CoreLogic.getWorld().destroyBody(this.body);
+	public void teleport(float x, float y, float angle, float angleVel, float vX, float vY) {
 
 		// Creates a new Body with the info in the given parameters
-		this.bodDef.position.set(x, y);
-		this.bodDef.angle = angle;
-		this.body = CoreLogic.getWorld().createBody(bodDef);
-		this.body.createFixture(this.fixDef);
+		this.body.setTransform(x, y, this.body.getAngle());
 		this.body.setAngularVelocity(angleVel);
 		this.body.setLinearVelocity(new Vector2(vX, vY));
-
-		this.body.setUserData(this);
 	}
 
+	/**
+	 * This method is called every tick and can be used to update entities in
+	 * nonstandard ways. Must be overridden.
+	 */
 	public abstract void update();
-	
+
+	/**
+	 * This is used by the server.
+	 * 
+	 * @return any extra data needed for networking
+	 */
 	public int extra() {
 		return 0;
 	}
 
+	/**
+	 * This is called when an Entity dies, in order to clean up and initiate death-events.
+	 * Must be overriden.
+	 */
 	public abstract void destroy();
 
-	public void setPoints(int v){
+	/**
+	 * Sets the point value of the Entity.
+	 * 
+	 * @param v
+	 *            How many points the entity is worth
+	 */
+	public void setPoints(int v) {
 		points = v;
 	}
-	
-	public int getPoints(){
+
+	/**
+	 * @return number of points the entity is worth
+	 */
+	public int getPoints() {
 		return points;
 	}
-	
+
+	/**
+	 * @return whether we have already tried to destroy this entity
+	 */
 	public boolean isDead() {
 		return this.dead;
 	}
-	
+
+	/**
+	 * Mark this entity as destroyed
+	 */
 	public void setDead() {
 		this.dead = true;
 	}

@@ -10,7 +10,8 @@ import com.badlogic.gdx.graphics.Color;
 
 public class Player {
 	private int id;
-	
+
+	private String userName;
 	private Color playerColor;
 	protected HashMap<String, Entity> entities;
 	private Ship playerShip;
@@ -22,8 +23,7 @@ public class Player {
 	private int nextEntityId;
 
 	public String nextId() {
-		while (entities.containsKey(Integer.toString(id) + "-"
-				+ Integer.toString(nextEntityId))) {
+		while (entities.containsKey(Integer.toString(nextEntityId))) {
 			nextEntityId++;
 		}
 		return Integer.toString(id) + "-" + Integer.toString(nextEntityId);
@@ -44,13 +44,17 @@ public class Player {
 		bonus = 1.0f;
 		score = 0;
 		
+		
+
 		if (local) {
 			playerColor = Settings.getShipColor();
-			
+
 			String sid = this.nextId();
-			
+
+			String[] idParts = sid.split("-");
 			playerShip = new Ship(sid, this, CoreLogic.getWidth() / 2, CoreLogic.getHeight() / 2);
-			entities.put(sid, playerShip);
+			entities.put(idParts[1], playerShip);
+			userName = Settings.getUsername();
 
 			if (CoreLogic.multiplayer) {
 				Net.createEntity(playerShip);
@@ -111,9 +115,14 @@ public class Player {
 		lives += s;
 		if (Gdx.app.getVersion() <= 0) {
 			switch (lives) {
-			case 2:	SoundManager.setMusicPitch(1.1f); break;
-			case 1: SoundManager.setMusicPitch(1.5f); break;
-			default: SoundManager.setMusicPitch(1f);
+			case 2:
+				SoundManager.setMusicPitch(1.1f);
+				break;
+			case 1:
+				SoundManager.setMusicPitch(1.5f);
+				break;
+			default:
+				SoundManager.setMusicPitch(1f);
 			}
 		}
 	}
@@ -160,5 +169,14 @@ public class Player {
 			modHealth(hit);
 		}
 		modShield(0 - damage);
+		System.out.println(shield + " " + health);
+	}
+
+	public String getName() {
+		return userName;
+	}
+
+	public void setName(String name) {
+		this.userName = name;
 	}
 }
